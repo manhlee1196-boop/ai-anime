@@ -254,13 +254,13 @@ class FakeGenerator:
         return self
 
 
-def fake_modules(free_gib=15, gpu=True):
+def fake_modules(free_gib=15, gpu=True, total_gib=16):
     torch = types.ModuleType("torch")
     torch.float16 = "float16"
     torch.cuda = types.SimpleNamespace(
         is_available=lambda: gpu,
         get_device_properties=lambda index: types.SimpleNamespace(name="Fake GPU"),
-        mem_get_info=lambda: (free_gib * 2**30, 16 * 2**30),
+        mem_get_info=lambda: (free_gib * 2**30, total_gib * 2**30),
         empty_cache=lambda: None,
         OutOfMemoryError=FakeOutOfMemoryError,
     )
@@ -389,7 +389,7 @@ class ColabNotebookTests(unittest.TestCase):
             self.assertEqual(namespace["checkpoint"], model_path)
             self.assertEqual(FakePipeline.last_instance.mode, "cuda")
             self.assertTrue(FakePipeline.last_instance.sliced)
-            self.assertFalse(FakePipeline.last_instance.tiled)
+            self.assertTrue(FakePipeline.last_instance.tiled)
             images = list(output.glob("wai_*.png"))
             self.assertEqual(len(images), 1)
             self.assertFalse(list(output.glob("*.partial")))
@@ -596,6 +596,35 @@ class ColabNotebookTests(unittest.TestCase):
                 exec(cell_source("load-pipeline"), namespace)
             self.assertEqual(FakePipeline.last_instance.mode, "offload")
             self.assertTrue(FakePipeline.last_instance.tiled)
+
+    def test_t4_auto_prefers_gpu_with_both_verified_loras(self):
+        anatomy = b"anatomy correct bytes"
+        eyes = b"eyes correct bytes"
+        with tempfile.TemporaryDirectory() as directory:
+            directory = Path(directory)
+            anatomy_path = directory / "anatomy.safetensors"
+            eyes_path = directory / "eyes.safetensors"
+            anatomy_path.write_bytes(anatomy)
+            eyes_path.write_bytes(eyes)
+            # Representative free VRAM on a 15 GiB T4: the old 14.8 GiB
+            # threshold would offload unnecessarily with two default LoRAs.
+            with patch.dict(sys.modules, fake_modules(free_gib=14, total_gib=15)):
+                namespace = {}
+                self.prepare_existing_for_loras(
+                    namespace, directory, USE_ANATOMY_LORA=True, USE_EYE_LORA=True,
+                    ANATOMY_LORA_PATH=str(anatomy_path), EYE_LORA_PATH=str(eyes_path),
+                )
+                exec(substitute_test_loras(cell_source("prepare-loras"), anatomy, eyes), namespace)
+                with patch("builtins.print") as prints:
+                    exec(cell_source("load-pipeline"), namespace)
+            self.assertEqual(namespace["auto_min_vram"] / 2**30, 13.3)
+            self.assertFalse(namespace["use_offload"])
+            self.assertEqual(len(FakePipeline.instances), 1)
+            self.assertEqual(FakePipeline.last_instance.mode, "cuda")
+            self.assertTrue(FakePipeline.last_instance.tiled)
+            self.assertEqual(len(FakePipeline.last_instance.loras), 2)
+            self.assertIn("VRAM trống trước khi nạp: 14.0/15.0 GiB", str(prints.call_args_list))
+            self.assertIn("Chế độ sau khi nạp:", str(prints.call_args_list))
 
     def test_gpu_oom_during_generation_retries_with_same_seed(self):
         with tempfile.TemporaryDirectory() as directory:

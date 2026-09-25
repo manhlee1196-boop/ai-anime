@@ -243,6 +243,14 @@ class StudioRuntime:
         self.backup_dir = Path(backup_dir)
         self.lock = threading.Lock()
 
+    @property
+    def execution_mode(self):
+        return (
+            "CPU offload (GPU tính toán từng phần)"
+            if self.use_offload
+            else "GPU trực tiếp"
+        )
+
     def _parameters(
         self,
         prompt,
@@ -600,7 +608,10 @@ class StudioRuntime:
                 paths.append(str(path))
                 gallery.append((str(path), f"Seed {image_seed} · {width}×{height}"))
                 selected.append(str(image_seed))
-        status = f"✅ Đã tạo {len(paths)} ảnh · {style} · seed: {', '.join(selected)} · đã lưu: {Path(paths[0]).parent}"
+        status = (
+            f"✅ Đã tạo {len(paths)} ảnh · {style} · seed: {', '.join(selected)}"
+            f" · chế độ: {self.execution_mode} · đã lưu: {Path(paths[0]).parent}"
+        )
         return gallery, paths, status, paths[-1]
 
     def text_to_image(
@@ -934,7 +945,8 @@ def build_app(runtime):
                     buttons=["download", "fullscreen"],
                 )
                 status = gr.Markdown(
-                    "Ảnh đầu tiên sẽ xuất hiện tại đây. Model đã nạp trong Google Colab."
+                    f"Ảnh đầu tiên sẽ xuất hiện tại đây. Model đã nạp trong Google Colab. "
+                    f"**Chế độ:** {runtime.execution_mode}"
                 )
                 downloads = gr.File(
                     label="Tải ảnh PNG", file_count="multiple", interactive=False

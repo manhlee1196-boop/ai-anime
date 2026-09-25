@@ -463,6 +463,7 @@ class RuntimeValidationTests(unittest.TestCase):
         self.assertEqual(len(paths), 2)
         self.assertEqual(latest, paths[-1])
         self.assertIn("42, 43", status)
+        self.assertIn("GPU trực tiếp", status)
         self.assertEqual(self.pipe.weights[-1], (["anatomy", "eyes"], [0.0, 0.45]))
         self.assertEqual(
             [call[1]["generator"].seed for call in FakePipe.calls], [42, 43]
@@ -632,9 +633,10 @@ class RuntimeValidationTests(unittest.TestCase):
             return FakePipe()
 
         self.runtime.create_pipeline = make
-        self.runtime.text_to_image(
+        _, _, status, _ = self.runtime.text_to_image(
             "512x512", "anime", "", 20, 6, 77, 1, False, 0.55, False, 0.45, False
         )
+        self.assertIn("CPU offload", status)
         self.assertEqual(creations, [True])
         self.assertTrue(self.runtime.use_offload)
         self.assertEqual(
@@ -740,6 +742,13 @@ class RuntimeValidationTests(unittest.TestCase):
         ]
         self.assertEqual(len(confirmations), 1)
         self.assertFalse(confirmations[0]["props"]["value"])
+        self.assertTrue(
+            any(
+                c["type"] == "markdown"
+                and "Chế độ:** GPU trực tiếp" in str(c["props"].get("value"))
+                for c in config["components"]
+            )
+        )
         self.assertEqual(
             len(
                 [x for x in config["dependencies"] if x["api_visibility"] == "private"]
