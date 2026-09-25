@@ -1,0 +1,11 @@
+# Notebook/runtime artifacts
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# Checkpoints and generated images: keep large/private artifacts out of Git
+*.safetensors
+*.ckpt
+*.pt
+*.pth
+outputs/
