@@ -37,3 +37,110 @@ Bạn có thể tự kiểm tra file đã tải trong Colab: `sha256sum '/conten
 - Nếu hết **RAM hệ thống** khi nạp checkpoint, cần Colab high-RAM; notebook không thể cấp thêm GPU/RAM. Nếu Drive ngắt khi lưu, ảnh dự phòng nằm ở `/content/wai_outputs` (hãy tải xuống trước khi phiên hết). Prompt mẫu hướng tới nội dung lành mạnh nhưng **không đảm bảo bộ lọc**. `EMBED_METADATA=True` nhúng prompt/nguồn ảnh vào PNG; tắt trước khi chia sẻ nếu không muốn lộ thông tin.
 
 Kiểm tra cấu trúc notebook và hành vi tải/hash/nạp LoRA bằng mock CPU: `python -m unittest discover -s tests -v`. Việc tải thực tế checkpoint/LoRA, khả năng chạy với GPU Colab và chất lượng tay/chân/mắt **chưa thể xác nhận** trong môi trường kiểm thử CPU này.
+
+---
+
+# Mirai Studio — giao diện tạo ảnh trên Cloudflare
+
+Mã ứng dụng ở **[`web/`](web/)** gồm giao diện React/Vite, Worker API và Cloudflare Workers AI binding. Đây là ứng dụng khác với notebook Colab ở trên: **Cloudflare Workers AI chạy SDXL Base 1.0 / SDXL Lightning do Cloudflare lưu trữ, KHÔNG chạy checkpoint WAI-illustrious v17**. Muốn dùng đúng WAI cần GPU bên ngoài; xem mục bên dưới. Ảnh mẫu trong giao diện là ảnh minh họa đóng gói sẵn, **không phải ảnh ứng dụng vừa tạo**.
+
+## Tính năng
+
+- Văn bản → ảnh, ảnh → ảnh và inpainting: tô mask trực tiếp, tẩy/hoàn tác/xóa hoặc nạp mask PNG **trắng = vùng sửa, đen = phần giữ**. Mask hướng dẫn model; với Workers AI, không cam kết mọi pixel ngoài mask hoàn toàn không đổi.
+- Prompt, negative prompt, gợi ý phong cách; SDXL Base/Lightning hoặc WAI qua GPU tùy chọn; kích thước/tỷ lệ, steps, CFG, seed, strength, tạo lần lượt 1–4 ảnh; tùy chọn sampler, CLIP skip và hai LoRA **chỉ khi backend GPU WAI hỗ trợ**.
+- Lưu ảnh trong **IndexedDB của trình duyệt** (20 ảnh gần nhất không yêu thích; ảnh yêu thích được giữ), xem phóng to, sao chép prompt, dùng ảnh kết quả để sửa tiếp, tải PNG/JPG/WebP. Không có server lưu bộ sưu tập. Prompt/ảnh nguồn vẫn được gửi đến **Cloudflare Workers AI hoặc backend GPU bạn cấu hình** để suy luận; tránh đưa dữ liệu nhạy cảm nếu chưa tin tưởng nhà cung cấp. Xóa dữ liệu trang web hoặc dùng chế độ riêng tư có thể làm mất lịch sử — hãy tải ảnh quan trọng về máy.
+- Bảo vệ API tạo ảnh bằng secret `APP_ACCESS_TOKEN` trên Worker. Mã nhập từ giao diện lưu trong `sessionStorage` của phiên trình duyệt; **không** đưa Cloudflare API token vào giao diện hay Git.
+
+## Xem giao diện ở máy cá nhân
+
+Cần Node.js 20.19+ (hoặc 22.12+) và npm.
+
+```bash
+cd web
+npm ci
+npm run dev
+```
+
+Mở URL Vite in ra. Bản xem trước này **chỉ hiển thị giao diện và ảnh mẫu**; `/api/generate` trả 503 minh bạch, không giả lập kết quả tạo ảnh. Muốn thử Worker cục bộ: sau khi có quyền vào tài khoản Cloudflare, có thể chạy `npm run worker:dev` và cấu hình secret bằng `.dev.vars` (không commit); Workers AI vẫn cần kết nối dịch vụ của Cloudflare và hạn mức tài khoản. AI binding có thể báo `not supported` khi Wrangler không truy cập được Cloudflare: khi đó chỉ kiểm tra được routing/asset, **không thể tạo ảnh cục bộ**. Binding AI vẫn có thể tính phí trong dev. Không dùng Vite như một inference server.
+
+## Triển khai lên tài khoản Cloudflare của bạn
+
+> **Chưa triển khai hộ:** cần tài khoản Cloudflare có Workers AI và hạn mức/quyền sử dụng, đăng nhập Wrangler trên máy của bạn. Yêu cầu tạo ảnh có thể tính phí; khóa API được bảo vệ nhưng ai biết mã truy cập đều có thể tiêu thụ hạn mức. Không chia sẻ mã này.
+
+```bash
+cd web
+npm ci
+npx wrangler login
+npm run deploy             # build giao diện rồi triển khai Worker + assets
+npx wrangler secret put APP_ACCESS_TOKEN  # tự đặt mã dài, ngẫu nhiên tại lời nhắc
+```
+
+`web/wrangler.jsonc` khai báo binding `AI`, static assets và ưu tiên Worker cho `/api/*`; có thể sửa `name` nếu tên Worker trùng. **Chưa đặt `APP_ACCESS_TOKEN` thì API từ chối mọi yêu cầu tạo ảnh (503)**. Sau khi đặt secret, mở URL Worker do Wrangler hiển thị, chọn **Cloudflare AI**, nhập **chính mã APP_ACCESS_TOKEN vừa đặt** qua nút *Mã truy cập*, rồi tạo ảnh. `/api/config` cho biết nguồn đã cấu hình nhưng không xuất giá trị secret. Nên dùng Cloudflare Access/rate limiting bổ sung nếu công khai URL cho nhiều người; mã đơn lẻ chỉ là lớp bảo vệ tối thiểu.
+
+Kiểm tra sau triển khai: `/api/config` phải trả JSON `cloudflare: true`, `configured: true`. Thử một ảnh 512×512 với prompt đơn giản, tải file và kiểm tra PNG. Nếu lỗi hạn mức/binding, xem nhật ký `npx wrangler tail`. **Chưa có tài khoản/triển khai hoặc GPU trong môi trường kiểm thử repo này, nên chưa xác nhận ảnh tạo thực tế.**
+
+### Giới hạn và ý nghĩa thông số
+
+| Tùy chọn | Phạm vi giao diện/API | Lưu ý |
+| --- | --- | --- |
+| Kích thước | Cạnh 512–1344 px, chia hết cho 8; tối đa 1,5 MP, tỷ lệ tối đa 1,75:1 | Ảnh nguồn được thu phóng về cạnh dài tối đa 1024; quá dài sẽ yêu cầu cắt trước. |
+| Steps | Workers AI: 1–20; WAI GPU: 1–45 | Lightning thường 4–8 bước; nhiều bước hơn tăng thời gian/chi phí. |
+| CFG / Guidance | 1–12 | Giá trị cao chưa chắc đẹp hơn. |
+| Seed | -1 (ngẫu nhiên) hoặc 0–4294967295 | Lượt tiếp theo tăng seed 1; cùng seed **không** đảm bảo ảnh giống nhau giữa model/backends. |
+| Strength | 0,20–0,95 cho img2img/inpaint | Thấp giữ ảnh nguồn tốt hơn; cao thay đổi nhiều hơn. |
+| Ảnh đầu vào | PNG/JPEG/WebP ≤12 MB khi chọn file; Worker nhận ảnh chuẩn hóa ≤2 MB và mask PNG ≤1 MB | Body JSON tối đa 5 MB; tùy chọn mask tải vào phải đúng kích thước ảnh nguồn. |
+| Batch | 1–4 yêu cầu nối tiếp | Dừng chờ ở trình duyệt có thể không dừng tác vụ và chi phí trên server. |
+
+Worker chỉ chuyển **tham số thật sự có trong schema** của SDXL tới Workers AI: `prompt`, `negative_prompt`, `width`, `height`, `num_steps`, `guidance`, `seed`, cùng `image_b64` và `strength` khi img2img; inpaint gửi `image` và `mask` dạng mảng byte. **Không gửi LoRA, sampler hoặc CLIP skip tới Workers AI**. [SDXL Base schema](https://developers.cloudflare.com/workers-ai/models/stable-diffusion-xl-base-1.0/) · [SDXL Lightning schema](https://developers.cloudflare.com/workers-ai/models/stable-diffusion-xl-lightning/). Model/cước/hạn mức của Cloudflare có thể thay đổi; kiểm tra tài khoản trước khi dùng nhiều ảnh.
+
+## Tùy chọn: WAI v17 trên GPU bên ngoài
+
+**Cloudflare Worker không thể nạp checkpoint WAI ~6,94 GB** trong môi trường Worker; nhánh này chỉ là cổng HTTPS tới **máy GPU do bạn tự triển khai**. Không có máy GPU mặc định hoặc endpoint WAI dùng chung. Nếu chỉ cần Workers AI SDXL, **không cần** cấu hình nhánh này.
+
+Nếu đã có một server GPU đủ RAM/VRAM, máy đó phải nạp checkpoint **WAI v17** và hai LoRA **đúng SHA-256 trong bảng ở trên**, tự thực hiện inference và cung cấp endpoint. Worker **không tự tải/xác minh** file trên máy GPU; hãy áp dụng kiểm tra hash trong notebook/backend của bạn. Khi bật LoRA mắt, giao diện tự thêm trigger `perfect eyes` vào prompt gửi đi nếu chưa có. Trên máy quản lý Cloudflare:
+
+```bash
+cd web
+npx wrangler secret put GPU_BACKEND_URL    # ví dụ: https://gpu.example.org/api
+npx wrangler secret put GPU_BACKEND_TOKEN  # Bearer token riêng của máy GPU
+```
+
+Worker POST tới `${GPU_BACKEND_URL}/generate` qua HTTPS, thêm `Authorization: Bearer <GPU_BACKEND_TOKEN>`, body JSON:
+
+```json
+{
+  "mode": "inpaint",
+  "model": "wai-v17",
+  "prompt": "anime portrait, perfect eyes",
+  "negative_prompt": "bad anatomy",
+  "width": 1024,
+  "height": 1024,
+  "steps": 25,
+  "cfg": 6,
+  "seed": 123,
+  "strength": 0.45,
+  "scheduler": "euler_a",
+  "clip_skip": 2,
+  "loras": {
+    "anatomy": { "enabled": true, "weight": 0.55 },
+    "eyes": { "enabled": true, "weight": 0.45 }
+  },
+  "image_b64": "iVBORw0KGgo...",
+  "mask_b64": "iVBORw0KGgo..."
+}
+```
+
+`image_b64` chỉ có ở img2img/inpaint; `mask_b64` chỉ có ở inpaint. Worker chuyển về **chuỗi base64 thuần** (không có tiền tố data URL) trước khi gửi đến GPU. GPU backend **phải** tự xác thực Bearer token, kiểm tra lại kích thước/định dạng/LoRA, xử lý sampler/CLIP skip theo khả năng hoặc **từ chối** tham số không hỗ trợ, thực hiện sinh ảnh thật rồi trả **raw PNG/JPEG/WebP bytes** với `Content-Type` tương ứng. JSON chứa URL/base64 **không** được chấp nhận làm kết quả. Đặt timeout, giới hạn lượt, lọc nội dung và bảo vệ dữ liệu ở backend theo nhu cầu. Nếu muốn giữ nguyên pixel ngoài mask, backend phải tự ghép/composite như notebook; Worker không làm thay. Không có backend GPU đi kèm: bật WAI trong giao diện khi chưa có endpoint sẽ báo không sẵn sàng.
+
+## Kiểm thử mã
+
+```bash
+python -m unittest discover -s tests -v   # notebook, dùng mock CPU
+cd web
+npm ci
+npm test                              # API auth/validation/routes + IndexedDB mock
+npm run build                         # sản phẩm Vite
+npx wrangler deploy --dry-run         # kiểm tra Worker/binding, không triển khai
+```
+
+Các bài test và build **không phải** là bằng chứng checkpoint WAI đã chạy trên GPU hoặc Workers AI đã sinh ảnh thật trên một tài khoản Cloudflare.

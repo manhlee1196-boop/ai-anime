@@ -1,0 +1,29 @@
+{
+  "name": "mirai-anime-studio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "worker:dev": "npm run build && wrangler dev --local --ip 0.0.0.0 --port 8787",
+    "deploy": "npm run build && wrangler deploy",
+    "test": "node --import tsx --test tests/*.test.mjs",
+    "format:check": "prettier --check 'src/**/*.{jsx,js,css}' 'worker/*.js' 'tests/*.mjs' index.html vite.config.js package.json wrangler.jsonc"
+  },
+  "dependencies": {
+    "lucide-react": "^0.468.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.4.1",
+    "fake-indexeddb": "^6.2.5",
+    "jsdom": "^30.1.1",
+    "prettier": "^3.9.9",
+    "tsx": "^4.23.15",
+    "vite": "^6.3.5",
+    "wrangler": "^4.40.0"
+  }
+}
