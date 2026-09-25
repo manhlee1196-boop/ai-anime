@@ -8,6 +8,7 @@ import gc
 import json
 import math
 import os
+import re
 import secrets
 import threading
 from datetime import datetime, timezone
@@ -25,15 +26,24 @@ SIZE_PRESETS = (
     "1344x1024",
 )
 DEFAULT_PROMPT = (
-    "general, 1girl, solo, cherry blossoms, spring, soft sunlight, "
+    "1girl, solo, cherry blossoms, spring, soft sunlight, "
     "detailed eyes, detailed clothing, masterpiece, best quality"
 )
-# Avoid negating hands/feet themselves: target only the unwanted anomalies.
+# Quality/anatomy terms shared by every style. SFW styles add their own
+# content negatives; adult mode never silently inherits those blockers.
 DEFAULT_NEGATIVE = (
-    "nsfw, explicit, lowres, worst quality, low quality, blurry, bad anatomy, "
+    "lowres, worst quality, low quality, blurry, bad anatomy, "
     "bad hands, deformed hands, extra fingers, missing fingers, fused fingers, "
     "malformed fingers, deformed feet, extra toes, missing toes, fused toes, "
     "malformed toes, extra limbs"
+)
+ADULT_STYLE = "Anime NSFW 18+"
+UNDERAGE_PROMPT = re.compile(
+    r"\b(?:underage|minor|child|children|preteen|teen(?:age|ager)?s?|loli|shota|"
+    r"school[- ]?girls?|school[- ]?boys?|little girl|little boy|young girl|young boy|"
+    r"trẻ em|vị thành niên|học sinh|bé gái|bé trai|"
+    r"(?:[1-9]|1[0-7])\s*(?:-?years?[- ]?old|yo|y/o|tuổi))\b",
+    re.IGNORECASE,
 )
 STYLE_PRESETS = {
     "Anime chuẩn": {
@@ -43,7 +53,7 @@ STYLE_PRESETS = {
             "cel shading",
             "vibrant colors",
         ),
-        "negative": ("photorealistic", "3d render", "plastic skin"),
+        "negative": ("nsfw", "explicit", "photorealistic", "3d render", "plastic skin"),
     },
     "Bán thực 2.5D": {
         "positive": (
@@ -53,9 +63,38 @@ STYLE_PRESETS = {
             "natural skin texture",
             "cinematic lighting",
         ),
-        "negative": ("flat cel shading", "chibi", "plastic skin", "uncanny face"),
+        "negative": (
+            "nsfw",
+            "explicit",
+            "flat cel shading",
+            "chibi",
+            "plastic skin",
+            "uncanny face",
+        ),
     },
-    "Tùy chỉnh": {"positive": (), "negative": ()},
+    "Tùy chỉnh": {"positive": (), "negative": ("nsfw", "explicit")},
+    ADULT_STYLE: {
+        "positive": (
+            "nsfw",
+            "adult",
+            "mature character",
+            "erotic anime illustration",
+            "detailed anatomy",
+            "natural skin shading",
+        ),
+        "negative": (
+            "underage",
+            "minor",
+            "child",
+            "teen",
+            "loli",
+            "shota",
+            "schoolgirl",
+            "schoolboy",
+            "young girl",
+            "young boy",
+        ),
+    },
 }
 REPAIR_HINTS = {
     "hands": (
@@ -217,15 +256,25 @@ class StudioRuntime:
         eyes_enabled,
         eyes_weight,
         style="Tùy chỉnh",
+        adult_confirmed=False,
     ):
         if not isinstance(prompt, str) or not prompt.strip() or len(prompt) > 2000:
             raise ValueError("Prompt phải có từ 1 đến 2000 ký tự.")
         if not isinstance(negative, str) or len(negative) > 1500:
             raise ValueError("Negative prompt tối đa 1500 ký tự.")
         if not isinstance(style, str) or style not in STYLE_PRESETS:
-            raise ValueError(
-                "Chọn phong cách Anime chuẩn, Bán thực 2.5D hoặc Tùy chỉnh."
-            )
+            raise ValueError("Chọn phong cách có sẵn trong danh sách.")
+        if not isinstance(adult_confirmed, bool):
+            raise ValueError("Xác nhận 18+ không hợp lệ.")
+        if style == ADULT_STYLE:
+            if not adult_confirmed:
+                raise ValueError(
+                    "Phong cách Anime NSFW 18+ cần xác nhận tất cả nhân vật đều trưởng thành."
+                )
+            if UNDERAGE_PROMPT.search(prompt):
+                raise ValueError(
+                    "Phong cách 18+ không chấp nhận prompt về trẻ em hoặc vị thành niên."
+                )
         steps = _number(steps, "Steps", 10, 45, integer=True)
         cfg = _number(cfg, "CFG", 1, 12)
         seed = _number(seed, "Seed", -1, 2**32 - 1, integer=True)
@@ -439,6 +488,7 @@ class StudioRuntime:
         eyes_weight,
         embed,
         style="Tùy chỉnh",
+        adult_confirmed=False,
     ):
         from PIL import Image, ImageChops, ImageFilter
 
@@ -454,6 +504,7 @@ class StudioRuntime:
             eyes_enabled,
             eyes_weight,
             style=style,
+            adult_confirmed=adult_confirmed,
         )
         if mode == "text":
             width, height = _preset_size(size)
@@ -567,6 +618,7 @@ class StudioRuntime:
         eyes_weight,
         embed,
         style="Tùy chỉnh",
+        adult_confirmed=False,
     ):
         return self._generate(
             "text",
@@ -588,6 +640,7 @@ class StudioRuntime:
             eyes_weight,
             embed,
             style,
+            adult_confirmed,
         )
 
     def image_to_image(
@@ -607,6 +660,7 @@ class StudioRuntime:
         eyes_weight,
         embed,
         style="Tùy chỉnh",
+        adult_confirmed=False,
     ):
         return self._generate(
             "image",
@@ -628,6 +682,7 @@ class StudioRuntime:
             eyes_weight,
             embed,
             style,
+            adult_confirmed,
         )
 
     def inpaint(
@@ -649,6 +704,7 @@ class StudioRuntime:
         eyes_weight,
         embed,
         style="Tùy chỉnh",
+        adult_confirmed=False,
     ):
         source, mask = _editor_mask(editor, mask_file)
         return self._generate(
@@ -671,6 +727,7 @@ class StudioRuntime:
             eyes_weight,
             embed,
             style,
+            adult_confirmed,
         )
 
 
@@ -707,7 +764,11 @@ def build_app(runtime):
                     label="Phong cách hình ảnh",
                 )
                 gr.Markdown(
-                    "**Anime chuẩn:** nét rõ, tô màu cel-shading · **Bán thực 2.5D:** minh họa anime với đổ bóng mềm, da tự nhiên · **Tùy chỉnh:** không tự thêm thẻ phong cách. Cả ba đều dùng cùng checkpoint WAI v17."
+                    "**Anime chuẩn:** nét rõ, cel-shading · **Bán thực 2.5D:** đổ bóng mềm, da tự nhiên · **Tùy chỉnh:** không thêm thẻ phong cách · **Anime NSFW 18+:** chỉ nhân vật trưởng thành, phải xác nhận bên dưới. Tất cả dùng cùng checkpoint WAI v17."
+                )
+                adult_confirm = gr.Checkbox(
+                    label="Chỉ cho Anime NSFW 18+: tôi xác nhận tất cả nhân vật đều từ 18 tuổi trở lên",
+                    value=False,
                 )
                 prompt = gr.Textbox(
                     label="Ý tưởng / prompt",
@@ -722,7 +783,7 @@ def build_app(runtime):
                     lines=3,
                 )
                 gr.Markdown(
-                    "Preset thêm thẻ phong cách vào prompt khi tạo; prompt bạn nhập vẫn sửa được. Negative mặc định nhắm lỗi thừa/thiếu/dính ngón, **không** chặn tay hoặc chân bình thường. Không bảo đảm sửa mọi ảnh: hãy dùng tab **Sửa vùng ảnh** nếu cần."
+                    "Preset thêm thẻ phong cách khi tạo, prompt/negative vẫn sửa được. Negative mặc định nhắm lỗi thừa/thiếu/dính ngón; các phong cách thường tự thêm `nsfw, explicit` vào negative, còn **Anime NSFW 18+** không thêm hai thẻ đó. Checkbox chỉ là xác nhận, không phải xác minh tuổi. Không bảo đảm sửa mọi lỗi ngón: hãy dùng tab **Sửa vùng ảnh** nếu cần."
                 )
                 with gr.Accordion("⚙️ Thông số ảnh và LoRA", open=True):
                     with gr.Row():
@@ -789,6 +850,7 @@ def build_app(runtime):
                     eyes_weight,
                     embed,
                     style,
+                    adult_confirm,
                 ]
                 with gr.Tabs():
                     with gr.Tab("✦ Văn bản → ảnh"):

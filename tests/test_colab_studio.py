@@ -361,6 +361,7 @@ class RuntimeValidationTests(unittest.TestCase):
             self.assertIn(anomaly, negative)
         self.assertNotIn(", hands,", negative)
         self.assertNotIn(", feet,", negative)
+        self.assertNotIn("nsfw", negative)
         anime_positive, anime_negative, *_ = self.params(
             prompt="anime illustration, portrait",
             negative=negative,
@@ -369,12 +370,15 @@ class RuntimeValidationTests(unittest.TestCase):
         self.assertEqual(anime_positive.count("anime illustration"), 1)
         self.assertIn("clean lineart", anime_positive)
         self.assertIn("photorealistic", anime_negative)
+        self.assertIn("nsfw", anime_negative)
+        self.assertIn("explicit", anime_negative)
         semi_positive, semi_negative, *_ = self.params(
             prompt="portrait", negative="", style="Bán thực 2.5D"
         )
         self.assertIn("semi-realistic anime art", semi_positive)
         self.assertIn("2.5d illustration", semi_positive)
         self.assertIn("flat cel shading", semi_negative)
+        self.assertIn("nsfw", semi_negative)
         self.assertNotIn("photorealistic", semi_negative)
         custom_positive, custom_negative, *_ = self.params(
             prompt="portrait",
@@ -382,11 +386,40 @@ class RuntimeValidationTests(unittest.TestCase):
             eyes_enabled=False,
             style="Tùy chỉnh",
         )
-        self.assertEqual(
-            (custom_positive, custom_negative), ("portrait", "my own negative")
-        )
+        self.assertEqual(custom_positive, "portrait")
+        self.assertEqual(custom_negative, "my own negative, nsfw, explicit")
         with self.assertRaisesRegex(ValueError, "Chọn phong cách"):
             self.params(style="unknown")
+
+    def test_adult_style_is_opt_in_and_rejects_obvious_underage_prompts(self):
+        with self.assertRaisesRegex(ValueError, "cần xác nhận"):
+            self.params(style=studio.ADULT_STYLE, adult_confirmed=False)
+        for prompt in (
+            "underage character",
+            "school girl portrait",
+            "teenage",
+            "17-year-old",
+            "vị thành niên",
+        ):
+            with (
+                self.subTest(prompt=prompt),
+                self.assertRaisesRegex(ValueError, "vị thành niên"),
+            ):
+                self.params(
+                    style=studio.ADULT_STYLE, adult_confirmed=True, prompt=prompt
+                )
+        positive, negative, *_ = self.params(
+            style=studio.ADULT_STYLE,
+            adult_confirmed=True,
+            prompt="adult, woman portrait",
+            negative=studio.DEFAULT_NEGATIVE,
+        )
+        self.assertIn("erotic anime illustration", positive)
+        self.assertEqual(positive.count("adult"), 1)  # already in user's prompt
+        self.assertIn("underage", negative)
+        self.assertIn("missing toes", negative)
+        self.assertNotIn(", nsfw", negative)
+        self.assertNotIn(", explicit", negative)
 
     def test_validation_and_eye_trigger(self):
         params = self.params()
@@ -699,6 +732,14 @@ class RuntimeValidationTests(unittest.TestCase):
         self.assertEqual(len(style), 1)
         self.assertEqual(style[0]["props"]["value"], "Anime chuẩn")
         self.assertIn("Bán thực 2.5D", str(style[0]["props"]["choices"]))
+        self.assertIn(studio.ADULT_STYLE, str(style[0]["props"]["choices"]))
+        confirmations = [
+            c
+            for c in config["components"]
+            if c["type"] == "checkbox" and "18 tuổi" in str(c["props"].get("label"))
+        ]
+        self.assertEqual(len(confirmations), 1)
+        self.assertFalse(confirmations[0]["props"]["value"])
         self.assertEqual(
             len(
                 [x for x in config["dependencies"] if x["api_visibility"] == "private"]
@@ -761,19 +802,26 @@ class RuntimeValidationTests(unittest.TestCase):
             for index, inputs, expected_tag, style in (
                 (
                     0,
-                    ["512x512", *common, "Anime chuẩn"],
+                    ["512x512", *common, "Anime chuẩn", False],
                     "clean lineart",
                     "Anime chuẩn",
                 ),
                 (
                     1,
-                    [file_data(source), "512x512", 0.45, *common, "Bán thực 2.5D"],
+                    [
+                        file_data(source),
+                        "512x512",
+                        0.45,
+                        *common,
+                        "Bán thực 2.5D",
+                        False,
+                    ],
                     "semi-realistic anime art",
                     "Bán thực 2.5D",
                 ),
                 (
                     2,
-                    [editor, None, "hands", 0.45, 8, *common, "Anime chuẩn"],
+                    [editor, None, "hands", 0.45, 8, *common, "Anime chuẩn", False],
                     "natural hands",
                     "Anime chuẩn",
                 ),
@@ -787,9 +835,16 @@ class RuntimeValidationTests(unittest.TestCase):
                         8,
                         *common,
                         "Bán thực 2.5D",
+                        False,
                     ],
                     "natural toes",
                     "Bán thực 2.5D",
+                ),
+                (
+                    0,
+                    ["512x512", *common, studio.ADULT_STYLE, True],
+                    "erotic anime illustration",
+                    studio.ADULT_STYLE,
                 ),
             ):
                 data = await process(index, inputs)
@@ -799,13 +854,18 @@ class RuntimeValidationTests(unittest.TestCase):
                 negative = FakePipe.calls[-1][1]["negative_prompt"]
                 self.assertEqual(negative.count("extra fingers"), 1)
                 self.assertEqual(negative.count("extra toes"), 1)
+                if style == studio.ADULT_STYLE:
+                    self.assertIn("underage", negative)
+                    self.assertNotIn("nsfw", negative)
+                else:
+                    self.assertIn("nsfw", negative)
                 self.assertEqual(len(data[0]), 1)  # Gradio Gallery
                 self.assertTrue(Path(data[0][0]["image"]["path"]).is_file())
                 png = Path(data[1][0]["path"])  # Gradio File download
                 self.assertTrue(png.is_file())
                 with Image.open(png) as result:
                     self.assertEqual(result.format, "PNG")
-            self.assertEqual(len(FakePipe.calls), 4)
+            self.assertEqual(len(FakePipe.calls), 5)
             self.assertTrue(Path((await process(3, [None]))[0]["path"]).is_file())
             self.assertTrue(
                 Path((await process(4, [None]))[0]["background"]["path"]).is_file()
