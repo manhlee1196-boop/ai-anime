@@ -112,16 +112,16 @@ print("✅ Thư viện Studio đã sẵn sàng:", versions)
     prepare += '\nif not WAI_STUDIO_VERSION_VERIFIED:\n    raise RuntimeError("Studio chỉ nhận checkpoint WAI-illustrious v17 đúng SHA-256. Đổi MODEL_PATH sang bản gốc, rồi chạy lại ô 4.")\n'
     setup[3]["source"] = prepare.splitlines(keepends=True)
 
-    introduction = """# WAI Studio · tạo ảnh anime từ Google Colab bằng liên kết riêng
+    introduction = """# WAI Studio · tạo ảnh anime từ Google Colab bằng liên kết tạm thời
 
 > **Không cần Cloudflare, API token hay máy chủ GPU khác.** Colab chạy checkpoint WAI-illustrious v17 + LoRA đã kiểm SHA-256; Gradio chỉ hiển thị giao diện. Ảnh mẫu web Cloudflare không liên quan tới model này.
 
 ### Chạy trong 3 bước
 1. Trong Colab chọn **Runtime → Change runtime type → T4 GPU** (hoặc GPU mạnh hơn). Bấm **Runtime → Run all**. Nếu được hỏi, cho phép gắn Google Drive để lưu checkpoint/ảnh cho các phiên sau. Lần đầu cần tải ~6,94 GB model + tối đa ~457 MB LoRA và có thể mất một lúc; những lần sau dùng lại các file đã xác minh.
-2. Ở ô cuối, **tự nhập mật khẩu ít nhất 16 ký tự** trong hộp nhập kín. Notebook không ghi hay in mật khẩu vào output. Chờ dòng `Running on public URL` rồi mở liên kết `https://....gradio.live`; đăng nhập tên **owner** và mật khẩu vừa đặt. Dùng giao diện để tạo ảnh, ảnh → ảnh, tô mask sửa tay/chân/mắt và tải PNG.
+2. Ở ô cuối, chờ dòng `Running on public URL` rồi mở liên kết `https://....gradio.live` — **không cần tài khoản hay mật khẩu**. Dùng giao diện để tạo ảnh, ảnh → ảnh, tô mask sửa tay/chân/mắt và tải PNG.
 3. **Giữ notebook Colab đang kết nối.** Link này chỉ tồn tại khi phiên Colab/Gradio còn chạy (có thể hết hạn sớm khi runtime bị ngắt). Đóng phiên bằng cách dừng runtime; lần sau chạy notebook để có link mới. Nếu dùng Drive, ảnh nằm ở `MyDrive/AI/outputs`; nếu không lưu được Drive, hãy tải từ giao diện hoặc `/content/wai_outputs` trước khi hết phiên.
 
-**Quyền riêng tư:** `share=True` tạo một URL *truy cập được từ Internet* qua proxy của Gradio; mật khẩu chỉ chặn người không có quyền đăng nhập, **không biến URL thành mạng nội bộ**. Không chia sẻ URL/mật khẩu, không nhập mật khẩu vào prompt/ô cấu hình hoặc lưu notebook có output liên kết vào nơi công khai. Gradio nhận dữ liệu qua đường hầm TLS; CPU/GPU và checkpoint vẫn chạy trên Colab. [Giải thích share link](https://www.gradio.app/guides/understanding-gradio-share-links). Ảnh có thể chứa thông tin trong metadata nếu bạn tự bật tùy chọn này.
+**Lưu ý bảo mật:** `share=True` tạo URL *truy cập được từ Internet* qua proxy Gradio và **không có đăng nhập**. Bất kỳ ai biết URL đều có thể dùng giao diện và GPU Colab của bạn. Không chia sẻ URL hoặc lưu notebook có output chứa URL ở nơi công khai; dừng runtime để ngắt link. File checkpoint/LoRA bị chặn khỏi đường tải file Gradio, nhưng URL không phải cơ chế xác thực. Gradio nhận dữ liệu qua đường hầm TLS; CPU/GPU và checkpoint vẫn chạy trên Colab. [Giải thích share link](https://www.gradio.app/guides/understanding-gradio-share-links). Ảnh có thể chứa thông tin trong metadata nếu bạn tự bật tùy chọn này.
 
 Chỉ bật LoRA đã chọn trước khi nạp model (ô 3–6). Trong giao diện có thể tắt/bật và đổi cường độ **các LoRA đã nạp** mà không cần tải lại. Inpainting từ checkpoint SDXL gốc định hướng vùng trắng, ghép lại để giữ pixel đen; không đảm bảo sửa đúng mọi lỗi. Colab không bảo đảm GPU liên tục hay đủ RAM/ổ đĩa. Để đổi đường dẫn, chế độ bộ nhớ hoặc danh sách LoRA, hãy **khởi động lại runtime và Run all**; không chạy lại riêng ô nạp model khi giao diện còn giữ pipeline cũ.
 """
@@ -139,19 +139,14 @@ studio_runtime = StudioRuntime(
     drive_root=drive_root,
 )
 del pipe  # runtime owns the only reference, allowing OOM recovery to free VRAM
-print("Đã chuẩn bị WAI Studio. Ô 8 sẽ tạo liên kết giao diện có mật khẩu.")
+print("Đã chuẩn bị WAI Studio. Ô 8 sẽ tạo liên kết giao diện không cần đăng nhập.")
 """
     )
-    launch = """# @title 8. Mở liên kết giao diện tạm thời (bắt buộc có mật khẩu)
-from getpass import getpass
+    launch = """# @title 8. Mở liên kết giao diện tạm thời (không cần đăng nhập)
 from pathlib import Path
 
 if "studio_runtime" not in globals():
     raise RuntimeError("Chưa nạp model. Chạy các ô 1–7 trước khi tạo link.")
-password = getpass("Đặt mật khẩu RIÊNG cho giao diện (>= 16 ký tự; không hiển thị): ")
-if len(password) < 16 or password.isspace():
-    del password
-    raise ValueError("Mật khẩu quá ngắn. Chọn ít nhất 16 ký tự và chạy lại ô này.")
 # Đóng tunnel cũ khi cần tạo lại link, nhưng không nạp lại model.
 if "studio_app" in globals():
     studio_app.close()
@@ -164,23 +159,19 @@ blocked_weights = [
     "/content/wai_model_cache", "/content/wai_lora_cache",
     *(str(Path(path).resolve()) for path in studio_runtime.lora_paths.values()),
 ]
-try:
-    _, _, share_url = studio_app.launch(
-        share=True, inline=False, prevent_thread_lock=True,
-        auth=("owner", password), auth_message="WAI Studio cá nhân · đăng nhập để dùng GPU Colab.",
-        server_name="127.0.0.1", max_file_size="12mb", footer_links=[],
-        theme=studio_app.studio_theme, css=studio_app.studio_css,
-        allowed_paths=allowed_outputs, blocked_paths=blocked_weights,
-        enable_monitoring=False, show_error=True,
-    )
-finally:
-    del password
+_, _, share_url = studio_app.launch(
+    share=True, inline=False, prevent_thread_lock=True,
+    server_name="127.0.0.1", max_file_size="12mb", footer_links=[],
+    theme=studio_app.studio_theme, css=studio_app.studio_css,
+    allowed_paths=allowed_outputs, blocked_paths=blocked_weights,
+    enable_monitoring=False, show_error=True,
+)
 if not share_url:
     studio_app.close()
     raise RuntimeError("Gradio chưa tạo được link. Kiểm tra mạng Colab rồi chạy lại ô 8.")
 print("Mở link:", share_url)
-print("Tên đăng nhập: owner | Mật khẩu: mật khẩu bạn vừa tự nhập (không hiện trong notebook).")
-print("Link sẽ ngừng hoạt động khi Colab dừng/ngắt. KHÔNG chia sẻ link hoặc mật khẩu.")
+print("Không cần tài khoản/mật khẩu. Ai có link đều có thể dùng GPU Colab của bạn.")
+print("Link ngừng hoạt động khi Colab dừng/ngắt. KHÔNG chia sẻ link; dừng runtime để thu hồi.")
 """
 
     cells = [
@@ -189,7 +180,7 @@ print("Link sẽ ngừng hoạt động khi Colab dừng/ngắt. KHÔNG chia s�
         code(ui, "studio-ui"),
         code(launch, "studio-launch"),
         markdown(
-            "**Khi gặp lỗi:** nếu ô 2 chỉ hiện dòng `ERROR: pip's dependency resolver...`, hãy xem ô đó có in `✅ Thư viện Studio đã sẵn sàng` không; riêng dòng này có thể là cảnh báo không chặn cài đặt. Nếu không có dấu ✅ hoặc có traceback, mở lại notebook mới nhất, chọn *Runtime → Restart runtime → Run all* và gửi đầy đủ traceback nếu vẫn lỗi (che mật khẩu). Nếu không có GPU, chọn GPU trong Runtime; nếu OOM, chỉnh `VRAM_MODE=low_vram` hoặc tắt LoRA ở ô 3 rồi khởi động lại runtime. Nếu không tạo được URL, kiểm tra kết nối Colab/Gradio và chạy lại ô 8. Không paste mật khẩu lên diễn đàn/log. Notebook cơ sở và hash tài nguyên xem [README của dự án](https://github.com/manhlee1196-boop/ai-anime/tree/arena/01a0d84b-ai-anime).",
+            "**Khi gặp lỗi:** nếu ô 2 chỉ hiện dòng `ERROR: pip's dependency resolver...`, hãy xem ô đó có in `✅ Thư viện Studio đã sẵn sàng` không; riêng dòng này có thể là cảnh báo không chặn cài đặt. Nếu không có dấu ✅ hoặc có traceback, mở lại notebook mới nhất, chọn *Runtime → Restart runtime → Run all* và gửi đầy đủ traceback nếu vẫn lỗi (che link Gradio và thông tin riêng). Nếu không có GPU, chọn GPU trong Runtime; nếu OOM, chỉnh `VRAM_MODE=low_vram` hoặc tắt LoRA ở ô 3 rồi khởi động lại runtime. Nếu không tạo được URL, kiểm tra kết nối Colab/Gradio và chạy lại ô 8. **Link không có đăng nhập; đừng chia sẻ.** Notebook cơ sở và hash tài nguyên xem [README của dự án](https://github.com/manhlee1196-boop/ai-anime/tree/arena/01a0d84b-ai-anime).",
             "studio-help",
         ),
     ]

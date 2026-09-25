@@ -13,7 +13,6 @@ import threading
 from datetime import datetime, timezone
 from pathlib import Path
 
-
 SIZE_PRESETS = (
     "512x512",
     "768x768",
@@ -211,7 +210,11 @@ class StudioRuntime:
             # Weight zero disables a previously loaded adapter without deleting
             # the verified file or reloading the 6.94 GB checkpoint.
             weights = [choices[name][1] if choices[name][0] else 0.0 for name in names]
-            self.pipe.set_adapters(names, adapter_weights=weights)
+            # With CPU offload, the first inference may leave LoRA parameters as
+            # inference tensors. PEFT's set_adapters toggles requires_grad; doing
+            # that outside InferenceMode fails on the next image in PyTorch.
+            with self.torch.inference_mode():
+                self.pipe.set_adapters(names, adapter_weights=weights)
 
     def _infer_once(
         self,
@@ -638,10 +641,10 @@ def build_app(runtime):
         delete_cache=(3600, 3600),
     ) as demo:
         gr.HTML(
-            "<div class='studio-hero'><span class='studio-badge'>✦ WAI · COLAB GPU · PRIVATE STUDIO</span><h1>Biến ý tưởng thành thế giới anime.</h1><p>WAI-illustrious v17 · LoRA tay/chân/mắt đã xác minh · Ảnh lưu ở Drive hoặc /content.</p></div>"
+            "<div class='studio-hero'><span class='studio-badge'>✦ WAI · COLAB GPU · ANIME STUDIO</span><h1>Biến ý tưởng thành thế giới anime.</h1><p>WAI-illustrious v17 · LoRA tay/chân/mắt đã xác minh · Ảnh lưu ở Drive hoặc /content.</p></div>"
         )
         gr.Markdown(
-            "**Chỉ dành cho bạn:** liên kết tạm thời vẫn đi qua máy chủ trung gian Gradio; hãy giữ bí mật URL và mật khẩu. Đóng Colab là dừng tạo ảnh. Model không chạy trên Cloudflare.",
+            "**Không có đăng nhập:** bất kỳ ai biết URL tạm thời đều có thể dùng GPU Colab của bạn. Đừng chia sẻ link; dừng runtime để thu hồi. Model không chạy trên Cloudflare.",
             elem_classes="studio-notice",
         )
         with gr.Row():

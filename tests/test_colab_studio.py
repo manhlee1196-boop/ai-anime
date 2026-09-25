@@ -1,4 +1,4 @@
-"""CPU tests for the personal, password-protected Colab WAI studio.
+"""CPU tests for the personal Colab WAI studio (public, unlisted URL).
 
 Run with Pillow/Gradio installed for image and component tests; standard-library
 setup tests run even without them. No checkpoint/GPU/network required.
@@ -253,10 +253,11 @@ class NotebookTests(unittest.TestCase):
             self.assertTrue(ns["WAI_STUDIO_VERSION_VERIFIED"])
             self.assertEqual(ns["checkpoint"], downloaded)
 
-    def test_launch_requires_password_and_never_exposes_model_dir(self):
+    def test_launch_without_login_still_blocks_checkpoint_and_lora_files(self):
         launch = "".join(
             json.loads(NOTEBOOK.read_text(encoding="utf-8"))["cells"][8]["source"]
         )
+        self.assertNotIn("getpass", launch)
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             ck = root / "weights.safetensors"
@@ -274,37 +275,35 @@ class NotebookTests(unittest.TestCase):
                 studio_theme = "test-theme"
                 studio_css = "test-css"
 
+                def __init__(self):
+                    self.closed = False
+
                 def launch(self, **kwargs):
                     calls.append(kwargs)
                     return (None, None, "https://temporary.gradio.live")
 
                 def close(self):
-                    pass
+                    self.closed = True
 
             ns = {"studio_runtime": runtime, "build_app": lambda _: FakeApp()}
-            with (
-                patch("getpass.getpass", return_value="short"),
-                self.assertRaisesRegex(ValueError, "ít nhất 16"),
-            ):
-                exec(launch, ns)
-            self.assertEqual(calls, [])
-            ns = {"studio_runtime": runtime, "build_app": lambda _: FakeApp()}
             text = io.StringIO()
-            with (
-                patch("getpass.getpass", return_value="my-private-long-password"),
-                contextlib.redirect_stdout(text),
-            ):
+            with contextlib.redirect_stdout(text):
                 exec(launch, ns)
             self.assertEqual(len(calls), 1)
-            self.assertEqual(calls[0]["auth"], ("owner", "my-private-long-password"))
+            self.assertNotIn("auth", calls[0])
+            self.assertNotIn("auth_message", calls[0])
             self.assertEqual(calls[0]["share"], True)
             self.assertEqual(calls[0]["theme"], "test-theme")
             self.assertEqual(calls[0]["css"], "test-css")
             self.assertEqual(calls[0]["footer_links"], [])
             self.assertIn(str(ck.resolve()), calls[0]["blocked_paths"])
             self.assertNotIn(str(ck.parent), calls[0]["allowed_paths"])
-            self.assertNotIn("my-private-long-password", text.getvalue())
-            self.assertNotIn("password", ns)
+            self.assertIn("Ai có link đều có thể dùng GPU", text.getvalue())
+            old_app = ns["studio_app"]
+            with contextlib.redirect_stdout(io.StringIO()):
+                exec(launch, ns)
+            self.assertTrue(old_app.closed)
+            self.assertEqual(len(calls), 2)
 
 
 class RuntimeValidationTests(unittest.TestCase):
@@ -473,6 +472,66 @@ class RuntimeValidationTests(unittest.TestCase):
                 studio._editor_mask(editor, Image.new("L", (1, 1), 255))
             with self.assertRaisesRegex(ValueError, "vùng nhỏ"):
                 studio._editor_mask(editor, Image.new("L", (512, 512), 255))
+
+    @unittest.skipIf(
+        Image is None or not importlib.util.find_spec("torch"),
+        "PyTorch and Pillow needed to reproduce the second-image inference tensor error",
+    )
+    def test_second_image_can_reactivate_loras_with_cpu_offload(self):
+        import torch
+
+        class InferenceAdapterPipe(FakePipe):
+            def __init__(self):
+                super().__init__()
+                self.adapter_tensor = None
+
+            def set_adapters(self, names, adapter_weights):
+                # PEFT toggles requires_grad when selecting adapters. An
+                # offloaded parameter may be an inference tensor after image 1.
+                if self.adapter_tensor is not None:
+                    self.adapter_tensor.requires_grad_(True)
+                super().set_adapters(names, adapter_weights)
+
+            def __call__(self, **kwargs):
+                if not torch.is_inference_mode_enabled():
+                    raise AssertionError("Inference must run inside InferenceMode")
+                self.adapter_tensor = torch.ones(1)
+                return super().__call__(**kwargs)
+
+        pipe = InferenceAdapterPipe()
+        self.runtime.pipe = pipe
+        self.runtime.torch = torch
+        self.runtime.use_offload = True
+        for index, (anatomy_weight, eyes_enabled) in enumerate(
+            ((0.55, True), (0.4, True), (0.4, False))
+        ):
+            _, paths, _, _ = self.runtime.text_to_image(
+                "512x512",
+                "anime",
+                "",
+                20,
+                6,
+                42 + index,
+                1,
+                True,
+                anatomy_weight,
+                eyes_enabled,
+                0.45,
+                False,
+            )
+            self.assertTrue(Path(paths[0]).is_file())
+            self.assertTrue(pipe.adapter_tensor.is_inference())
+            if index == 0:
+                with self.assertRaisesRegex(RuntimeError, "outside InferenceMode"):
+                    pipe.adapter_tensor.requires_grad_(True)
+        self.assertEqual(
+            pipe.weights,
+            [
+                (["anatomy", "eyes"], [0.55, 0.45]),
+                (["anatomy", "eyes"], [0.4, 0.45]),
+                (["anatomy", "eyes"], [0.4, 0.0]),
+            ],
+        )
 
     @unittest.skipIf(Image is None, "Pillow needed for raster smoke tests")
     def test_gpu_oom_retries_with_offload_and_same_seed(self):
@@ -662,9 +721,9 @@ class RuntimeValidationTests(unittest.TestCase):
 
     @unittest.skipIf(
         Image is None or not importlib.util.find_spec("gradio"),
-        "Gradio needed for local auth smoke test",
+        "Gradio needed for public URL smoke test",
     )
-    def test_gradio_private_login_rejects_unauthenticated_api_and_weights(self):
+    def test_gradio_public_link_serves_results_but_blocks_weights(self):
         import httpx
         import socket
 
@@ -681,7 +740,6 @@ class RuntimeValidationTests(unittest.TestCase):
                 inline=False,
                 quiet=True,
                 prevent_thread_lock=True,
-                auth=("owner", "a-strong-test-password"),
                 server_name="127.0.0.1",
                 server_port=port,
                 footer_links=[],
@@ -696,29 +754,13 @@ class RuntimeValidationTests(unittest.TestCase):
             )
             with httpx.Client(timeout=15) as client:
                 base = url.rstrip("/")
-                for path in (
-                    "/config",
-                    "/gradio_api/info",
-                    "/gradio_api/file=" + str(self.ck),
-                    "/gradio_api/file=" + str(saved),
-                ):
-                    self.assertEqual(client.get(base + path).status_code, 401)
-                self.assertEqual(
-                    client.post(
-                        base + "/login",
-                        data={
-                            "username": "owner",
-                            "password": "a-strong-test-password",
-                        },
-                    ).status_code,
-                    200,
-                )
                 self.assertEqual(client.get(base + "/config").status_code, 200)
-                self.assertEqual(client.get(base + "/gradio_api/info").status_code, 200)
-                self.assertEqual(
-                    client.get(base + "/gradio_api/file=" + str(saved)).status_code,
-                    200,
-                )
+                info = client.get(base + "/gradio_api/info")
+                self.assertEqual(info.status_code, 200)
+                self.assertEqual(info.json()["named_endpoints"], {})
+                png = client.get(base + "/gradio_api/file=" + str(saved))
+                self.assertEqual(png.status_code, 200)
+                self.assertTrue(png.content.startswith(b"\x89PNG\r\n\x1a\n"))
                 self.assertEqual(
                     client.get(base + "/gradio_api/file=" + str(self.ck)).status_code,
                     403,
