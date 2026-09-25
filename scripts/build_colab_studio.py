@@ -41,6 +41,7 @@ def build():
         install.rstrip()
         + ' "gradio==6.15.2" "pydantic>=2.12.5,<3" "starlette>=1.3.1,<2"\n'
         + """
+from importlib.metadata import PackageNotFoundError, version
 from packaging.specifiers import SpecifierSet
 import gradio, gradio_client, pydantic, starlette, huggingface_hub
 
@@ -51,16 +52,32 @@ versions = {
     "starlette": starlette.__version__,
     "huggingface-hub": huggingface_hub.__version__,
 }
+for package in ("diffusers", "transformers", "accelerate", "peft", "safetensors", "hf-xet"):
+    try:
+        versions[package] = version(package)
+    except PackageNotFoundError as exc:
+        raise RuntimeError(f"Thiếu {package}. Cài đặt ô 2 chưa hoàn tất; xem lỗi pip ở phía trên.") from exc
 required = {
     "gradio": "==6.15.2",
     "gradio-client": "==2.5.0",
     "pydantic": ">=2.12.5,<3",
     "starlette": ">=1.3.1,<2",
     "huggingface-hub": "==0.36.2",
+    "diffusers": "==0.35.2",
+    "transformers": "==4.52.4",
+    "accelerate": "==1.10.1",
+    "peft": "==0.17.1",
+    "safetensors": ">=0.4.5,<1",
+    "hf-xet": ">=1.1.3,<2",
 }
 for package, constraint in required.items():
     if versions[package] not in SpecifierSet(constraint):
         raise RuntimeError(f"{package} đang là {versions[package]}, cần {constraint}. Chọn Runtime → Restart runtime rồi Run all.")
+# Bắt lỗi import trước khi tải checkpoint 6,94 GB ở ô 4.
+try:
+    from diffusers import StableDiffusionXLPipeline, AutoPipelineForImage2Image, AutoPipelineForInpainting
+except Exception as exc:
+    raise RuntimeError("Diffusers không import được. Chọn Runtime → Restart runtime rồi Run all; nếu vẫn lỗi, gửi traceback ô 2 (che thông tin riêng).") from exc
 print("✅ Thư viện Studio đã sẵn sàng:", versions)
 """
     ).splitlines(keepends=True)

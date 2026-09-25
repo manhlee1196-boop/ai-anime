@@ -128,10 +128,8 @@ class NotebookTests(unittest.TestCase):
         install = "".join(
             json.loads(NOTEBOOK.read_text(encoding="utf-8"))["cells"][2]["source"]
         )
-        check = (
-            "from packaging.specifiers import SpecifierSet"
-            + install.split("from packaging.specifiers import SpecifierSet", 1)[1]
-        )
+        start = "from importlib.metadata import PackageNotFoundError, version"
+        check = install[install.index(start) :]
         versions = {
             "gradio": "6.15.2",
             "gradio_client": "2.5.0",
@@ -139,17 +137,51 @@ class NotebookTests(unittest.TestCase):
             "starlette": "1.3.1",
             "huggingface_hub": "0.36.2",
         }
-        modules = {
-            name: types.SimpleNamespace(__version__=version)
-            for name, version in versions.items()
+        installed = {
+            "diffusers": "0.35.2",
+            "transformers": "4.52.4",
+            "accelerate": "1.10.1",
+            "peft": "0.17.1",
+            "safetensors": "0.8.0",
+            "hf-xet": "1.6.0",
         }
-        with patch.dict(sys.modules, modules), contextlib.redirect_stdout(
-            io.StringIO()
-        ) as output:
+        modules = {
+            name: types.SimpleNamespace(__version__=number)
+            for name, number in versions.items()
+        }
+        modules["diffusers"] = types.SimpleNamespace(
+            StableDiffusionXLPipeline=object,
+            AutoPipelineForImage2Image=object,
+            AutoPipelineForInpainting=object,
+        )
+        from importlib.metadata import PackageNotFoundError
+
+        def fake_version(name):
+            if name not in installed:
+                raise PackageNotFoundError(name)
+            return installed[name]
+
+        with (
+            patch.dict(sys.modules, modules),
+            patch("importlib.metadata.version", side_effect=fake_version),
+            contextlib.redirect_stdout(io.StringIO()) as output,
+        ):
             exec(check, {})
             self.assertIn("✅ Thư viện Studio đã sẵn sàng:", output.getvalue())
             modules["gradio_client"].__version__ = "1.14.0"
             with self.assertRaisesRegex(RuntimeError, "gradio-client đang là 1.14.0"):
+                exec(check, {})
+            modules["gradio_client"].__version__ = "2.5.0"
+            installed.pop("diffusers")
+            with self.assertRaisesRegex(RuntimeError, "Thiếu diffusers"):
+                exec(check, {})
+            installed["diffusers"] = "0.35.2"
+            installed["transformers"] = "4.53.0"
+            with self.assertRaisesRegex(RuntimeError, "transformers đang là 4.53.0"):
+                exec(check, {})
+            installed["transformers"] = "4.52.4"
+            del modules["diffusers"].AutoPipelineForInpainting
+            with self.assertRaisesRegex(RuntimeError, "Diffusers không import được"):
                 exec(check, {})
 
     def test_studio_rejects_wrong_version_before_loading_gpu(self):
@@ -250,16 +282,18 @@ class NotebookTests(unittest.TestCase):
                     pass
 
             ns = {"studio_runtime": runtime, "build_app": lambda _: FakeApp()}
-            with patch("getpass.getpass", return_value="short"), self.assertRaisesRegex(
-                ValueError, "ít nhất 16"
+            with (
+                patch("getpass.getpass", return_value="short"),
+                self.assertRaisesRegex(ValueError, "ít nhất 16"),
             ):
                 exec(launch, ns)
             self.assertEqual(calls, [])
             ns = {"studio_runtime": runtime, "build_app": lambda _: FakeApp()}
             text = io.StringIO()
-            with patch(
-                "getpass.getpass", return_value="my-private-long-password"
-            ), contextlib.redirect_stdout(text):
+            with (
+                patch("getpass.getpass", return_value="my-private-long-password"),
+                contextlib.redirect_stdout(text),
+            ):
                 exec(launch, ns)
             self.assertEqual(len(calls), 1)
             self.assertEqual(calls[0]["auth"], ("owner", "my-private-long-password"))
@@ -552,6 +586,82 @@ class RuntimeValidationTests(unittest.TestCase):
 
     @unittest.skipIf(
         Image is None or not importlib.util.find_spec("gradio"),
+        "Gradio and Pillow needed for image event smoke test",
+    )
+    def test_gradio_events_preprocess_and_return_downloadable_pngs(self):
+        """Exercise all UI events through Gradio 6, not only the runtime methods."""
+        import asyncio
+        from gradio.state_holder import SessionState
+
+        def file_data(path):
+            return {"path": str(path), "meta": {"_type": "gradio.FileData"}}
+
+        source = self.root / "upload.png"
+        Image.new("RGB", (512, 512), "navy").save(source)
+        layer = self.root / "paint.png"
+        painted = Image.new("RGBA", (512, 512), (0, 0, 0, 0))
+        ImageDraw.Draw(painted).rectangle((50, 50, 120, 120), fill="white")
+        painted.save(layer)
+        mask = self.root / "mask.png"
+        black_white = Image.new("L", (512, 512), 0)
+        ImageDraw.Draw(black_white).rectangle((60, 60, 100, 100), fill=255)
+        black_white.save(mask)
+
+        demo = studio.build_app(self.runtime)
+        state = SessionState(demo)
+        common = [
+            "anime portrait",
+            "bad anatomy",
+            20,
+            6,
+            42,
+            1,
+            False,
+            0.55,
+            False,
+            0.45,
+            False,
+        ]
+        editor = {
+            "background": file_data(source),
+            "layers": [file_data(layer)],
+            "composite": file_data(source),
+        }
+
+        async def process(index, inputs):
+            return (
+                await demo.process_api(index, inputs, state=state, explicit_call=True)
+            )["data"]
+
+        async def smoke():
+            for index, inputs in (
+                (0, ["512x512", *common]),
+                (1, [file_data(source), "512x512", 0.45, *common]),
+                (2, [editor, None, "hands", 0.45, 8, *common]),
+                (2, [editor, file_data(mask), "eyes", 0.45, 8, *common]),
+            ):
+                data = await process(index, inputs)
+                self.assertIn("✅ Đã tạo 1 ảnh", data[2])
+                self.assertEqual(len(data[0]), 1)  # Gradio Gallery
+                self.assertTrue(Path(data[0][0]["image"]["path"]).is_file())
+                png = Path(data[1][0]["path"])  # Gradio File download
+                self.assertTrue(png.is_file())
+                with Image.open(png) as result:
+                    self.assertEqual(result.format, "PNG")
+            self.assertEqual(len(FakePipe.calls), 4)
+            self.assertTrue(Path((await process(3, [None]))[0]["path"]).is_file())
+            self.assertTrue(
+                Path((await process(4, [None]))[0]["background"]["path"]).is_file()
+            )
+
+        mock_diffusers = types.ModuleType("diffusers")
+        mock_diffusers.AutoPipelineForImage2Image = FakeDerived
+        mock_diffusers.AutoPipelineForInpainting = FakeDerived
+        with patch.dict(sys.modules, {"diffusers": mock_diffusers}):
+            asyncio.run(smoke())
+
+    @unittest.skipIf(
+        Image is None or not importlib.util.find_spec("gradio"),
         "Gradio needed for local auth smoke test",
     )
     def test_gradio_private_login_rejects_unauthenticated_api_and_weights(self):
@@ -561,6 +671,9 @@ class RuntimeValidationTests(unittest.TestCase):
         with socket.socket() as probe:
             probe.bind(("127.0.0.1", 0))
             port = probe.getsockname()[1]
+        saved = self.runtime.output_dir / "available.png"
+        saved.parent.mkdir(parents=True, exist_ok=True)
+        Image.new("RGB", (8, 8), "navy").save(saved)
         demo = studio.build_app(self.runtime)
         try:
             _, url, _ = demo.launch(
@@ -587,6 +700,7 @@ class RuntimeValidationTests(unittest.TestCase):
                     "/config",
                     "/gradio_api/info",
                     "/gradio_api/file=" + str(self.ck),
+                    "/gradio_api/file=" + str(saved),
                 ):
                     self.assertEqual(client.get(base + path).status_code, 401)
                 self.assertEqual(
@@ -601,6 +715,10 @@ class RuntimeValidationTests(unittest.TestCase):
                 )
                 self.assertEqual(client.get(base + "/config").status_code, 200)
                 self.assertEqual(client.get(base + "/gradio_api/info").status_code, 200)
+                self.assertEqual(
+                    client.get(base + "/gradio_api/file=" + str(saved)).status_code,
+                    200,
+                )
                 self.assertEqual(
                     client.get(base + "/gradio_api/file=" + str(self.ck)).status_code,
                     403,
