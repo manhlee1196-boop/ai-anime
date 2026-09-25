@@ -1,4 +1,18 @@
-# WAI-illustrious trên Google Colab
+# WAI Studio cá nhân — giao diện tạo ảnh qua Google Colab
+
+[![Mở WAI Studio trong Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/manhlee1196-boop/ai-anime/blob/arena/01a0d84b-ai-anime/WAI_Illustrious_Studio_Colab.ipynb)
+
+**[WAI_Illustrious_Studio_Colab.ipynb](WAI_Illustrious_Studio_Colab.ipynb)** dành cho một người dùng: GPU Google Colab chạy **đúng checkpoint WAI-illustrious v17 và LoRA đã xác minh**, sau đó Gradio tạo **liên kết giao diện tạm thời có mật khẩu**. Không cần Cloudflare, Node.js, server GPU khác hay nhập token Cloudflare. Đây là lựa chọn nên dùng nếu bạn chỉ muốn tự tạo ảnh.
+
+1. Bấm nút Colab phía trên → **Runtime → Change runtime type → T4 GPU** (hoặc GPU mạnh hơn) → **Runtime → Run all**. Nếu cần lưu model/ảnh cho lần sau, cho phép gắn Google Drive. Lần đầu tải ~6,94 GB checkpoint và tối đa ~457 MB LoRA; các ô kiểm tra SHA-256 trước khi nạp. Mặc định hai LoRA bật; tắt/bật tài nguyên và chọn `VRAM_MODE` ở **ô 3** trước khi chạy nếu muốn tối ưu.
+2. Ở ô cuối, nhập **mật khẩu riêng ít nhất 16 ký tự** vào lời nhắc kín. Khi Colab in URL `https://….gradio.live`, mở URL đó, đăng nhập **owner** bằng mật khẩu bạn vừa nhập. Giao diện có text-to-image, img2img, tô hoặc tải mask PNG để inpaint, prompt/negative, kích thước, steps, CFG, seed, strength, số ảnh, cường độ LoRA đã nạp và nút tải PNG.
+3. Ảnh mặc định lưu ở `MyDrive/AI/outputs`; nếu Drive không lưu được thì lưu dự phòng ở `/content/wai_outputs`, hãy tải về trước khi Colab hết phiên. **Link không hoạt động nếu Colab ngắt** và không phải hosting lâu dài. `share=True` tạo URL có thể truy cập từ Internet qua proxy Gradio; **chỉ mật khẩu ngăn người khác dùng GPU của bạn**. Không chia sẻ URL/mật khẩu; dừng runtime để ngắt link. Mật khẩu không được lưu vào notebook hay Git.
+
+Nếu không muốn gắn Drive, đặt `MOUNT_DRIVE=False` và đổi `MODEL_PATH`, `OUTPUT_DIR` ở ô 3 thành đường dẫn dưới `/content/`; hãy tải ảnh về trước khi phiên Colab kết thúc. Khi đổi danh sách LoRA/chế độ bộ nhớ sau khi đã nạp model, **Restart runtime → Run all**; không chạy lại riêng ô nạp để tránh giữ hai bản checkpoint trong RAM. Các phiên bản/hash tài nguyên và giới hạn GPU được giải thích ở phần notebook nâng cao dưới đây. Việc chạy inference GPU thực tế vẫn cần bạn tự thực hiện trong tài khoản Colab; môi trường kiểm thử repo không có GPU hoặc link Gradio đang hoạt động.
+
+---
+
+# WAI-illustrious trên Google Colab (notebook nâng cao, không cần link)
 
 [![Mở trong Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/manhlee1196-boop/ai-anime/blob/arena/01a0d84b-ai-anime/WAI_Illustrious_Colab.ipynb)
 
@@ -40,9 +54,9 @@ Kiểm tra cấu trúc notebook và hành vi tải/hash/nạp LoRA bằng mock C
 
 ---
 
-# Mirai Studio — giao diện tạo ảnh trên Cloudflare
+# Mirai Studio — Cloudflare SDXL (tùy chọn, không cần cho Colab WAI)
 
-Mã ứng dụng ở **[`web/`](web/)** gồm giao diện React/Vite, Worker API và Cloudflare Workers AI binding. Đây là ứng dụng khác với notebook Colab ở trên: **Cloudflare Workers AI chạy SDXL Base 1.0 / SDXL Lightning do Cloudflare lưu trữ, KHÔNG chạy checkpoint WAI-illustrious v17**. Muốn dùng đúng WAI cần GPU bên ngoài; xem mục bên dưới. Ảnh mẫu trong giao diện là ảnh minh họa đóng gói sẵn, **không phải ảnh ứng dụng vừa tạo**.
+**Nếu bạn chỉ dùng WAI với liên kết cá nhân Colab, dừng ở hướng dẫn đầu trang; không cần triển khai phần này.** Mã ứng dụng ở **[`web/`](web/)** gồm giao diện React/Vite, Worker API và Cloudflare Workers AI binding. Đây là ứng dụng khác với notebook Colab ở trên: **Cloudflare Workers AI chạy SDXL Base 1.0 / SDXL Lightning do Cloudflare lưu trữ, KHÔNG chạy checkpoint WAI-illustrious v17**. Muốn dùng đúng WAI cần GPU bên ngoài; xem mục bên dưới. Ảnh mẫu trong giao diện là ảnh minh họa đóng gói sẵn, **không phải ảnh ứng dụng vừa tạo**.
 
 ## Tính năng
 

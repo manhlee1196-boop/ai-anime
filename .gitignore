@@ -13,6 +13,7 @@ outputs/
 # Frontend / Cloudflare build and local state
 node_modules/
 dist/
+.venv/
 .wrangler/
 .wrangler-test/
 .dev.vars*
