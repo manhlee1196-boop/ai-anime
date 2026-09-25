@@ -367,18 +367,22 @@ class RuntimeValidationTests(unittest.TestCase):
             negative=negative,
             style="Anime chuẩn",
         )
+        self.assertTrue(anime_positive.startswith("anime illustration, clean lineart"))
         self.assertEqual(anime_positive.count("anime illustration"), 1)
-        self.assertIn("clean lineart", anime_positive)
         self.assertIn("photorealistic", anime_negative)
-        self.assertIn("nsfw", anime_negative)
-        self.assertIn("explicit", anime_negative)
+        self.assertTrue(anime_negative.startswith("nsfw, explicit"))
         semi_positive, semi_negative, *_ = self.params(
             prompt="portrait", negative="", style="Bán thực 2.5D"
         )
-        self.assertIn("semi-realistic anime art", semi_positive)
-        self.assertIn("2.5d illustration", semi_positive)
+        self.assertTrue(
+            semi_positive.startswith("semi-realistic anime art, 2.5d illustration")
+        )
+        self.assertIn("realistic facial proportions", semi_positive)
+        self.assertIn("volumetric lighting", semi_positive)
+        self.assertNotIn("cel shading", semi_positive)
         self.assertIn("flat cel shading", semi_negative)
-        self.assertIn("nsfw", semi_negative)
+        self.assertIn("thick black outlines", semi_negative)
+        self.assertTrue(semi_negative.startswith("nsfw, explicit"))
         self.assertNotIn("photorealistic", semi_negative)
         custom_positive, custom_negative, *_ = self.params(
             prompt="portrait",
@@ -387,7 +391,27 @@ class RuntimeValidationTests(unittest.TestCase):
             style="Tùy chỉnh",
         )
         self.assertEqual(custom_positive, "portrait")
-        self.assertEqual(custom_negative, "my own negative, nsfw, explicit")
+        self.assertEqual(custom_negative, "nsfw, explicit, my own negative")
+        # Long prompts used to hide the style terms at the truncated tail.
+        long_prompt = "portrait, " + "soft sunlight, " * 90 + "semi-realistic anime art"
+        long_positive, long_negative, *_ = self.params(
+            prompt=long_prompt,
+            negative=studio.DEFAULT_NEGATIVE,
+            style="Bán thực 2.5D",
+        )
+        self.assertTrue(
+            long_positive.startswith("semi-realistic anime art, 2.5d illustration")
+        )
+        self.assertEqual(long_positive.count("semi-realistic anime art"), 1)
+        self.assertIn("soft sunlight", long_positive)
+        self.assertTrue(long_negative.startswith("nsfw, explicit, flat cel shading"))
+        # The read-only preview is built with the very same function as inference.
+        self.assertEqual(
+            (long_positive, long_negative),
+            studio.compose_style_prompts(
+                long_prompt, studio.DEFAULT_NEGATIVE, "Bán thực 2.5D", True
+            ),
+        )
         with self.assertRaisesRegex(ValueError, "Chọn phong cách"):
             self.params(style="unknown")
 
@@ -749,11 +773,26 @@ class RuntimeValidationTests(unittest.TestCase):
                 for c in config["components"]
             )
         )
+        previews = [
+            c
+            for c in config["components"]
+            if c["type"] == "textbox"
+            and "sẽ gửi tới model" in c["props"].get("label", "")
+        ]
+        self.assertEqual(len(previews), 2)
+        self.assertTrue(all(not c["props"]["interactive"] for c in previews))
+        self.assertTrue(
+            any("anime illustration" in c["props"]["value"] for c in previews)
+        )
+        preview_event = config["dependencies"][-1]
+        self.assertIn((style[0]["id"], "change"), preview_event["targets"])
+        self.assertEqual(set(preview_event["outputs"]), {c["id"] for c in previews})
+        self.assertFalse(preview_event["queue"])
         self.assertEqual(
             len(
                 [x for x in config["dependencies"] if x["api_visibility"] == "private"]
             ),
-            5,
+            6,
         )
         self.assertTrue(demo.studio_css)
         self.assertIsNotNone(demo.studio_theme)
@@ -808,6 +847,24 @@ class RuntimeValidationTests(unittest.TestCase):
             )["data"]
 
         async def smoke():
+            previews = {}
+            for choice in ("Anime chuẩn", "Bán thực 2.5D", studio.ADULT_STYLE):
+                previews[choice] = await process(
+                    5, [common[0], common[1], choice, False]
+                )
+            self.assertNotEqual(previews["Anime chuẩn"], previews["Bán thực 2.5D"])
+            self.assertTrue(
+                previews["Bán thực 2.5D"][0].startswith("semi-realistic anime art")
+            )
+            self.assertIn("flat cel shading", previews["Bán thực 2.5D"][1])
+            self.assertNotIn("nsfw", previews["Anime chuẩn"][0])
+            self.assertIn("nsfw", previews[studio.ADULT_STYLE][0])
+            self.assertNotIn("nsfw", previews[studio.ADULT_STYLE][1])
+            eyes_preview = await process(
+                5, [common[0], common[1], "Bán thực 2.5D", True]
+            )
+            self.assertIn("perfect eyes", eyes_preview[0])
+            self.assertNotIn("perfect eyes", previews["Bán thực 2.5D"][0])
             for index, inputs, expected_tag, style in (
                 (
                     0,
@@ -860,7 +917,10 @@ class RuntimeValidationTests(unittest.TestCase):
                 self.assertIn("✅ Đã tạo 1 ảnh", data[2])
                 self.assertIn(style, data[2])
                 self.assertIn(expected_tag, FakePipe.calls[-1][1]["prompt"])
+                positive = FakePipe.calls[-1][1]["prompt"]
                 negative = FakePipe.calls[-1][1]["negative_prompt"]
+                if index == 0:
+                    self.assertEqual((positive, negative), tuple(previews[style]))
                 self.assertEqual(negative.count("extra fingers"), 1)
                 self.assertEqual(negative.count("extra toes"), 1)
                 if style == studio.ADULT_STYLE:

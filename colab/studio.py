@@ -59,14 +59,18 @@ STYLE_PRESETS = {
         "positive": (
             "semi-realistic anime art",
             "2.5d illustration",
+            "realistic facial proportions",
             "soft painterly shading",
             "natural skin texture",
-            "cinematic lighting",
+            "volumetric lighting",
+            "dimensional depth",
         ),
         "negative": (
             "nsfw",
             "explicit",
             "flat cel shading",
+            "thick black outlines",
+            "flat colors",
             "chibi",
             "plastic skin",
             "uncanny face",
@@ -122,6 +126,31 @@ def _add_prompt_tags(text, tags):
             text = f"{text}, {tag}" if text else tag
             seen.add(tag.casefold())
     return text
+
+
+def _prepend_style_tags(text, tags):
+    """Prioritize style tokens before long prompts that SDXL may truncate."""
+    tags = tuple(dict.fromkeys(tag.strip() for tag in tags if tag.strip()))
+    if not tags:
+        return text.strip()
+    keys = {tag.casefold() for tag in tags}
+    rest = [
+        part.strip()
+        for part in text.split(",")
+        if part.strip() and part.strip().casefold() not in keys
+    ]
+    return ", ".join((*tags, *rest))
+
+
+def compose_style_prompts(prompt, negative, style, eyes_enabled):
+    """One source of truth for the live preview and actual inference inputs."""
+    if style not in STYLE_PRESETS:
+        raise ValueError("Chọn phong cách có sẵn trong danh sách.")
+    positive = _prepend_style_tags(prompt, STYLE_PRESETS[style]["positive"])
+    if eyes_enabled:
+        positive = _add_prompt_tags(positive, ("perfect eyes",))
+    negative = _prepend_style_tags(negative, STYLE_PRESETS[style]["negative"])
+    return positive, negative
 
 
 def _number(value, name, low, high, integer=False):
@@ -300,10 +329,9 @@ class StudioRuntime:
                 raise ValueError(
                     f"LoRA {name} chưa được nạp. Bật nó ở ô cấu hình và chạy lại các ô tải/nạp model."
                 )
-        positive = _add_prompt_tags(prompt.strip(), STYLE_PRESETS[style]["positive"])
-        if loras["eyes"][0]:
-            positive = _add_prompt_tags(positive, ("perfect eyes",))
-        negative = _add_prompt_tags(negative.strip(), STYLE_PRESETS[style]["negative"])
+        positive, negative = compose_style_prompts(
+            prompt.strip(), negative.strip(), style, loras["eyes"][0]
+        )
         return positive, negative, steps, cfg, seed, count, loras
 
     def _apply_loras(self, choices):
@@ -796,6 +824,34 @@ def build_app(runtime):
                 gr.Markdown(
                     "Preset thêm thẻ phong cách khi tạo, prompt/negative vẫn sửa được. Negative mặc định nhắm lỗi thừa/thiếu/dính ngón; các phong cách thường tự thêm `nsfw, explicit` vào negative, còn **Anime NSFW 18+** không thêm hai thẻ đó. Checkbox chỉ là xác nhận, không phải xác minh tuổi. Không bảo đảm sửa mọi lỗi ngón: hãy dùng tab **Sửa vùng ảnh** nếu cần."
                 )
+                initial_positive, initial_negative = compose_style_prompts(
+                    DEFAULT_PROMPT,
+                    DEFAULT_NEGATIVE,
+                    "Anime chuẩn",
+                    "eyes" in runtime.lora_paths,
+                )
+                with gr.Accordion(
+                    "👁️ Xem prompt sau khi áp dụng phong cách", open=True
+                ):
+                    gr.Markdown(
+                        "Đổi phong cách/prompt/LoRA mắt sẽ cập nhật bản xem trước, "
+                        "**không ghi đè** nội dung bạn nhập. Tab Sửa vùng còn thêm "
+                        "từ khóa cho vùng được chọn. Model WAI vẫn thiên về anime."
+                    )
+                    effective_prompt = gr.Textbox(
+                        label="Prompt sẽ gửi tới model (trừ gợi ý sửa vùng)",
+                        value=initial_positive,
+                        lines=2,
+                        max_lines=4,
+                        interactive=False,
+                    )
+                    effective_negative = gr.Textbox(
+                        label="Negative sẽ gửi tới model (trừ gợi ý sửa vùng)",
+                        value=initial_negative,
+                        lines=2,
+                        max_lines=4,
+                        interactive=False,
+                    )
                 with gr.Accordion("⚙️ Thông số ảnh và LoRA", open=True):
                     with gr.Row():
                         steps = gr.Slider(
@@ -1000,6 +1056,17 @@ def build_app(runtime):
         )
         to_inpaint.click(
             fn=edit_last, inputs=latest, outputs=editor, api_visibility="private"
+        )
+        # Keep the preview in sync without modifying editable input fields or
+        # reloading model weights. The same composer is used for inference.
+        gr.on(
+            triggers=[style.change, prompt.change, negative.change, eyes.change],
+            fn=compose_style_prompts,
+            inputs=[prompt, negative, style, eyes],
+            outputs=[effective_prompt, effective_negative],
+            api_visibility="private",
+            queue=False,
+            show_progress="hidden",
         )
         demo.queue(max_size=4, default_concurrency_limit=1, api_open=False)
     # Gradio 6 applies CSS and themes at launch, not in the Blocks constructor.
