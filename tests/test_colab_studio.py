@@ -348,6 +348,46 @@ class RuntimeValidationTests(unittest.TestCase):
         values.update(change)
         return self.runtime._parameters(**values)
 
+    def test_style_presets_and_digit_negative_are_editable(self):
+        negative = studio.DEFAULT_NEGATIVE
+        for anomaly in (
+            "extra fingers",
+            "missing fingers",
+            "fused fingers",
+            "extra toes",
+            "missing toes",
+            "fused toes",
+        ):
+            self.assertIn(anomaly, negative)
+        self.assertNotIn(", hands,", negative)
+        self.assertNotIn(", feet,", negative)
+        anime_positive, anime_negative, *_ = self.params(
+            prompt="anime illustration, portrait",
+            negative=negative,
+            style="Anime chuẩn",
+        )
+        self.assertEqual(anime_positive.count("anime illustration"), 1)
+        self.assertIn("clean lineart", anime_positive)
+        self.assertIn("photorealistic", anime_negative)
+        semi_positive, semi_negative, *_ = self.params(
+            prompt="portrait", negative="", style="Bán thực 2.5D"
+        )
+        self.assertIn("semi-realistic anime art", semi_positive)
+        self.assertIn("2.5d illustration", semi_positive)
+        self.assertIn("flat cel shading", semi_negative)
+        self.assertNotIn("photorealistic", semi_negative)
+        custom_positive, custom_negative, *_ = self.params(
+            prompt="portrait",
+            negative="my own negative",
+            eyes_enabled=False,
+            style="Tùy chỉnh",
+        )
+        self.assertEqual(
+            (custom_positive, custom_negative), ("portrait", "my own negative")
+        )
+        with self.assertRaisesRegex(ValueError, "Chọn phong cách"):
+            self.params(style="unknown")
+
     def test_validation_and_eye_trigger(self):
         params = self.params()
         self.assertEqual(params[0], "anime portrait, perfect eyes")
@@ -398,11 +438,27 @@ class RuntimeValidationTests(unittest.TestCase):
             self.assertEqual(result.size, (512, 512))
             self.assertNotIn("parameters", result.info)  # private by default
         self.runtime.text_to_image(
-            "512x512", "anime", "", 20, 6, 2, 1, True, 0.4, False, 0.45, True
+            "512x512",
+            "anime",
+            "",
+            20,
+            6,
+            2,
+            1,
+            True,
+            0.4,
+            False,
+            0.45,
+            True,
+            "Bán thực 2.5D",
         )
         image = next((self.root / "output").glob("*_*_2.png"))
         with Image.open(image) as result:
-            self.assertIn('"seed": 2', result.info["parameters"])
+            parameters = json.loads(result.info["parameters"])
+            self.assertEqual(parameters["seed"], 2)
+            self.assertEqual(parameters["style"], "Bán thực 2.5D")
+            self.assertIn("2.5d illustration", parameters["prompt"])
+            self.assertIn("flat cel shading", parameters["negative_prompt"])
 
     @unittest.skipIf(Image is None, "Pillow needed for raster smoke tests")
     def test_img2img_and_painted_inpainting_keep_unmasked_pixels(self):
@@ -634,6 +690,15 @@ class RuntimeValidationTests(unittest.TestCase):
         self.assertEqual(
             len([c for c in config["components"] if c["type"] == "gallery"]), 1
         )
+        style = [
+            c
+            for c in config["components"]
+            if c["type"] == "dropdown"
+            and c["props"].get("label") == "Phong cách hình ảnh"
+        ]
+        self.assertEqual(len(style), 1)
+        self.assertEqual(style[0]["props"]["value"], "Anime chuẩn")
+        self.assertIn("Bán thực 2.5D", str(style[0]["props"]["choices"]))
         self.assertEqual(
             len(
                 [x for x in config["dependencies"] if x["api_visibility"] == "private"]
@@ -670,7 +735,7 @@ class RuntimeValidationTests(unittest.TestCase):
         state = SessionState(demo)
         common = [
             "anime portrait",
-            "bad anatomy",
+            studio.DEFAULT_NEGATIVE,
             20,
             6,
             42,
@@ -693,14 +758,47 @@ class RuntimeValidationTests(unittest.TestCase):
             )["data"]
 
         async def smoke():
-            for index, inputs in (
-                (0, ["512x512", *common]),
-                (1, [file_data(source), "512x512", 0.45, *common]),
-                (2, [editor, None, "hands", 0.45, 8, *common]),
-                (2, [editor, file_data(mask), "eyes", 0.45, 8, *common]),
+            for index, inputs, expected_tag, style in (
+                (
+                    0,
+                    ["512x512", *common, "Anime chuẩn"],
+                    "clean lineart",
+                    "Anime chuẩn",
+                ),
+                (
+                    1,
+                    [file_data(source), "512x512", 0.45, *common, "Bán thực 2.5D"],
+                    "semi-realistic anime art",
+                    "Bán thực 2.5D",
+                ),
+                (
+                    2,
+                    [editor, None, "hands", 0.45, 8, *common, "Anime chuẩn"],
+                    "natural hands",
+                    "Anime chuẩn",
+                ),
+                (
+                    2,
+                    [
+                        editor,
+                        file_data(mask),
+                        "legs",
+                        0.45,
+                        8,
+                        *common,
+                        "Bán thực 2.5D",
+                    ],
+                    "natural toes",
+                    "Bán thực 2.5D",
+                ),
             ):
                 data = await process(index, inputs)
                 self.assertIn("✅ Đã tạo 1 ảnh", data[2])
+                self.assertIn(style, data[2])
+                self.assertIn(expected_tag, FakePipe.calls[-1][1]["prompt"])
+                negative = FakePipe.calls[-1][1]["negative_prompt"]
+                self.assertEqual(negative.count("extra fingers"), 1)
+                self.assertEqual(negative.count("extra toes"), 1)
                 self.assertEqual(len(data[0]), 1)  # Gradio Gallery
                 self.assertTrue(Path(data[0][0]["image"]["path"]).is_file())
                 png = Path(data[1][0]["path"])  # Gradio File download

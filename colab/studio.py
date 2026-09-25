@@ -1,7 +1,7 @@
 """Personal WAI-illustrious Colab studio. Inlined into the standalone notebook.
 
 The notebook's existing setup cells verify checkpoint and LoRA hashes before this
-module is used. The model stays in Colab: Gradio only provides an authenticated UI.
+module is used. The model stays in Colab: Gradio provides a temporary public URL.
 """
 
 import gc
@@ -26,17 +26,45 @@ SIZE_PRESETS = (
 )
 DEFAULT_PROMPT = (
     "general, 1girl, solo, cherry blossoms, spring, soft sunlight, "
-    "detailed eyes, anime illustration, masterpiece, best quality"
+    "detailed eyes, detailed clothing, masterpiece, best quality"
 )
-DEFAULT_NEGATIVE = "nsfw, explicit, lowres, worst quality, bad anatomy, blurry"
+# Avoid negating hands/feet themselves: target only the unwanted anomalies.
+DEFAULT_NEGATIVE = (
+    "nsfw, explicit, lowres, worst quality, low quality, blurry, bad anatomy, "
+    "bad hands, deformed hands, extra fingers, missing fingers, fused fingers, "
+    "malformed fingers, deformed feet, extra toes, missing toes, fused toes, "
+    "malformed toes, extra limbs"
+)
+STYLE_PRESETS = {
+    "Anime chuẩn": {
+        "positive": (
+            "anime illustration",
+            "clean lineart",
+            "cel shading",
+            "vibrant colors",
+        ),
+        "negative": ("photorealistic", "3d render", "plastic skin"),
+    },
+    "Bán thực 2.5D": {
+        "positive": (
+            "semi-realistic anime art",
+            "2.5d illustration",
+            "soft painterly shading",
+            "natural skin texture",
+            "cinematic lighting",
+        ),
+        "negative": ("flat cel shading", "chibi", "plastic skin", "uncanny face"),
+    },
+    "Tùy chỉnh": {"positive": (), "negative": ()},
+}
 REPAIR_HINTS = {
     "hands": (
-        "natural hands, correct number of fingers, detailed fingers",
-        "extra fingers, missing fingers, fused fingers, deformed hands",
+        "natural hands, anatomically correct fingers, detailed fingers",
+        "extra fingers, missing fingers, fused fingers, malformed fingers, deformed hands",
     ),
     "legs": (
-        "natural leg anatomy, well-formed feet, balanced pose",
-        "extra legs, broken legs, deformed feet, extra toes",
+        "natural leg anatomy, well-formed feet, natural toes, balanced pose",
+        "extra legs, broken legs, deformed feet, extra toes, missing toes, fused toes",
     ),
     "eyes": (
         "symmetrical eyes, detailed irises, perfect eyes",
@@ -44,6 +72,17 @@ REPAIR_HINTS = {
     ),
     "custom": ("", ""),
 }
+
+
+def _add_prompt_tags(text, tags):
+    """Append preset/repair tags once, without overwriting the user's prompt."""
+    seen = {part.strip().casefold() for part in text.split(",")}
+    for tag in tags:
+        tag = tag.strip()
+        if tag and tag.casefold() not in seen:
+            text = f"{text}, {tag}" if text else tag
+            seen.add(tag.casefold())
+    return text
 
 
 def _number(value, name, low, high, integer=False):
@@ -177,11 +216,16 @@ class StudioRuntime:
         anatomy_weight,
         eyes_enabled,
         eyes_weight,
+        style="Tùy chỉnh",
     ):
         if not isinstance(prompt, str) or not prompt.strip() or len(prompt) > 2000:
             raise ValueError("Prompt phải có từ 1 đến 2000 ký tự.")
         if not isinstance(negative, str) or len(negative) > 1500:
             raise ValueError("Negative prompt tối đa 1500 ký tự.")
+        if not isinstance(style, str) or style not in STYLE_PRESETS:
+            raise ValueError(
+                "Chọn phong cách Anime chuẩn, Bán thực 2.5D hoặc Tùy chỉnh."
+            )
         steps = _number(steps, "Steps", 10, 45, integer=True)
         cfg = _number(cfg, "CFG", 1, 12)
         seed = _number(seed, "Seed", -1, 2**32 - 1, integer=True)
@@ -199,10 +243,11 @@ class StudioRuntime:
                 raise ValueError(
                     f"LoRA {name} chưa được nạp. Bật nó ở ô cấu hình và chạy lại các ô tải/nạp model."
                 )
-        positive = prompt.strip()
-        if loras["eyes"][0] and "perfect eyes" not in positive.lower():
-            positive += ", perfect eyes"
-        return positive, negative.strip(), steps, cfg, seed, count, loras
+        positive = _add_prompt_tags(prompt.strip(), STYLE_PRESETS[style]["positive"])
+        if loras["eyes"][0]:
+            positive = _add_prompt_tags(positive, ("perfect eyes",))
+        negative = _add_prompt_tags(negative.strip(), STYLE_PRESETS[style]["negative"])
+        return positive, negative, steps, cfg, seed, count, loras
 
     def _apply_loras(self, choices):
         if self.lora_paths:
@@ -393,6 +438,7 @@ class StudioRuntime:
         eyes_enabled,
         eyes_weight,
         embed,
+        style="Tùy chỉnh",
     ):
         from PIL import Image, ImageChops, ImageFilter
 
@@ -407,6 +453,7 @@ class StudioRuntime:
             anatomy_weight,
             eyes_enabled,
             eyes_weight,
+            style=style,
         )
         if mode == "text":
             width, height = _preset_size(size)
@@ -437,10 +484,8 @@ class StudioRuntime:
                 )
             width, height = source.size
             hint_pos, hint_neg = REPAIR_HINTS[target]
-            if hint_pos:
-                positive += ", " + hint_pos
-            if hint_neg:
-                negative = ", ".join(part for part in (negative, hint_neg) if part)
+            positive = _add_prompt_tags(positive, hint_pos.split(","))
+            negative = _add_prompt_tags(negative, hint_neg.split(","))
         else:
             raise ValueError("Chế độ tạo ảnh không được hỗ trợ.")
         if len(positive) > 2200 or len(negative) > 1700:
@@ -480,6 +525,7 @@ class StudioRuntime:
                 metadata = {
                     "model": self.checkpoint.name,
                     "operation": mode,
+                    "style": style,
                     "prompt": positive,
                     "negative_prompt": negative,
                     "seed": image_seed,
@@ -503,7 +549,7 @@ class StudioRuntime:
                 paths.append(str(path))
                 gallery.append((str(path), f"Seed {image_seed} · {width}×{height}"))
                 selected.append(str(image_seed))
-        status = f"✅ Đã tạo {len(paths)} ảnh · seed: {', '.join(selected)} · đã lưu: {Path(paths[0]).parent}"
+        status = f"✅ Đã tạo {len(paths)} ảnh · {style} · seed: {', '.join(selected)} · đã lưu: {Path(paths[0]).parent}"
         return gallery, paths, status, paths[-1]
 
     def text_to_image(
@@ -520,6 +566,7 @@ class StudioRuntime:
         eyes_enabled,
         eyes_weight,
         embed,
+        style="Tùy chỉnh",
     ):
         return self._generate(
             "text",
@@ -540,6 +587,7 @@ class StudioRuntime:
             eyes_enabled,
             eyes_weight,
             embed,
+            style,
         )
 
     def image_to_image(
@@ -558,6 +606,7 @@ class StudioRuntime:
         eyes_enabled,
         eyes_weight,
         embed,
+        style="Tùy chỉnh",
     ):
         return self._generate(
             "image",
@@ -578,6 +627,7 @@ class StudioRuntime:
             eyes_enabled,
             eyes_weight,
             embed,
+            style,
         )
 
     def inpaint(
@@ -598,6 +648,7 @@ class StudioRuntime:
         eyes_enabled,
         eyes_weight,
         embed,
+        style="Tùy chỉnh",
     ):
         source, mask = _editor_mask(editor, mask_file)
         return self._generate(
@@ -619,6 +670,7 @@ class StudioRuntime:
             eyes_enabled,
             eyes_weight,
             embed,
+            style,
         )
 
 
@@ -649,6 +701,14 @@ def build_app(runtime):
         )
         with gr.Row():
             with gr.Column(scale=5, min_width=360):
+                style = gr.Dropdown(
+                    choices=list(STYLE_PRESETS),
+                    value="Anime chuẩn",
+                    label="Phong cách hình ảnh",
+                )
+                gr.Markdown(
+                    "**Anime chuẩn:** nét rõ, tô màu cel-shading · **Bán thực 2.5D:** minh họa anime với đổ bóng mềm, da tự nhiên · **Tùy chỉnh:** không tự thêm thẻ phong cách. Cả ba đều dùng cùng checkpoint WAI v17."
+                )
                 prompt = gr.Textbox(
                     label="Ý tưởng / prompt",
                     value=DEFAULT_PROMPT,
@@ -657,7 +717,12 @@ def build_app(runtime):
                     placeholder="Mô tả nhân vật, khung cảnh, ánh sáng, phong cách...",
                 )
                 negative = gr.Textbox(
-                    label="Negative prompt", value=DEFAULT_NEGATIVE, lines=2
+                    label="Negative prompt · ngón tay / ngón chân",
+                    value=DEFAULT_NEGATIVE,
+                    lines=3,
+                )
+                gr.Markdown(
+                    "Preset thêm thẻ phong cách vào prompt khi tạo; prompt bạn nhập vẫn sửa được. Negative mặc định nhắm lỗi thừa/thiếu/dính ngón, **không** chặn tay hoặc chân bình thường. Không bảo đảm sửa mọi ảnh: hãy dùng tab **Sửa vùng ảnh** nếu cần."
                 )
                 with gr.Accordion("⚙️ Thông số ảnh và LoRA", open=True):
                     with gr.Row():
@@ -723,6 +788,7 @@ def build_app(runtime):
                     eyes,
                     eyes_weight,
                     embed,
+                    style,
                 ]
                 with gr.Tabs():
                     with gr.Tab("✦ Văn bản → ảnh"):
