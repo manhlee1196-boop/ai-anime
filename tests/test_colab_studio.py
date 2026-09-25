@@ -97,7 +97,14 @@ class NotebookTests(unittest.TestCase):
         prepare = "".join(n["cells"][4]["source"])
         self.assertIn("WAI_STUDIO_VERSION_VERIFIED = False", prepare)
         self.assertIn("if not WAI_STUDIO_VERSION_VERIFIED:", prepare)
-        self.assertIn('"gradio==5.50.0"', "".join(n["cells"][2]["source"]))
+        install = "".join(n["cells"][2]["source"])
+        for requirement in (
+            '"gradio==6.15.2"',
+            '"pydantic>=2.12.5,<3"',
+            '"starlette>=1.3.1,<2"',
+        ):
+            self.assertIn(requirement, install)
+        self.assertIn("✅ Thư viện Studio đã sẵn sàng:", install)
         ui_source = "".join(n["cells"][7]["source"])
         self.assertIn((ROOT / "colab/studio.py").read_text(encoding="utf-8"), ui_source)
         self.assertIn("del pipe", ui_source)
@@ -113,6 +120,37 @@ class NotebookTests(unittest.TestCase):
             pass
         else:
             nbformat.validate(nbformat.read(NOTEBOOK, as_version=4))
+
+    @unittest.skipIf(
+        not importlib.util.find_spec("packaging"), "packaging needed for cell 2 check"
+    )
+    def test_install_cell_reports_stale_colab_dependencies(self):
+        install = "".join(
+            json.loads(NOTEBOOK.read_text(encoding="utf-8"))["cells"][2]["source"]
+        )
+        check = (
+            "from packaging.specifiers import SpecifierSet"
+            + install.split("from packaging.specifiers import SpecifierSet", 1)[1]
+        )
+        versions = {
+            "gradio": "6.15.2",
+            "gradio_client": "2.5.0",
+            "pydantic": "2.12.5",
+            "starlette": "1.3.1",
+            "huggingface_hub": "0.36.2",
+        }
+        modules = {
+            name: types.SimpleNamespace(__version__=version)
+            for name, version in versions.items()
+        }
+        with patch.dict(sys.modules, modules), contextlib.redirect_stdout(
+            io.StringIO()
+        ) as output:
+            exec(check, {})
+            self.assertIn("✅ Thư viện Studio đã sẵn sàng:", output.getvalue())
+            modules["gradio_client"].__version__ = "1.14.0"
+            with self.assertRaisesRegex(RuntimeError, "gradio-client đang là 1.14.0"):
+                exec(check, {})
 
     def test_studio_rejects_wrong_version_before_loading_gpu(self):
         source = "".join(
@@ -201,6 +239,9 @@ class NotebookTests(unittest.TestCase):
             calls = []
 
             class FakeApp:
+                studio_theme = "test-theme"
+                studio_css = "test-css"
+
                 def launch(self, **kwargs):
                     calls.append(kwargs)
                     return (None, None, "https://temporary.gradio.live")
@@ -223,6 +264,9 @@ class NotebookTests(unittest.TestCase):
             self.assertEqual(len(calls), 1)
             self.assertEqual(calls[0]["auth"], ("owner", "my-private-long-password"))
             self.assertEqual(calls[0]["share"], True)
+            self.assertEqual(calls[0]["theme"], "test-theme")
+            self.assertEqual(calls[0]["css"], "test-css")
+            self.assertEqual(calls[0]["footer_links"], [])
             self.assertIn(str(ck.resolve()), calls[0]["blocked_paths"])
             self.assertNotIn(str(ck.parent), calls[0]["allowed_paths"])
             self.assertNotIn("my-private-long-password", text.getvalue())
@@ -498,9 +542,13 @@ class RuntimeValidationTests(unittest.TestCase):
             len([c for c in config["components"] if c["type"] == "gallery"]), 1
         )
         self.assertEqual(
-            len([x for x in config["dependencies"] if x["api_name"] in (False, None)]),
+            len(
+                [x for x in config["dependencies"] if x["api_visibility"] == "private"]
+            ),
             5,
         )
+        self.assertTrue(demo.studio_css)
+        self.assertIsNotNone(demo.studio_theme)
 
     @unittest.skipIf(
         Image is None or not importlib.util.find_spec("gradio"),
@@ -523,7 +571,9 @@ class RuntimeValidationTests(unittest.TestCase):
                 auth=("owner", "a-strong-test-password"),
                 server_name="127.0.0.1",
                 server_port=port,
-                show_api=False,
+                footer_links=[],
+                theme=demo.studio_theme,
+                css=demo.studio_css,
                 allowed_paths=[
                     str(self.runtime.output_dir),
                     str(self.runtime.backup_dir),
@@ -532,14 +582,29 @@ class RuntimeValidationTests(unittest.TestCase):
                 enable_monitoring=False,
             )
             with httpx.Client(timeout=15) as client:
+                base = url.rstrip("/")
                 for path in (
                     "/config",
                     "/gradio_api/info",
                     "/gradio_api/file=" + str(self.ck),
                 ):
-                    self.assertEqual(
-                        client.get(url.rstrip("/") + path).status_code, 401
-                    )
+                    self.assertEqual(client.get(base + path).status_code, 401)
+                self.assertEqual(
+                    client.post(
+                        base + "/login",
+                        data={
+                            "username": "owner",
+                            "password": "a-strong-test-password",
+                        },
+                    ).status_code,
+                    200,
+                )
+                self.assertEqual(client.get(base + "/config").status_code, 200)
+                self.assertEqual(client.get(base + "/gradio_api/info").status_code, 200)
+                self.assertEqual(
+                    client.get(base + "/gradio_api/file=" + str(self.ck)).status_code,
+                    403,
+                )
         finally:
             demo.close()
 

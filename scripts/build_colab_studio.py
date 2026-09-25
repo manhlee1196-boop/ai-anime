@@ -37,9 +37,33 @@ def build():
     setup = copy.deepcopy(original["cells"][1:7])
     install = "".join(setup[1]["source"])
     assert install.count("%pip -q install") == 1 and "gradio==" not in install
-    setup[1]["source"] = (install.rstrip() + ' "gradio==5.50.0"\n').splitlines(
-        keepends=True
-    )
+    setup[1]["source"] = (
+        install.rstrip()
+        + ' "gradio==6.15.2" "pydantic>=2.12.5,<3" "starlette>=1.3.1,<2"\n'
+        + """
+from packaging.specifiers import SpecifierSet
+import gradio, gradio_client, pydantic, starlette, huggingface_hub
+
+versions = {
+    "gradio": gradio.__version__,
+    "gradio-client": gradio_client.__version__,
+    "pydantic": pydantic.__version__,
+    "starlette": starlette.__version__,
+    "huggingface-hub": huggingface_hub.__version__,
+}
+required = {
+    "gradio": "==6.15.2",
+    "gradio-client": "==2.5.0",
+    "pydantic": ">=2.12.5,<3",
+    "starlette": ">=1.3.1,<2",
+    "huggingface-hub": "==0.36.2",
+}
+for package, constraint in required.items():
+    if versions[package] not in SpecifierSet(constraint):
+        raise RuntimeError(f"{package} đang là {versions[package]}, cần {constraint}. Chọn Runtime → Restart runtime rồi Run all.")
+print("✅ Thư viện Studio đã sẵn sàng:", versions)
+"""
+    ).splitlines(keepends=True)
 
     # The original notebook allows a custom SDXL checkpoint. This personal WAI
     # studio is advertised as *v17*, so fail early if a supplied file does not
@@ -127,7 +151,8 @@ try:
     _, _, share_url = studio_app.launch(
         share=True, inline=False, prevent_thread_lock=True,
         auth=("owner", password), auth_message="WAI Studio cá nhân · đăng nhập để dùng GPU Colab.",
-        server_name="127.0.0.1", max_file_size="12mb", show_api=False,
+        server_name="127.0.0.1", max_file_size="12mb", footer_links=[],
+        theme=studio_app.studio_theme, css=studio_app.studio_css,
         allowed_paths=allowed_outputs, blocked_paths=blocked_weights,
         enable_monitoring=False, show_error=True,
     )
@@ -147,7 +172,7 @@ print("Link sẽ ngừng hoạt động khi Colab dừng/ngắt. KHÔNG chia s�
         code(ui, "studio-ui"),
         code(launch, "studio-launch"),
         markdown(
-            "**Khi gặp lỗi:** nếu không có GPU, chọn GPU trong Runtime; nếu OOM, chỉnh `VRAM_MODE=low_vram` hoặc tắt LoRA ở ô 3 rồi *Restart runtime → Run all*. Nếu không tạo được URL, kiểm tra kết nối Colab/Gradio và chạy lại ô 8. Không paste mật khẩu lên diễn đàn/log. Notebook cơ sở và hash tài nguyên xem [README của dự án](https://github.com/manhlee1196-boop/ai-anime/tree/arena/01a0d84b-ai-anime).",
+            "**Khi gặp lỗi:** nếu ô 2 chỉ hiện dòng `ERROR: pip's dependency resolver...`, hãy xem ô đó có in `✅ Thư viện Studio đã sẵn sàng` không; riêng dòng này có thể là cảnh báo không chặn cài đặt. Nếu không có dấu ✅ hoặc có traceback, mở lại notebook mới nhất, chọn *Runtime → Restart runtime → Run all* và gửi đầy đủ traceback nếu vẫn lỗi (che mật khẩu). Nếu không có GPU, chọn GPU trong Runtime; nếu OOM, chỉnh `VRAM_MODE=low_vram` hoặc tắt LoRA ở ô 3 rồi khởi động lại runtime. Nếu không tạo được URL, kiểm tra kết nối Colab/Gradio và chạy lại ô 8. Không paste mật khẩu lên diễn đàn/log. Notebook cơ sở và hash tài nguyên xem [README của dự án](https://github.com/manhlee1196-boop/ai-anime/tree/arena/01a0d84b-ai-anime).",
             "studio-help",
         ),
     ]

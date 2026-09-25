@@ -634,10 +634,6 @@ def build_app(runtime):
     """
     with gr.Blocks(
         title="WAI Studio · Colab GPU",
-        css=css,
-        theme=gr.themes.Soft(
-            primary_hue="purple", secondary_hue="pink", neutral_hue="slate"
-        ),
         analytics_enabled=False,
         delete_cache=(3600, 3600),
     ) as demo:
@@ -804,7 +800,7 @@ def build_app(runtime):
                     height=550,
                     object_fit="contain",
                     format="png",
-                    show_share_button=False,
+                    buttons=["download", "fullscreen"],
                 )
                 status = gr.Markdown(
                     "Ảnh đầu tiên sẽ xuất hiện tại đây. Model đã nạp trong Google Colab."
@@ -839,8 +835,7 @@ def build_app(runtime):
                 fn=fn,
                 inputs=inputs,
                 outputs=outputs,
-                api_name=False,
-                show_api=False,
+                api_visibility="private",
                 concurrency_id="wai_gpu",
                 concurrency_limit=1,
             )
@@ -858,11 +853,15 @@ def build_app(runtime):
             fn=load_last,
             inputs=latest,
             outputs=image_source,
-            api_name=False,
-            show_api=False,
+            api_visibility="private",
         )
         to_inpaint.click(
-            fn=edit_last, inputs=latest, outputs=editor, api_name=False, show_api=False
+            fn=edit_last, inputs=latest, outputs=editor, api_visibility="private"
         )
         demo.queue(max_size=4, default_concurrency_limit=1, api_open=False)
+    # Gradio 6 applies CSS and themes at launch, not in the Blocks constructor.
+    demo.studio_theme = gr.themes.Soft(
+        primary_hue="purple", secondary_hue="pink", neutral_hue="slate"
+    )
+    demo.studio_css = css
     return demo
