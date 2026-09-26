@@ -6,11 +6,13 @@ Real GPU inference/download of the 6.94 GB checkpoint must be tried in Colab.
 
 import contextlib
 import hashlib
+import io
 import json
 from pathlib import Path
 import re
 import sys
 import tempfile
+import time
 import types
 import unittest
 from unittest.mock import patch
@@ -560,6 +562,60 @@ class ColabNotebookTests(unittest.TestCase):
                     self.assertEqual(cached.stat().st_mtime_ns, model_path.stat().st_mtime_ns)
                     exec(prepare, namespace)
                     self.assertEqual(copy2.call_count, 1)
+
+    def test_disabling_local_cache_skips_drive_copy_but_still_checks_sha(self):
+        payload = b"verified-v17-direct-drive-mock"
+        with tempfile.TemporaryDirectory() as directory:
+            directory = Path(directory)
+            fake_drive = directory / "drive"
+            model = fake_drive / "MyDrive" / "models" / "wai.safetensors"
+            model.parent.mkdir(parents=True)
+            model.write_bytes(payload)
+            with patch.dict(sys.modules, fake_modules()):
+                namespace = {}
+                self.configure(namespace, model, directory / "outputs", CACHE_MODEL_LOCAL=False)
+                namespace["drive_root"] = fake_drive
+                with patch("shutil.copy2", side_effect=AssertionError("should not copy")):
+                    exec(substitute_test_checkpoint(cell_source("prepare-model"), payload), namespace)
+            self.assertEqual(namespace["checkpoint"], model)
+            self.assertEqual(namespace["checkpoint_hash"], hashlib.sha256(payload).hexdigest())
+            self.assertFalse((namespace["local_cache_root"] / model.name).exists())
+
+    def test_copy_progress_and_hash_preserve_atomic_verified_bytes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            directory = Path(directory)
+            src = directory / "original.safetensors"
+            dest = directory / "cached.safetensors"
+            content = b"verified fixture" * 64
+            src.write_bytes(content)
+            source = cell_source("prepare-model")
+            definitions = source[:source.index("if source_model.exists() and not source_model.is_file():")]
+            with patch.dict(sys.modules, fake_modules()):
+                namespace = {"Path": Path}
+                exec(definitions, namespace)
+                namespace["PROGRESS_MIN_BYTES"] = 1
+                namespace["PROGRESS_INTERVAL_SECONDS"] = 0.01
+
+                def slow_copy(a, b):
+                    with open(a, "rb") as reader, open(b, "wb") as writer:
+                        writer.write(reader.read(len(content) // 2))
+                        writer.flush()
+                        time.sleep(0.06)
+                        writer.write(reader.read())
+                    __import__("shutil").copystat(a, b)
+
+                progress = io.StringIO()
+                with patch("shutil.copy2", side_effect=slow_copy), contextlib.redirect_stdout(progress):
+                    namespace["copy_atomic"](src, dest, len(content), preserve_mtime=True)
+                self.assertEqual(dest.read_bytes(), content)
+                self.assertEqual(dest.stat().st_mtime_ns, src.stat().st_mtime_ns)
+                self.assertFalse((directory / "cached.safetensors.partial").exists())
+                self.assertIn("Đã sao chép: 50%", progress.getvalue())
+                namespace["PROGRESS_INTERVAL_SECONDS"] = 0
+                with contextlib.redirect_stdout(progress):
+                    checksum = namespace["sha256_file"](dest)
+                self.assertEqual(checksum, hashlib.sha256(content).hexdigest())
+                self.assertIn("Đã kiểm SHA-256: 100%", progress.getvalue())
 
     def test_output_falls_back_when_requested_folder_is_not_writable(self):
         with tempfile.TemporaryDirectory() as directory:

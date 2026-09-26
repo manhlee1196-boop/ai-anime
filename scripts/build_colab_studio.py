@@ -128,6 +128,8 @@ Các phong cách chỉ bổ sung từ khóa trên cùng checkpoint WAI v17; Bán
 **RAM gần đầy nhưng VRAM còn trống?** Để `VRAM_MODE=auto` ở ô 3. Chế độ auto ưu tiên nạp GPU trực tiếp khi VRAM trống trước khi nạp ≥ 12,5 GiB + 0,4 GiB/LoRA (bật cả hai: 13,3 GiB), và tự chuyển CPU offload nếu thiếu VRAM/OOM. Ô 6 in VRAM và chế độ thực tế sau nạp; giao diện cũng hiển thị chế độ đang dùng. CPU offload vẫn chạy từng phần trên GPU nhưng dùng nhiều RAM hệ thống; GPU trống khi không tạo ảnh là bình thường. Nếu vừa dùng phiên notebook cũ, **Restart runtime → Run all** để giải phóng model cũ trước khi thử lại.
 
 **Phong cách không đổi?** Giao diện có ô **Xem prompt sau khi áp dụng phong cách** cập nhật khi đổi lựa chọn; prompt/negative gửi model đặt từ khóa phong cách lên đầu để tránh bị cắt ở cuối prompt dài. Thử Anime chuẩn và Bán thực 2.5D với **cùng seed cố định, prompt, kích thước, steps và LoRA**; Bán thực phải hiện `semi-realistic anime art` ở đầu prompt áp dụng và `flat cel shading` trong negative. Đây chỉ là điều hướng bằng prompt trên checkpoint WAI thiên anime, không thể biến thành model ảnh chụp/2.5D chuyên dụng. Link Gradio của phiên cũ không tự cập nhật: mở notebook mới rồi **Restart runtime → Run all**.
+
+**Ô 4 quá lâu ở dòng `Sao chép model từ Drive sang /content`?** Đây là bản sao checkpoint ~6,94 GB từ Drive để nạp nhanh hơn; bản mới báo tiến độ sao chép và kiểm SHA-256 mỗi ~15 giây. Nếu muốn bỏ qua bản sao, ngắt **riêng ô đang chạy** (đừng restart runtime), đặt `CACHE_MODEL_LOCAL=False` ở ô 3 và chạy lại các ô theo thứ tự từ ô 3. Ô 4 vẫn phải đọc file trên Drive để xác minh SHA-256 và lần nạp đầu có thể chậm hơn; đừng xóa model gốc. Nếu sao chép gần xong, cứ chờ.
 """
     ui = (
         """# @title 7. Chuẩn bị giao diện WAI bằng model đã xác minh
