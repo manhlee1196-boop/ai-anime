@@ -100,6 +100,7 @@ STYLE_PRESETS = {
         ),
     },
 }
+CONTENT_ROOT = Path("/content")
 REPAIR_HINTS = {
     "hands": (
         "natural hands, anatomically correct fingers, detailed fingers",
@@ -118,7 +119,7 @@ REPAIR_HINTS = {
 
 
 def _add_prompt_tags(text, tags):
-    """Append preset/repair tags once, without overwriting the user's prompt."""
+    """Append visible preset/repair tags once to an editable prompt."""
     seen = {part.strip().casefold() for part in text.split(",")}
     for tag in tags:
         tag = tag.strip()
@@ -143,7 +144,7 @@ def _prepend_style_tags(text, tags):
 
 
 def compose_style_prompts(prompt, negative, style, eyes_enabled):
-    """One source of truth for the live preview and actual inference inputs."""
+    """Populate editable model prompts when applying a style (never during inference)."""
     if style not in STYLE_PRESETS:
         raise ValueError("Chọn phong cách có sẵn trong danh sách.")
     positive = _prepend_style_tags(prompt, STYLE_PRESETS[style]["positive"])
@@ -151,6 +152,17 @@ def compose_style_prompts(prompt, negative, style, eyes_enabled):
         positive = _add_prompt_tags(positive, ("perfect eyes",))
     negative = _prepend_style_tags(negative, STYLE_PRESETS[style]["negative"])
     return positive, negative
+
+
+def apply_repair_hints(positive, negative, target):
+    """Explicit UI action: append suggestions in the editable fields before inpainting."""
+    if target not in REPAIR_HINTS:
+        raise ValueError("Chọn vùng sửa: tay, chân, mắt hoặc tùy chỉnh.")
+    hint_pos, hint_neg = REPAIR_HINTS[target]
+    return (
+        _add_prompt_tags(positive, hint_pos.split(",")),
+        _add_prompt_tags(negative, hint_neg.split(",")),
+    )
 
 
 def _number(value, name, low, high, integer=False):
@@ -252,13 +264,26 @@ class StudioRuntime:
         vram_mode,
         use_offload,
         output_dir,
-        drive_root,
         backup_dir="/content/wai_outputs",
     ):
         if pipe is None or not Path(checkpoint).is_file():
             raise RuntimeError(
                 "Model chưa sẵn sàng; chạy lại các ô chuẩn bị checkpoint và nạp model."
             )
+        root = CONTENT_ROOT.resolve()
+        for label, directory in (
+            ("OUTPUT_DIR", output_dir),
+            ("backup_dir", backup_dir),
+        ):
+            path = Path(directory).absolute()
+            resolved = path.resolve()
+            if (
+                not resolved.is_relative_to(root)
+                or resolved == root
+                or path.is_relative_to(CONTENT_ROOT / "drive")
+                or resolved.is_relative_to(root / "drive")
+            ):
+                raise ValueError(f"{label} phải nằm dưới /content, không dùng Drive.")
         self.torch = torch
         self.pipe = pipe
         self.create_pipeline = create_pipeline
@@ -268,7 +293,6 @@ class StudioRuntime:
         self.vram_mode = vram_mode
         self.use_offload = bool(use_offload)
         self.output_dir = Path(output_dir)
-        self.drive_root = Path(drive_root)
         self.backup_dir = Path(backup_dir)
         self.lock = threading.Lock()
 
@@ -295,10 +319,10 @@ class StudioRuntime:
         style="Tùy chỉnh",
         adult_confirmed=False,
     ):
-        if not isinstance(prompt, str) or not prompt.strip() or len(prompt) > 2000:
-            raise ValueError("Prompt phải có từ 1 đến 2000 ký tự.")
-        if not isinstance(negative, str) or len(negative) > 1500:
-            raise ValueError("Negative prompt tối đa 1500 ký tự.")
+        if not isinstance(prompt, str) or not prompt.strip() or len(prompt) > 2200:
+            raise ValueError("Prompt gửi model phải có từ 1 đến 2200 ký tự.")
+        if not isinstance(negative, str) or len(negative) > 1700:
+            raise ValueError("Negative gửi model tối đa 1700 ký tự.")
         if not isinstance(style, str) or style not in STYLE_PRESETS:
             raise ValueError("Chọn phong cách có sẵn trong danh sách.")
         if not isinstance(adult_confirmed, bool):
@@ -329,10 +353,9 @@ class StudioRuntime:
                 raise ValueError(
                     f"LoRA {name} chưa được nạp. Bật nó ở ô cấu hình và chạy lại các ô tải/nạp model."
                 )
-        positive, negative = compose_style_prompts(
-            prompt.strip(), negative.strip(), style, loras["eyes"][0]
-        )
-        return positive, negative, steps, cfg, seed, count, loras
+        # These are the two editable fields shown to the user. Neither style nor
+        # repair selection may add invisible terms at inference time.
+        return prompt, negative, steps, cfg, seed, count, loras
 
     def _apply_loras(self, choices):
         if self.lora_paths:
@@ -492,11 +515,6 @@ class StudioRuntime:
             return path
 
         try:
-            if (
-                self.output_dir == self.drive_root
-                or self.drive_root in self.output_dir.parents
-            ) and not (self.drive_root / "MyDrive").is_dir():
-                raise OSError("Google Drive đã ngắt kết nối")
             return save(self.output_dir)
         except OSError:
             if self.output_dir == self.backup_dir:
@@ -570,13 +588,8 @@ class StudioRuntime:
                     "Mask phải tô một vùng nhỏ, không để rỗng hoặc trắng toàn bộ."
                 )
             width, height = source.size
-            hint_pos, hint_neg = REPAIR_HINTS[target]
-            positive = _add_prompt_tags(positive, hint_pos.split(","))
-            negative = _add_prompt_tags(negative, hint_neg.split(","))
         else:
             raise ValueError("Chế độ tạo ảnh không được hỗ trợ.")
-        if len(positive) > 2200 or len(negative) > 1700:
-            raise ValueError("Prompt quá dài sau khi thêm gợi ý; hãy rút ngắn.")
 
         paths = []
         gallery = []
@@ -612,7 +625,7 @@ class StudioRuntime:
                 metadata = {
                     "model": self.checkpoint.name,
                     "operation": mode,
-                    "style": style,
+                    "style": style,  # preset được chọn, không ghép lại vào prompt
                     "prompt": positive,
                     "negative_prompt": negative,
                     "seed": image_seed,
@@ -637,7 +650,7 @@ class StudioRuntime:
                 gallery.append((str(path), f"Seed {image_seed} · {width}×{height}"))
                 selected.append(str(image_seed))
         status = (
-            f"✅ Đã tạo {len(paths)} ảnh · {style} · seed: {', '.join(selected)}"
+            f"✅ Đã tạo {len(paths)} ảnh · preset đã chọn: {style} · seed: {', '.join(selected)}"
             f" · chế độ: {self.execution_mode} · đã lưu: {Path(paths[0]).parent}"
         )
         return gallery, paths, status, paths[-1]
@@ -789,7 +802,7 @@ def build_app(runtime):
         delete_cache=(3600, 3600),
     ) as demo:
         gr.HTML(
-            "<div class='studio-hero'><span class='studio-badge'>✦ WAI · COLAB GPU · ANIME STUDIO</span><h1>Biến ý tưởng thành thế giới anime.</h1><p>WAI-illustrious v17 · LoRA tay/chân/mắt đã xác minh · Ảnh lưu ở Drive hoặc /content.</p></div>"
+            "<div class='studio-hero'><span class='studio-badge'>✦ WAI · COLAB GPU · ANIME STUDIO</span><h1>Biến ý tưởng thành thế giới anime.</h1><p>WAI-illustrious v17 · LoRA tay/chân/mắt đã xác minh · Ảnh lưu dưới /content.</p></div>"
         )
         gr.Markdown(
             "**Không có đăng nhập:** bất kỳ ai biết URL tạm thời đều có thể dùng GPU Colab của bạn. Đừng chia sẻ link; dừng runtime để thu hồi. Model không chạy trên Cloudflare.",
@@ -810,19 +823,19 @@ def build_app(runtime):
                     value=False,
                 )
                 prompt = gr.Textbox(
-                    label="Ý tưởng / prompt",
+                    label="Ý tưởng gốc (dùng để áp dụng lại preset)",
                     value=DEFAULT_PROMPT,
                     lines=3,
                     max_lines=6,
                     placeholder="Mô tả nhân vật, khung cảnh, ánh sáng, phong cách...",
                 )
                 negative = gr.Textbox(
-                    label="Negative prompt · ngón tay / ngón chân",
+                    label="Negative gốc · ngón tay / ngón chân (dùng để áp dụng lại preset)",
                     value=DEFAULT_NEGATIVE,
                     lines=3,
                 )
                 gr.Markdown(
-                    "Preset thêm thẻ phong cách khi tạo, prompt/negative vẫn sửa được. Negative mặc định nhắm lỗi thừa/thiếu/dính ngón; các phong cách thường tự thêm `nsfw, explicit` vào negative, còn **Anime NSFW 18+** không thêm hai thẻ đó. Checkbox chỉ là xác nhận, không phải xác minh tuổi. Không bảo đảm sửa mọi lỗi ngón: hãy dùng tab **Sửa vùng ảnh** nếu cần."
+                    "Preset chỉ **điền vào hai ô prompt gửi model bên dưới**; chỉnh sửa trực tiếp ở đó để tùy ý thêm/xóa từ khóa. Khi đổi phong cách, ý tưởng gốc, negative gốc hoặc bật/tắt LoRA mắt, preset sẽ **ghi đè hai ô gửi model**, kể cả chỉnh sửa thủ công. Muốn áp dụng lại preset hiện tại, bấm nút bên dưới. Negative gốc nhắm lỗi thừa/thiếu/dính ngón; preset thường thêm `nsfw, explicit` vào negative, còn **Anime NSFW 18+** không thêm hai thẻ đó. Checkbox chỉ là xác nhận, không phải xác minh tuổi."
                 )
                 initial_positive, initial_negative = compose_style_prompts(
                     DEFAULT_PROMPT,
@@ -830,27 +843,28 @@ def build_app(runtime):
                     "Anime chuẩn",
                     "eyes" in runtime.lora_paths,
                 )
-                with gr.Accordion(
-                    "👁️ Xem prompt sau khi áp dụng phong cách", open=True
-                ):
+                with gr.Accordion("✎ Prompt gửi model · sửa trực tiếp", open=True):
                     gr.Markdown(
-                        "Đổi phong cách/prompt/LoRA mắt sẽ cập nhật bản xem trước, "
-                        "**không ghi đè** nội dung bạn nhập. Tab Sửa vùng còn thêm "
-                        "từ khóa cho vùng được chọn. Model WAI vẫn thiên về anime."
+                        "**Chính xác nội dung hai ô này** được gửi cho model ở cả ba chế độ, "
+                        "không thêm từ khóa ẩn theo phong cách/LoRA/vùng sửa khi bấm tạo. "
+                        "Có thể xóa `perfect eyes` dù LoRA mắt vẫn bật. Chọn lại preset sẽ mất chỉnh sửa ở đây."
                     )
                     effective_prompt = gr.Textbox(
-                        label="Prompt sẽ gửi tới model (trừ gợi ý sửa vùng)",
+                        label="Prompt gửi model · sửa được",
                         value=initial_positive,
-                        lines=2,
-                        max_lines=4,
-                        interactive=False,
+                        lines=3,
+                        max_lines=8,
+                        interactive=True,
                     )
                     effective_negative = gr.Textbox(
-                        label="Negative sẽ gửi tới model (trừ gợi ý sửa vùng)",
+                        label="Negative gửi model · sửa được",
                         value=initial_negative,
-                        lines=2,
-                        max_lines=4,
-                        interactive=False,
+                        lines=3,
+                        max_lines=8,
+                        interactive=True,
+                    )
+                    reapply_preset = gr.Button(
+                        "Áp dụng lại phong cách vào hai ô gửi model"
                     )
                 with gr.Accordion("⚙️ Thông số ảnh và LoRA", open=True):
                     with gr.Row():
@@ -905,8 +919,8 @@ def build_app(runtime):
                         "LoRA chỉ có thể bật nếu đã chọn và xác minh ở ô cấu hình trước khi mở giao diện. Tắt/bật và đổi cường độ ở đây **không** tải lại checkpoint."
                     )
                 shared = [
-                    prompt,
-                    negative,
+                    effective_prompt,
+                    effective_negative,
                     steps,
                     cfg,
                     seed,
@@ -988,7 +1002,10 @@ def build_app(runtime):
                                 label="Làm mềm mép vùng sửa (px)",
                             )
                         gr.Markdown(
-                            "**Vùng trắng / nét cọ = sửa; vùng đen = giữ nguyên.** Ảnh tải lên được thu về cạnh dài tối đa 1024 px cùng mask. Tránh tô toàn bộ ảnh."
+                            "**Vùng trắng / nét cọ = sửa; vùng đen = giữ nguyên.** Ảnh tải lên được thu về cạnh dài tối đa 1024 px cùng mask. Tránh tô toàn bộ ảnh. Chọn tay/chân/mắt không tự thêm từ vào prompt; bấm nút dưới đây nếu muốn thêm gợi ý **hiển thị và sửa được** ở hai ô prompt phía trên."
+                        )
+                        repair_hints_button = gr.Button(
+                            "Thêm gợi ý sửa vùng vào prompt đang hiển thị"
                         )
                         inpaint_button = gr.Button("Sửa vùng đã tô", variant="primary")
             with gr.Column(scale=4, min_width=330):
@@ -1012,7 +1029,7 @@ def build_app(runtime):
                     to_image = gr.Button("Dùng ảnh mới nhất để biến đổi")
                     to_inpaint = gr.Button("Dùng ảnh mới nhất để sửa vùng")
                 gr.Markdown(
-                    "Ảnh được lưu tại Drive (nếu đã gắn) hoặc `/content/wai_outputs`. Tải xuống trước khi phiên Colab hết hạn nếu không dùng Drive."
+                    "Ảnh chỉ lưu tại `/content/wai_outputs` trong phiên Colab; không lưu Drive. **Tải xuống trước khi phiên kết thúc** vì `/content` sẽ bị xóa khi runtime hết hạn."
                 )
 
         outputs = [gallery, downloads, status, latest]
@@ -1057,16 +1074,29 @@ def build_app(runtime):
         to_inpaint.click(
             fn=edit_last, inputs=latest, outputs=editor, api_visibility="private"
         )
-        # Keep the preview in sync without modifying editable input fields or
-        # reloading model weights. The same composer is used for inference.
+        # Apply a preset visibly, never at inference time. Reapplying overwrites
+        # manual edits in the effective fields; generation uses those fields as-is.
         gr.on(
-            triggers=[style.change, prompt.change, negative.change, eyes.change],
+            triggers=[
+                style.change,
+                prompt.change,
+                negative.change,
+                eyes.change,
+                reapply_preset.click,
+            ],
             fn=compose_style_prompts,
             inputs=[prompt, negative, style, eyes],
             outputs=[effective_prompt, effective_negative],
             api_visibility="private",
             queue=False,
             show_progress="hidden",
+        )
+        repair_hints_button.click(
+            fn=apply_repair_hints,
+            inputs=[effective_prompt, effective_negative, target],
+            outputs=[effective_prompt, effective_negative],
+            api_visibility="private",
+            queue=False,
         )
         demo.queue(max_size=4, default_concurrency_limit=1, api_open=False)
     # Gradio 6 applies CSS and themes at launch, not in the Blocks constructor.

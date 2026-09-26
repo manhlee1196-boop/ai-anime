@@ -12,25 +12,30 @@ from pathlib import Path
 import re
 import sys
 import tempfile
-import time
 import types
 import unittest
 from unittest.mock import patch
-
 
 NOTEBOOK = Path(__file__).resolve().parents[1] / "WAI_Illustrious_Colab.ipynb"
 
 
 def cell_source(cell_id):
     notebook = json.loads(NOTEBOOK.read_text(encoding="utf-8"))
-    return "".join(next(cell for cell in notebook["cells"] if cell["metadata"]["id"] == cell_id)["source"])
+    return "".join(
+        next(cell for cell in notebook["cells"] if cell["metadata"]["id"] == cell_id)[
+            "source"
+        ]
+    )
 
 
 def set_form_fields(source, **values):
     for name, value in values.items():
         source, count = re.subn(
             rf"^{re.escape(name)} = .*?(?= # @param)",
-            f"{name} = {value!r}", source, count=1, flags=re.MULTILINE,
+            f"{name} = {value!r}",
+            source,
+            count=1,
+            flags=re.MULTILINE,
         )
         if count != 1:
             raise AssertionError(f"Colab form field missing: {name}")
@@ -41,8 +46,11 @@ def replace_constants(source, **replacements):
     """Shrink fixture sizes/hashes only in tests, never in the real notebook."""
     for name, value in replacements.items():
         source, count = re.subn(
-            rf"^{name} = .*?$", f"{name} = {value!r}",
-            source, count=1, flags=re.MULTILINE,
+            rf"^{name} = .*?$",
+            f"{name} = {value!r}",
+            source,
+            count=1,
+            flags=re.MULTILINE,
         )
         if count != 1:
             raise AssertionError(f"Missing constant: {name}")
@@ -51,16 +59,21 @@ def replace_constants(source, **replacements):
 
 def substitute_test_checkpoint(source, content):
     return replace_constants(
-        source, HF_MODEL_BYTES=len(content), HF_SHA256=hashlib.sha256(content).hexdigest(),
-        MIN_CHECKPOINT_BYTES=1, DISK_RESERVE_BYTES=1,
+        source,
+        HF_MODEL_BYTES=len(content),
+        HF_SHA256=hashlib.sha256(content).hexdigest(),
+        MIN_CHECKPOINT_BYTES=1,
+        DISK_RESERVE_BYTES=1,
     )
 
 
 def substitute_test_loras(source, anatomy=b"anatomy mock", eyes=b"eyes mock"):
     return replace_constants(
         source,
-        ANATOMY_LORA_BYTES=len(anatomy), ANATOMY_LORA_SHA256=hashlib.sha256(anatomy).hexdigest(),
-        EYE_LORA_BYTES=len(eyes), EYE_LORA_SHA256=hashlib.sha256(eyes).hexdigest(),
+        ANATOMY_LORA_BYTES=len(anatomy),
+        ANATOMY_LORA_SHA256=hashlib.sha256(anatomy).hexdigest(),
+        EYE_LORA_BYTES=len(eyes),
+        EYE_LORA_SHA256=hashlib.sha256(eyes).hexdigest(),
         LORA_DISK_RESERVE_BYTES=1,
     )
 
@@ -89,7 +102,9 @@ class FakePipeline:
 
     def __init__(self):
         self.scheduler = types.SimpleNamespace(config={"scheduler": "original"})
-        self.vae = types.SimpleNamespace(enable_slicing=self.slicing, enable_tiling=self.tiling)
+        self.vae = types.SimpleNamespace(
+            enable_slicing=self.slicing, enable_tiling=self.tiling
+        )
         self.sliced = False
         self.tiled = False
         self.mode = None
@@ -177,12 +192,18 @@ class FakePILImage:
         if not self.boxes:
             return None
         return (
-            min(box[0] for box in self.boxes), min(box[1] for box in self.boxes),
-            max(box[2] for box in self.boxes), max(box[3] for box in self.boxes),
+            min(box[0] for box in self.boxes),
+            min(box[1] for box in self.boxes),
+            max(box[2] for box in self.boxes),
+            max(box[3] for box in self.boxes),
         )
 
     def getextrema(self):
-        return (255, 255) if self.boxes == [(0, 0, *self.size)] else (0, 255) if self.boxes else (0, 0)
+        return (
+            (255, 255)
+            if self.boxes == [(0, 0, *self.size)]
+            else (0, 255) if self.boxes else (0, 0)
+        )
 
     def filter(self, blur):
         return self
@@ -218,7 +239,9 @@ class FakeInpaintPipeline:
 
 def enable_fake_inpainting(modules):
     image = types.ModuleType("PIL.Image")
-    image.open = lambda path: FakePILImage(boxes=[(50, 50, 110, 120)] if "mask" in str(path) else None)
+    image.open = lambda path: FakePILImage(
+        boxes=[(50, 50, 110, 120)] if "mask" in str(path) else None
+    )
     image.new = lambda mode, size, color: FakePILImage(size)
     image.composite = lambda repaired, original, mask: FakePILImage(original.size)
     draw = types.ModuleType("PIL.ImageDraw")
@@ -238,8 +261,15 @@ def enable_fake_inpainting(modules):
     ops.exif_transpose = lambda raw: raw
     chops = types.ModuleType("PIL.ImageChops")
     chops.multiply = lambda binary, blurred: binary
-    modules.update({"PIL.Image": image, "PIL.ImageChops": chops, "PIL.ImageDraw": draw,
-                    "PIL.ImageFilter": filter_module, "PIL.ImageOps": ops})
+    modules.update(
+        {
+            "PIL.Image": image,
+            "PIL.ImageChops": chops,
+            "PIL.ImageDraw": draw,
+            "PIL.ImageFilter": filter_module,
+            "PIL.ImageOps": ops,
+        }
+    )
     modules["diffusers"].AutoPipelineForInpainting = types.SimpleNamespace(
         from_pipe=lambda pipeline: FakeInpaintPipeline(pipeline)
     )
@@ -301,7 +331,9 @@ def fake_modules(free_gib=15, gpu=True, total_gib=16):
     safetensors = types.ModuleType("safetensors")
     safetensors.safe_open = lambda path, **kwargs: Header(path)
     hub = types.ModuleType("huggingface_hub")
-    hub.hf_hub_download = lambda **kwargs: (_ for _ in ()).throw(AssertionError("Unexpected model download"))
+    hub.hf_hub_download = lambda **kwargs: (_ for _ in ()).throw(
+        AssertionError("Unexpected model download")
+    )
     psutil = types.ModuleType("psutil")
     psutil.virtual_memory = lambda: types.SimpleNamespace(available=16 * 2**30)
     ipython = types.ModuleType("IPython")
@@ -313,10 +345,15 @@ def fake_modules(free_gib=15, gpu=True, total_gib=16):
     pil_png = types.ModuleType("PIL.PngImagePlugin")
     pil_png.PngInfo = FakePngInfo
     return {
-        "torch": torch, "diffusers": diffusers, "safetensors": safetensors,
-        "huggingface_hub": hub, "psutil": psutil,
-        "IPython": ipython, "IPython.display": ipython_display,
-        "PIL": pil, "PIL.PngImagePlugin": pil_png,
+        "torch": torch,
+        "diffusers": diffusers,
+        "safetensors": safetensors,
+        "huggingface_hub": hub,
+        "psutil": psutil,
+        "IPython": ipython,
+        "IPython.display": ipython_display,
+        "PIL": pil,
+        "PIL.PngImagePlugin": pil_png,
     }
 
 
@@ -344,11 +381,30 @@ class ColabNotebookTests(unittest.TestCase):
                 if cell["metadata"]["id"] != "install-packages":
                     compile(source, cell["metadata"]["id"], "exec")
         self.assertIn("%pip", cell_source("install-packages"))
-        self.assertNotIn("\"torch==", cell_source("install-packages"))
+        self.assertNotIn('"torch==', cell_source("install-packages"))
+        executable = "\n".join(
+            "".join(cell["source"])
+            for cell in notebook["cells"]
+            if cell["cell_type"] == "code"
+        )
+        for removed in (
+            "drive.mount(",
+            "MOUNT_DRIVE",
+            "CACHE_MODEL_LOCAL",
+            "PERSIST_MODEL_TO_DRIVE",
+            "PERSIST_LORAS_TO_DRIVE",
+            "copy_atomic(",
+        ):
+            self.assertNotIn(removed, executable)
         prepare = cell_source("prepare-model")
+        self.assertIn("local_dir=str(local_cache_root)", prepare)
+        self.assertNotIn("cache_dir=", prepare)
         self.assertIn("token=False", prepare)
-        self.assertIn('HF_MODEL_BYTES = 6_938_040_682', prepare)
-        self.assertIn('HF_SHA256 = "f116b0c78ff441467b0cdc8f1936e1ed18ea31e9997c7b132b1b8db533f0bd04"', prepare)
+        self.assertIn("HF_MODEL_BYTES = 6_938_040_682", prepare)
+        self.assertIn(
+            'HF_SHA256 = "f116b0c78ff441467b0cdc8f1936e1ed18ea31e9997c7b132b1b8db533f0bd04"',
+            prepare,
+        )
         install = cell_source("install-packages")
         self.assertIn('"peft==0.17.1"', install)
         lora = cell_source("prepare-loras")
@@ -367,13 +423,15 @@ class ColabNotebookTests(unittest.TestCase):
         fields = {"USE_ANATOMY_LORA": False, "USE_EYE_LORA": False, **extra_fields}
         config = set_form_fields(
             cell_source("configure-paths"),
-            MOUNT_DRIVE=False, MODEL_PATH=str(model_path), OUTPUT_DIR=str(output_path),
+            MODEL_PATH=str(model_path),
+            OUTPUT_DIR=str(output_path),
             **fields,
         )
+        root = Path(output_path).parent
+        config = config.replace(
+            'content_root = Path("/content")', f"content_root = Path({str(root)!r})"
+        )
         exec(config, namespace)
-        namespace["local_cache_root"] = output_path.parent / "model_cache"
-        namespace["local_lora_cache"] = output_path.parent / "lora_cache"
-        namespace["lora_drive_dir"] = output_path.parent / "drive" / "MyDrive" / "AI" / "loras"
 
     def test_existing_checkpoint_skips_download_and_generates_png(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -385,7 +443,12 @@ class ColabNotebookTests(unittest.TestCase):
                 namespace = {}
                 exec(cell_source("check-gpu"), namespace)
                 self.configure(namespace, model_path, output)
-                exec(substitute_test_checkpoint(cell_source("prepare-model"), b"other bytes"), namespace)
+                exec(
+                    substitute_test_checkpoint(
+                        cell_source("prepare-model"), b"other bytes"
+                    ),
+                    namespace,
+                )
                 exec(cell_source("load-pipeline"), namespace)
                 exec(set_form_fields(cell_source("generate-image"), SEED=42), namespace)
             self.assertEqual(namespace["checkpoint"], model_path)
@@ -395,7 +458,9 @@ class ColabNotebookTests(unittest.TestCase):
             images = list(output.glob("wai_*.png"))
             self.assertEqual(len(images), 1)
             self.assertFalse(list(output.glob("*.partial")))
-            metadata = json.loads(FakePipeline.last_instance.image.metadata["parameters"])
+            metadata = json.loads(
+                FakePipeline.last_instance.image.metadata["parameters"]
+            )
             self.assertEqual(metadata["seed"], 42)
             self.assertEqual(metadata["model"], model_path.name)
 
@@ -403,42 +468,71 @@ class ColabNotebookTests(unittest.TestCase):
         payload = b"v17 mock full checkpoint (use real SHA only in production)"
         with tempfile.TemporaryDirectory() as directory:
             directory = Path(directory)
-            downloaded = directory / "waiIllustriousSDXL_v170.safetensors"
-            downloaded.write_bytes(payload)
             output = directory / "outputs"
             calls = []
             modules = fake_modules()
+
             def download(**kwargs):
                 calls.append(kwargs)
+                downloaded = Path(kwargs["local_dir"]) / kwargs["filename"]
+                downloaded.write_bytes(payload)
                 return str(downloaded)
+
             modules["huggingface_hub"].hf_hub_download = download
             with patch.dict(sys.modules, modules):
                 namespace = {}
                 exec(cell_source("check-gpu"), namespace)
-                self.configure(namespace, directory / "missing.safetensors", output, PERSIST_MODEL_TO_DRIVE=False)
-                exec(substitute_test_checkpoint(cell_source("prepare-model"), payload), namespace)
+                self.configure(namespace, directory / "missing.safetensors", output)
+                prepare = substitute_test_checkpoint(
+                    cell_source("prepare-model"), payload
+                )
+                with patch(
+                    "shutil.copyfile",
+                    side_effect=AssertionError("No duplicate model copy"),
+                ):
+                    exec(prepare, namespace)
+                    exec(
+                        prepare, namespace
+                    )  # reuse local file even if MODEL_PATH is missing
                 exec(cell_source("load-pipeline"), namespace)
                 exec(set_form_fields(cell_source("generate-image"), SEED=99), namespace)
+            downloaded = (
+                namespace["local_cache_root"] / "waiIllustriousSDXL_v170.safetensors"
+            )
             self.assertEqual(namespace["checkpoint"], downloaded)
+            self.assertEqual(downloaded.read_bytes(), payload)
             self.assertEqual(len(calls), 1)
-            self.assertEqual(calls[0]["revision"], "32be7bfdcd406db70df663b9cee3313957deb68f")
+            self.assertEqual(
+                calls[0]["revision"], "32be7bfdcd406db70df663b9cee3313957deb68f"
+            )
             self.assertEqual(calls[0]["token"], False)
-            self.assertIn("cache_dir", calls[0])
+            self.assertEqual(calls[0]["local_dir"], str(namespace["local_cache_root"]))
+            self.assertNotIn("cache_dir", calls[0])
             self.assertEqual(len(list(output.glob("wai_*.png"))), 1)
 
     def test_bad_hash_never_loads_checkpoint(self):
         payload = b"wrong-data"
         with tempfile.TemporaryDirectory() as directory:
             directory = Path(directory)
-            downloaded = directory / "waiIllustriousSDXL_v170.safetensors"
-            downloaded.write_bytes(payload)
             modules = fake_modules()
-            modules["huggingface_hub"].hf_hub_download = lambda **kwargs: str(downloaded)
+
+            def download(**kwargs):
+                downloaded = Path(kwargs["local_dir"]) / kwargs["filename"]
+                downloaded.write_bytes(payload)
+                return str(downloaded)
+
+            modules["huggingface_hub"].hf_hub_download = download
             with patch.dict(sys.modules, modules):
                 namespace = {}
-                self.configure(namespace, directory / "missing.safetensors", directory / "outputs")
-                # Same byte length, different SHA-256: the hash check must reject it.
-                prepare = substitute_test_checkpoint(cell_source("prepare-model"), b"right-data")
+                self.configure(
+                    namespace, directory / "missing.safetensors", directory / "outputs"
+                )
+                prepare = substitute_test_checkpoint(
+                    cell_source("prepare-model"), b"right-data"
+                )
+                with self.assertRaisesRegex(ValueError, "SHA-256"):
+                    exec(prepare, namespace)
+                # Do not silently reuse a same-sized but corrupted cached file.
                 with self.assertRaisesRegex(ValueError, "SHA-256"):
                     exec(prepare, namespace)
             self.assertIsNone(FakePipeline.last_instance)
@@ -449,173 +543,77 @@ class ColabNotebookTests(unittest.TestCase):
             with patch.dict(sys.modules, fake_modules()):
                 namespace = {}
                 self.configure(
-                    namespace, directory / "missing.safetensors", directory / "outputs",
+                    namespace,
+                    directory / "missing.safetensors",
+                    directory / "outputs",
                     AUTO_DOWNLOAD=False,
                 )
                 with self.assertRaisesRegex(FileNotFoundError, "Bật AUTO_DOWNLOAD"):
-                    exec(substitute_test_checkpoint(cell_source("prepare-model"), b"fixture"), namespace)
+                    exec(
+                        substitute_test_checkpoint(
+                            cell_source("prepare-model"), b"fixture"
+                        ),
+                        namespace,
+                    )
 
-    def test_download_persists_verified_model_without_extra_local_copy(self):
-        payload = b"verified-v17-mock"
+    def test_sha_progress_and_full_digest_do_not_modify_file(self):
         with tempfile.TemporaryDirectory() as directory:
-            directory = Path(directory)
-            fake_drive = directory / "drive"
-            model_path = fake_drive / "MyDrive" / "models" / "WAI-illustrious.safetensors"
-            model_path.parent.mkdir(parents=True)
-            downloaded = directory / "waiIllustriousSDXL_v170.safetensors"
-            downloaded.write_bytes(payload)
-            modules = fake_modules()
-            calls = []
-            def download(**kwargs):
-                calls.append(kwargs)
-                return str(downloaded)
-            modules["huggingface_hub"].hf_hub_download = download
-            with patch.dict(sys.modules, modules):
-                namespace = {}
-                self.configure(namespace, model_path, directory / "outputs")
-                namespace["drive_root"] = fake_drive
-                exec(substitute_test_checkpoint(cell_source("prepare-model"), payload), namespace)
-            self.assertEqual(namespace["checkpoint"], downloaded)
-            self.assertEqual(model_path.read_bytes(), payload)
-            self.assertEqual(len(calls), 1)
-            self.assertIn("cache_dir", calls[0])
-            self.assertFalse(list(model_path.parent.glob("*.partial")))
-
-    def test_drive_write_failure_still_runs_from_verified_local_cache(self):
-        payload = b"verified-v17-mock"
-        with tempfile.TemporaryDirectory() as directory:
-            directory = Path(directory)
-            fake_drive = directory / "drive"
-            model_path = fake_drive / "MyDrive" / "models" / "WAI-illustrious.safetensors"
-            model_path.parent.mkdir(parents=True)
-            downloaded = directory / "waiIllustriousSDXL_v170.safetensors"
-            downloaded.write_bytes(payload)
-            modules = fake_modules()
-            modules["huggingface_hub"].hf_hub_download = lambda **kwargs: str(downloaded)
-            with patch.dict(sys.modules, modules):
-                namespace = {}
-                self.configure(namespace, model_path, directory / "outputs")
-                namespace["drive_root"] = fake_drive
-                with patch("shutil.copyfile", side_effect=OSError("Drive quota reached")):
-                    exec(substitute_test_checkpoint(cell_source("prepare-model"), payload), namespace)
-            self.assertEqual(namespace["checkpoint"], downloaded)
-            self.assertFalse(model_path.exists())
-
-    def test_existing_drive_checkpoint_uses_direct_path_on_low_disk(self):
-        with tempfile.TemporaryDirectory() as directory:
-            directory = Path(directory)
-            fake_drive = directory / "drive"
-            model_path = fake_drive / "MyDrive" / "models" / "existing.safetensors"
-            model_path.parent.mkdir(parents=True)
-            model_path.write_bytes(b"existing checkpoint")
-            with patch.dict(sys.modules, fake_modules()):
-                namespace = {}
-                self.configure(namespace, model_path, directory / "outputs")
-                namespace["drive_root"] = fake_drive
-                with patch("shutil.disk_usage", return_value=types.SimpleNamespace(free=0)):
-                    exec(substitute_test_checkpoint(cell_source("prepare-model"), b"fixture"), namespace)
-            self.assertEqual(namespace["checkpoint"], model_path)
-
-    def test_low_local_disk_downloads_directly_to_drive(self):
-        payload = b"verified-v17-mock"
-        with tempfile.TemporaryDirectory() as directory:
-            directory = Path(directory)
-            fake_drive = directory / "drive"
-            model_path = fake_drive / "MyDrive" / "models" / "WAI-illustrious.safetensors"
-            model_path.parent.mkdir(parents=True)
-            modules = fake_modules()
-            calls = []
-            def download(**kwargs):
-                calls.append(kwargs)
-                remote_file = Path(kwargs["local_dir"]) / "waiIllustriousSDXL_v170.safetensors"
-                remote_file.write_bytes(payload)
-                return str(remote_file)
-            modules["huggingface_hub"].hf_hub_download = download
-            with patch.dict(sys.modules, modules):
-                namespace = {}
-                self.configure(namespace, model_path, directory / "outputs")
-                namespace["drive_root"] = fake_drive
-                with patch("shutil.disk_usage", return_value=types.SimpleNamespace(free=0)):
-                    exec(substitute_test_checkpoint(cell_source("prepare-model"), payload), namespace)
-            self.assertEqual(namespace["checkpoint"], model_path)
-            self.assertEqual(model_path.read_bytes(), payload)
-            self.assertEqual(len(calls), 1)
-            self.assertIn("local_dir", calls[0])
-            self.assertNotIn("cache_dir", calls[0])
-
-    def test_existing_drive_checkpoint_is_cached_once_with_preserved_mtime(self):
-        with tempfile.TemporaryDirectory() as directory:
-            directory = Path(directory)
-            fake_drive = directory / "drive"
-            model_path = fake_drive / "MyDrive" / "models" / "existing.safetensors"
-            model_path.parent.mkdir(parents=True)
-            model_path.write_bytes(b"existing checkpoint")
-            with patch.dict(sys.modules, fake_modules()):
-                namespace = {}
-                self.configure(namespace, model_path, directory / "outputs")
-                namespace["drive_root"] = fake_drive
-                prepare = substitute_test_checkpoint(cell_source("prepare-model"), b"fixture")
-                with patch("shutil.copy2", wraps=__import__("shutil").copy2) as copy2:
-                    exec(prepare, namespace)
-                    cached = namespace["checkpoint"]
-                    self.assertEqual(cached.read_bytes(), b"existing checkpoint")
-                    self.assertEqual(cached.stat().st_mtime_ns, model_path.stat().st_mtime_ns)
-                    exec(prepare, namespace)
-                    self.assertEqual(copy2.call_count, 1)
-
-    def test_disabling_local_cache_skips_drive_copy_but_still_checks_sha(self):
-        payload = b"verified-v17-direct-drive-mock"
-        with tempfile.TemporaryDirectory() as directory:
-            directory = Path(directory)
-            fake_drive = directory / "drive"
-            model = fake_drive / "MyDrive" / "models" / "wai.safetensors"
-            model.parent.mkdir(parents=True)
-            model.write_bytes(payload)
-            with patch.dict(sys.modules, fake_modules()):
-                namespace = {}
-                self.configure(namespace, model, directory / "outputs", CACHE_MODEL_LOCAL=False)
-                namespace["drive_root"] = fake_drive
-                with patch("shutil.copy2", side_effect=AssertionError("should not copy")):
-                    exec(substitute_test_checkpoint(cell_source("prepare-model"), payload), namespace)
-            self.assertEqual(namespace["checkpoint"], model)
-            self.assertEqual(namespace["checkpoint_hash"], hashlib.sha256(payload).hexdigest())
-            self.assertFalse((namespace["local_cache_root"] / model.name).exists())
-
-    def test_copy_progress_and_hash_preserve_atomic_verified_bytes(self):
-        with tempfile.TemporaryDirectory() as directory:
-            directory = Path(directory)
-            src = directory / "original.safetensors"
-            dest = directory / "cached.safetensors"
             content = b"verified fixture" * 64
-            src.write_bytes(content)
+            saved = Path(directory) / "checkpoint.safetensors"
+            saved.write_bytes(content)
             source = cell_source("prepare-model")
-            definitions = source[:source.index("if source_model.exists() and not source_model.is_file():")]
+            definitions = source[
+                : source.index(
+                    "if source_model.exists() and not source_model.is_file():"
+                )
+            ]
             with patch.dict(sys.modules, fake_modules()):
                 namespace = {"Path": Path}
                 exec(definitions, namespace)
                 namespace["PROGRESS_MIN_BYTES"] = 1
-                namespace["PROGRESS_INTERVAL_SECONDS"] = 0.01
-
-                def slow_copy(a, b):
-                    with open(a, "rb") as reader, open(b, "wb") as writer:
-                        writer.write(reader.read(len(content) // 2))
-                        writer.flush()
-                        time.sleep(0.06)
-                        writer.write(reader.read())
-                    __import__("shutil").copystat(a, b)
-
-                progress = io.StringIO()
-                with patch("shutil.copy2", side_effect=slow_copy), contextlib.redirect_stdout(progress):
-                    namespace["copy_atomic"](src, dest, len(content), preserve_mtime=True)
-                self.assertEqual(dest.read_bytes(), content)
-                self.assertEqual(dest.stat().st_mtime_ns, src.stat().st_mtime_ns)
-                self.assertFalse((directory / "cached.safetensors.partial").exists())
-                self.assertIn("Đã sao chép: 50%", progress.getvalue())
                 namespace["PROGRESS_INTERVAL_SECONDS"] = 0
+                progress = io.StringIO()
                 with contextlib.redirect_stdout(progress):
-                    checksum = namespace["sha256_file"](dest)
+                    checksum = namespace["sha256_file"](saved)
                 self.assertEqual(checksum, hashlib.sha256(content).hexdigest())
+                self.assertEqual(saved.read_bytes(), content)
                 self.assertIn("Đã kiểm SHA-256: 100%", progress.getvalue())
+
+    def test_config_rejects_outside_drive_mount_and_symlinked_local_cache(self):
+        with tempfile.TemporaryDirectory() as directory, tempfile.TemporaryDirectory() as other:
+            root = Path(directory)
+            output = root / "outputs"
+            with self.assertRaisesRegex(ValueError, "/content"):
+                self.configure({}, Path(other) / "model.safetensors", output)
+            with self.assertRaisesRegex(ValueError, "Drive"):
+                self.configure(
+                    {}, root / "drive" / "MyDrive" / "model.safetensors", output
+                )
+            (root / "drive" / "MyDrive").mkdir(parents=True)
+            (root / "wai_lora_cache").symlink_to(
+                root / "drive" / "MyDrive", target_is_directory=True
+            )
+            with self.assertRaisesRegex(ValueError, "Drive"):
+                self.configure({}, root / "model.safetensors", output)
+
+    def test_low_disk_stops_local_model_download_without_fallback(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            modules = fake_modules()
+            with patch.dict(sys.modules, modules):
+                ns = {}
+                self.configure(ns, root / "missing.safetensors", root / "outputs")
+                with patch(
+                    "shutil.disk_usage", return_value=types.SimpleNamespace(free=0)
+                ):
+                    with self.assertRaisesRegex(OSError, "Thiếu đĩa /content"):
+                        exec(
+                            substitute_test_checkpoint(
+                                cell_source("prepare-model"), b"fixture"
+                            ),
+                            ns,
+                        )
+            self.assertIsNone(FakePipeline.last_instance)
 
     def test_output_falls_back_when_requested_folder_is_not_writable(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -629,11 +627,17 @@ class ColabNotebookTests(unittest.TestCase):
                 namespace = {}
                 exec(cell_source("check-gpu"), namespace)
                 self.configure(namespace, model, blocked)
-                exec(substitute_test_checkpoint(cell_source("prepare-model"), b"fixture"), namespace)
+                exec(
+                    substitute_test_checkpoint(
+                        cell_source("prepare-model"), b"fixture"
+                    ),
+                    namespace,
+                )
                 exec(cell_source("load-pipeline"), namespace)
                 generate = set_form_fields(cell_source("generate-image"), SEED=101)
                 generate = generate.replace(
-                    'backup_dir = Path("/content/wai_outputs")', f"backup_dir = Path({str(backup)!r})"
+                    'backup_dir = Path("/content/wai_outputs")',
+                    f"backup_dir = Path({str(backup)!r})",
                 )
                 exec(generate, namespace)
             self.assertEqual(len(list(backup.glob("wai_*.png"))), 1)
@@ -648,7 +652,12 @@ class ColabNotebookTests(unittest.TestCase):
                 namespace = {}
                 exec(cell_source("check-gpu"), namespace)
                 self.configure(namespace, model, directory / "outputs")
-                exec(substitute_test_checkpoint(cell_source("prepare-model"), b"fixture"), namespace)
+                exec(
+                    substitute_test_checkpoint(
+                        cell_source("prepare-model"), b"fixture"
+                    ),
+                    namespace,
+                )
                 exec(cell_source("load-pipeline"), namespace)
             self.assertEqual(FakePipeline.last_instance.mode, "offload")
             self.assertTrue(FakePipeline.last_instance.tiled)
@@ -667,10 +676,17 @@ class ColabNotebookTests(unittest.TestCase):
             with patch.dict(sys.modules, fake_modules(free_gib=14, total_gib=15)):
                 namespace = {}
                 self.prepare_existing_for_loras(
-                    namespace, directory, USE_ANATOMY_LORA=True, USE_EYE_LORA=True,
-                    ANATOMY_LORA_PATH=str(anatomy_path), EYE_LORA_PATH=str(eyes_path),
+                    namespace,
+                    directory,
+                    USE_ANATOMY_LORA=True,
+                    USE_EYE_LORA=True,
+                    ANATOMY_LORA_PATH=str(anatomy_path),
+                    EYE_LORA_PATH=str(eyes_path),
                 )
-                exec(substitute_test_loras(cell_source("prepare-loras"), anatomy, eyes), namespace)
+                exec(
+                    substitute_test_loras(cell_source("prepare-loras"), anatomy, eyes),
+                    namespace,
+                )
                 with patch("builtins.print") as prints:
                     exec(cell_source("load-pipeline"), namespace)
             self.assertEqual(namespace["auto_min_vram"] / 2**30, 13.3)
@@ -679,7 +695,9 @@ class ColabNotebookTests(unittest.TestCase):
             self.assertEqual(FakePipeline.last_instance.mode, "cuda")
             self.assertTrue(FakePipeline.last_instance.tiled)
             self.assertEqual(len(FakePipeline.last_instance.loras), 2)
-            self.assertIn("VRAM trống trước khi nạp: 14.0/15.0 GiB", str(prints.call_args_list))
+            self.assertIn(
+                "VRAM trống trước khi nạp: 14.0/15.0 GiB", str(prints.call_args_list)
+            )
             self.assertIn("Chế độ sau khi nạp:", str(prints.call_args_list))
 
     def test_gpu_oom_during_generation_retries_with_same_seed(self):
@@ -692,11 +710,20 @@ class ColabNotebookTests(unittest.TestCase):
                 namespace = {}
                 exec(cell_source("check-gpu"), namespace)
                 self.configure(namespace, model, directory / "outputs")
-                exec(substitute_test_checkpoint(cell_source("prepare-model"), b"fixture"), namespace)
+                exec(
+                    substitute_test_checkpoint(
+                        cell_source("prepare-model"), b"fixture"
+                    ),
+                    namespace,
+                )
                 exec(cell_source("load-pipeline"), namespace)
                 exec(set_form_fields(cell_source("generate-image"), SEED=42), namespace)
-            self.assertEqual([mode for mode, _ in FakePipeline.calls], ["cuda", "offload"])
-            self.assertEqual([args["generator"].seed for _, args in FakePipeline.calls], [42, 42])
+            self.assertEqual(
+                [mode for mode, _ in FakePipeline.calls], ["cuda", "offload"]
+            )
+            self.assertEqual(
+                [args["generator"].seed for _, args in FakePipeline.calls], [42, 42]
+            )
             self.assertTrue(namespace["use_offload"])
             self.assertEqual(len(list((directory / "outputs").glob("wai_*.png"))), 1)
 
@@ -710,7 +737,12 @@ class ColabNotebookTests(unittest.TestCase):
                 namespace = {}
                 exec(cell_source("check-gpu"), namespace)
                 self.configure(namespace, model, directory / "outputs")
-                exec(substitute_test_checkpoint(cell_source("prepare-model"), b"fixture"), namespace)
+                exec(
+                    substitute_test_checkpoint(
+                        cell_source("prepare-model"), b"fixture"
+                    ),
+                    namespace,
+                )
                 exec(cell_source("load-pipeline"), namespace)
             self.assertTrue(namespace["use_offload"])
             self.assertEqual(FakePipeline.last_instance.mode, "offload")
@@ -721,48 +753,86 @@ class ColabNotebookTests(unittest.TestCase):
         model = directory / "wai-model.safetensors"
         model.write_bytes(b"mock pre-existing checkpoint")
         self.configure(namespace, model, directory / "outputs", **fields)
-        exec(substitute_test_checkpoint(cell_source("prepare-model"), b"other mock bytes"), namespace)
+        exec(
+            substitute_test_checkpoint(
+                cell_source("prepare-model"), b"other mock bytes"
+            ),
+            namespace,
+        )
 
     def test_lora_downloads_pins_hashes_and_loads_both_with_retry(self):
         anatomy = b"anatomy correct bytes"
         eyes = b"eyes correct bytes"
         with tempfile.TemporaryDirectory() as directory:
             directory = Path(directory)
-            files = {"ench100/bodyandface": anatomy, "Muapi/eyes-for-illustrious-lora-perfect-anime-eyes": eyes}
+            files = {
+                "ench100/bodyandface": anatomy,
+                "Muapi/eyes-for-illustrious-lora-perfect-anime-eyes": eyes,
+            }
             calls = []
             modules = fake_modules(free_gib=15)
+
             def download(**kwargs):
                 calls.append(kwargs)
-                path = directory / kwargs["filename"]
+                path = Path(kwargs["local_dir"]) / kwargs["filename"]
                 path.write_bytes(files[kwargs["repo_id"]])
                 return str(path)
+
             modules["huggingface_hub"].hf_hub_download = download
             with patch.dict(sys.modules, modules):
                 ns = {}
                 exec(cell_source("check-gpu"), ns)
-                self.prepare_existing_for_loras(ns, directory, USE_ANATOMY_LORA=True, USE_EYE_LORA=True)
-                exec(substitute_test_loras(cell_source("prepare-loras"), anatomy, eyes), ns)
+                self.prepare_existing_for_loras(
+                    ns, directory, USE_ANATOMY_LORA=True, USE_EYE_LORA=True
+                )
+                exec(
+                    substitute_test_loras(cell_source("prepare-loras"), anatomy, eyes),
+                    ns,
+                )
                 self.assertEqual(set(ns["lora_paths"]), {"anatomy", "eyes"})
                 self.assertEqual(len(calls), 2)
-                self.assertEqual([c["revision"] for c in calls], [
-                    "bed49d45df95c0695aedad3b2aa6aff389fb3777",
-                    "1abbc862f53f5101962ebf1c337513aff91bd206",
-                ])
-                self.assertTrue(all(c["token"] is False and "cache_dir" in c for c in calls))
+                self.assertEqual(
+                    [c["revision"] for c in calls],
+                    [
+                        "bed49d45df95c0695aedad3b2aa6aff389fb3777",
+                        "1abbc862f53f5101962ebf1c337513aff91bd206",
+                    ],
+                )
+                self.assertTrue(
+                    all(
+                        c["token"] is False
+                        and c["local_dir"] == str(ns["local_lora_cache"])
+                        for c in calls
+                    )
+                )
                 exec(cell_source("load-pipeline"), ns)
-                self.assertEqual(FakePipeline.last_instance.adapter_settings, (
-                    ["anatomy", "eyes"], [0.55, 0.45],
-                ))
+                self.assertEqual(
+                    FakePipeline.last_instance.adapter_settings,
+                    (
+                        ["anatomy", "eyes"],
+                        [0.55, 0.45],
+                    ),
+                )
                 self.assertEqual(len(FakePipeline.last_instance.loras), 2)
                 FakePipeline.fail_gpu_inference_once = True
                 exec(set_form_fields(cell_source("generate-image"), SEED=123), ns)
-            self.assertEqual([mode for mode, _ in FakePipeline.calls], ["cuda", "offload"])
-            self.assertEqual(len(FakePipeline.instances), 2)
-            self.assertTrue(all(len(pipe.loras) == 2 for pipe in FakePipeline.instances))
-            self.assertEqual([kw["generator"].seed for _, kw in FakePipeline.calls], [123, 123])
-            self.assertTrue(all("perfect eyes" in kw["prompt"] for _, kw in FakePipeline.calls))
             self.assertEqual(
-                json.loads(FakePipeline.last_instance.image.metadata["parameters"])["loras"][0]["name"],
+                [mode for mode, _ in FakePipeline.calls], ["cuda", "offload"]
+            )
+            self.assertEqual(len(FakePipeline.instances), 2)
+            self.assertTrue(
+                all(len(pipe.loras) == 2 for pipe in FakePipeline.instances)
+            )
+            self.assertEqual(
+                [kw["generator"].seed for _, kw in FakePipeline.calls], [123, 123]
+            )
+            self.assertTrue(
+                all("perfect eyes" in kw["prompt"] for _, kw in FakePipeline.calls)
+            )
+            self.assertEqual(
+                json.loads(FakePipeline.last_instance.image.metadata["parameters"])[
+                    "loras"
+                ][0]["name"],
                 "anatomy",
             )
 
@@ -770,16 +840,25 @@ class ColabNotebookTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             directory = Path(directory)
             modules = fake_modules()
+
             def download(**kwargs):
-                file = directory / kwargs["filename"]
+                file = Path(kwargs["local_dir"]) / kwargs["filename"]
                 file.write_bytes(b"wrong-20-byte-payload")
                 return str(file)
+
             modules["huggingface_hub"].hf_hub_download = download
             with patch.dict(sys.modules, modules):
                 ns = {}
                 self.prepare_existing_for_loras(ns, directory, USE_ANATOMY_LORA=True)
-                with self.assertRaisesRegex(RuntimeError, "tải/xác minh thất bại") as error:
-                    exec(substitute_test_loras(cell_source("prepare-loras"), b"right-20-byte-payload"), ns)
+                with self.assertRaisesRegex(
+                    RuntimeError, "tải/xác minh thất bại"
+                ) as error:
+                    exec(
+                        substitute_test_loras(
+                            cell_source("prepare-loras"), b"right-20-byte-payload"
+                        ),
+                        ns,
+                    )
                 self.assertIsInstance(error.exception.__cause__, ValueError)
                 self.assertIn("SHA-256", str(error.exception.__cause__))
             self.assertIsNone(FakePipeline.last_instance)
@@ -794,61 +873,58 @@ class ColabNotebookTests(unittest.TestCase):
             with patch.dict(sys.modules, modules):
                 ns = {}
                 self.prepare_existing_for_loras(
-                    ns, directory, USE_ANATOMY_LORA=True,
-                    ANATOMY_LORA_PATH=str(local), EYE_LORA_PATH="",
+                    ns,
+                    directory,
+                    USE_ANATOMY_LORA=True,
+                    ANATOMY_LORA_PATH=str(local),
+                    EYE_LORA_PATH="",
                 )
                 exec(substitute_test_loras(cell_source("prepare-loras"), anatomy), ns)
                 self.assertEqual(ns["lora_paths"]["anatomy"], local)
                 exec(cell_source("load-pipeline"), ns)
-                self.assertEqual([entry[1]["adapter_name"] for entry in FakePipeline.last_instance.loras], ["anatomy"])
+                self.assertEqual(
+                    [
+                        entry[1]["adapter_name"]
+                        for entry in FakePipeline.last_instance.loras
+                    ],
+                    ["anatomy"],
+                )
                 local.write_bytes(b"bad checksum - same size")
                 with self.assertRaisesRegex(ValueError, "SHA-256"):
-                    exec(substitute_test_loras(cell_source("prepare-loras"), anatomy), ns)
+                    exec(
+                        substitute_test_loras(cell_source("prepare-loras"), anatomy), ns
+                    )
 
-    def test_lora_drive_reuse_and_corrupted_copy_is_never_overwritten(self):
-        anatomy = b"verified anatomy Drive copy"
+    def test_verified_local_lora_is_reused_and_corruption_is_not_overwritten(self):
+        anatomy = b"verified local anatomy"
         with tempfile.TemporaryDirectory() as directory:
-            directory = Path(directory)
-            modules = fake_modules()
-            with patch.dict(sys.modules, modules):
+            root = Path(directory)
+            with patch.dict(sys.modules, fake_modules()):
                 ns = {}
-                self.prepare_existing_for_loras(ns, directory, USE_ANATOMY_LORA=True)
-                ns["drive_root"] = directory / "drive"
-                ns["lora_drive_dir"] = ns["drive_root"] / "MyDrive" / "AI" / "loras"
-                ns["lora_drive_dir"].mkdir(parents=True)
-                saved = ns["lora_drive_dir"] / "anatomy_helper.safetensors"
+                self.prepare_existing_for_loras(ns, root, USE_ANATOMY_LORA=True)
+                saved = ns["local_lora_cache"] / "anatomy_helper.safetensors"
+                saved.parent.mkdir(parents=True)
                 saved.write_bytes(anatomy)
-                exec(substitute_test_loras(cell_source("prepare-loras"), anatomy), ns)
+                prepare = substitute_test_loras(cell_source("prepare-loras"), anatomy)
+                exec(prepare, ns)
                 self.assertEqual(ns["lora_paths"]["anatomy"], saved)
-                saved.write_bytes(b"incorrect Drive copy")
+                saved.write_bytes(b"z" * len(anatomy))
                 with self.assertRaisesRegex(ValueError, "SHA-256"):
-                    exec(substitute_test_loras(cell_source("prepare-loras"), anatomy), ns)
-                self.assertEqual(saved.read_bytes(), b"incorrect Drive copy")
+                    exec(prepare, ns)
+                self.assertEqual(saved.read_bytes(), b"z" * len(anatomy))
 
-    def test_lora_on_low_local_disk_downloads_directly_to_drive(self):
-        anatomy = b"verified LoRA on Drive"
+    def test_low_disk_stops_local_lora_download_without_fallback(self):
         with tempfile.TemporaryDirectory() as directory:
-            directory = Path(directory)
-            modules = fake_modules()
-            calls = []
-            def download(**kwargs):
-                calls.append(kwargs)
-                path = Path(kwargs["local_dir"]) / kwargs["filename"]
-                path.write_bytes(anatomy)
-                return str(path)
-            modules["huggingface_hub"].hf_hub_download = download
-            with patch.dict(sys.modules, modules):
+            root = Path(directory)
+            with patch.dict(sys.modules, fake_modules()):
                 ns = {}
-                self.prepare_existing_for_loras(ns, directory, USE_ANATOMY_LORA=True)
-                ns["drive_root"] = directory / "drive"
-                ns["lora_drive_dir"] = ns["drive_root"] / "MyDrive" / "AI" / "loras"
-                ns["drive_root"].joinpath("MyDrive").mkdir(parents=True)
-                with patch("shutil.disk_usage", return_value=types.SimpleNamespace(free=0)):
-                    exec(substitute_test_loras(cell_source("prepare-loras"), anatomy), ns)
-            self.assertEqual(ns["lora_paths"]["anatomy"].read_bytes(), anatomy)
-            self.assertEqual(len(calls), 1)
-            self.assertIn("local_dir", calls[0])
-            self.assertNotIn("cache_dir", calls[0])
+                self.prepare_existing_for_loras(ns, root, USE_EYE_LORA=True)
+                with patch(
+                    "shutil.disk_usage", return_value=types.SimpleNamespace(free=0)
+                ):
+                    with self.assertRaisesRegex(OSError, "Thiếu đĩa /content"):
+                        exec(substitute_test_loras(cell_source("prepare-loras")), ns)
+            self.assertIsNone(FakePipeline.last_instance)
 
     def test_lora_config_changed_requires_reverification(self):
         anatomy = b"verified anatomy"
@@ -858,7 +934,9 @@ class ColabNotebookTests(unittest.TestCase):
             local.write_bytes(anatomy)
             with patch.dict(sys.modules, fake_modules()):
                 ns = {}
-                self.prepare_existing_for_loras(ns, directory, USE_ANATOMY_LORA=True, ANATOMY_LORA_PATH=str(local))
+                self.prepare_existing_for_loras(
+                    ns, directory, USE_ANATOMY_LORA=True, ANATOMY_LORA_PATH=str(local)
+                )
                 exec(substitute_test_loras(cell_source("prepare-loras"), anatomy), ns)
                 ns["ANATOMY_WEIGHT"] = 0.4
                 with self.assertRaisesRegex(RuntimeError, "Cấu hình LoRA đã đổi"):
@@ -876,36 +954,27 @@ class ColabNotebookTests(unittest.TestCase):
             with patch.dict(sys.modules, fake_modules()):
                 ns = {}
                 self.configure(ns, model, directory / "outputs")
-                source = substitute_test_checkpoint(cell_source("prepare-model"), contents)
+                source = substitute_test_checkpoint(
+                    cell_source("prepare-model"), contents
+                )
                 model.write_bytes(contents)
                 with patch("builtins.print") as prints:
                     exec(source, ns)
-                self.assertTrue(any("đã xác minh là WAI-illustrious v17" in str(c) for c in prints.call_args_list))
+                self.assertTrue(
+                    any(
+                        "đã xác minh là WAI-illustrious v17" in str(c)
+                        for c in prints.call_args_list
+                    )
+                )
                 model.write_bytes(b"wrong same length")
                 with patch("builtins.print") as prints:
                     exec(source, ns)
-                self.assertTrue(any("KHÔNG xác thực là WAI v17" in str(c) for c in prints.call_args_list))
-
-    def test_verified_drive_checkpoint_ignores_corrupted_matching_mtime_cache(self):
-        payload = b"v17 verified source"
-        with tempfile.TemporaryDirectory() as directory:
-            directory = Path(directory)
-            fake_drive = directory / "drive"
-            source = fake_drive / "MyDrive" / "models" / "WAI-illustrious.safetensors"
-            source.parent.mkdir(parents=True)
-            source.write_bytes(payload)
-            with patch.dict(sys.modules, fake_modules()):
-                ns = {}
-                self.configure(ns, source, directory / "outputs")
-                ns["drive_root"] = fake_drive
-                cache = ns["local_cache_root"] / source.name
-                cache.parent.mkdir(parents=True)
-                cache.write_bytes(b"z" * len(payload))
-                self.assertEqual(cache.stat().st_size, source.stat().st_size)
-                __import__("os").utime(cache, ns=(source.stat().st_atime_ns, source.stat().st_mtime_ns))
-                exec(substitute_test_checkpoint(cell_source("prepare-model"), payload), ns)
-            self.assertEqual(ns["checkpoint"], source)
-            self.assertEqual(cache.read_bytes(), b"z" * len(payload))
+                self.assertTrue(
+                    any(
+                        "KHÔNG xác thực là WAI v17" in str(c)
+                        for c in prints.call_args_list
+                    )
+                )
 
     def test_lora_mutated_after_verification_is_rejected_before_model_load(self):
         anatomy = b"verified anatomy"
@@ -915,7 +984,9 @@ class ColabNotebookTests(unittest.TestCase):
             local.write_bytes(anatomy)
             with patch.dict(sys.modules, fake_modules()):
                 ns = {}
-                self.prepare_existing_for_loras(ns, directory, USE_ANATOMY_LORA=True, ANATOMY_LORA_PATH=str(local))
+                self.prepare_existing_for_loras(
+                    ns, directory, USE_ANATOMY_LORA=True, ANATOMY_LORA_PATH=str(local)
+                )
                 exec(substitute_test_loras(cell_source("prepare-loras"), anatomy), ns)
                 local.write_bytes(b"different payload")
                 with self.assertRaisesRegex(ValueError, "SHA-256"):
@@ -933,15 +1004,22 @@ class ColabNotebookTests(unittest.TestCase):
                 exec(cell_source("load-pipeline"), ns)
                 exec(set_form_fields(cell_source("generate-image"), SEED=42), ns)
                 source_file = ns["output_path"]
-                exec(set_form_fields(
-                    cell_source("refine-image"), BOXES="100,300,240,490;700,400,850,590",
-                    TARGET="hands", REFINE_SEED=777,
-                ), ns)
+                exec(
+                    set_form_fields(
+                        cell_source("refine-image"),
+                        BOXES="100,300,240,490;700,400,850,590",
+                        TARGET="hands",
+                        REFINE_SEED=777,
+                    ),
+                    ns,
+                )
             self.assertTrue(source_file.exists())
             self.assertTrue(ns["repaired_path"].exists())
             self.assertNotEqual(source_file, ns["repaired_path"])
             self.assertEqual(ns["mask_binary"].getbbox(), (100, 300, 850, 590))
-            self.assertEqual(ns["mask_binary"].boxes, [(100, 300, 240, 490), (700, 400, 850, 590)])
+            self.assertEqual(
+                ns["mask_binary"].boxes, [(100, 300, 240, 490), (700, 400, 850, 590)]
+            )
             self.assertEqual(len(FakeInpaintPipeline.calls), 1)
             mode, args = FakeInpaintPipeline.calls[0]
             self.assertEqual(mode, "offload")
@@ -964,15 +1042,34 @@ class ColabNotebookTests(unittest.TestCase):
                 image_file = directory / "sample.png"
                 image_file.write_bytes(b"an existing PNG in the fixture")
                 for fields, error in [
-                    (dict(SOURCE_IMAGE=str(image_file), BOXES="1,2,1100,500"), "ngoài ảnh"),
-                    (dict(SOURCE_IMAGE=str(image_file), BOXES="0,0,1024,1024"), "không phủ toàn bộ ảnh"),
-                    (dict(SOURCE_IMAGE=str(image_file), BOXES="not four numbers"), "BOXES phải"),
+                    (
+                        dict(SOURCE_IMAGE=str(image_file), BOXES="1,2,1100,500"),
+                        "ngoài ảnh",
+                    ),
+                    (
+                        dict(SOURCE_IMAGE=str(image_file), BOXES="0,0,1024,1024"),
+                        "không phủ toàn bộ ảnh",
+                    ),
+                    (
+                        dict(SOURCE_IMAGE=str(image_file), BOXES="not four numbers"),
+                        "BOXES phải",
+                    ),
                     (dict(SOURCE_IMAGE=str(image_file), BOXES=""), "Chọn đúng MỘT"),
-                    (dict(SOURCE_IMAGE=str(image_file), MASK_PATH="/tmp/mask.png", BOXES="1,2,3,4"), "Chọn đúng MỘT"),
+                    (
+                        dict(
+                            SOURCE_IMAGE=str(image_file),
+                            MASK_PATH="/tmp/mask.png",
+                            BOXES="1,2,3,4",
+                        ),
+                        "Chọn đúng MỘT",
+                    ),
                 ]:
                     with self.subTest(fields=fields):
                         with self.assertRaisesRegex(ValueError, error):
-                            exec(set_form_fields(cell_source("refine-image"), **fields), ns)
+                            exec(
+                                set_form_fields(cell_source("refine-image"), **fields),
+                                ns,
+                            )
                 self.assertEqual(FakeInpaintPipeline.calls, [])
 
     def test_inpainting_accepts_explicit_black_white_mask_without_generation_cell(self):
@@ -987,10 +1084,17 @@ class ColabNotebookTests(unittest.TestCase):
                 mask = directory / "eyes_mask.png"
                 original.write_bytes(b"photo fixture")
                 mask.write_bytes(b"black and white fixture")
-                exec(set_form_fields(
-                    cell_source("refine-image"), SOURCE_IMAGE=str(original), MASK_PATH=str(mask),
-                    TARGET="eyes", REFINE_PROMPT="anime girl", REFINE_SEED=10,
-                ), ns)
+                exec(
+                    set_form_fields(
+                        cell_source("refine-image"),
+                        SOURCE_IMAGE=str(original),
+                        MASK_PATH=str(mask),
+                        TARGET="eyes",
+                        REFINE_PROMPT="anime girl",
+                        REFINE_SEED=10,
+                    ),
+                    ns,
+                )
             self.assertEqual(ns["mask_binary"].getbbox(), (50, 50, 110, 120))
             self.assertIn("perfect eyes", FakeInpaintPipeline.calls[0][1]["prompt"])
             self.assertTrue(ns["repaired_path"].exists())
@@ -1005,21 +1109,37 @@ class ColabNotebookTests(unittest.TestCase):
             with patch.dict(sys.modules, modules):
                 ns = {}
                 self.prepare_existing_for_loras(
-                    ns, directory, USE_ANATOMY_LORA=True, ANATOMY_LORA_PATH=str(local),
+                    ns,
+                    directory,
+                    USE_ANATOMY_LORA=True,
+                    ANATOMY_LORA_PATH=str(local),
                 )
                 exec(substitute_test_loras(cell_source("prepare-loras"), anatomy), ns)
                 exec(cell_source("load-pipeline"), ns)
                 source_file = directory / "source.png"
                 source_file.write_bytes(b"mock image")
                 FakeInpaintPipeline.fail_gpu_once = True
-                exec(set_form_fields(
-                    cell_source("refine-image"), SOURCE_IMAGE=str(source_file), BOXES="20,20,120,120",
-                    REFINE_PROMPT="anime character", REFINE_SEED=456,
-                ), ns)
-            self.assertEqual([mode for mode, _ in FakeInpaintPipeline.calls], ["cuda", "offload"])
-            self.assertEqual([args["generator"].seed for _, args in FakeInpaintPipeline.calls], [456, 456])
+                exec(
+                    set_form_fields(
+                        cell_source("refine-image"),
+                        SOURCE_IMAGE=str(source_file),
+                        BOXES="20,20,120,120",
+                        REFINE_PROMPT="anime character",
+                        REFINE_SEED=456,
+                    ),
+                    ns,
+                )
+            self.assertEqual(
+                [mode for mode, _ in FakeInpaintPipeline.calls], ["cuda", "offload"]
+            )
+            self.assertEqual(
+                [args["generator"].seed for _, args in FakeInpaintPipeline.calls],
+                [456, 456],
+            )
             self.assertEqual(len(FakePipeline.instances), 2)
-            self.assertTrue(all(len(pipe.loras) == 1 for pipe in FakePipeline.instances))
+            self.assertTrue(
+                all(len(pipe.loras) == 1 for pipe in FakePipeline.instances)
+            )
             self.assertTrue(ns["repaired_path"].exists())
 
     def test_no_gpu_fails_before_download(self):

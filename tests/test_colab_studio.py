@@ -108,6 +108,19 @@ class NotebookTests(unittest.TestCase):
         ui_source = "".join(n["cells"][7]["source"])
         self.assertIn((ROOT / "colab/studio.py").read_text(encoding="utf-8"), ui_source)
         self.assertIn("del pipe", ui_source)
+        executable = "\n".join(
+            "".join(cell["source"])
+            for cell in n["cells"]
+            if cell["cell_type"] == "code"
+        )
+        for removed in (
+            "drive.mount(",
+            "MOUNT_DRIVE",
+            "CACHE_MODEL_LOCAL",
+            "PERSIST_MODEL_TO_DRIVE",
+            "PERSIST_LORAS_TO_DRIVE",
+        ):
+            self.assertNotIn(removed, executable)
         for cell in n["cells"]:
             if cell["cell_type"] == "code":
                 self.assertEqual(cell["execution_count"], None)
@@ -228,11 +241,8 @@ class NotebookTests(unittest.TestCase):
                 Path=Path,
                 source_model=model,
                 output_dir=root / "images",
-                drive_root=root / "drive",
                 local_cache_root=root / "cache",
-                CACHE_MODEL_LOCAL=False,
                 AUTO_DOWNLOAD=False,
-                PERSIST_MODEL_TO_DRIVE=False,
             )
             model.write_bytes(good_bytes)
             ns = dict(base)
@@ -244,12 +254,25 @@ class NotebookTests(unittest.TestCase):
                 with contextlib.redirect_stdout(io.StringIO()):
                     exec(source, dict(base))
             model.unlink()
-            downloaded = root / "downloaded.safetensors"
-            downloaded.write_bytes(good_bytes)
-            modules["huggingface_hub"].hf_hub_download = lambda **_: str(downloaded)
+            downloaded = root / "cache" / "waiIllustriousSDXL_v170.safetensors"
+
+            def download(**kwargs):
+                self.assertEqual(kwargs["local_dir"], str(root / "cache"))
+                downloaded.write_bytes(good_bytes)
+                return str(downloaded)
+
+            modules["huggingface_hub"].hf_hub_download = download
             with contextlib.redirect_stdout(io.StringIO()):
                 ns = dict(base, AUTO_DOWNLOAD=True)
                 exec(source, ns)
+            self.assertTrue(ns["WAI_STUDIO_VERSION_VERIFIED"])
+            self.assertEqual(ns["checkpoint"], downloaded)
+            modules["huggingface_hub"].hf_hub_download = lambda **_: (
+                _ for _ in ()
+            ).throw(AssertionError("Do not redownload"))
+            with contextlib.redirect_stdout(io.StringIO()):
+                ns = dict(base, AUTO_DOWNLOAD=True)
+                exec(source, ns)  # cached branch also verifies and marks v17
             self.assertTrue(ns["WAI_STUDIO_VERSION_VERIFIED"])
             self.assertEqual(ns["checkpoint"], downloaded)
 
@@ -266,7 +289,6 @@ class NotebookTests(unittest.TestCase):
                 output_dir=root / "outputs",
                 backup_dir=root / "backup",
                 checkpoint=ck,
-                drive_root=root / "drive",
                 lora_paths={"anatomy": ck},
             )
             calls = []
@@ -285,7 +307,12 @@ class NotebookTests(unittest.TestCase):
                 def close(self):
                     self.closed = True
 
-            ns = {"studio_runtime": runtime, "build_app": lambda _: FakeApp()}
+            ns = {
+                "studio_runtime": runtime,
+                "build_app": lambda _: FakeApp(),
+                "local_cache_root": root / "wai_model_cache",
+                "local_lora_cache": root / "wai_lora_cache",
+            }
             text = io.StringIO()
             with contextlib.redirect_stdout(text):
                 exec(launch, ns)
@@ -297,6 +324,8 @@ class NotebookTests(unittest.TestCase):
             self.assertEqual(calls[0]["css"], "test-css")
             self.assertEqual(calls[0]["footer_links"], [])
             self.assertIn(str(ck.resolve()), calls[0]["blocked_paths"])
+            self.assertIn(str(ns["local_cache_root"]), calls[0]["blocked_paths"])
+            self.assertIn(str(ns["local_lora_cache"]), calls[0]["blocked_paths"])
             self.assertNotIn(str(ck.parent), calls[0]["allowed_paths"])
             self.assertIn("Ai có link đều có thể dùng GPU", text.getvalue())
             old_app = ns["studio_app"]
@@ -311,6 +340,9 @@ class RuntimeValidationTests(unittest.TestCase):
         self.tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)
         self.root = Path(self.tmp.name)
+        root_patch = patch.object(studio, "CONTENT_ROOT", self.root)
+        root_patch.start()
+        self.addCleanup(root_patch.stop)
         self.ck = self.root / "verified.safetensors"
         self.ck.touch()
         self.pipe = FakePipe()
@@ -327,7 +359,6 @@ class RuntimeValidationTests(unittest.TestCase):
             vram_mode="auto",
             use_offload=False,
             output_dir=self.root / "output",
-            drive_root=self.root / "drive",
             backup_dir=self.root / "backup",
         )
         FakePipe.calls = []
@@ -348,7 +379,7 @@ class RuntimeValidationTests(unittest.TestCase):
         values.update(change)
         return self.runtime._parameters(**values)
 
-    def test_style_presets_and_digit_negative_are_editable(self):
+    def test_style_presets_populate_editable_fields_without_overriding_edits(self):
         negative = studio.DEFAULT_NEGATIVE
         for anomaly in (
             "extra fingers",
@@ -359,61 +390,44 @@ class RuntimeValidationTests(unittest.TestCase):
             "fused toes",
         ):
             self.assertIn(anomaly, negative)
-        self.assertNotIn(", hands,", negative)
-        self.assertNotIn(", feet,", negative)
         self.assertNotIn("nsfw", negative)
-        anime_positive, anime_negative, *_ = self.params(
-            prompt="anime illustration, portrait",
-            negative=negative,
-            style="Anime chuẩn",
+        anime_pos, anime_neg = studio.compose_style_prompts(
+            "anime illustration, portrait", negative, "Anime chuẩn", True
         )
-        self.assertTrue(anime_positive.startswith("anime illustration, clean lineart"))
-        self.assertEqual(anime_positive.count("anime illustration"), 1)
-        self.assertIn("photorealistic", anime_negative)
-        self.assertTrue(anime_negative.startswith("nsfw, explicit"))
-        semi_positive, semi_negative, *_ = self.params(
-            prompt="portrait", negative="", style="Bán thực 2.5D"
+        self.assertTrue(anime_pos.startswith("anime illustration, clean lineart"))
+        self.assertEqual(anime_pos.count("anime illustration"), 1)
+        self.assertIn("perfect eyes", anime_pos)
+        self.assertTrue(anime_neg.startswith("nsfw, explicit"))
+        self.assertIn("photorealistic", anime_neg)
+        semi_pos, semi_neg = studio.compose_style_prompts(
+            "portrait", "", "Bán thực 2.5D", False
         )
         self.assertTrue(
-            semi_positive.startswith("semi-realistic anime art, 2.5d illustration")
+            semi_pos.startswith("semi-realistic anime art, 2.5d illustration")
         )
-        self.assertIn("realistic facial proportions", semi_positive)
-        self.assertIn("volumetric lighting", semi_positive)
-        self.assertNotIn("cel shading", semi_positive)
-        self.assertIn("flat cel shading", semi_negative)
-        self.assertIn("thick black outlines", semi_negative)
-        self.assertTrue(semi_negative.startswith("nsfw, explicit"))
-        self.assertNotIn("photorealistic", semi_negative)
-        custom_positive, custom_negative, *_ = self.params(
-            prompt="portrait",
-            negative="my own negative",
-            eyes_enabled=False,
-            style="Tùy chỉnh",
-        )
-        self.assertEqual(custom_positive, "portrait")
-        self.assertEqual(custom_negative, "nsfw, explicit, my own negative")
-        # Long prompts used to hide the style terms at the truncated tail.
+        self.assertIn("volumetric lighting", semi_pos)
+        self.assertIn("flat cel shading", semi_neg)
+        self.assertNotIn("perfect eyes", semi_pos)
         long_prompt = "portrait, " + "soft sunlight, " * 90 + "semi-realistic anime art"
-        long_positive, long_negative, *_ = self.params(
-            prompt=long_prompt,
-            negative=studio.DEFAULT_NEGATIVE,
-            style="Bán thực 2.5D",
+        long_pos, long_neg = studio.compose_style_prompts(
+            long_prompt, negative, "Bán thực 2.5D", True
         )
-        self.assertTrue(
-            long_positive.startswith("semi-realistic anime art, 2.5d illustration")
-        )
-        self.assertEqual(long_positive.count("semi-realistic anime art"), 1)
-        self.assertIn("soft sunlight", long_positive)
-        self.assertTrue(long_negative.startswith("nsfw, explicit, flat cel shading"))
-        # The read-only preview is built with the very same function as inference.
+        self.assertEqual(long_pos.count("semi-realistic anime art"), 1)
+        self.assertTrue(long_pos.startswith("semi-realistic anime art"))
+        self.assertTrue(long_neg.startswith("nsfw, explicit, flat cel shading"))
+        # Runtime uses only what remains in the editable fields, even if the
+        # selected style and enabled eye LoRA have different suggested tags.
+        edited = "  my own portrait, no preset tags  "
         self.assertEqual(
-            (long_positive, long_negative),
-            studio.compose_style_prompts(
-                long_prompt, studio.DEFAULT_NEGATIVE, "Bán thực 2.5D", True
-            ),
+            self.params(
+                prompt=edited, negative="  custom negative ", style="Bán thực 2.5D"
+            )[:2],
+            (edited, "  custom negative "),
         )
         with self.assertRaisesRegex(ValueError, "Chọn phong cách"):
             self.params(style="unknown")
+        with self.assertRaisesRegex(ValueError, "Chọn phong cách"):
+            studio.compose_style_prompts("portrait", "", "unknown", False)
 
     def test_adult_style_is_opt_in_and_rejects_obvious_underage_prompts(self):
         with self.assertRaisesRegex(ValueError, "cần xác nhận"):
@@ -432,28 +446,46 @@ class RuntimeValidationTests(unittest.TestCase):
                 self.params(
                     style=studio.ADULT_STYLE, adult_confirmed=True, prompt=prompt
                 )
-        positive, negative, *_ = self.params(
-            style=studio.ADULT_STYLE,
-            adult_confirmed=True,
-            prompt="adult, woman portrait",
-            negative=studio.DEFAULT_NEGATIVE,
+        preset_pos, preset_neg = studio.compose_style_prompts(
+            "adult, woman portrait", studio.DEFAULT_NEGATIVE, studio.ADULT_STYLE, True
         )
-        self.assertIn("erotic anime illustration", positive)
-        self.assertEqual(positive.count("adult"), 1)  # already in user's prompt
-        self.assertIn("underage", negative)
-        self.assertIn("missing toes", negative)
-        self.assertNotIn(", nsfw", negative)
-        self.assertNotIn(", explicit", negative)
+        self.assertIn("erotic anime illustration", preset_pos)
+        self.assertEqual(preset_pos.count("adult"), 1)
+        self.assertIn("underage", preset_neg)
+        self.assertNotIn("nsfw", preset_neg)
+        self.assertIn("missing toes", preset_neg)
+        self.assertEqual(
+            self.params(
+                style=studio.ADULT_STYLE,
+                adult_confirmed=True,
+                prompt=preset_pos,
+                negative=preset_neg,
+            )[:2],
+            (preset_pos, preset_neg),
+        )
+        # Underage terms in the *negative* should not trigger the positive guard.
+        self.assertEqual(
+            self.params(
+                style=studio.ADULT_STYLE,
+                adult_confirmed=True,
+                prompt="adult",
+                negative="underage, child",
+            )[1],
+            "underage, child",
+        )
 
     def test_validation_and_eye_trigger(self):
-        params = self.params()
-        self.assertEqual(params[0], "anime portrait, perfect eyes")
-        self.assertEqual(
-            self.params(prompt="perfect eyes, soft light")[0].count("perfect eyes"), 1
+        self.assertEqual(self.params()[:2], ("anime portrait", "bad anatomy"))
+        suggested, _ = studio.compose_style_prompts(
+            "anime portrait", "", "Tùy chỉnh", True
         )
+        self.assertIn("perfect eyes", suggested)
+        self.assertEqual(self.params(eyes_enabled=True)[0], "anime portrait")
         self.assertEqual(self.params(eyes_enabled=False)[0], "anime portrait")
         for setting in (
             dict(prompt=" "),
+            dict(prompt="x" * 2201),
+            dict(negative="x" * 1701),
             dict(steps=46),
             dict(cfg=float("nan")),
             dict(seed=-2),
@@ -492,13 +524,21 @@ class RuntimeValidationTests(unittest.TestCase):
         self.assertEqual(
             [call[1]["generator"].seed for call in FakePipe.calls], [42, 43]
         )
+        self.assertTrue(
+            all(
+                call[1]["prompt"] == "anime cat"
+                and call[1]["negative_prompt"] == "bad paws"
+                for call in FakePipe.calls
+            )
+        )
         with Image.open(paths[0]) as result:
             self.assertEqual(result.size, (512, 512))
             self.assertNotIn("parameters", result.info)  # private by default
+        # Style is metadata only: user-edited prompts are the exact pipe inputs.
         self.runtime.text_to_image(
             "512x512",
-            "anime",
-            "",
+            "  portrait without style tags  ",
+            "  my negative  ",
             20,
             6,
             2,
@@ -515,8 +555,12 @@ class RuntimeValidationTests(unittest.TestCase):
             parameters = json.loads(result.info["parameters"])
             self.assertEqual(parameters["seed"], 2)
             self.assertEqual(parameters["style"], "Bán thực 2.5D")
-            self.assertIn("2.5d illustration", parameters["prompt"])
-            self.assertIn("flat cel shading", parameters["negative_prompt"])
+            self.assertEqual(parameters["prompt"], "  portrait without style tags  ")
+            self.assertEqual(parameters["negative_prompt"], "  my negative  ")
+            self.assertEqual(FakePipe.calls[-1][1]["prompt"], parameters["prompt"])
+            self.assertEqual(
+                FakePipe.calls[-1][1]["negative_prompt"], parameters["negative_prompt"]
+            )
 
     @unittest.skipIf(Image is None, "Pillow needed for raster smoke tests")
     def test_img2img_and_painted_inpainting_keep_unmasked_pixels(self):
@@ -544,6 +588,13 @@ class RuntimeValidationTests(unittest.TestCase):
             self.assertEqual(FakePipe.calls[-1][1]["image"].size, (512, 512))
             self.assertEqual(FakePipe.calls[-1][1]["strength"], 0.5)
             self.assertEqual(FakePipe.calls[-1][1]["generator"].seed, 9)
+            self.assertEqual(
+                (
+                    FakePipe.calls[-1][1]["prompt"],
+                    FakePipe.calls[-1][1]["negative_prompt"],
+                ),
+                ("forest", ""),
+            )
             painted = Image.new("RGBA", (512, 512), (0, 0, 0, 0))
             ImageDraw.Draw(painted).rectangle(
                 (100, 100, 199, 199), fill=(255, 255, 255, 255)
@@ -578,14 +629,70 @@ class RuntimeValidationTests(unittest.TestCase):
             self.assertEqual(
                 FakePipe.calls[-1][1]["mask_image"].getpixel((150, 150)), 255
             )
-            self.assertIn("natural hands", FakePipe.calls[-1][1]["prompt"])
+            self.assertEqual(FakePipe.calls[-1][1]["prompt"], "natural portrait")
+            self.assertEqual(FakePipe.calls[-1][1]["negative_prompt"], "")
             self.assertEqual(len(gallery), 1)
+            for target in ("hands", "legs", "eyes"):
+                with self.subTest(target=target):
+                    suggested = studio.apply_repair_hints(
+                        "natural portrait", "bad anatomy", target
+                    )
+                    self.assertNotEqual(suggested, ("natural portrait", "bad anatomy"))
+                    self.assertEqual(
+                        studio.apply_repair_hints(*suggested, target), suggested
+                    )
+            self.assertEqual(
+                studio.apply_repair_hints("as-is", "", "custom"), ("as-is", "")
+            )
+            with self.assertRaisesRegex(ValueError, "Chọn vùng sửa"):
+                studio.apply_repair_hints("as-is", "", "wrong")
             with self.assertRaisesRegex(ValueError, "vùng nhỏ"):
                 studio._editor_mask({"background": source, "layers": []}, None)
             with self.assertRaisesRegex(ValueError, "cùng kích thước"):
                 studio._editor_mask(editor, Image.new("L", (1, 1), 255))
             with self.assertRaisesRegex(ValueError, "vùng nhỏ"):
                 studio._editor_mask(editor, Image.new("L", (512, 512), 255))
+
+    @unittest.skipIf(Image is None, "Pillow needed for inference-mode smoke test")
+    def test_second_image_changes_adapters_inside_inference_mode(self):
+        active = {"inference": False}
+
+        @contextlib.contextmanager
+        def inference_mode():
+            active["inference"] = True
+            try:
+                yield
+            finally:
+                active["inference"] = False
+
+        class GuardPipe(FakePipe):
+            def set_adapters(self, names, adapter_weights):
+                if not active["inference"]:
+                    raise AssertionError("LoRA adapter changed outside InferenceMode")
+                super().set_adapters(names, adapter_weights)
+
+        self.runtime.pipe = GuardPipe()
+        self.runtime.torch = types.SimpleNamespace(
+            Generator=FakeGenerator, inference_mode=inference_mode, cuda=FakeTorch.cuda
+        )
+        self.runtime.use_offload = True
+        for seed in (42, 43):
+            self.runtime.text_to_image(
+                "512x512",
+                "anime",
+                "",
+                20,
+                6,
+                seed,
+                1,
+                True,
+                0.55,
+                True,
+                0.45,
+                False,
+            )
+        self.assertEqual(len(self.runtime.pipe.weights), 2)
+        self.assertFalse(active["inference"])
 
     @unittest.skipIf(
         Image is None or not importlib.util.find_spec("torch"),
@@ -715,9 +822,37 @@ class RuntimeValidationTests(unittest.TestCase):
             self.assertEqual(self.runtime.pipe.hooks_removed, 4)
             self.assertTrue(self.runtime.pipe.offloaded)
 
+    def test_runtime_rejects_nonlocal_and_drive_output_directories(self):
+        (self.root / "drive" / "MyDrive").mkdir(parents=True)
+        (self.root / "symlinked-output").symlink_to(
+            self.root / "drive" / "MyDrive", target_is_directory=True
+        )
+        for output in (
+            self.root / "drive" / "MyDrive" / "images",
+            self.root / "symlinked-output",
+            Path("/tmp/outside-wai"),
+        ):
+            with (
+                self.subTest(output=output),
+                self.assertRaisesRegex(ValueError, "/content"),
+            ):
+                studio.StudioRuntime(
+                    torch=FakeTorch,
+                    pipe=self.pipe,
+                    create_pipeline=lambda offload: FakePipe(),
+                    checkpoint=self.ck,
+                    lora_paths={},
+                    lora_manifest={},
+                    vram_mode="auto",
+                    use_offload=False,
+                    output_dir=output,
+                    backup_dir=self.root / "backup",
+                )
+
     @unittest.skipIf(Image is None, "Pillow needed for raster smoke tests")
-    def test_output_falls_back_to_local_when_drive_disconnects(self):
-        self.runtime.output_dir = self.root / "drive" / "MyDrive" / "AI" / "outputs"
+    def test_output_falls_back_to_local_when_requested_folder_is_unwritable(self):
+        self.runtime.output_dir = self.root / "blocked-output"
+        self.runtime.output_dir.write_bytes(b"not a directory")
         _, paths, status, _ = self.runtime.text_to_image(
             "512x512",
             "anime",
@@ -734,7 +869,7 @@ class RuntimeValidationTests(unittest.TestCase):
         )
         self.assertEqual(Path(paths[0]).parent, self.runtime.backup_dir)
         self.assertIn(str(self.runtime.backup_dir), status)
-        self.assertFalse((self.root / "drive").exists())
+        self.assertTrue(self.runtime.output_dir.is_file())
 
     @unittest.skipIf(
         Image is None or not importlib.util.find_spec("gradio"),
@@ -773,26 +908,39 @@ class RuntimeValidationTests(unittest.TestCase):
                 for c in config["components"]
             )
         )
-        previews = [
+        effective = [
             c
             for c in config["components"]
             if c["type"] == "textbox"
-            and "sẽ gửi tới model" in c["props"].get("label", "")
+            and "gửi model · sửa được" in c["props"].get("label", "")
         ]
-        self.assertEqual(len(previews), 2)
-        self.assertTrue(all(not c["props"]["interactive"] for c in previews))
+        self.assertEqual(len(effective), 2)
+        self.assertTrue(all(c["props"]["interactive"] for c in effective))
         self.assertTrue(
-            any("anime illustration" in c["props"]["value"] for c in previews)
+            any("anime illustration" in c["props"]["value"] for c in effective)
         )
-        preview_event = config["dependencies"][-1]
-        self.assertIn((style[0]["id"], "change"), preview_event["targets"])
-        self.assertEqual(set(preview_event["outputs"]), {c["id"] for c in previews})
-        self.assertFalse(preview_event["queue"])
-        self.assertEqual(
-            len(
-                [x for x in config["dependencies"] if x["api_visibility"] == "private"]
-            ),
-            6,
+        reapply = next(
+            c
+            for c in config["components"]
+            if c["type"] == "button"
+            and "Áp dụng lại phong cách" in c["props"].get("value", "")
+        )
+        preset_event = next(
+            d
+            for d in config["dependencies"]
+            if (style[0]["id"], "change") in d["targets"]
+        )
+        self.assertIn((reapply["id"], "click"), preset_event["targets"])
+        self.assertEqual(set(preset_event["outputs"]), {c["id"] for c in effective})
+        self.assertFalse(preset_event["queue"])
+        repair_event = config["dependencies"][-1]
+        self.assertEqual(set(repair_event["outputs"]), {c["id"] for c in effective})
+        self.assertEqual(repair_event["inputs"][:2], [c["id"] for c in effective])
+        self.assertEqual(len(config["dependencies"]), 7)
+        for dep in config["dependencies"][:3]:  # text, img2img, inpaint
+            self.assertEqual(dep["inputs"][-13:-11], [c["id"] for c in effective])
+        self.assertTrue(
+            all(x["api_visibility"] == "private" for x in config["dependencies"])
         )
         self.assertTrue(demo.studio_css)
         self.assertIsNotNone(demo.studio_theme)
@@ -802,7 +950,7 @@ class RuntimeValidationTests(unittest.TestCase):
         "Gradio and Pillow needed for image event smoke test",
     )
     def test_gradio_events_preprocess_and_return_downloadable_pngs(self):
-        """Exercise all UI events through Gradio 6, not only the runtime methods."""
+        """UI event route: exact edited fields reach all three pipeline modes."""
         import asyncio
         from gradio.state_holder import SessionState
 
@@ -822,19 +970,6 @@ class RuntimeValidationTests(unittest.TestCase):
 
         demo = studio.build_app(self.runtime)
         state = SessionState(demo)
-        common = [
-            "anime portrait",
-            studio.DEFAULT_NEGATIVE,
-            20,
-            6,
-            42,
-            1,
-            False,
-            0.55,
-            False,
-            0.45,
-            False,
-        ]
         editor = {
             "background": file_data(source),
             "layers": [file_data(layer)],
@@ -846,30 +981,44 @@ class RuntimeValidationTests(unittest.TestCase):
                 await demo.process_api(index, inputs, state=state, explicit_call=True)
             )["data"]
 
+        def shared(positive, negative, eyes=False):
+            return [positive, negative, 20, 6, 42, 1, False, 0.55, eyes, 0.45, False]
+
         async def smoke():
-            previews = {}
+            presets = {}
             for choice in ("Anime chuẩn", "Bán thực 2.5D", studio.ADULT_STYLE):
-                previews[choice] = await process(
-                    5, [common[0], common[1], choice, False]
+                presets[choice] = await process(
+                    5, [studio.DEFAULT_PROMPT, studio.DEFAULT_NEGATIVE, choice, False]
                 )
-            self.assertNotEqual(previews["Anime chuẩn"], previews["Bán thực 2.5D"])
+            self.assertNotEqual(presets["Anime chuẩn"], presets["Bán thực 2.5D"])
             self.assertTrue(
-                previews["Bán thực 2.5D"][0].startswith("semi-realistic anime art")
+                presets["Bán thực 2.5D"][0].startswith("semi-realistic anime art")
             )
-            self.assertIn("flat cel shading", previews["Bán thực 2.5D"][1])
-            self.assertNotIn("nsfw", previews["Anime chuẩn"][0])
-            self.assertIn("nsfw", previews[studio.ADULT_STYLE][0])
-            self.assertNotIn("nsfw", previews[studio.ADULT_STYLE][1])
-            eyes_preview = await process(
-                5, [common[0], common[1], "Bán thực 2.5D", True]
+            self.assertIn("flat cel shading", presets["Bán thực 2.5D"][1])
+            self.assertNotIn("nsfw", presets["Anime chuẩn"][0])
+            self.assertIn("nsfw", presets[studio.ADULT_STYLE][0])
+            self.assertNotIn("nsfw", presets[studio.ADULT_STYLE][1])
+            eyes_preset = await process(
+                5,
+                [studio.DEFAULT_PROMPT, studio.DEFAULT_NEGATIVE, "Bán thực 2.5D", True],
             )
-            self.assertIn("perfect eyes", eyes_preview[0])
-            self.assertNotIn("perfect eyes", previews["Bán thực 2.5D"][0])
-            for index, inputs, expected_tag, style in (
+            self.assertIn("perfect eyes", eyes_preset[0])
+            self.assertNotIn("perfect eyes", presets["Bán thực 2.5D"][0])
+            # The repair button only changes the visible editable fields.
+            leg_prompts = await process(6, [*presets["Bán thực 2.5D"], "legs"])
+            self.assertIn("natural toes", leg_prompts[0])
+            self.assertIn("broken legs", leg_prompts[1])
+            self.assertEqual(await process(6, [*leg_prompts, "legs"]), leg_prompts)
+            for index, inputs, expected, style in (
                 (
                     0,
-                    ["512x512", *common, "Anime chuẩn", False],
-                    "clean lineart",
+                    [
+                        "512x512",
+                        *shared("  my own portrait  ", "  no hidden tags  ", eyes=True),
+                        "Anime chuẩn",
+                        False,
+                    ],
+                    ("  my own portrait  ", "  no hidden tags  "),
                     "Anime chuẩn",
                 ),
                 (
@@ -878,17 +1027,26 @@ class RuntimeValidationTests(unittest.TestCase):
                         file_data(source),
                         "512x512",
                         0.45,
-                        *common,
+                        *shared("paint this picture", "my bad quality"),
                         "Bán thực 2.5D",
                         False,
                     ],
-                    "semi-realistic anime art",
+                    ("paint this picture", "my bad quality"),
                     "Bán thực 2.5D",
                 ),
                 (
                     2,
-                    [editor, None, "hands", 0.45, 8, *common, "Anime chuẩn", False],
-                    "natural hands",
+                    [
+                        editor,
+                        None,
+                        "hands",
+                        0.45,
+                        8,
+                        *shared("no repair suggestions", "bad hands"),
+                        "Anime chuẩn",
+                        False,
+                    ],
+                    ("no repair suggestions", "bad hands"),
                     "Anime chuẩn",
                 ),
                 (
@@ -899,35 +1057,32 @@ class RuntimeValidationTests(unittest.TestCase):
                         "legs",
                         0.45,
                         8,
-                        *common,
+                        *shared(*leg_prompts),
                         "Bán thực 2.5D",
                         False,
                     ],
-                    "natural toes",
+                    tuple(leg_prompts),
                     "Bán thực 2.5D",
                 ),
                 (
                     0,
-                    ["512x512", *common, studio.ADULT_STYLE, True],
-                    "erotic anime illustration",
+                    [
+                        "512x512",
+                        *shared(*presets[studio.ADULT_STYLE]),
+                        studio.ADULT_STYLE,
+                        True,
+                    ],
+                    tuple(presets[studio.ADULT_STYLE]),
                     studio.ADULT_STYLE,
                 ),
             ):
                 data = await process(index, inputs)
                 self.assertIn("✅ Đã tạo 1 ảnh", data[2])
                 self.assertIn(style, data[2])
-                self.assertIn(expected_tag, FakePipe.calls[-1][1]["prompt"])
-                positive = FakePipe.calls[-1][1]["prompt"]
-                negative = FakePipe.calls[-1][1]["negative_prompt"]
-                if index == 0:
-                    self.assertEqual((positive, negative), tuple(previews[style]))
-                self.assertEqual(negative.count("extra fingers"), 1)
-                self.assertEqual(negative.count("extra toes"), 1)
-                if style == studio.ADULT_STYLE:
-                    self.assertIn("underage", negative)
-                    self.assertNotIn("nsfw", negative)
-                else:
-                    self.assertIn("nsfw", negative)
+                kwargs = FakePipe.calls[-1][1]
+                self.assertEqual(
+                    (kwargs["prompt"], kwargs["negative_prompt"]), expected
+                )
                 self.assertEqual(len(data[0]), 1)  # Gradio Gallery
                 self.assertTrue(Path(data[0][0]["image"]["path"]).is_file())
                 png = Path(data[1][0]["path"])  # Gradio File download

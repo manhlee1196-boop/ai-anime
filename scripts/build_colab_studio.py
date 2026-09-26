@@ -98,38 +98,34 @@ print("✅ Thư viện Studio đã sẵn sàng:", versions)
         "WAI_STUDIO_VERSION_VERIFIED = False\nif source_model.exists() and not source_model.is_file():",
     )
     insert_once(
-        "        if checkpoint_hash == HF_SHA256:\n            print(",
-        "        if checkpoint_hash == HF_SHA256:\n            WAI_STUDIO_VERSION_VERIFIED = True\n            print(",
+        "        checkpoint_hash = HF_SHA256\n        print(",
+        "        checkpoint_hash = HF_SHA256\n        WAI_STUDIO_VERSION_VERIFIED = True\n        print(",
+    )
+    insert_once(
+        "        inspect_checkpoint(saved_model, verify_official=True)\n        checkpoint = saved_model",
+        "        inspect_checkpoint(saved_model, verify_official=True)\n        WAI_STUDIO_VERSION_VERIFIED = True\n        checkpoint = saved_model",
     )
     insert_once(
         "        inspect_checkpoint(downloaded, verify_official=True)\n        checkpoint = downloaded",
         "        inspect_checkpoint(downloaded, verify_official=True)\n        WAI_STUDIO_VERSION_VERIFIED = True\n        checkpoint = downloaded",
     )
-    insert_once(
-        "            inspect_checkpoint(downloaded, verify_official=True)\n            if downloaded != source_model:",
-        "            inspect_checkpoint(downloaded, verify_official=True)\n            WAI_STUDIO_VERSION_VERIFIED = True\n            if downloaded != source_model:",
-    )
     prepare += '\nif not WAI_STUDIO_VERSION_VERIFIED:\n    raise RuntimeError("Studio chỉ nhận checkpoint WAI-illustrious v17 đúng SHA-256. Đổi MODEL_PATH sang bản gốc, rồi chạy lại ô 4.")\n'
     setup[3]["source"] = prepare.splitlines(keepends=True)
 
-    introduction = """# WAI Studio · tạo ảnh anime từ Google Colab bằng liên kết tạm thời
+    introduction = """# WAI Studio · tạo ảnh anime trên Google Colab bằng liên kết tạm thời
 
-> **Không cần Cloudflare, API token hay máy chủ GPU khác.** Colab chạy checkpoint WAI-illustrious v17 + LoRA đã kiểm SHA-256; Gradio chỉ hiển thị giao diện. Ảnh mẫu web Cloudflare không liên quan tới model này.
+> **Không cần Google Drive, Cloudflare, tài khoản hay API token.** Colab chạy checkpoint WAI-illustrious v17 + LoRA đã kiểm SHA-256; Gradio chỉ hiển thị giao diện. Ảnh mẫu web Cloudflare không liên quan tới model này.
 
 ### Chạy trong 3 bước
-1. Trong Colab chọn **Runtime → Change runtime type → T4 GPU** (hoặc GPU mạnh hơn). Bấm **Runtime → Run all**. Nếu được hỏi, cho phép gắn Google Drive để lưu checkpoint/ảnh cho các phiên sau. Lần đầu cần tải ~6,94 GB model + tối đa ~457 MB LoRA và có thể mất một lúc; những lần sau dùng lại các file đã xác minh.
-2. Ở ô cuối, chờ dòng `Running on public URL` rồi mở liên kết `https://....gradio.live` — **không cần tài khoản hay mật khẩu**. Chọn **Anime chuẩn**, **Bán thực 2.5D**, **Tùy chỉnh** hoặc **Anime NSFW 18+** (chỉ nhân vật trưởng thành, cần xác nhận riêng), rồi dùng giao diện để tạo ảnh, ảnh → ảnh, tô mask sửa tay/chân/mắt và tải PNG.
-3. **Giữ notebook Colab đang kết nối.** Link này chỉ tồn tại khi phiên Colab/Gradio còn chạy (có thể hết hạn sớm khi runtime bị ngắt). Đóng phiên bằng cách dừng runtime; lần sau chạy notebook để có link mới. Nếu dùng Drive, ảnh nằm ở `MyDrive/AI/outputs`; nếu không lưu được Drive, hãy tải từ giao diện hoặc `/content/wai_outputs` trước khi hết phiên.
+1. Chọn **Runtime → Change runtime type → T4 GPU** (hoặc GPU mạnh hơn), rồi **Runtime → Run all**. Checkpoint ~6,94 GB và tối đa ~457 MB LoRA được tải **trực tiếp vào `/content`**, kiểm tra SHA-256 trước khi nạp, không gắn hay sao chép sang Drive. Nếu file còn trong cùng runtime sẽ dùng lại; phiên Colab mới phải tải lại. Cần ~9 GiB đĩa trống. Ô 4 kiểm toàn bộ hash, có thể mất một lúc.
+2. Chờ ô cuối in `Running on public URL`, mở liên kết `https://....gradio.live` — **không cần tài khoản/mật khẩu**. Chọn **Anime chuẩn**, **Bán thực 2.5D**, **Tùy chỉnh** hoặc **Anime NSFW 18+** (chỉ nhân vật trưởng thành, cần xác nhận riêng). Phong cách và ý tưởng gốc **điền** hai ô prompt/negative **gửi model có thể sửa trực tiếp**; bấm tạo sẽ gửi chính xác nội dung hiện tại, không tự thêm thẻ ẩn. Đổi preset/ý tưởng gốc/LoRA mắt sẽ ghi đè chỉnh sửa trong hai ô đó; dùng nút **Áp dụng lại phong cách** nếu muốn reset. Tab sửa vùng có nút **Thêm gợi ý sửa vùng vào prompt**: bấm để xem, sửa hoặc xóa gợi ý trước khi tạo.
+3. **Giữ Colab kết nối.** Link chỉ tồn tại khi phiên Colab/Gradio còn chạy; dừng runtime để ngắt link. Ảnh chỉ nằm tại `/content/wai_outputs` hoặc đường dẫn cục bộ đã đặt ở ô 3: **tải PNG về trước khi phiên hết**, nếu không sẽ mất cả model, LoRA và ảnh. Lần sau Run all để có link mới.
 
-**Lưu ý bảo mật:** `share=True` tạo URL *truy cập được từ Internet* qua proxy Gradio và **không có đăng nhập**. Bất kỳ ai biết URL đều có thể dùng giao diện và GPU Colab của bạn. Không chia sẻ URL hoặc lưu notebook có output chứa URL ở nơi công khai; dừng runtime để ngắt link. File checkpoint/LoRA bị chặn khỏi đường tải file Gradio, nhưng URL không phải cơ chế xác thực. Gradio nhận dữ liệu qua đường hầm TLS; CPU/GPU và checkpoint vẫn chạy trên Colab. [Giải thích share link](https://www.gradio.app/guides/understanding-gradio-share-links). Ảnh có thể chứa thông tin trong metadata nếu bạn tự bật tùy chọn này.
+**Bảo mật:** `share=True` tạo URL Internet *không có đăng nhập*. Bất kỳ ai biết URL đều có thể dùng GPU Colab của bạn; không chia sẻ URL hoặc notebook có output chứa URL ở nơi công khai. File checkpoint/LoRA bị chặn khỏi đường tải file Gradio; URL không phải cơ chế xác thực. [Tài liệu share link](https://www.gradio.app/guides/understanding-gradio-share-links). Metadata prompt trong PNG chỉ được nhúng khi bạn bật tùy chọn tương ứng.
 
-Các phong cách chỉ bổ sung từ khóa trên cùng checkpoint WAI v17; Bán thực 2.5D là minh họa lai anime, không phải ảnh chụp hay model khác. Negative chung nhắm lỗi ngón tay/ngón chân; phong cách thường tự thêm `nsfw, explicit`, còn preset **Anime NSFW 18+** không thêm hai thẻ này và yêu cầu xác nhận mọi nhân vật đều trưởng thành. Kiểm tra từ khóa tuổi chỉ hỗ trợ phát hiện một số trường hợp, **không phải bộ lọc hoàn chỉnh**. Hãy tuân thủ điều khoản Colab/Gradio và giấy phép model; preset prompt không bảo đảm kết quả. Không bảo đảm sửa đúng mọi lỗi ngón; hãy inpaint vùng nhỏ nếu cần. Chỉ bật LoRA đã chọn trước khi nạp model (ô 3–6). Trong giao diện có thể tắt/bật và đổi cường độ **các LoRA đã nạp** mà không cần tải lại. Inpainting từ checkpoint SDXL gốc định hướng vùng trắng, ghép lại để giữ pixel đen. Colab không bảo đảm GPU liên tục hay đủ RAM/ổ đĩa. Để đổi đường dẫn, chế độ bộ nhớ hoặc danh sách LoRA, hãy **khởi động lại runtime và Run all**; không chạy lại riêng ô nạp model khi giao diện còn giữ pipeline cũ.
+Preset chỉ điều hướng cùng **một** checkpoint WAI v17, không phải model 2.5D chuyên dụng. Negative mặc định nhắm lỗi ngón tay/ngón chân; preset thường điền `nsfw, explicit` vào negative, preset **Anime NSFW 18+** thì không, nhưng vẫn yêu cầu xác nhận 18+ và từ chối một số từ khóa trẻ em trong prompt gửi model (không phải bộ lọc hoàn chỉnh). LoRA mắt có gợi ý `perfect eyes` trong prompt khi áp dụng preset và bật LoRA; bạn có thể sửa/xóa từ đó. Inpaint dùng checkpoint SDXL hiện có, tô vùng trắng, ghép để giữ pixel đen; không bảo đảm sửa được mọi lỗi. LoRA phải chọn và tải ở ô 3–6 trước khi mở giao diện; trong UI có thể tắt/bật và đổi cường độ **các LoRA đã nạp**. Tuân thủ giấy phép model và điều khoản Colab/Gradio.
 
-**RAM gần đầy nhưng VRAM còn trống?** Để `VRAM_MODE=auto` ở ô 3. Chế độ auto ưu tiên nạp GPU trực tiếp khi VRAM trống trước khi nạp ≥ 12,5 GiB + 0,4 GiB/LoRA (bật cả hai: 13,3 GiB), và tự chuyển CPU offload nếu thiếu VRAM/OOM. Ô 6 in VRAM và chế độ thực tế sau nạp; giao diện cũng hiển thị chế độ đang dùng. CPU offload vẫn chạy từng phần trên GPU nhưng dùng nhiều RAM hệ thống; GPU trống khi không tạo ảnh là bình thường. Nếu vừa dùng phiên notebook cũ, **Restart runtime → Run all** để giải phóng model cũ trước khi thử lại.
-
-**Phong cách không đổi?** Giao diện có ô **Xem prompt sau khi áp dụng phong cách** cập nhật khi đổi lựa chọn; prompt/negative gửi model đặt từ khóa phong cách lên đầu để tránh bị cắt ở cuối prompt dài. Thử Anime chuẩn và Bán thực 2.5D với **cùng seed cố định, prompt, kích thước, steps và LoRA**; Bán thực phải hiện `semi-realistic anime art` ở đầu prompt áp dụng và `flat cel shading` trong negative. Đây chỉ là điều hướng bằng prompt trên checkpoint WAI thiên anime, không thể biến thành model ảnh chụp/2.5D chuyên dụng. Link Gradio của phiên cũ không tự cập nhật: mở notebook mới rồi **Restart runtime → Run all**.
-
-**Ô 4 quá lâu ở dòng `Sao chép model từ Drive sang /content`?** Đây là bản sao checkpoint ~6,94 GB từ Drive để nạp nhanh hơn; bản mới báo tiến độ sao chép và kiểm SHA-256 mỗi ~15 giây. Nếu muốn bỏ qua bản sao, ngắt **riêng ô đang chạy** (đừng restart runtime), đặt `CACHE_MODEL_LOCAL=False` ở ô 3 và chạy lại các ô theo thứ tự từ ô 3. Ô 4 vẫn phải đọc file trên Drive để xác minh SHA-256 và lần nạp đầu có thể chậm hơn; đừng xóa model gốc. Nếu sao chép gần xong, cứ chờ.
+**RAM gần đầy nhưng VRAM còn trống?** `VRAM_MODE=auto` ở ô 3 ưu tiên GPU trực tiếp khi VRAM trống lúc nạp ≥ 12,5 GiB + 0,4 GiB/LoRA (bật cả hai: 13,3 GiB); thiếu VRAM/OOM mới thử CPU offload. Ô 6 và UI cho biết chế độ thực tế. CPU offload vẫn tính toán từng phần trên GPU, nhưng tốn RAM hệ thống. Nếu OOM, giảm kích thước ảnh, chọn `low_vram` hoặc tắt LoRA rồi **Restart runtime → Run all**. GPU trống khi không tạo ảnh là bình thường. Đổi đường dẫn, chế độ bộ nhớ hoặc danh sách LoRA cũng cần restart và Run all để không giữ pipeline cũ.
 """
     ui = (
         """# @title 7. Chuẩn bị giao diện WAI bằng model đã xác minh
@@ -142,7 +138,6 @@ studio_runtime = StudioRuntime(
     torch=torch, pipe=pipe, create_pipeline=create_pipeline,
     checkpoint=checkpoint, lora_paths=lora_paths, lora_manifest=lora_manifest,
     vram_mode=VRAM_MODE, use_offload=use_offload, output_dir=output_dir,
-    drive_root=drive_root,
 )
 del pipe  # runtime owns the only reference, allowing OOM recovery to free VRAM
 print("Đã chuẩn bị WAI Studio. Ô 8 sẽ tạo liên kết giao diện không cần đăng nhập.")
@@ -160,9 +155,7 @@ studio_app = build_app(studio_runtime)
 allowed_outputs = [str(studio_runtime.output_dir.resolve()), str(studio_runtime.backup_dir.resolve())]
 blocked_weights = [
     str(studio_runtime.checkpoint.resolve()),
-    str((studio_runtime.drive_root / "MyDrive/AI/models").resolve()),
-    str((studio_runtime.drive_root / "MyDrive/AI/loras").resolve()),
-    "/content/wai_model_cache", "/content/wai_lora_cache",
+    str(local_cache_root.resolve()), str(local_lora_cache.resolve()),
     *(str(Path(path).resolve()) for path in studio_runtime.lora_paths.values()),
 ]
 _, _, share_url = studio_app.launch(
