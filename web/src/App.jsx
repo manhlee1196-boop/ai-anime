@@ -16,15 +16,12 @@ import {
   Download,
   ExternalLink,
   Eye,
-  FileUp,
   Heart,
   Image as ImageIcon,
   ImagePlus,
   Info,
   KeyRound,
   Layers3,
-  Library,
-  ListChecks,
   LockKeyhole,
   Maximize2,
   MoreHorizontal,
@@ -32,8 +29,6 @@ import {
   Plus,
   RefreshCcw,
   ScanFace,
-  ScrollText,
-  Search,
   Settings2,
   SlidersHorizontal,
   Sparkles,
@@ -63,19 +58,6 @@ import {
   SIZE_PRESETS,
   STYLES,
 } from "./lib/presets";
-import {
-  NEGATIVE_LIMIT,
-  PROMPT_LIMIT,
-  clearPersistedLibrary,
-  filterLibraryItems,
-  libraryToText,
-  parsePromptLibrary,
-  persistLibrary,
-  readPersistedLibrary,
-  readTextFile,
-  stripDiacritics,
-} from "./lib/promptLibrary";
-import { SAMPLE_LIBRARY_TEXT } from "./lib/sampleLibrary";
 
 const STORAGE_KEY = "mirai-settings-v1";
 const MODES = [
@@ -258,13 +240,7 @@ export default function App() {
   const [lightbox, setLightbox] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
   const [sourceBusy, setSourceBusy] = useState(false);
-  const [library, setLibrary] = useState(readPersistedLibrary);
-  const [libraryOpen, setLibraryOpen] = useState(false);
-  const [libraryQuery, setLibraryQuery] = useState("");
-  const [libraryAppend, setLibraryAppend] = useState(false);
-  const [libraryBusy, setLibraryBusy] = useState(false);
   const inputRef = useRef(null);
-  const libraryInputRef = useRef(null);
   const galleryUrls = useRef([]);
   const volatileRecords = useRef([]);
   const abortRef = useRef(null);
@@ -399,106 +375,6 @@ export default function App() {
     }
     update("prompt", combined);
     notice(`Đã thêm phong cách ${style.name}.`, "success");
-  }
-
-  async function importPromptFile(file) {
-    setLibraryBusy(true);
-    try {
-      const text = await readTextFile(file);
-      const parsed = parsePromptLibrary(text, {
-        name: (file?.name || "Thư viện prompt").replace(/\.[a-z0-9]+$/i, ""),
-      });
-      const saved = persistLibrary(parsed);
-      setLibrary(parsed);
-      setLibraryQuery("");
-      setLibraryOpen(true);
-      notice(
-        `Đã nạp ${parsed.items.length} prompt từ ${parsed.name}.${
-          saved ? "" : " Thư viện quá lớn để lưu lại, chỉ dùng trong phiên này."
-        }`,
-        "success",
-      );
-    } catch (error) {
-      notice(error.message || "Không đọc được file prompts.", "error");
-    } finally {
-      setLibraryBusy(false);
-    }
-  }
-
-  function loadSampleLibrary() {
-    try {
-      const parsed = parsePromptLibrary(SAMPLE_LIBRARY_TEXT, {
-        name: "Thư viện mẫu",
-      });
-      persistLibrary(parsed);
-      setLibrary(parsed);
-      setLibraryQuery("");
-      setLibraryOpen(true);
-      notice(
-        `Đã nạp thư viện mẫu gồm ${parsed.items.length} prompt.`,
-        "success",
-      );
-    } catch (error) {
-      notice(error.message || "Không mở được thư viện mẫu.", "error");
-    }
-  }
-
-  function exportLibrary() {
-    if (!library?.items?.length) return;
-    downloadBlob(
-      new Blob([libraryToText(library)], {
-        type: "text/plain;charset=utf-8",
-      }),
-      `${
-        stripDiacritics(library.name)
-          .replace(/[^\w-]+/g, "-")
-          .toLowerCase() || "thu-vien-prompt"
-      }.txt`,
-    );
-    notice("Đã tải thư viện prompt về máy.", "success");
-  }
-
-  function clearLibrary() {
-    setLibrary(null);
-    setLibraryOpen(false);
-    setLibraryQuery("");
-    clearPersistedLibrary();
-    notice("Đã gỡ thư viện prompt khỏi trình duyệt.");
-  }
-
-  function applyLibraryItem(item) {
-    const combined =
-      libraryAppend && settings.prompt.trim()
-        ? `${settings.prompt.trim().replace(/,?\s*$/, "")}, ${item.prompt}`
-        : item.prompt;
-    const tooLong = combined.length > PROMPT_LIMIT;
-    const useSize = Boolean(item.width && item.height) && !(editing && source);
-    // Giữ thông số trong file nhưng không vượt dải trượt của model đang chọn.
-    const maxSteps = settings.provider === "wai" ? 45 : 20;
-    setSettings((previous) => ({
-      ...previous,
-      prompt: combined.slice(0, PROMPT_LIMIT),
-      negative_prompt: item.negative
-        ? item.negative.slice(0, NEGATIVE_LIMIT)
-        : previous.negative_prompt,
-      steps: item.steps
-        ? Math.min(maxSteps, Math.max(1, item.steps))
-        : previous.steps,
-      cfg: item.cfg ? Math.min(12, Math.max(1, item.cfg)) : previous.cfg,
-      seed: item.seed === undefined ? previous.seed : item.seed,
-      width: useSize ? item.width : previous.width,
-      height: useSize ? item.height : previous.height,
-    }));
-    setLibraryOpen(false);
-    notice(
-      tooLong
-        ? `Prompt “${item.title}” dài hơn ${PROMPT_LIMIT} ký tự nên đã bị cắt bớt.`
-        : `Đã nạp prompt “${item.title}”.`,
-      tooLong ? "info" : "success",
-    );
-    document
-      .getElementById("workspace")
-      ?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   async function loadSource(input) {
@@ -780,7 +656,6 @@ export default function App() {
         setLightbox(false);
         setAuthOpen(false);
         setHelpOpen(false);
-        setLibraryOpen(false);
       }
       if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
         event.preventDefault();
@@ -792,7 +667,6 @@ export default function App() {
   });
 
   const modelLabel = MODEL_INFO[settings.model]?.name || settings.model;
-  const libraryResults = filterLibraryItems(library?.items || [], libraryQuery);
   const statusLabel = config?.localPreview
     ? "Bản xem trước"
     : trulyReady
@@ -941,34 +815,20 @@ export default function App() {
               <FieldHead
                 title="Prompt"
                 right={
-                  <span className="prompt-actions">
-                    <button
-                      type="button"
-                      className="subtle-action"
-                      disabled={!library}
-                      onClick={() => {
-                        setLibraryQuery("");
-                        setLibraryOpen(true);
-                      }}
-                    >
-                      <ListChecks size={14} /> Thư viện
-                      {library ? ` (${library.items.length})` : ""}
-                    </button>
-                    <button
-                      type="button"
-                      className="subtle-action"
-                      onClick={() => {
-                        const sample =
-                          INSPIRATION[
-                            Math.floor(Math.random() * INSPIRATION.length)
-                          ];
-                        update("prompt", sample.prompt);
-                        notice("Đã chọn một ý tưởng ngẫu nhiên.");
-                      }}
-                    >
-                      <Dice5 size={14} /> Gợi ý
-                    </button>
-                  </span>
+                  <button
+                    type="button"
+                    className="subtle-action"
+                    onClick={() => {
+                      const sample =
+                        INSPIRATION[
+                          Math.floor(Math.random() * INSPIRATION.length)
+                        ];
+                      update("prompt", sample.prompt);
+                      notice("Đã chọn một ý tưởng ngẫu nhiên.");
+                    }}
+                  >
+                    <Dice5 size={14} /> Gợi ý
+                  </button>
                 }
               />
               <textarea
@@ -998,63 +858,6 @@ export default function App() {
                   </button>
                 ))}
               </div>
-              <div className="styles-label">
-                THƯ VIỆN PROMPT <Library size={12} />
-              </div>
-              <div className="library-bar">
-                <span className="library-status">
-                  {library ? (
-                    <>
-                      <b>{library.name}</b>
-                      <small>{library.items.length} prompt đã nạp</small>
-                    </>
-                  ) : (
-                    <small>
-                      Nạp file .txt chứa danh sách prompt — chọn một dòng là hệ
-                      thống tự nạp prompt.
-                    </small>
-                  )}
-                </span>
-                <span className="library-actions">
-                  <button
-                    type="button"
-                    className="chip-action"
-                    disabled={libraryBusy}
-                    onClick={() => libraryInputRef.current?.click()}
-                  >
-                    <FileUp size={13} /> Nạp file .txt
-                  </button>
-                  <button
-                    type="button"
-                    className="chip-action"
-                    onClick={loadSampleLibrary}
-                  >
-                    <ScrollText size={13} /> Thư viện mẫu
-                  </button>
-                  {library && (
-                    <button
-                      type="button"
-                      className="chip-action danger"
-                      title="Gỡ thư viện đã nạp"
-                      onClick={clearLibrary}
-                    >
-                      <Trash2 size={13} />
-                    </button>
-                  )}
-                </span>
-              </div>
-              <input
-                ref={libraryInputRef}
-                hidden
-                type="file"
-                accept=".txt,.md,.json,text/plain,application/json"
-                aria-label="Nạp file danh sách prompt"
-                onChange={(event) => {
-                  const file = event.target.files?.[0];
-                  event.target.value = "";
-                  if (file) importPromptFile(file);
-                }}
-              />
             </section>
 
             <section className="control-section model-section">
@@ -1966,123 +1769,6 @@ export default function App() {
           <button type="button" title="Đóng" onClick={() => setToast(null)}>
             <X size={14} />
           </button>
-        </div>
-      )}
-
-      {libraryOpen && library && (
-        <div
-          className="modal-backdrop"
-          onMouseDown={(event) => {
-            if (event.target === event.currentTarget) setLibraryOpen(false);
-          }}
-        >
-          <div
-            className="dialog library-dialog"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Thư viện prompt"
-          >
-            <button
-              type="button"
-              className="dialog-close"
-              onClick={() => setLibraryOpen(false)}
-            >
-              <X size={19} />
-            </button>
-            <span className="dialog-icon">
-              <ScrollText size={23} />
-            </span>
-            <h2>{library.name}</h2>
-            <p>
-              {library.description ||
-                "Chọn một dòng trong danh sách, hệ thống sẽ tự nạp prompt vào ô bên trái."}{" "}
-              <strong>{library.items.length} prompt</strong> trong thư viện.
-            </p>
-            <div className="library-toolbar">
-              <span className="library-search">
-                <Search size={14} />
-                <input
-                  autoFocus
-                  type="search"
-                  aria-label="Tìm prompt trong thư viện"
-                  placeholder="Tìm theo tên hoặc nội dung prompt…"
-                  value={libraryQuery}
-                  onChange={(event) => setLibraryQuery(event.target.value)}
-                />
-              </span>
-              <label className="library-append">
-                <input
-                  type="checkbox"
-                  aria-label="Nối prompt vào cuối prompt hiện tại"
-                  checked={libraryAppend}
-                  onChange={(event) => setLibraryAppend(event.target.checked)}
-                />
-                Nối vào prompt hiện tại
-              </label>
-              <button
-                type="button"
-                className="chip-action"
-                onClick={exportLibrary}
-              >
-                <Download size={13} /> Tải .txt
-              </button>
-            </div>
-            <div className="library-list">
-              {libraryResults.length ? (
-                libraryResults.map((item) => (
-                  <div className="library-item" key={item.id}>
-                    <button
-                      type="button"
-                      className="library-item-main"
-                      onClick={() => applyLibraryItem(item)}
-                    >
-                      <span className="library-item-index">
-                        {String(item.index).padStart(2, "0")}
-                      </span>
-                      <span className="library-item-text">
-                        <b>{item.title}</b>
-                        <small>{item.prompt}</small>
-                        <span className="library-item-tags">
-                          {item.negative && <em>Negative</em>}
-                          {item.steps && <em>Steps {item.steps}</em>}
-                          {item.cfg && <em>CFG {item.cfg}</em>}
-                          {item.width && item.height && (
-                            <em>
-                              {item.width}×{item.height}
-                            </em>
-                          )}
-                          {item.seed !== undefined && <em>Seed {item.seed}</em>}
-                          {item.truncated && <em className="warn">Đã cắt</em>}
-                        </span>
-                      </span>
-                      <span className="library-item-go">
-                        <ArrowRight size={14} />
-                      </span>
-                    </button>
-                    <button
-                      type="button"
-                      className="library-item-copy"
-                      title="Sao chép prompt"
-                      aria-label={`Sao chép prompt ${item.title}`}
-                      onClick={() => copyPrompt(item.prompt)}
-                    >
-                      <Copy size={13} />
-                    </button>
-                  </div>
-                ))
-              ) : (
-                <p className="library-empty">
-                  Không có prompt nào khớp với từ khóa “{libraryQuery}”.
-                </p>
-              )}
-            </div>
-            <small className="library-hint">
-              Nhấn một dòng để nạp prompt. Nếu file có các dòng{" "}
-              <code>Negative:</code>, <code>Steps:</code>, <code>CFG:</code>,{" "}
-              <code>Size:</code>, <code>Seed:</code> thì các thông số đó cũng
-              được áp dụng theo.
-            </small>
-          </div>
         </div>
       )}
 

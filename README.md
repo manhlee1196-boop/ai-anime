@@ -72,7 +72,6 @@ Kiểm tra cấu trúc notebook và hành vi tải/hash/nạp LoRA bằng mock C
 
 - Văn bản → ảnh, ảnh → ảnh và inpainting: tô mask trực tiếp, tẩy/hoàn tác/xóa hoặc nạp mask PNG **trắng = vùng sửa, đen = phần giữ**. Mask hướng dẫn model; với Workers AI, không cam kết mọi pixel ngoài mask hoàn toàn không đổi.
 - Prompt, negative prompt, gợi ý phong cách; SDXL Base/Lightning hoặc WAI qua GPU tùy chọn; kích thước/tỷ lệ, steps, CFG, seed, strength, tạo lần lượt 1–4 ảnh; tùy chọn sampler, CLIP skip và hai LoRA **chỉ khi backend GPU WAI hỗ trợ**.
-- **Nạp thư viện prompt từ file text** (mục *Ý tưởng của bạn* → *THƯ VIỆN PROMPT*): chọn file `.txt`/`.md`/`.json` (tối đa 4 MB), hệ thống đọc ra danh sách prompt để tìm kiếm (bỏ qua dấu tiếng Việt) và chỉ cần bấm một dòng là prompt được nạp vào ô Prompt. Định dạng được nhận: tiêu đề `PROMPT 01 - Tên tiếng Việt` rồi đoạn prompt bên dưới, hoặc bảng một dòng `Tên tiếng Việt | Nội dung prompts tiếng Anh`, hoặc JSON `[{ "title", "prompt" }]`, hoặc các đoạn prompt cách nhau bởi dòng trống. Các dòng `Negative:`, `Steps:`, `CFG:`, `Size: 832 x 1216`, `Seed:` trong mỗi prompt cũng được áp dụng (steps/CFG bị kẹp về dải trượt của model đang chọn; kích thước bị bỏ qua khi đang dùng ảnh nguồn). Thư viện đã nạp được lưu trong `localStorage` của trình duyệt để phiên sau dùng lại, có nút tải thư viện về `.txt` và nút gỡ thư viện; bấm *Thư viện mẫu* để xem định dạng chuẩn.
 - Lưu ảnh trong **IndexedDB của trình duyệt** (20 ảnh gần nhất không yêu thích; ảnh yêu thích được giữ), xem phóng to, sao chép prompt, dùng ảnh kết quả để sửa tiếp, tải PNG/JPG/WebP. Không có server lưu bộ sưu tập. Prompt/ảnh nguồn vẫn được gửi đến **Cloudflare Workers AI hoặc backend GPU bạn cấu hình** để suy luận; tránh đưa dữ liệu nhạy cảm nếu chưa tin tưởng nhà cung cấp. Xóa dữ liệu trang web hoặc dùng chế độ riêng tư có thể làm mất lịch sử — hãy tải ảnh quan trọng về máy.
 - Bảo vệ API tạo ảnh bằng secret `APP_ACCESS_TOKEN` trên Worker. Mã nhập từ giao diện lưu trong `sessionStorage` của phiên trình duyệt; **không** đưa Cloudflare API token vào giao diện hay Git.
 
@@ -163,7 +162,7 @@ Worker POST tới `${GPU_BACKEND_URL}/generate` qua HTTPS, thêm `Authorization:
 python -m unittest discover -s tests -v   # notebook, dùng mock CPU
 cd web
 npm ci
-npm test                              # API auth/validation/routes + IndexedDB mock + nạp thư viện prompt
+npm test                              # API auth/validation/routes + IndexedDB mock
 npm run build                         # sản phẩm Vite
 npx wrangler deploy --dry-run         # kiểm tra Worker/binding, không triển khai
 ```
