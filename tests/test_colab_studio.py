@@ -539,7 +539,7 @@ class RuntimeValidationTests(unittest.TestCase):
         values.update(change)
         return self.runtime._parameters(**values)
 
-    def test_style_presets_populate_editable_fields_without_overriding_edits(self):
+    def test_prompt_and_negative_reach_the_model_verbatim(self):
         negative = studio.DEFAULT_NEGATIVE
         for anomaly in (
             "extra fingers",
@@ -551,47 +551,30 @@ class RuntimeValidationTests(unittest.TestCase):
         ):
             self.assertIn(anomaly, negative)
         self.assertNotIn("nsfw", negative)
-        anime_pos, anime_neg = studio.compose_style_prompts(
-            "anime illustration, portrait", negative, "Anime chuẩn", True
-        )
-        self.assertTrue(anime_pos.startswith("anime illustration, clean lineart"))
-        self.assertEqual(anime_pos.count("anime illustration"), 1)
-        self.assertIn("perfect eyes", anime_pos)
-        self.assertTrue(anime_neg.startswith("nsfw, explicit"))
-        self.assertIn("photorealistic", anime_neg)
-        semi_pos, semi_neg = studio.compose_style_prompts(
-            "portrait", "", "Bán thực 2.5D", False
-        )
-        self.assertTrue(
-            semi_pos.startswith("semi-realistic anime art, 2.5d illustration")
-        )
-        self.assertIn("volumetric lighting", semi_pos)
-        self.assertIn("flat cel shading", semi_neg)
-        self.assertNotIn("perfect eyes", semi_pos)
-        long_prompt = "portrait, " + "soft sunlight, " * 90 + "semi-realistic anime art"
-        long_pos, long_neg = studio.compose_style_prompts(
-            long_prompt, negative, "Bán thực 2.5D", True
-        )
-        self.assertEqual(long_pos.count("semi-realistic anime art"), 1)
-        self.assertTrue(long_pos.startswith("semi-realistic anime art"))
-        self.assertTrue(long_neg.startswith("nsfw, explicit, flat cel shading"))
-        # Runtime uses only what remains in the editable fields, even if the
-        # selected style and enabled eye LoRA have different suggested tags.
-        edited = "  my own portrait, no preset tags  "
+        # Không còn selector phong cách: prompt người dùng tự viết chính là prompt
+        # gửi model, không bị ghép thêm thẻ nào.
+        edited = "  my own portrait, watercolor style, no preset tags  "
         self.assertEqual(
-            self.params(
-                prompt=edited, negative="  custom negative ", style="Bán thực 2.5D"
-            )[:2],
-            (edited, "  custom negative "),
+            self.params(prompt=edited, negative="  custom negative  ")[:2],
+            (edited, "  custom negative  "),
         )
-        with self.assertRaisesRegex(ValueError, "Chọn phong cách"):
-            self.params(style="unknown")
-        with self.assertRaisesRegex(ValueError, "Chọn phong cách"):
-            studio.compose_style_prompts("portrait", "", "unknown", False)
+        # Trigger LoRA mắt là nút bấm tường minh, thêm đúng một lần, sửa/xóa được.
+        triggered, kept = studio.add_eyes_trigger("anime portrait", negative)
+        self.assertIn("perfect eyes", triggered)
+        self.assertEqual(triggered.count("perfect eyes"), 1)
+        self.assertEqual(kept, negative)
+        self.assertEqual(studio.add_eyes_trigger(triggered, negative)[0], triggered)
+        # Gợi ý sửa vùng cũng là hành động tường minh của người dùng.
+        repaired, repaired_neg = studio.apply_repair_hints(
+            "portrait", "bad hands", "eyes"
+        )
+        self.assertIn("perfect eyes", repaired)
+        self.assertIn("misaligned eyes", repaired_neg)
+        with self.assertRaisesRegex(ValueError, "Chọn vùng sửa"):
+            studio.apply_repair_hints("portrait", "", "unknown")
 
-    def test_adult_style_is_opt_in_and_rejects_obvious_underage_prompts(self):
-        with self.assertRaisesRegex(ValueError, "cần xác nhận"):
-            self.params(style=studio.ADULT_STYLE, adult_confirmed=False)
+    def test_content_guards_reject_underage_and_gate_adult_prompts(self):
+        # Từ khóa trẻ em/vị thành niên bị từ chối với MỌI prompt, không cần preset.
         for prompt in (
             "underage character",
             "school girl portrait",
@@ -601,45 +584,32 @@ class RuntimeValidationTests(unittest.TestCase):
         ):
             with (
                 self.subTest(prompt=prompt),
-                self.assertRaisesRegex(ValueError, "vị thành niên"),
+                self.assertRaisesRegex(ValueError, "phải trưởng thành"),
             ):
-                self.params(
-                    style=studio.ADULT_STYLE, adult_confirmed=True, prompt=prompt
-                )
-        preset_pos, preset_neg = studio.compose_style_prompts(
-            "adult, woman portrait", studio.DEFAULT_NEGATIVE, studio.ADULT_STYLE, True
-        )
-        self.assertIn("erotic anime illustration", preset_pos)
-        self.assertEqual(preset_pos.count("adult"), 1)
-        self.assertIn("underage", preset_neg)
-        self.assertNotIn("nsfw", preset_neg)
-        self.assertIn("missing toes", preset_neg)
+                self.params(prompt=prompt, adult_confirmed=True)
+            with self.assertRaisesRegex(ValueError, "phải trưởng thành"):
+                self.params(prompt=prompt)
+        # Nội dung người lớn do người dùng tự viết thì phải tick xác nhận 18+.
+        adult = "1girl, adult woman, nsfw, explicit, detailed anatomy"
+        with self.assertRaisesRegex(ValueError, "18 tuổi trở lên"):
+            self.params(prompt=adult, adult_confirmed=False)
+        self.assertEqual(self.params(prompt=adult, adult_confirmed=True)[0], adult)
+        # Prompt không có từ khóa người lớn thì không cần tick.
+        safe = "1girl, adult woman, office worker, portrait, masterpiece"
+        self.assertEqual(self.params(prompt=safe)[0], safe)
+        # Từ khóa vị thành niên trong *negative* không kích hoạt hàng rào prompt dương.
         self.assertEqual(
             self.params(
-                style=studio.ADULT_STYLE,
-                adult_confirmed=True,
-                prompt=preset_pos,
-                negative=preset_neg,
-            )[:2],
-            (preset_pos, preset_neg),
-        )
-        # Underage terms in the *negative* should not trigger the positive guard.
-        self.assertEqual(
-            self.params(
-                style=studio.ADULT_STYLE,
-                adult_confirmed=True,
-                prompt="adult",
-                negative="underage, child",
+                prompt="adult", negative="underage, child", adult_confirmed=True
             )[1],
             "underage, child",
         )
 
     def test_validation_and_eye_trigger(self):
         self.assertEqual(self.params()[:2], ("anime portrait", "bad anatomy"))
-        suggested, _ = studio.compose_style_prompts(
-            "anime portrait", "", "Tùy chỉnh", True
-        )
+        suggested, _ = studio.add_eyes_trigger("anime portrait", "")
         self.assertIn("perfect eyes", suggested)
+        # Bật/tắt LoRA mắt không tự sửa prompt: chỉ nút bấm mới thêm trigger.
         self.assertEqual(self.params(eyes_enabled=True)[0], "anime portrait")
         self.assertEqual(self.params(eyes_enabled=False)[0], "anime portrait")
         for setting in (
@@ -694,7 +664,7 @@ class RuntimeValidationTests(unittest.TestCase):
         with Image.open(paths[0]) as result:
             self.assertEqual(result.size, (512, 512))
             self.assertNotIn("parameters", result.info)  # private by default
-        # Style is metadata only: user-edited prompts are the exact pipe inputs.
+        # Không còn preset: prompt người dùng sửa là đúng input của pipe.
         self.runtime.text_to_image(
             "512x512",
             "  portrait without style tags  ",
@@ -708,13 +678,12 @@ class RuntimeValidationTests(unittest.TestCase):
             False,
             0.45,
             True,
-            "Bán thực 2.5D",
         )
         image = next((self.root / "output").glob("*_*_2.png"))
         with Image.open(image) as result:
             parameters = json.loads(result.info["parameters"])
             self.assertEqual(parameters["seed"], 2)
-            self.assertEqual(parameters["style"], "Bán thực 2.5D")
+            self.assertNotIn("style", parameters)
             self.assertEqual(parameters["prompt"], "  portrait without style tags  ")
             self.assertEqual(parameters["negative_prompt"], "  my negative  ")
             self.assertEqual(FakePipe.calls[-1][1]["prompt"], parameters["prompt"])
@@ -1044,23 +1013,37 @@ class RuntimeValidationTests(unittest.TestCase):
         self.assertEqual(
             len([c for c in config["components"] if c["type"] == "gallery"]), 1
         )
-        style = [
+        # Không còn selector phong cách: người dùng tự viết prompt phong cách.
+        labels = [str(c["props"].get("label") or "") for c in config["components"]]
+        self.assertNotIn("Phong cách hình ảnh", labels)
+        self.assertFalse(any("Ý tưởng gốc" in label for label in labels))
+        self.assertFalse(any("sửa được" in label for label in labels))
+        self.assertFalse(hasattr(studio, "STYLE_PRESETS"))
+        self.assertFalse(hasattr(studio, "compose_style_prompts"))
+        fields = [
             c
             for c in config["components"]
-            if c["type"] == "dropdown"
-            and c["props"].get("label") == "Phong cách hình ảnh"
+            if c["type"] == "textbox" and "gửi model" in str(c["props"].get("label"))
         ]
-        self.assertEqual(len(style), 1)
-        self.assertEqual(style[0]["props"]["value"], "Anime chuẩn")
-        self.assertIn("Bán thực 2.5D", str(style[0]["props"]["choices"]))
-        self.assertIn(studio.ADULT_STYLE, str(style[0]["props"]["choices"]))
-        confirmations = [
+        self.assertEqual(len(fields), 2)
+        prompt_field, negative_field = fields
+        self.assertTrue(all(c["props"].get("interactive", True) for c in fields))
+        self.assertEqual(prompt_field["props"]["value"], studio.DEFAULT_PROMPT)
+        self.assertEqual(negative_field["props"]["value"], studio.DEFAULT_NEGATIVE)
+        field_ids = {c["id"] for c in fields}
+        eyes_button = next(
             c
             for c in config["components"]
-            if c["type"] == "checkbox" and "18 tuổi" in str(c["props"].get("label"))
-        ]
-        self.assertEqual(len(confirmations), 1)
-        self.assertFalse(confirmations[0]["props"]["value"])
+            if c["type"] == "button"
+            and "perfect eyes" in c["props"].get("value", "")
+        )
+        eyes_event = next(
+            d
+            for d in config["dependencies"]
+            if (eyes_button["id"], "click") in d["targets"]
+        )
+        self.assertEqual(set(eyes_event["outputs"]), field_ids)
+        self.assertFalse(eyes_event["queue"])
         self.assertTrue(
             any(
                 c["type"] == "markdown"
@@ -1068,43 +1051,23 @@ class RuntimeValidationTests(unittest.TestCase):
                 for c in config["components"]
             )
         )
-        effective = [
-            c
-            for c in config["components"]
-            if c["type"] == "textbox"
-            and "gửi model · sửa được" in c["props"].get("label", "")
-        ]
-        self.assertEqual(len(effective), 2)
-        self.assertTrue(all(c["props"]["interactive"] for c in effective))
-        self.assertTrue(
-            any("anime illustration" in c["props"]["value"] for c in effective)
-        )
-        reapply = next(
-            c
-            for c in config["components"]
-            if c["type"] == "button"
-            and "Áp dụng lại phong cách" in c["props"].get("value", "")
-        )
-        preset_event = next(
-            d
-            for d in config["dependencies"]
-            if (style[0]["id"], "change") in d["targets"]
-        )
-        self.assertIn((reapply["id"], "click"), preset_event["targets"])
-        self.assertEqual(set(preset_event["outputs"]), {c["id"] for c in effective})
-        self.assertFalse(preset_event["queue"])
-        effective_ids = {c["id"] for c in effective}
         repair_event = next(
             d
             for d in config["dependencies"]
-            if set(d["outputs"]) == effective_ids and len(d["targets"]) == 1
+            if set(d["outputs"]) == field_ids and len(d["targets"]) == 1
+            and len(d["inputs"]) == 3
         )
-        self.assertEqual(repair_event["inputs"][:2], [c["id"] for c in effective])
-        # 3 nút tạo ảnh + 2 nút dùng ảnh mới nhất + preset + gợi ý sửa vùng
+        self.assertEqual(
+            repair_event["inputs"][:2],
+            [prompt_field["id"], negative_field["id"]],
+        )
+        # 3 nút tạo ảnh + 2 nút dùng ảnh mới nhất + trigger mắt + gợi ý sửa vùng
         # + 5 sự kiện của thư viện prompt.
         self.assertEqual(len(config["dependencies"]), 12)
         for dep in config["dependencies"][:3]:  # text, img2img, inpaint
-            self.assertEqual(dep["inputs"][-13:-11], [c["id"] for c in effective])
+            self.assertEqual(
+                dep["inputs"][-12:-10], [prompt_field["id"], negative_field["id"]]
+            )
         self.assertTrue(
             all(x["api_visibility"] == "private" for x in config["dependencies"])
         )
@@ -1159,8 +1122,8 @@ class RuntimeValidationTests(unittest.TestCase):
         sample = component("button", "thư viện mẫu", "value")
         state = next(c for c in components if c["type"] == "state")
         library_box = component("markdown", "Chưa nạp thư viện", "value")
-        prompt_box = component("textbox", "Ý tưởng gốc")
-        negative_box = component("textbox", "Negative gốc")
+        prompt_box = component("textbox", "Prompt gửi model")
+        negative_box = component("textbox", "Negative gửi model")
         steps_box = component("slider", "Số bước (steps)")
         cfg_box = component("slider", "CFG / độ bám prompt")
         seed_box = component("number", "Seed (-1 = ngẫu nhiên)")
@@ -1258,6 +1221,7 @@ class RuntimeValidationTests(unittest.TestCase):
             self.assertEqual(int(filled[2]), 30)
             self.assertEqual(filled[3:7], [6.0, -1, "1024x1024", "1024x1024"])
             self.assertIn("Đã nạp", filled[7])
+            self.assertIn("Prompt gửi model", filled[7])
 
             # Dán nội dung thay vì tải file lên.
             _, pasted, pasted_status = await process(
@@ -1327,45 +1291,50 @@ class RuntimeValidationTests(unittest.TestCase):
                 await demo.process_api(index, inputs, state=state, explicit_call=True)
             )["data"]
 
-        def shared(positive, negative, eyes=False):
-            return [positive, negative, 20, 6, 42, 1, False, 0.55, eyes, 0.45, False]
+        def shared(positive, negative, eyes=False, adult=False):
+            return [
+                positive,
+                negative,
+                20,
+                6,
+                42,
+                1,
+                False,
+                0.55,
+                eyes,
+                0.45,
+                False,
+                adult,
+            ]
 
         async def smoke():
-            presets = {}
-            for choice in ("Anime chuẩn", "Bán thực 2.5D", studio.ADULT_STYLE):
-                presets[choice] = await process(
-                    5, [studio.DEFAULT_PROMPT, studio.DEFAULT_NEGATIVE, choice, False]
-                )
-            self.assertNotEqual(presets["Anime chuẩn"], presets["Bán thực 2.5D"])
-            self.assertTrue(
-                presets["Bán thực 2.5D"][0].startswith("semi-realistic anime art")
+            # Không còn preset phong cách: nút trigger mắt chỉ thêm "perfect eyes"
+            # vào đúng ô prompt đang hiển thị, negative giữ nguyên.
+            triggered = await process(
+                5, [studio.DEFAULT_PROMPT, studio.DEFAULT_NEGATIVE]
             )
-            self.assertIn("flat cel shading", presets["Bán thực 2.5D"][1])
-            self.assertNotIn("nsfw", presets["Anime chuẩn"][0])
-            self.assertIn("nsfw", presets[studio.ADULT_STYLE][0])
-            self.assertNotIn("nsfw", presets[studio.ADULT_STYLE][1])
-            eyes_preset = await process(
-                5,
-                [studio.DEFAULT_PROMPT, studio.DEFAULT_NEGATIVE, "Bán thực 2.5D", True],
-            )
-            self.assertIn("perfect eyes", eyes_preset[0])
-            self.assertNotIn("perfect eyes", presets["Bán thực 2.5D"][0])
-            # The repair button only changes the visible editable fields.
-            leg_prompts = await process(6, [*presets["Bán thực 2.5D"], "legs"])
+            self.assertIn("perfect eyes", triggered[0])
+            self.assertEqual(triggered[1], studio.DEFAULT_NEGATIVE)
+            self.assertEqual(await process(5, triggered), triggered)
+            # Nút gợi ý sửa vùng cũng chỉ đổi hai ô đang hiển thị.
+            leg_prompts = await process(6, [*triggered, "legs"])
             self.assertIn("natural toes", leg_prompts[0])
             self.assertIn("broken legs", leg_prompts[1])
             self.assertEqual(await process(6, [*leg_prompts, "legs"]), leg_prompts)
-            for index, inputs, expected, style in (
+            adult_prompts = (
+                "1girl, adult woman, nsfw, explicit, portrait",
+                "bad hands",
+            )
+            for index, inputs, expected in (
                 (
                     0,
                     [
                         "512x512",
-                        *shared("  my own portrait  ", "  no hidden tags  ", eyes=True),
-                        "Anime chuẩn",
-                        False,
+                        *shared(
+                            "  my own portrait  ", "  no hidden tags  ", eyes=True
+                        ),
                     ],
                     ("  my own portrait  ", "  no hidden tags  "),
-                    "Anime chuẩn",
                 ),
                 (
                     1,
@@ -1374,11 +1343,8 @@ class RuntimeValidationTests(unittest.TestCase):
                         "512x512",
                         0.45,
                         *shared("paint this picture", "my bad quality"),
-                        "Bán thực 2.5D",
-                        False,
                     ],
                     ("paint this picture", "my bad quality"),
-                    "Bán thực 2.5D",
                 ),
                 (
                     2,
@@ -1389,11 +1355,8 @@ class RuntimeValidationTests(unittest.TestCase):
                         0.45,
                         8,
                         *shared("no repair suggestions", "bad hands"),
-                        "Anime chuẩn",
-                        False,
                     ],
                     ("no repair suggestions", "bad hands"),
-                    "Anime chuẩn",
                 ),
                 (
                     2,
@@ -1404,27 +1367,18 @@ class RuntimeValidationTests(unittest.TestCase):
                         0.45,
                         8,
                         *shared(*leg_prompts),
-                        "Bán thực 2.5D",
-                        False,
                     ],
                     tuple(leg_prompts),
-                    "Bán thực 2.5D",
                 ),
+                # Prompt người lớn do người dùng tự viết, đã tick xác nhận 18+.
                 (
                     0,
-                    [
-                        "512x512",
-                        *shared(*presets[studio.ADULT_STYLE]),
-                        studio.ADULT_STYLE,
-                        True,
-                    ],
-                    tuple(presets[studio.ADULT_STYLE]),
-                    studio.ADULT_STYLE,
+                    ["512x512", *shared(*adult_prompts, adult=True)],
+                    adult_prompts,
                 ),
             ):
                 data = await process(index, inputs)
                 self.assertIn("✅ Đã tạo 1 ảnh", data[2])
-                self.assertIn(style, data[2])
                 kwargs = FakePipe.calls[-1][1]
                 self.assertEqual(
                     (kwargs["prompt"], kwargs["negative_prompt"]), expected
@@ -1435,6 +1389,17 @@ class RuntimeValidationTests(unittest.TestCase):
                 self.assertTrue(png.is_file())
                 with Image.open(png) as result:
                     self.assertEqual(result.format, "PNG")
+            # Chưa tick xác nhận 18+ thì prompt người lớn bị chặn, không tới pipe.
+            with self.assertRaises(Exception) as blocked:
+                await process(0, ["512x512", *shared(*adult_prompts)])
+            self.assertIn("18 tuổi trở lên", str(blocked.exception))
+            # Từ khóa vị thành niên bị chặn kể cả khi đã tick xác nhận.
+            with self.assertRaises(Exception) as underage:
+                await process(
+                    0,
+                    ["512x512", *shared("school girl portrait", "", adult=True)],
+                )
+            self.assertIn("phải trưởng thành", str(underage.exception))
             self.assertEqual(len(FakePipe.calls), 5)
             self.assertTrue(Path((await process(3, [None]))[0]["path"]).is_file())
             self.assertTrue(

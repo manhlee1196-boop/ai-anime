@@ -29,15 +29,17 @@ DEFAULT_PROMPT = (
     "1girl, solo, cherry blossoms, spring, soft sunlight, "
     "detailed eyes, detailed clothing, masterpiece, best quality"
 )
-# Quality/anatomy terms shared by every style. SFW styles add their own
-# content negatives; adult mode never silently inherits those blockers.
+# Negative mặc định nhắm lỗi ngón tay/ngón chân; người dùng tự sửa theo ý mình.
 DEFAULT_NEGATIVE = (
     "lowres, worst quality, low quality, blurry, bad anatomy, "
     "bad hands, deformed hands, extra fingers, missing fingers, fused fingers, "
     "malformed fingers, deformed feet, extra toes, missing toes, fused toes, "
     "malformed toes, extra limbs"
 )
-ADULT_STYLE = "Anime NSFW 18+"
+# Không còn selector phong cách: người dùng tự viết prompt phong cách của mình
+# (hoặc nạp từ thư viện prompt). Hai hàng rào nội dung vẫn giữ nguyên và chạy
+# cho MỌI prompt: từ khóa trẻ em/vị thành niên luôn bị từ chối; prompt có nội
+# dung người lớn thì phải tick xác nhận 18+ trong giao diện.
 UNDERAGE_PROMPT = re.compile(
     r"\b(?:underage|minor|child|children|preteen|teen(?:age|ager)?s?|loli|shota|"
     r"school[- ]?girls?|school[- ]?boys?|little girl|little boy|young girl|young boy|"
@@ -45,61 +47,11 @@ UNDERAGE_PROMPT = re.compile(
     r"(?:[1-9]|1[0-7])\s*(?:-?years?[- ]?old|yo|y/o|tuổi))\b",
     re.IGNORECASE,
 )
-STYLE_PRESETS = {
-    "Anime chuẩn": {
-        "positive": (
-            "anime illustration",
-            "clean lineart",
-            "cel shading",
-            "vibrant colors",
-        ),
-        "negative": ("nsfw", "explicit", "photorealistic", "3d render", "plastic skin"),
-    },
-    "Bán thực 2.5D": {
-        "positive": (
-            "semi-realistic anime art",
-            "2.5d illustration",
-            "realistic facial proportions",
-            "soft painterly shading",
-            "natural skin texture",
-            "volumetric lighting",
-            "dimensional depth",
-        ),
-        "negative": (
-            "nsfw",
-            "explicit",
-            "flat cel shading",
-            "thick black outlines",
-            "flat colors",
-            "chibi",
-            "plastic skin",
-            "uncanny face",
-        ),
-    },
-    "Tùy chỉnh": {"positive": (), "negative": ("nsfw", "explicit")},
-    ADULT_STYLE: {
-        "positive": (
-            "nsfw",
-            "adult",
-            "mature character",
-            "erotic anime illustration",
-            "detailed anatomy",
-            "natural skin shading",
-        ),
-        "negative": (
-            "underage",
-            "minor",
-            "child",
-            "teen",
-            "loli",
-            "shota",
-            "schoolgirl",
-            "schoolboy",
-            "young girl",
-            "young boy",
-        ),
-    },
-}
+ADULT_PROMPT = re.compile(
+    r"\b(?:nsfw|not\s+safe\s+for\s+work|explicit|lewd|hentai|erotic|nude|naked|"
+    r"topless|bottomless|lingerie|underwear|panties|nipples?|areolae?|cleavage)\b",
+    re.IGNORECASE,
+)
 CONTENT_ROOT = Path("/content")
 # Thư viện prompt mẫu đóng kèm, dùng đúng định dạng file .txt mà UI đọc được.
 # Người dùng có thể nạp file riêng của mình thay thế.
@@ -179,29 +131,9 @@ def _add_prompt_tags(text, tags):
     return text
 
 
-def _prepend_style_tags(text, tags):
-    """Prioritize style tokens before long prompts that SDXL may truncate."""
-    tags = tuple(dict.fromkeys(tag.strip() for tag in tags if tag.strip()))
-    if not tags:
-        return text.strip()
-    keys = {tag.casefold() for tag in tags}
-    rest = [
-        part.strip()
-        for part in text.split(",")
-        if part.strip() and part.strip().casefold() not in keys
-    ]
-    return ", ".join((*tags, *rest))
-
-
-def compose_style_prompts(prompt, negative, style, eyes_enabled):
-    """Populate editable model prompts when applying a style (never during inference)."""
-    if style not in STYLE_PRESETS:
-        raise ValueError("Chọn phong cách có sẵn trong danh sách.")
-    positive = _prepend_style_tags(prompt, STYLE_PRESETS[style]["positive"])
-    if eyes_enabled:
-        positive = _add_prompt_tags(positive, ("perfect eyes",))
-    negative = _prepend_style_tags(negative, STYLE_PRESETS[style]["negative"])
-    return positive, negative
+def add_eyes_trigger(prompt, negative):
+    """Explicit UI action: add the eye LoRA trigger once, visible and editable."""
+    return _add_prompt_tags(prompt, ("perfect eyes",)), negative
 
 
 def apply_repair_hints(positive, negative, target):
@@ -559,10 +491,7 @@ def apply_prompt_choice(choice, items, prompt, negative, steps, cfg, seed, text_
         applied.append(f"Kích thước {selected['size']}")
     if selected["seed"] is not None:
         applied.append(f"Seed {selected['seed']}")
-    status = (
-        f"Đã nạp **{selected['label']}** vào *Ý tưởng gốc*; hai ô gửi model tự cập "
-        f"nhật theo phong cách đang chọn."
-    )
+    status = f"Đã nạp **{selected['label']}** vào ô *Prompt gửi model*."
     if applied:
         status += " Đã áp dụng: " + ", ".join(applied) + "."
     if selected["truncated"]:
@@ -730,26 +659,23 @@ class StudioRuntime:
         anatomy_weight,
         eyes_enabled,
         eyes_weight,
-        style="Tùy chỉnh",
         adult_confirmed=False,
     ):
         if not isinstance(prompt, str) or not prompt.strip() or len(prompt) > 2200:
             raise ValueError("Prompt gửi model phải có từ 1 đến 2200 ký tự.")
         if not isinstance(negative, str) or len(negative) > 1700:
             raise ValueError("Negative gửi model tối đa 1700 ký tự.")
-        if not isinstance(style, str) or style not in STYLE_PRESETS:
-            raise ValueError("Chọn phong cách có sẵn trong danh sách.")
         if not isinstance(adult_confirmed, bool):
             raise ValueError("Xác nhận 18+ không hợp lệ.")
-        if style == ADULT_STYLE:
-            if not adult_confirmed:
-                raise ValueError(
-                    "Phong cách Anime NSFW 18+ cần xác nhận tất cả nhân vật đều trưởng thành."
-                )
-            if UNDERAGE_PROMPT.search(prompt):
-                raise ValueError(
-                    "Phong cách 18+ không chấp nhận prompt về trẻ em hoặc vị thành niên."
-                )
+        # Hai hàng rào này chạy cho mọi prompt, không phụ thuộc preset nào.
+        if UNDERAGE_PROMPT.search(prompt):
+            raise ValueError(
+                "Prompt không được nhắc tới trẻ em hoặc vị thành niên; mọi nhân vật phải trưởng thành."
+            )
+        if ADULT_PROMPT.search(prompt) and not adult_confirmed:
+            raise ValueError(
+                "Prompt có nội dung người lớn: hãy tick xác nhận tất cả nhân vật đều từ 18 tuổi trở lên."
+            )
         steps = _number(steps, "Steps", 10, 45, integer=True)
         cfg = _number(cfg, "CFG", 1, 12)
         seed = _number(seed, "Seed", -1, 2**32 - 1, integer=True)
@@ -767,8 +693,8 @@ class StudioRuntime:
                 raise ValueError(
                     f"LoRA {name} chưa được nạp. Bật nó ở ô cấu hình và chạy lại các ô tải/nạp model."
                 )
-        # These are the two editable fields shown to the user. Neither style nor
-        # repair selection may add invisible terms at inference time.
+        # Prompt/negative là đúng hai ô người dùng đang thấy: không preset nào
+        # và không vùng sửa nào được phép thêm thẻ ẩn lúc suy luận.
         return prompt, negative, steps, cfg, seed, count, loras
 
     def _apply_loras(self, choices):
@@ -955,7 +881,6 @@ class StudioRuntime:
         eyes_enabled,
         eyes_weight,
         embed,
-        style="Tùy chỉnh",
         adult_confirmed=False,
     ):
         from PIL import Image, ImageChops, ImageFilter
@@ -971,7 +896,6 @@ class StudioRuntime:
             anatomy_weight,
             eyes_enabled,
             eyes_weight,
-            style=style,
             adult_confirmed=adult_confirmed,
         )
         if mode == "text":
@@ -1039,7 +963,6 @@ class StudioRuntime:
                 metadata = {
                     "model": self.checkpoint.name,
                     "operation": mode,
-                    "style": style,  # preset được chọn, không ghép lại vào prompt
                     "prompt": positive,
                     "negative_prompt": negative,
                     "seed": image_seed,
@@ -1064,7 +987,7 @@ class StudioRuntime:
                 gallery.append((str(path), f"Seed {image_seed} · {width}×{height}"))
                 selected.append(str(image_seed))
         status = (
-            f"✅ Đã tạo {len(paths)} ảnh · preset đã chọn: {style} · seed: {', '.join(selected)}"
+            f"✅ Đã tạo {len(paths)} ảnh · seed: {', '.join(selected)}"
             f" · chế độ: {self.execution_mode} · đã lưu: {Path(paths[0]).parent}"
         )
         return gallery, paths, status, paths[-1]
@@ -1083,7 +1006,6 @@ class StudioRuntime:
         eyes_enabled,
         eyes_weight,
         embed,
-        style="Tùy chỉnh",
         adult_confirmed=False,
     ):
         return self._generate(
@@ -1105,7 +1027,6 @@ class StudioRuntime:
             eyes_enabled,
             eyes_weight,
             embed,
-            style,
             adult_confirmed,
         )
 
@@ -1125,7 +1046,6 @@ class StudioRuntime:
         eyes_enabled,
         eyes_weight,
         embed,
-        style="Tùy chỉnh",
         adult_confirmed=False,
     ):
         return self._generate(
@@ -1147,7 +1067,6 @@ class StudioRuntime:
             eyes_enabled,
             eyes_weight,
             embed,
-            style,
             adult_confirmed,
         )
 
@@ -1169,7 +1088,6 @@ class StudioRuntime:
         eyes_enabled,
         eyes_weight,
         embed,
-        style="Tùy chỉnh",
         adult_confirmed=False,
     ):
         source, mask = _editor_mask(editor, mask_file)
@@ -1192,7 +1110,6 @@ class StudioRuntime:
             eyes_enabled,
             eyes_weight,
             embed,
-            style,
             adult_confirmed,
         )
 
@@ -1224,32 +1141,36 @@ def build_app(runtime):
         )
         with gr.Row():
             with gr.Column(scale=5, min_width=360):
-                style = gr.Dropdown(
-                    choices=list(STYLE_PRESETS),
-                    value="Anime chuẩn",
-                    label="Phong cách hình ảnh",
-                )
-                gr.Markdown(
-                    "**Anime chuẩn:** nét rõ, cel-shading · **Bán thực 2.5D:** đổ bóng mềm, da tự nhiên · **Tùy chỉnh:** không thêm thẻ phong cách · **Anime NSFW 18+:** chỉ nhân vật trưởng thành, phải xác nhận bên dưới. Tất cả dùng cùng checkpoint WAI v17."
-                )
                 adult_confirm = gr.Checkbox(
-                    label="Chỉ cho Anime NSFW 18+: tôi xác nhận tất cả nhân vật đều từ 18 tuổi trở lên",
+                    label="Nội dung người lớn: tôi xác nhận tất cả nhân vật đều từ 18 tuổi trở lên",
                     value=False,
                 )
                 prompt = gr.Textbox(
-                    label="Ý tưởng gốc (dùng để áp dụng lại preset)",
+                    label="Prompt gửi model · tự viết phong cách của bạn",
                     value=DEFAULT_PROMPT,
-                    lines=3,
-                    max_lines=6,
-                    placeholder="Mô tả nhân vật, khung cảnh, ánh sáng, phong cách...",
+                    lines=4,
+                    max_lines=10,
+                    placeholder=(
+                        "Mô tả nhân vật, trang phục, khung cảnh, ánh sáng và phong cách "
+                        "vẽ bạn muốn (anime illustration, cel shading, watercolor...)"
+                    ),
                 )
                 negative = gr.Textbox(
-                    label="Negative gốc · ngón tay / ngón chân (dùng để áp dụng lại preset)",
+                    label="Negative gửi model · ngón tay / ngón chân",
                     value=DEFAULT_NEGATIVE,
                     lines=3,
+                    max_lines=8,
                 )
                 gr.Markdown(
-                    "Preset chỉ **điền vào hai ô prompt gửi model bên dưới**; chỉnh sửa trực tiếp ở đó để tùy ý thêm/xóa từ khóa. Khi đổi phong cách, ý tưởng gốc, negative gốc hoặc bật/tắt LoRA mắt, preset sẽ **ghi đè hai ô gửi model**, kể cả chỉnh sửa thủ công. Muốn áp dụng lại preset hiện tại, bấm nút bên dưới. Negative gốc nhắm lỗi thừa/thiếu/dính ngón; preset thường thêm `nsfw, explicit` vào negative, còn **Anime NSFW 18+** không thêm hai thẻ đó. Checkbox chỉ là xác nhận, không phải xác minh tuổi."
+                    "**Không có selector phong cách:** bạn tự viết phong cách ngay trong "
+                    "prompt (hoặc nạp từ thư viện prompt bên dưới). **Chính xác nội dung "
+                    "hai ô này** được gửi cho model ở cả ba chế độ, không thêm thẻ ẩn theo "
+                    "LoRA hay vùng sửa khi bấm tạo. Prompt nhắc tới trẻ em/vị thành niên "
+                    "luôn bị từ chối; prompt có nội dung người lớn cần tick xác nhận 18+ "
+                    "ở trên. Checkbox chỉ là xác nhận, không phải xác minh tuổi."
+                )
+                eyes_trigger_button = gr.Button(
+                    "Thêm trigger `perfect eyes` cho LoRA mắt (sửa/xóa được)"
                 )
                 with gr.Accordion(
                     "📚 Thư viện prompt · nạp danh sách từ file text", open=False
@@ -1260,11 +1181,10 @@ def build_app(runtime):
                         "dưới, bảng một dòng `Tên tiếng Việt | Nội dung prompts tiếng "
                         "Anh`, JSON `[{\"title\", \"prompt\"}]`, hoặc các đoạn prompt "
                         "cách nhau dòng trống. **Chọn một dòng trong danh sách là hệ "
-                        "thống tự nạp prompt** vào *Ý tưởng gốc*; hai ô gửi model cập "
-                        "nhật theo phong cách đang chọn. Các dòng `Negative:`, "
-                        "`Steps:`, `CFG:`, `Size: 832x1216`, `Seed:` trong mỗi prompt "
-                        "cũng được áp dụng (steps/CFG/kích thước bị kẹp về dải cho "
-                        "phép của giao diện)."
+                        "thống tự nạp prompt** vào ô *Prompt gửi model* ở trên. Các dòng "
+                        "`Negative:`, `Steps:`, `CFG:`, `Size: 832x1216`, `Seed:` trong "
+                        "mỗi prompt cũng được áp dụng (steps/CFG/kích thước bị kẹp về "
+                        "dải cho phép của giao diện)."
                     )
                     prompt_file = gr.File(
                         label="File danh sách prompt (.txt/.md/.json · tối đa 2 MB)",
@@ -1295,35 +1215,6 @@ def build_app(runtime):
                     library_status = gr.Markdown(
                         "Chưa nạp thư viện. Nạp file của bạn hoặc bấm **Nạp thư viện "
                         "mẫu** để xem định dạng chuẩn."
-                    )
-                initial_positive, initial_negative = compose_style_prompts(
-                    DEFAULT_PROMPT,
-                    DEFAULT_NEGATIVE,
-                    "Anime chuẩn",
-                    "eyes" in runtime.lora_paths,
-                )
-                with gr.Accordion("✎ Prompt gửi model · sửa trực tiếp", open=True):
-                    gr.Markdown(
-                        "**Chính xác nội dung hai ô này** được gửi cho model ở cả ba chế độ, "
-                        "không thêm từ khóa ẩn theo phong cách/LoRA/vùng sửa khi bấm tạo. "
-                        "Có thể xóa `perfect eyes` dù LoRA mắt vẫn bật. Chọn lại preset sẽ mất chỉnh sửa ở đây."
-                    )
-                    effective_prompt = gr.Textbox(
-                        label="Prompt gửi model · sửa được",
-                        value=initial_positive,
-                        lines=3,
-                        max_lines=8,
-                        interactive=True,
-                    )
-                    effective_negative = gr.Textbox(
-                        label="Negative gửi model · sửa được",
-                        value=initial_negative,
-                        lines=3,
-                        max_lines=8,
-                        interactive=True,
-                    )
-                    reapply_preset = gr.Button(
-                        "Áp dụng lại phong cách vào hai ô gửi model"
                     )
                 with gr.Accordion("⚙️ Thông số ảnh và LoRA", open=True):
                     with gr.Row():
@@ -1378,8 +1269,8 @@ def build_app(runtime):
                         "LoRA chỉ có thể bật nếu đã chọn và xác minh ở ô cấu hình trước khi mở giao diện. Tắt/bật và đổi cường độ ở đây **không** tải lại checkpoint."
                     )
                 shared = [
-                    effective_prompt,
-                    effective_negative,
+                    prompt,
+                    negative,
                     steps,
                     cfg,
                     seed,
@@ -1389,7 +1280,6 @@ def build_app(runtime):
                     eyes,
                     eyes_weight,
                     embed,
-                    style,
                     adult_confirm,
                 ]
                 with gr.Tabs():
@@ -1533,33 +1423,26 @@ def build_app(runtime):
         to_inpaint.click(
             fn=edit_last, inputs=latest, outputs=editor, api_visibility="private"
         )
-        # Apply a preset visibly, never at inference time. Reapplying overwrites
-        # manual edits in the effective fields; generation uses those fields as-is.
-        gr.on(
-            triggers=[
-                style.change,
-                prompt.change,
-                negative.change,
-                eyes.change,
-                reapply_preset.click,
-            ],
-            fn=compose_style_prompts,
-            inputs=[prompt, negative, style, eyes],
-            outputs=[effective_prompt, effective_negative],
+        # Không còn preset: hai ô prompt/negative là đúng những gì gửi model.
+        # Trigger LoRA mắt và gợi ý sửa vùng đều là nút bấm tường minh, người
+        # dùng thấy và sửa/xóa được trước khi tạo ảnh.
+        eyes_trigger_button.click(
+            fn=add_eyes_trigger,
+            inputs=[prompt, negative],
+            outputs=[prompt, negative],
             api_visibility="private",
             queue=False,
             show_progress="hidden",
         )
         repair_hints_button.click(
             fn=apply_repair_hints,
-            inputs=[effective_prompt, effective_negative, target],
-            outputs=[effective_prompt, effective_negative],
+            inputs=[prompt, negative, target],
+            outputs=[prompt, negative],
             api_visibility="private",
             queue=False,
         )
         # Thư viện prompt: đọc danh sách từ file hoặc đoạn văn bản đã dán, rồi
-        # chọn một dòng để nạp vào "Ý tưởng gốc" (hai ô gửi model tự cập nhật
-        # theo preset qua sự kiện prompt.change sẵn có).
+        # chọn một dòng để nạp thẳng vào ô prompt gửi model.
         library_outputs = [prompt_library_state, prompt_choice, library_status]
 
         def library_loaded(library):
