@@ -335,6 +335,166 @@ class NotebookTests(unittest.TestCase):
             self.assertEqual(len(calls), 2)
 
 
+class PromptLibraryTests(unittest.TestCase):
+    """Nạp danh sách prompt từ file text rồi chọn một dòng để nạp vào UI."""
+
+    LIBRARY_TEXT = (
+        "=== 50 PROMPTS – ÁO SƠ MI VĂN PHÒNG ===\n"
+        "\n"
+        "Tên tiếng Việt | Nội dung prompts tiếng Anh\n"
+        "\n"
+        "Nhân vật công sở, trang phục lịch sự, ánh sáng trong trẻo\n"
+        "\n"
+        "PROMPT 01 - Nữ thư ký ngồi bàn làm việc mỉm cười\n"
+        "Masterpiece, best quality, ultra-detailed anime style, side view,\n"
+        "office worker at a tidy desk, white shirt, glasses, high detail.\n"
+        "\n"
+        "PROMPT 02 - Nữ thư ký đứng bên cửa sổ\n"
+        "Prompt: Masterpiece, best quality, front view, worker by a window.\n"
+        "Negative: lowres, bad hands, extra fingers\n"
+        "Steps: 60\n"
+        "CFG: 20\n"
+        "Size: 832x1216\n"
+        "Seed: 424242\n"
+        "\n"
+        "03 - Chuyến tàu cuối ngày\n"
+        "Masterpiece, best quality, office worker on a night train.\n"
+    )
+
+    def test_parses_the_prompt_nn_file_format_and_clamps_parameters(self):
+        library = studio.parse_prompt_library(self.LIBRARY_TEXT, name="50-prompts.txt")
+        self.assertEqual(library["name"], "50 PROMPTS – ÁO SƠ MI VĂN PHÒNG")
+        self.assertEqual([item["index"] for item in library["items"]], [1, 2, 3])
+        self.assertEqual(
+            library["items"][0]["title"], "Nữ thư ký ngồi bàn làm việc mỉm cười"
+        )
+        self.assertEqual(
+            library["items"][0]["label"], "01 · Nữ thư ký ngồi bàn làm việc mỉm cười"
+        )
+        self.assertIn("Nhân vật công sở", library["description"])
+        self.assertNotIn("\n", library["items"][0]["prompt"])
+        tuned = library["items"][1]
+        self.assertEqual(tuned["negative"], "lowres, bad hands, extra fingers")
+        # Ngoài dải giao diện cho phép (10–45 steps, 1–12 CFG) thì bị kẹp lại.
+        self.assertEqual((tuned["steps"], tuned["cfg"]), (45, 12.0))
+        self.assertEqual(tuned["size"], "832x1216")
+        self.assertEqual(tuned["seed"], 424242)
+        self.assertTrue(
+            tuned["prompt"].startswith("Masterpiece, best quality, front view"),
+            'dòng "Prompt:" là nội dung, chỉ bỏ tiền tố',
+        )
+        self.assertNotIn("Negative:", tuned["prompt"])
+        self.assertEqual(library["items"][2]["label"], "03 · Chuyến tàu cuối ngày")
+
+    def test_reads_table_rows_json_and_plain_paragraphs(self):
+        table = studio.parse_prompt_library(
+            "=== 3 PROMPTS – BẢNG ===\n"
+            "Tên tiếng Việt | Nội dung prompts tiếng Anh\n"
+            "Cô gái bên hồ | 1girl, solo, reading by a lake at dawn, masterpiece\n"
+            "Phố mưa neon | 1girl, solo, rainy neon street, reflective asphalt\n"
+            "Vườn trên mây | 1girl, solo, floating garden above the clouds\n"
+        )
+        self.assertEqual(len(table["items"]), 3)
+        self.assertEqual(table["items"][0]["title"], "Cô gái bên hồ")
+        self.assertIn("floating garden", table["items"][2]["prompt"])
+
+        parsed = studio.parse_prompt_library(
+            json.dumps(
+                [
+                    {"title": "Chân dung", "prompt": "1girl, portrait, soft light"},
+                    {"name": "Phong cảnh", "en": "1girl, landscape, wide sky"},
+                ]
+            )
+        )
+        self.assertEqual([i["title"] for i in parsed["items"]], ["Chân dung", "Phong cảnh"])
+
+        plain = studio.parse_prompt_library(
+            "1girl, under cherry blossoms, masterpiece\n\n"
+            "1boy, rooftop at sunset, masterpiece"
+        )
+        self.assertEqual(len(plain["items"]), 2)
+        self.assertIn("rooftop at sunset", plain["items"][1]["prompt"])
+
+    def test_rejects_empty_and_unparseable_input(self):
+        with self.assertRaisesRegex(ValueError, "File trống"):
+            studio.parse_prompt_library("   ")
+        with self.assertRaisesRegex(ValueError, "Không tìm thấy prompt nào"):
+            studio.parse_prompt_library("Tên tiếng Việt | Nội dung prompts tiếng Anh")
+        with self.assertRaisesRegex(ValueError, "Hãy dán nội dung"):
+            studio.load_prompt_library_text("")
+        with self.assertRaisesRegex(ValueError, "Hãy chọn file"):
+            studio.read_prompt_library(None)
+
+    def test_long_prompts_are_trimmed_to_the_ui_limit(self):
+        library = studio.parse_prompt_library(
+            "PROMPT 01 - Prompt rất dài\n" + "masterpiece, " * 400
+        )
+        self.assertEqual(len(library["items"][0]["prompt"]), studio.PROMPT_LIBRARY_LIMIT)
+        self.assertTrue(library["items"][0]["truncated"])
+        self.assertIn("đã bị cắt bớt", studio.prompt_library_status(library))
+
+    def test_reads_uploaded_file_and_refuses_oversized_or_missing(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            uploaded = root / "50-prompts.txt"
+            uploaded.write_text(self.LIBRARY_TEXT, encoding="utf-8")
+            library = studio.read_prompt_library(uploaded)
+            # Tiêu đề "=== ... ===" trong file được dùng làm tên thư viện.
+            self.assertEqual(library["name"], "50 PROMPTS – ÁO SƠ MI VĂN PHÒNG")
+            self.assertEqual(len(library["items"]), 3)
+            # Không có tiêu đề thì lấy tên file làm tên thư viện.
+            anonymous = root / "danh-sach-rieng.txt"
+            anonymous.write_text(
+                "PROMPT 01 - Một prompt\n1girl, masterpiece, best quality",
+                encoding="utf-8",
+            )
+            self.assertEqual(
+                studio.read_prompt_library(anonymous)["name"], "danh-sach-rieng.txt"
+            )
+            with self.assertRaisesRegex(ValueError, "Không mở được file"):
+                studio.read_prompt_library(root / "khong-ton-tai.txt")
+            with patch.object(studio, "PROMPT_LIBRARY_MAX_BYTES", 10):
+                with self.assertRaisesRegex(ValueError, "quá lớn"):
+                    studio.read_prompt_library(uploaded)
+
+    def test_selection_fills_editable_fields_and_keeps_missing_parameters(self):
+        items = studio.parse_prompt_library(self.LIBRARY_TEXT)["items"]
+        current = ("prompt cũ", "negative cũ", 25, 6.0, -1, "1024x1024", "1024x1024")
+        filled = studio.apply_prompt_choice(items[1]["label"], items, *current)
+        self.assertEqual(filled[0], items[1]["prompt"])
+        self.assertEqual(filled[1], "lowres, bad hands, extra fingers")
+        self.assertEqual(filled[2:5], (45, 12.0, 424242))
+        self.assertEqual(filled[5:7], ("832x1216", "832x1216"))
+        self.assertIn("Đã nạp", filled[7])
+        self.assertIn("Steps 45", filled[7])
+        # Prompt không kèm thông số thì giữ nguyên thông số đang có.
+        plain = studio.apply_prompt_choice(items[0]["label"], items, *current)
+        self.assertEqual(plain[0], items[0]["prompt"])
+        self.assertEqual(plain[1:7], current[1:])
+        # Chưa chọn dòng nào hoặc thư viện rỗng: không đổi gì, chỉ báo trạng thái.
+        for choice, entries in ((None, items), (items[0]["label"], ())):
+            untouched = studio.apply_prompt_choice(choice, entries, *current)
+            self.assertEqual(untouched[:7], current)
+            self.assertIn("Chưa nạp thư viện", untouched[7])
+
+    def test_sample_library_is_bundled_and_reparseable(self):
+        library = studio.load_sample_prompt_library()
+        self.assertEqual(len(library["items"]), 12)
+        self.assertEqual(
+            studio.prompt_library_dropdown(library["items"])["interactive"], True
+        )
+        self.assertEqual(
+            studio.prompt_library_dropdown(())[ "choices"], ()
+        )
+        self.assertEqual(studio.prompt_library_reset()[0], ())
+        # Kích thước trong file mẫu phải là preset hợp lệ của giao diện.
+        sized = next(item for item in library["items"] if item["size"])
+        self.assertIn(sized["size"], studio.SIZE_PRESETS)
+        # Prompt mẫu phải qua được bộ kiểm tra độ dài của runtime.
+        for item in library["items"]:
+            self.assertLessEqual(len(item["prompt"]), 2200)
+
+
 class RuntimeValidationTests(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
@@ -933,10 +1093,16 @@ class RuntimeValidationTests(unittest.TestCase):
         self.assertIn((reapply["id"], "click"), preset_event["targets"])
         self.assertEqual(set(preset_event["outputs"]), {c["id"] for c in effective})
         self.assertFalse(preset_event["queue"])
-        repair_event = config["dependencies"][-1]
-        self.assertEqual(set(repair_event["outputs"]), {c["id"] for c in effective})
+        effective_ids = {c["id"] for c in effective}
+        repair_event = next(
+            d
+            for d in config["dependencies"]
+            if set(d["outputs"]) == effective_ids and len(d["targets"]) == 1
+        )
         self.assertEqual(repair_event["inputs"][:2], [c["id"] for c in effective])
-        self.assertEqual(len(config["dependencies"]), 7)
+        # 3 nút tạo ảnh + 2 nút dùng ảnh mới nhất + preset + gợi ý sửa vùng
+        # + 5 sự kiện của thư viện prompt.
+        self.assertEqual(len(config["dependencies"]), 12)
         for dep in config["dependencies"][:3]:  # text, img2img, inpaint
             self.assertEqual(dep["inputs"][-13:-11], [c["id"] for c in effective])
         self.assertTrue(
@@ -944,6 +1110,186 @@ class RuntimeValidationTests(unittest.TestCase):
         )
         self.assertTrue(demo.studio_css)
         self.assertIsNotNone(demo.studio_theme)
+
+    @unittest.skipIf(
+        not importlib.util.find_spec("gradio"), "Gradio needed for UI wiring test"
+    )
+    def test_prompt_library_ui_loads_file_and_selection_fills_prompt(self):
+        """Nạp file prompt trong UI Gradio: ra danh sách, chọn một dòng là nạp."""
+        import asyncio
+        from gradio.state_holder import SessionState
+
+        uploaded = self.root / "50-prompts.txt"
+        uploaded.write_text(
+            "=== 2 PROMPTS – THƯ VIỆN KIỂM THỬ ===\n"
+            "\n"
+            "Tên tiếng Việt | Nội dung prompts tiếng Anh\n"
+            "\n"
+            "PROMPT 01 - Cô gái dưới hoa anh đào\n"
+            "1girl, solo, under cherry blossoms, masterpiece, best quality\n"
+            "Negative: lowres, bad hands, extra fingers\n"
+            "Steps: 30\n"
+            "\n"
+            "PROMPT 02 - Nam thanh niên trên sân thượng\n"
+            "1boy, solo, rooftop at night, neon city, masterpiece, best quality\n",
+            encoding="utf-8",
+        )
+        empty = self.root / "rong.txt"
+        empty.write_text(
+            "Tên tiếng Việt | Nội dung prompts tiếng Anh", encoding="utf-8"
+        )
+
+        demo = studio.build_app(self.runtime)
+        config = demo.get_config_file()
+        components = config["components"]
+
+        def component(kind, needle, field="label"):
+            return next(
+                c
+                for c in components
+                if c["type"] == kind and needle in str(c["props"].get(field, ""))
+            )
+
+        upload = component("file", "danh sách prompt")
+        self.assertEqual(upload["props"]["file_types"], [".txt", ".md", ".json"])
+        choice = component("dropdown", "Chọn prompt để nạp")
+        self.assertEqual(choice["props"]["choices"], [])
+        self.assertFalse(choice["props"]["interactive"])
+        paste = component("button", "Đọc danh sách đã dán", "value")
+        sample = component("button", "thư viện mẫu", "value")
+        state = next(c for c in components if c["type"] == "state")
+        library_box = component("markdown", "Chưa nạp thư viện", "value")
+        prompt_box = component("textbox", "Ý tưởng gốc")
+        negative_box = component("textbox", "Negative gốc")
+        steps_box = component("slider", "Số bước (steps)")
+        cfg_box = component("slider", "CFG / độ bám prompt")
+        seed_box = component("number", "Seed (-1 = ngẫu nhiên)")
+        sizes = [
+            c
+            for c in components
+            if c["type"] == "dropdown"
+            and str(c["props"].get("label", "")).startswith("Kích thước")
+        ]
+        self.assertEqual(len(sizes), 2)
+
+        library_outputs = [state["id"], choice["id"], library_box["id"]]
+        library_events = [
+            d for d in config["dependencies"] if d["outputs"] == library_outputs
+        ]
+        self.assertEqual(
+            {tuple(targets) for d in library_events for targets in d["targets"]},
+            {
+                (upload["id"], "upload"),
+                (upload["id"], "clear"),
+                (paste["id"], "click"),
+                (sample["id"], "click"),
+            },
+        )
+        select_event = next(
+            d for d in config["dependencies"] if (choice["id"], "select") in d["targets"]
+        )
+        parameters = [
+            prompt_box["id"],
+            negative_box["id"],
+            steps_box["id"],
+            cfg_box["id"],
+            seed_box["id"],
+            sizes[0]["id"],
+            sizes[1]["id"],
+        ]
+        self.assertEqual(
+            select_event["inputs"], [choice["id"], state["id"], *parameters]
+        )
+        self.assertEqual(select_event["outputs"], [*parameters, library_box["id"]])
+
+        session = SessionState(demo)
+
+        def fn_index(trigger):
+            return next(
+                d["id"] for d in config["dependencies"] if trigger in d["targets"]
+            )
+
+        def file_data(path):
+            return {
+                "path": str(path),
+                "meta": {"_type": "gradio.FileData"},
+                "orig_name": Path(path).name,
+            }
+
+        async def process(trigger, inputs):
+            return (
+                await demo.process_api(
+                    fn_index(trigger), inputs, state=session, explicit_call=True
+                )
+            )["data"]
+
+        async def flow():
+            _, dropdown, status = await process(
+                (upload["id"], "upload"), [file_data(uploaded)]
+            )
+            self.assertEqual(
+                [entry[0] for entry in dropdown["choices"]],
+                ["01 · Cô gái dưới hoa anh đào", "02 · Nam thanh niên trên sân thượng"],
+            )
+            self.assertTrue(dropdown["interactive"])
+            self.assertIsNone(dropdown["value"])
+            self.assertIn("2 prompt đã nạp", status)
+            self.assertIn("THƯ VIỆN KIỂM THỬ", status)
+            items = session[state["id"]]
+            self.assertEqual(len(items), 2)
+
+            # Chọn một dòng: prompt + negative + steps trong file được nạp.
+            filled = await process(
+                (choice["id"], "select"),
+                [
+                    items[0]["label"],
+                    None,
+                    "prompt cũ",
+                    "negative cũ",
+                    25,
+                    6.0,
+                    -1,
+                    "1024x1024",
+                    "1024x1024",
+                ],
+            )
+            self.assertEqual(filled[0], items[0]["prompt"])
+            self.assertEqual(filled[1], "lowres, bad hands, extra fingers")
+            self.assertEqual(int(filled[2]), 30)
+            self.assertEqual(filled[3:7], [6.0, -1, "1024x1024", "1024x1024"])
+            self.assertIn("Đã nạp", filled[7])
+
+            # Dán nội dung thay vì tải file lên.
+            _, pasted, pasted_status = await process(
+                (paste["id"], "click"),
+                [
+                    "PROMPT 01 - A\n1girl, masterpiece, best quality\n\n"
+                    "PROMPT 02 - B\n1boy, masterpiece, best quality"
+                ],
+            )
+            self.assertEqual(len(pasted["choices"]), 2)
+            self.assertIn("Danh sách đã dán", pasted_status)
+
+            # Thư viện mẫu đóng kèm để xem định dạng.
+            _, sampled, sample_status = await process((sample["id"], "click"), [])
+            self.assertEqual(len(sampled["choices"]), 12)
+            self.assertIn("12 prompt đã nạp", sample_status)
+
+            # File không có prompt: giữ danh sách cũ, chỉ báo lỗi ở trạng thái.
+            skipped, skipped_dropdown, error = await process(
+                (upload["id"], "upload"), [file_data(empty)]
+            )
+            self.assertIsNone(skipped)
+            self.assertNotIn("choices", skipped_dropdown)
+            self.assertIn("Không tìm thấy prompt nào", error)
+
+            # Gỡ file đã nạp: danh sách rỗng trở lại.
+            _, cleared, cleared_status = await process((upload["id"], "clear"), [])
+            self.assertEqual(cleared["choices"], [])
+            self.assertFalse(cleared["interactive"])
+            self.assertEqual(cleared_status, "Đã gỡ thư viện prompt.")
+
+        asyncio.run(flow())
 
     @unittest.skipIf(
         Image is None or not importlib.util.find_spec("gradio"),

@@ -101,6 +101,56 @@ STYLE_PRESETS = {
     },
 }
 CONTENT_ROOT = Path("/content")
+# Thư viện prompt mẫu đóng kèm, dùng đúng định dạng file .txt mà UI đọc được.
+# Người dùng có thể nạp file riêng của mình thay thế.
+SAMPLE_PROMPT_LIBRARY = """=== 12 PROMPTS – NHÂN VẬT VĂN PHÒNG & THÀNH PHỐ (BẢN MẪU) ===
+
+Tên tiếng Việt | Nội dung prompts tiếng Anh
+
+Nhân vật công sở hiện đại, trang phục lịch sự kín đáo, ánh sáng trong trẻo, chi tiết cao
+
+PROMPT 01 - Nữ nhân viên ngồi bàn làm việc, mỉm cười dịu
+1girl, solo, office worker sitting at a tidy desk, crisp white shirt fully buttoned, navy blazer, knee-length pencil skirt, glasses, long black hair loosely tied, gentle warm smile, warm desk lamp light, modern office at night, anime illustration, detailed eyes, detailed clothing, masterpiece, best quality
+
+PROMPT 02 - Nữ nhân viên cúi xem tài liệu rồi ngẩng lên
+1girl, solo, office worker leaning over a desk to check documents, light blue shirt buttoned to the collar, long charcoal skirt, long brown hair in a neat bun, shy soft smile, soft window light, papers and coffee cup on the desk, anime illustration, detailed eyes, masterpiece, best quality
+
+PROMPT 03 - Nam nhân viên đứng bên cửa sổ thành phố
+1boy, solo, calm office worker standing by a large office window, white shirt with sleeves rolled up, dark tie, tailored trousers, short black hair, thoughtful expression, city night view, bokeh lights, soft mixed lighting, anime illustration, masterpiece, best quality
+Negative: lowres, worst quality, blurry, bad anatomy, bad hands, extra fingers, deformed hands
+
+PROMPT 04 - Họp nhóm trong phòng kính
+multiple girls and boys, small team of office workers around a glass meeting table, whiteboard with charts, laptops and notebooks, daylight through tall windows, friendly expressions, clean modern interior, anime illustration, masterpiece, best quality
+Steps: 28
+Size: 1216x832
+
+PROMPT 05 - Giờ nghỉ ở quán cà phê tầng trệt
+1girl, solo, young office worker holding a paper coffee cup in a bright café, beige cardigan over a white shirt, pleated skirt, short wavy hair, relaxed smile, wooden interior with plants, soft morning light through glass, anime illustration, detailed eyes, masterpiece, best quality
+
+PROMPT 06 - Đi bộ trong hành lang công ty
+1girl, solo, office worker walking through a bright corporate corridor holding a folder, gray suit, short hair, determined expression, glossy floor reflections, sunbeams from side windows, dynamic composition, anime illustration, masterpiece, best quality
+
+PROMPT 07 - Chờ thang máy lúc tan tầm
+1girl, solo, office worker waiting for the elevator with a tote bag, long coat over a turtleneck, long straight hair, quiet tired smile, warm lobby lighting, marble walls, shallow depth of field, anime illustration, masterpiece, best quality
+
+PROMPT 08 - Làm việc muộn bên đèn bàn
+1girl, solo, office worker typing at a laptop late at night, glasses reflecting the screen, messy bun, oversized knit cardigan, focused expression, warm lamp glow, dark office, rain streaks on the window, cinematic lighting, anime illustration, masterpiece, best quality
+Negative: lowres, worst quality, blurry, bad anatomy, bad hands, extra fingers, text, watermark
+CFG: 7
+
+PROMPT 09 - Ô trong suốt dưới mưa phố đêm
+1girl, solo, office worker walking home with a transparent umbrella, trench coat and scarf, neon signs reflected in wet asphalt, light drizzle, calm expression, moody indigo palette, anime illustration, masterpiece, best quality
+
+PROMPT 10 - Trên sân thượng giờ hoàng hôn
+1girl, solo, office worker standing on a rooftop at sunset, blazer draped over one arm, hair moving in the wind, orange and violet sky above the skyline, expansive detailed background, hopeful atmosphere, anime illustration, masterpiece, best quality
+
+PROMPT 11 - Thư viện và chồng sách cao
+1girl, solo, young researcher between tall library shelves holding a stack of books, white blouse with a knitted vest, long braided hair, curious soft expression, dust particles in warm shafts of light, detailed interior, anime illustration, masterpiece, best quality
+
+PROMPT 12 - Chuyến tàu cuối ngày
+1girl, solo, office worker sitting by a train window at dusk, headphones on, soft sweater, long hair, gazing at passing city lights, reflections on the glass, quiet contemplative mood, cinematic anime film still, masterpiece, best quality
+Seed: 20260928
+"""
 REPAIR_HINTS = {
     "hands": (
         "natural hands, anatomically correct fingers, detailed fingers",
@@ -162,6 +212,370 @@ def apply_repair_hints(positive, negative, target):
     return (
         _add_prompt_tags(positive, hint_pos.split(",")),
         _add_prompt_tags(negative, hint_neg.split(",")),
+    )
+
+
+# ---------------------------------------------------------------------------
+# Thư viện prompt: nạp danh sách prompt từ file text rồi chọn một dòng để nạp.
+#
+#   === 50 PROMPTS – CHỦ ĐỀ ===
+#   Tên tiếng Việt | Nội dung prompts tiếng Anh
+#
+#   PROMPT 01 - Tên tiếng Việt của prompt
+#   Masterpiece, best quality, ultra-detailed anime style, ...
+#   Negative: lowres, bad hands
+#   Steps: 26
+#
+# Ngoài định dạng trên còn đọc được: bảng một dòng "Tên | Prompt", JSON
+# [{"title": ..., "prompt": ...}], hoặc các đoạn prompt cách nhau dòng trống.
+# Giới hạn thấp hơn mức runtime chấp nhận (2200/1700) để preset phong cách
+# còn chỗ thêm thẻ mà không vượt ngưỡng khi gửi model.
+# ---------------------------------------------------------------------------
+PROMPT_LIBRARY_LIMIT = 2000
+PROMPT_LIBRARY_NEGATIVE_LIMIT = 1500
+PROMPT_LIBRARY_MAX_BYTES = 2_000_000
+
+_LIBRARY_BANNER = re.compile(r"^\s*(?:={3,}|\*{3,})\s*(.+?)\s*(?:={3,}|\*{3,})\s*$")
+_LIBRARY_MD_TITLE = re.compile(r"^\s*#\s+(.+?)\s*$")
+# Bắt buộc có số thứ tự để dòng "Prompt: Masterpiece, ..." không bị coi là tiêu đề.
+_LIBRARY_PROMPT_HEADING = re.compile(
+    r"^\s*(?:#{1,6}\s*)?\**\s*prompt\s*\.?\s*(\d{1,3})\s*\**\s*[-–—:.)\]]*\s*(.*?)\s*$",
+    re.IGNORECASE,
+)
+_LIBRARY_NUMBER_HEADING = re.compile(
+    r"^\s*(?:#{1,6}\s*)?\[?(\d{1,3})\]?\s*[-–—.:/)]\s+(.+?)\s*$"
+)
+_LIBRARY_PIPE_ROW = re.compile(r"^\s*([^|\n]{1,90}?)\s*\|\s*([^|\n]{15,})\s*$")
+_LIBRARY_TABLE_HEADER = re.compile(
+    r"tên\s+tiếng\s+việt|nội\s+dung\s+prompt|prompt\s+tiếng\s+anh"
+    r"|vietnamese\s+(?:name|title)|prompt\s*\(\s*en\w*\s*\)",
+    re.IGNORECASE,
+)
+_LIBRARY_RULE = re.compile(r"^\s*(?:-{3,}|_{3,})\s*$")
+_LIBRARY_BULLET = re.compile(r"^[-*•·]\s+")
+_LIBRARY_PROMPT_PREFIX = re.compile(r"^\s*prompt\s*[:\-–—]\s*", re.IGNORECASE)
+_LIBRARY_DIRECTIVES = (
+    (
+        "negative",
+        re.compile(
+            r"^\s*(?:negative(?:\s*prompt)?|loại\s+trừ|prompt\s+trừ)\s*[:\-–—]\s*(.+)$",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "steps",
+        re.compile(
+            r"^\s*(?:steps?|bước|số\s+bước)\s*[:\-–—]\s*(\d{1,3})\s*$", re.IGNORECASE
+        ),
+    ),
+    (
+        "cfg",
+        re.compile(
+            r"^\s*(?:cfg(?:\s*scale)?|guidance)\s*[:\-–—]\s*(\d{1,2}(?:[.,]\d)?)\s*$",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "size",
+        re.compile(
+            r"^\s*(?:size|kích\s+thước|resolution)\s*[:\-–—]\s*(\d{3,4})\s*[x×*]\s*(\d{3,4})\s*$",
+            re.IGNORECASE,
+        ),
+    ),
+    ("seed", re.compile(r"^\s*seed\s*[:\-–—]\s*(-?\d{1,12})\s*$", re.IGNORECASE)),
+)
+
+
+def _library_title(value):
+    text = str(value or "").replace("*", "").replace("`", " ")
+    text = _LIBRARY_BULLET.sub("", text)
+    text = _LIBRARY_PROMPT_PREFIX.sub("", text)
+    return re.sub(r"\s+", " ", text).strip()[:140]
+
+
+def _library_body(lines):
+    """Join one prompt body and extract the per-prompt parameters below it."""
+    extras = {}
+    parts = []
+    for raw in lines:
+        line = str(raw or "").strip()
+        if not line:
+            continue
+        for key, pattern in _LIBRARY_DIRECTIVES:
+            match = pattern.match(line)
+            if not match:
+                continue
+            if key == "negative":
+                extras["negative"] = match.group(1).strip()[
+                    :PROMPT_LIBRARY_NEGATIVE_LIMIT
+                ]
+            elif key == "steps":
+                extras["steps"] = min(45, max(10, int(match.group(1))))
+            elif key == "cfg":
+                extras["cfg"] = min(
+                    12.0, max(1.0, float(match.group(1).replace(",", ".")))
+                )
+            elif key == "size":
+                size = f"{int(match.group(1))}x{int(match.group(2))}"
+                if size in SIZE_PRESETS:
+                    extras["size"] = size
+            elif key == "seed":
+                value = int(match.group(1))
+                if value == -1 or 0 <= value <= 2**32 - 1:
+                    extras["seed"] = value
+            break
+        else:
+            parts.append(_LIBRARY_BULLET.sub("", line).replace("`", "").strip("* "))
+    prompt = _LIBRARY_PROMPT_PREFIX.sub("", re.sub(r"\s+", " ", " ".join(parts)))
+    return prompt.strip(), extras
+
+
+def _library_items(entries):
+    items = []
+    for title, body in entries:
+        prompt, extras = _library_body(body)
+        if not prompt:
+            continue
+        truncated = len(prompt) > PROMPT_LIBRARY_LIMIT
+        if truncated:
+            prompt = prompt[:PROMPT_LIBRARY_LIMIT]
+        label = _library_title(title) or (
+            f"{prompt[:58]}…" if len(prompt) > 58 else prompt
+        )
+        items.append(
+            {
+                "index": len(items) + 1,
+                "label": f"{len(items) + 1:02d} · {label}",
+                "title": label,
+                "prompt": prompt,
+                "negative": extras.get("negative", ""),
+                "steps": extras.get("steps"),
+                "cfg": extras.get("cfg"),
+                "size": extras.get("size"),
+                "seed": extras.get("seed"),
+                "truncated": truncated,
+            }
+        )
+    return tuple(items)
+
+
+def _library_from_json(payload, name):
+    rows = payload.get("items") if isinstance(payload, dict) else payload
+    if not isinstance(rows, list):
+        return None
+    entries = []
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        title = row.get("title") or row.get("name") or row.get("vi") or ""
+        prompt = row.get("prompt") or row.get("en") or row.get("content") or ""
+        entries.append((title, [str(prompt)]))
+    items = _library_items(entries)
+    return {"name": name, "description": "", "items": items} if items else None
+
+
+def parse_prompt_library(text, name="Thư viện prompt"):
+    """Parse a prompt-list file into {"name", "description", "items"}."""
+    raw = str(text or "").lstrip("\ufeff").replace("\r\n", "\n").replace("\r", "\n")
+    if not raw.strip():
+        raise ValueError("File trống, không có prompt nào.")
+    stripped = raw.strip()
+    if stripped[:1] in "[{":
+        try:
+            parsed = _library_from_json(json.loads(stripped), name)
+        except json.JSONDecodeError:
+            parsed = None
+        if parsed:
+            return parsed
+
+    lines = raw.split("\n")
+    table_mode = (
+        sum(
+            1
+            for line in lines
+            if _LIBRARY_PIPE_ROW.match(line.strip())
+            and not _LIBRARY_TABLE_HEADER.search(line)
+        )
+        >= 3
+    )
+    title = ""
+    description = ""
+    entries = []
+    current = None
+    expected = 1
+    orphan = []
+
+    def flush():
+        nonlocal current
+        if current is not None:
+            entries.append(current)
+            current = None
+
+    for line in lines:
+        line = line.rstrip()
+        trimmed = line.strip()
+        if not trimmed or _LIBRARY_RULE.match(trimmed):
+            if current is not None:
+                current[1].append("")
+            continue
+        banner = _LIBRARY_BANNER.match(trimmed)
+        if banner and not entries and current is None and not title:
+            title = _library_title(banner.group(1))
+            continue
+        if not title and not entries and current is None:
+            heading = _LIBRARY_MD_TITLE.match(trimmed)
+            if heading:
+                title = _library_title(heading.group(1))
+                continue
+        if _LIBRARY_TABLE_HEADER.search(trimmed):
+            continue
+        numbered_prompt = _LIBRARY_PROMPT_HEADING.match(trimmed)
+        if numbered_prompt:
+            flush()
+            expected = int(numbered_prompt.group(1)) + 1
+            current = (numbered_prompt.group(2) or "", [])
+            continue
+        numbered = _LIBRARY_NUMBER_HEADING.match(trimmed)
+        # Chỉ nhận "01 - Tên" khi số thứ tự khớp, tránh nhầm với prompt bắt đầu
+        # bằng con số (ví dụ "3.5 mm lens").
+        if numbered and int(numbered.group(1)) == expected:
+            flush()
+            expected += 1
+            current = (numbered.group(2), [])
+            continue
+        row = _LIBRARY_PIPE_ROW.match(trimmed)
+        if table_mode and row:
+            flush()
+            entries.append((row.group(1), [row.group(2)]))
+            continue
+        if current is not None:
+            current[1].append(trimmed)
+        elif not description and len(trimmed) > 12:
+            orphan.append(trimmed)
+    flush()
+    description = " ".join(orphan)[:300]
+
+    if not entries:
+        # Không có tiêu đề nào: mỗi đoạn văn (cách nhau dòng trống) là một prompt.
+        for block in re.split(r"\n\s*\n", raw):
+            block = block.strip()
+            if (
+                not block
+                or _LIBRARY_BANNER.match(block)
+                or _LIBRARY_TABLE_HEADER.search(block)
+            ):
+                continue
+            rows = [part.strip() for part in block.split("\n")]
+            entries.append((_library_title(rows[0])[:70], rows))
+
+    items = _library_items(entries)
+    if not items:
+        raise ValueError(
+            "Không tìm thấy prompt nào. Mỗi prompt cần một dòng tiêu đề dạng "
+            "“PROMPT 01 - Tên tiếng Việt” rồi đoạn prompt bên dưới, hoặc một "
+            "dòng “Tên tiếng Việt | Nội dung prompts tiếng Anh”."
+        )
+    return {"name": title or name, "description": description, "items": items}
+
+
+def read_prompt_library(path):
+    """Parse an uploaded prompt list; Gradio hands over a temporary file path."""
+    if not path:
+        raise ValueError("Hãy chọn file .txt chứa danh sách prompt.")
+    file = Path(path)
+    if not file.is_file():
+        raise ValueError("Không mở được file vừa tải lên.")
+    if file.stat().st_size > PROMPT_LIBRARY_MAX_BYTES:
+        raise ValueError("File prompt quá lớn. Giới hạn 2 MB.")
+    return parse_prompt_library(
+        file.read_text(encoding="utf-8", errors="replace"), name=file.name
+    )
+
+
+def load_prompt_library_text(text):
+    """Parse a prompt list pasted into the textbox instead of uploaded."""
+    if not str(text or "").strip():
+        raise ValueError("Hãy dán nội dung file prompt vào ô trước khi đọc.")
+    return parse_prompt_library(text, name="Danh sách đã dán")
+
+
+def load_sample_prompt_library():
+    return parse_prompt_library(SAMPLE_PROMPT_LIBRARY, name="Thư viện mẫu")
+
+
+def prompt_library_dropdown(items):
+    """Dropdown properties listing every prompt of the loaded library."""
+    labels = tuple(item["label"] for item in items or ())
+    return {"choices": labels, "value": None, "interactive": bool(labels)}
+
+
+def prompt_library_status(library):
+    items = library["items"]
+    trimmed = sum(1 for item in items if item["truncated"])
+    text = f"**{library['name']}** · {len(items)} prompt đã nạp. Chọn một dòng để nạp prompt."
+    if library.get("description"):
+        text += f"\n\n_{library['description']}_"
+    if trimmed:
+        text += (
+            f"\n\n{trimmed} prompt dài hơn {PROMPT_LIBRARY_LIMIT} ký tự nên đã bị cắt bớt."
+        )
+    return text
+
+
+def prompt_library_reset():
+    return ((), {"choices": (), "value": None, "interactive": False}, "Đã gỡ thư viện prompt.")
+
+
+def apply_prompt_choice(choice, items, prompt, negative, steps, cfg, seed, text_size, image_size):
+    """Fill the editable prompt fields (and listed parameters) from one entry."""
+    items = tuple(items or ())
+    selected = next((item for item in items if item["label"] == choice), None)
+    if selected is None:
+        return (
+            prompt,
+            negative,
+            steps,
+            cfg,
+            seed,
+            text_size,
+            image_size,
+            "Chưa nạp thư viện hoặc chưa chọn prompt nào trong danh sách.",
+        )
+    negative = selected["negative"] or negative
+    steps = selected["steps"] if selected["steps"] is not None else steps
+    cfg = selected["cfg"] if selected["cfg"] is not None else cfg
+    seed = selected["seed"] if selected["seed"] is not None else seed
+    sizes = (text_size, image_size)
+    if selected["size"]:
+        sizes = (selected["size"], selected["size"])
+    applied = []
+    if selected["negative"]:
+        applied.append("Negative")
+    if selected["steps"] is not None:
+        applied.append(f"Steps {selected['steps']}")
+    if selected["cfg"] is not None:
+        applied.append(f"CFG {selected['cfg']:g}")
+    if selected["size"]:
+        applied.append(f"Kích thước {selected['size']}")
+    if selected["seed"] is not None:
+        applied.append(f"Seed {selected['seed']}")
+    status = (
+        f"Đã nạp **{selected['label']}** vào *Ý tưởng gốc*; hai ô gửi model tự cập "
+        f"nhật theo phong cách đang chọn."
+    )
+    if applied:
+        status += " Đã áp dụng: " + ", ".join(applied) + "."
+    if selected["truncated"]:
+        status += f" Prompt dài hơn {PROMPT_LIBRARY_LIMIT} ký tự nên đã bị cắt bớt."
+    return (
+        selected["prompt"],
+        negative,
+        steps,
+        cfg,
+        seed,
+        sizes[0],
+        sizes[1],
+        status,
     )
 
 
@@ -837,6 +1251,51 @@ def build_app(runtime):
                 gr.Markdown(
                     "Preset chỉ **điền vào hai ô prompt gửi model bên dưới**; chỉnh sửa trực tiếp ở đó để tùy ý thêm/xóa từ khóa. Khi đổi phong cách, ý tưởng gốc, negative gốc hoặc bật/tắt LoRA mắt, preset sẽ **ghi đè hai ô gửi model**, kể cả chỉnh sửa thủ công. Muốn áp dụng lại preset hiện tại, bấm nút bên dưới. Negative gốc nhắm lỗi thừa/thiếu/dính ngón; preset thường thêm `nsfw, explicit` vào negative, còn **Anime NSFW 18+** không thêm hai thẻ đó. Checkbox chỉ là xác nhận, không phải xác minh tuổi."
                 )
+                with gr.Accordion(
+                    "📚 Thư viện prompt · nạp danh sách từ file text", open=False
+                ):
+                    gr.Markdown(
+                        "Nạp file `.txt`/`.md`/`.json` chứa danh sách prompt. Định dạng "
+                        "được nhận: `PROMPT 01 - Tên tiếng Việt` rồi đoạn prompt bên "
+                        "dưới, bảng một dòng `Tên tiếng Việt | Nội dung prompts tiếng "
+                        "Anh`, JSON `[{\"title\", \"prompt\"}]`, hoặc các đoạn prompt "
+                        "cách nhau dòng trống. **Chọn một dòng trong danh sách là hệ "
+                        "thống tự nạp prompt** vào *Ý tưởng gốc*; hai ô gửi model cập "
+                        "nhật theo phong cách đang chọn. Các dòng `Negative:`, "
+                        "`Steps:`, `CFG:`, `Size: 832x1216`, `Seed:` trong mỗi prompt "
+                        "cũng được áp dụng (steps/CFG/kích thước bị kẹp về dải cho "
+                        "phép của giao diện)."
+                    )
+                    prompt_file = gr.File(
+                        label="File danh sách prompt (.txt/.md/.json · tối đa 2 MB)",
+                        file_types=[".txt", ".md", ".json"],
+                        file_count="single",
+                        type="filepath",
+                    )
+                    prompt_paste = gr.Textbox(
+                        label="Hoặc dán nội dung file vào đây (không cần tải file)",
+                        lines=3,
+                        max_lines=8,
+                        placeholder=(
+                            "=== 50 PROMPTS – CHỦ ĐỀ ===\n"
+                            "PROMPT 01 - Tên tiếng Việt\n"
+                            "1girl, solo, ..., masterpiece, best quality"
+                        ),
+                    )
+                    with gr.Row():
+                        paste_button = gr.Button("Đọc danh sách đã dán")
+                        sample_button = gr.Button("Nạp thư viện mẫu (12 prompt)")
+                    prompt_choice = gr.Dropdown(
+                        choices=(),
+                        value=None,
+                        interactive=False,
+                        label="Chọn prompt để nạp (gõ để lọc danh sách)",
+                    )
+                    prompt_library_state = gr.State(())
+                    library_status = gr.Markdown(
+                        "Chưa nạp thư viện. Nạp file của bạn hoặc bấm **Nạp thư viện "
+                        "mẫu** để xem định dạng chuẩn."
+                    )
                 initial_positive, initial_negative = compose_style_prompts(
                     DEFAULT_PROMPT,
                     DEFAULT_NEGATIVE,
@@ -1097,6 +1556,99 @@ def build_app(runtime):
             outputs=[effective_prompt, effective_negative],
             api_visibility="private",
             queue=False,
+        )
+        # Thư viện prompt: đọc danh sách từ file hoặc đoạn văn bản đã dán, rồi
+        # chọn một dòng để nạp vào "Ý tưởng gốc" (hai ô gửi model tự cập nhật
+        # theo preset qua sự kiện prompt.change sẵn có).
+        library_outputs = [prompt_library_state, prompt_choice, library_status]
+
+        def library_loaded(library):
+            return (
+                library["items"],
+                gr.Dropdown(**prompt_library_dropdown(library["items"])),
+                prompt_library_status(library),
+            )
+
+        def library_error(message):
+            return gr.skip(), gr.skip(), f"⚠️ {message}"
+
+        def load_library_from_file(path):
+            try:
+                library = read_prompt_library(path)
+            except ValueError as error:
+                return library_error(str(error))
+            return library_loaded(library)
+
+        def load_library_from_text(text):
+            try:
+                library = load_prompt_library_text(text)
+            except ValueError as error:
+                return library_error(str(error))
+            return library_loaded(library)
+
+        def load_sample_library():
+            return library_loaded(load_sample_prompt_library())
+
+        def clear_library():
+            items, dropdown, message = prompt_library_reset()
+            return items, gr.Dropdown(**dropdown), message
+
+        prompt_file.upload(
+            fn=load_library_from_file,
+            inputs=prompt_file,
+            outputs=library_outputs,
+            api_visibility="private",
+            queue=False,
+            show_progress="hidden",
+        )
+        prompt_file.clear(
+            fn=clear_library,
+            outputs=library_outputs,
+            api_visibility="private",
+            queue=False,
+            show_progress="hidden",
+        )
+        paste_button.click(
+            fn=load_library_from_text,
+            inputs=prompt_paste,
+            outputs=library_outputs,
+            api_visibility="private",
+            queue=False,
+            show_progress="hidden",
+        )
+        sample_button.click(
+            fn=load_sample_library,
+            outputs=library_outputs,
+            api_visibility="private",
+            queue=False,
+            show_progress="hidden",
+        )
+        prompt_choice.select(
+            fn=apply_prompt_choice,
+            inputs=[
+                prompt_choice,
+                prompt_library_state,
+                prompt,
+                negative,
+                steps,
+                cfg,
+                seed,
+                text_size,
+                image_size,
+            ],
+            outputs=[
+                prompt,
+                negative,
+                steps,
+                cfg,
+                seed,
+                text_size,
+                image_size,
+                library_status,
+            ],
+            api_visibility="private",
+            queue=False,
+            show_progress="hidden",
         )
         demo.queue(max_size=4, default_concurrency_limit=1, api_open=False)
     # Gradio 6 applies CSS and themes at launch, not in the Blocks constructor.
