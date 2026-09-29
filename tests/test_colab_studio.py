@@ -430,7 +430,9 @@ class PromptLibraryTests(unittest.TestCase):
                 ]
             )
         )
-        self.assertEqual([i["title"] for i in parsed["items"]], ["Chân dung", "Phong cảnh"])
+        self.assertEqual(
+            [i["title"] for i in parsed["items"]], ["Chân dung", "Phong cảnh"]
+        )
 
         plain = studio.parse_prompt_library(
             "1girl, under cherry blossoms, masterpiece\n\n"
@@ -453,7 +455,9 @@ class PromptLibraryTests(unittest.TestCase):
         library = studio.parse_prompt_library(
             "PROMPT 01 - Prompt rất dài\n" + "masterpiece, " * 400
         )
-        self.assertEqual(len(library["items"][0]["prompt"]), studio.PROMPT_LIBRARY_LIMIT)
+        self.assertEqual(
+            len(library["items"][0]["prompt"]), studio.PROMPT_LIBRARY_LIMIT
+        )
         self.assertTrue(library["items"][0]["truncated"])
         self.assertIn("đã bị cắt bớt", studio.prompt_library_status(library))
 
@@ -507,9 +511,7 @@ class PromptLibraryTests(unittest.TestCase):
         self.assertEqual(
             studio.prompt_library_dropdown(library["items"])["interactive"], True
         )
-        self.assertEqual(
-            studio.prompt_library_dropdown(())[ "choices"], ()
-        )
+        self.assertEqual(studio.prompt_library_dropdown(())["choices"], ())
         self.assertEqual(studio.prompt_library_reset()[0], ())
         # Kích thước trong file mẫu phải là preset hợp lệ của giao diện.
         sized = next(item for item in library["items"] if item["size"])
@@ -597,37 +599,24 @@ class RuntimeValidationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Chọn vùng sửa"):
             studio.apply_repair_hints("portrait", "", "unknown")
 
-    def test_content_guards_reject_underage_and_gate_adult_prompts(self):
-        # Từ khóa trẻ em/vị thành niên bị từ chối với MỌI prompt, không cần preset.
+    def test_prompt_keywords_are_not_filtered_or_rewritten(self):
+        # Former keyword matches must pass verbatim, without a confirmation flag.
         for prompt in (
-            "underage character",
+            "  child reading a book, watercolor  ",
             "school girl portrait",
-            "teenage",
-            "17-year-old",
-            "vị thành niên",
+            "teenage musician playing piano",
+            "17-year-old athlete running",
+            "học sinh đi học, vị thành niên",
+            "adult woman, lingerie fashion illustration",
+            "museum display, nude sculpture",
+            "nsfw warning sign, typography",
         ):
-            with (
-                self.subTest(prompt=prompt),
-                self.assertRaisesRegex(ValueError, "phải trưởng thành"),
-            ):
-                self.params(prompt=prompt, adult_confirmed=True)
-            with self.assertRaisesRegex(ValueError, "phải trưởng thành"):
-                self.params(prompt=prompt)
-        # Nội dung người lớn do người dùng tự viết thì phải tick xác nhận 18+.
-        adult = "1girl, adult woman, nsfw, explicit, detailed anatomy"
-        with self.assertRaisesRegex(ValueError, "18 tuổi trở lên"):
-            self.params(prompt=adult, adult_confirmed=False)
-        self.assertEqual(self.params(prompt=adult, adult_confirmed=True)[0], adult)
-        # Prompt không có từ khóa người lớn thì không cần tick.
-        safe = "1girl, adult woman, office worker, portrait, masterpiece"
-        self.assertEqual(self.params(prompt=safe)[0], safe)
-        # Từ khóa vị thành niên trong *negative* không kích hoạt hàng rào prompt dương.
-        self.assertEqual(
-            self.params(
-                prompt="adult", negative="underage, child", adult_confirmed=True
-            )[1],
-            "underage, child",
-        )
+            with self.subTest(prompt=prompt):
+                negative = "  child, nude, nsfw, blurry  "
+                self.assertEqual(
+                    self.params(prompt=prompt, negative=negative)[:2],
+                    (prompt, negative),
+                )
 
     def test_validation_and_eye_trigger(self):
         self.assertEqual(self.params()[:2], ("anime portrait", "bad anatomy"))
@@ -638,6 +627,8 @@ class RuntimeValidationTests(unittest.TestCase):
         self.assertEqual(self.params(eyes_enabled=False)[0], "anime portrait")
         for setting in (
             dict(prompt=" "),
+            dict(prompt=None),
+            dict(negative=None),
             dict(prompt="x" * 2201),
             dict(negative="x" * 1701),
             dict(steps=46),
@@ -1039,6 +1030,8 @@ class RuntimeValidationTests(unittest.TestCase):
         )
         # Không còn selector phong cách: người dùng tự viết prompt phong cách.
         labels = [str(c["props"].get("label") or "") for c in config["components"]]
+        self.assertFalse(any("18 tuổi" in label or "18+" in label for label in labels))
+        self.assertNotIn("studio-adult", demo.studio_css)
         self.assertNotIn("Phong cách hình ảnh", labels)
         self.assertFalse(any("Ý tưởng gốc" in label for label in labels))
         self.assertFalse(any("sửa được" in label for label in labels))
@@ -1058,8 +1051,7 @@ class RuntimeValidationTests(unittest.TestCase):
         eyes_button = next(
             c
             for c in config["components"]
-            if c["type"] == "button"
-            and "perfect eyes" in c["props"].get("value", "")
+            if c["type"] == "button" and "perfect eyes" in c["props"].get("value", "")
         )
         eyes_event = next(
             d
@@ -1078,7 +1070,8 @@ class RuntimeValidationTests(unittest.TestCase):
         repair_event = next(
             d
             for d in config["dependencies"]
-            if set(d["outputs"]) == field_ids and len(d["targets"]) == 1
+            if set(d["outputs"]) == field_ids
+            and len(d["targets"]) == 1
             and len(d["inputs"]) == 3
         )
         self.assertEqual(
@@ -1090,13 +1083,65 @@ class RuntimeValidationTests(unittest.TestCase):
         self.assertEqual(len(config["dependencies"]), 12)
         for dep in config["dependencies"][:3]:  # text, img2img, inpaint
             self.assertEqual(
-                dep["inputs"][-12:-10], [prompt_field["id"], negative_field["id"]]
+                dep["inputs"][-11:-9], [prompt_field["id"], negative_field["id"]]
             )
         self.assertTrue(
             all(x["api_visibility"] == "private" for x in config["dependencies"])
         )
         self.assertTrue(demo.studio_css)
         self.assertIsNotNone(demo.studio_theme)
+
+    @unittest.skipIf(
+        Image is None or not importlib.util.find_spec("gradio"),
+        "Gradio and Pillow needed for compact layout test",
+    )
+    def test_compact_layout_prioritizes_generation_and_results(self):
+        demo = studio.build_app(self.runtime)
+        config = demo.get_config_file()
+        components = {
+            item["props"].get("elem_id"): item
+            for item in config["components"]
+            if item["props"].get("elem_id")
+        }
+        nodes = {}
+
+        def collect(node):
+            nodes[node["id"]] = node
+            for child in node.get("children", []):
+                collect(child)
+
+        collect(config["layout"])
+        left = components["studio-controls"]
+        right = components["studio-results"]
+        workspace = nodes[components["studio-workspace"]["id"]]
+        self.assertEqual(
+            [node["id"] for node in workspace["children"]],
+            [left["id"], right["id"]],
+        )
+        self.assertGreater(right["props"]["scale"], left["props"]["scale"])
+        left_order = [node["id"] for node in nodes[left["id"]]["children"]]
+        modes = components["studio-modes"]
+        for name in ("studio-library", "studio-settings"):
+            self.assertLess(
+                left_order.index(modes["id"]), left_order.index(components[name]["id"])
+            )
+        for name in (
+            "studio-negative",
+            "studio-library",
+            "studio-settings",
+            "studio-mask",
+            "studio-downloads",
+        ):
+            self.assertFalse(components[name]["props"]["open"])
+        self.assertTrue(components["studio-gallery"]["props"]["preview"])
+        self.assertEqual(modes["props"]["selected"], "text")
+        for event in config["dependencies"][3:5]:
+            self.assertEqual(event["outputs"][-1], modes["id"])
+        self.assertIn("@media (max-width: 999px)", demo.studio_css)
+        self.assertIn("@media (max-width: 480px)", demo.studio_css)
+        rendered_copy = str([item["props"] for item in config["components"]])
+        self.assertNotIn("luôn bị từ chối", rendered_copy)
+        self.assertIn("ai có link đều dùng được GPU", rendered_copy)
 
     @unittest.skipIf(
         not importlib.util.find_spec("gradio"), "Gradio needed for UI wiring test"
@@ -1173,7 +1218,9 @@ class RuntimeValidationTests(unittest.TestCase):
             },
         )
         select_event = next(
-            d for d in config["dependencies"] if (choice["id"], "select") in d["targets"]
+            d
+            for d in config["dependencies"]
+            if (choice["id"], "select") in d["targets"]
         )
         parameters = [
             prompt_box["id"],
@@ -1315,7 +1362,7 @@ class RuntimeValidationTests(unittest.TestCase):
                 await demo.process_api(index, inputs, state=state, explicit_call=True)
             )["data"]
 
-        def shared(positive, negative, eyes=False, adult=False):
+        def shared(positive, negative, eyes=False):
             return [
                 positive,
                 negative,
@@ -1328,7 +1375,6 @@ class RuntimeValidationTests(unittest.TestCase):
                 eyes,
                 0.45,
                 False,
-                adult,
             ]
 
         async def smoke():
@@ -1345,18 +1391,16 @@ class RuntimeValidationTests(unittest.TestCase):
             self.assertIn("natural toes", leg_prompts[0])
             self.assertIn("broken legs", leg_prompts[1])
             self.assertEqual(await process(6, [*leg_prompts, "legs"]), leg_prompts)
-            adult_prompts = (
-                "1girl, adult woman, nsfw, explicit, portrait",
-                "bad hands",
+            keyword_prompts = (
+                "  adult woman, lingerie fashion illustration  ",
+                "  bad hands, nsfw  ",
             )
             for index, inputs, expected in (
                 (
                     0,
                     [
                         "512x512",
-                        *shared(
-                            "  my own portrait  ", "  no hidden tags  ", eyes=True
-                        ),
+                        *shared("  my own portrait  ", "  no hidden tags  ", eyes=True),
                     ],
                     ("  my own portrait  ", "  no hidden tags  "),
                 ),
@@ -1366,9 +1410,9 @@ class RuntimeValidationTests(unittest.TestCase):
                         file_data(source),
                         "512x512",
                         0.45,
-                        *shared("paint this picture", "my bad quality"),
+                        *shared("child reading a book", "my bad quality"),
                     ],
-                    ("paint this picture", "my bad quality"),
+                    ("child reading a book", "my bad quality"),
                 ),
                 (
                     2,
@@ -1378,9 +1422,9 @@ class RuntimeValidationTests(unittest.TestCase):
                         "hands",
                         0.45,
                         8,
-                        *shared("no repair suggestions", "bad hands"),
+                        *shared("museum display, nude sculpture", "bad hands"),
                     ],
-                    ("no repair suggestions", "bad hands"),
+                    ("museum display, nude sculpture", "bad hands"),
                 ),
                 (
                     2,
@@ -1394,11 +1438,11 @@ class RuntimeValidationTests(unittest.TestCase):
                     ],
                     tuple(leg_prompts),
                 ),
-                # Prompt người lớn do người dùng tự viết, đã tick xác nhận 18+.
+                # Former keyword matches reach the pipeline without confirmation.
                 (
                     0,
-                    ["512x512", *shared(*adult_prompts, adult=True)],
-                    adult_prompts,
+                    ["512x512", *shared(*keyword_prompts)],
+                    keyword_prompts,
                 ),
             ):
                 data = await process(index, inputs)
@@ -1413,22 +1457,13 @@ class RuntimeValidationTests(unittest.TestCase):
                 self.assertTrue(png.is_file())
                 with Image.open(png) as result:
                     self.assertEqual(result.format, "PNG")
-            # Chưa tick xác nhận 18+ thì prompt người lớn bị chặn, không tới pipe.
-            with self.assertRaises(Exception) as blocked:
-                await process(0, ["512x512", *shared(*adult_prompts)])
-            self.assertIn("18 tuổi trở lên", str(blocked.exception))
-            # Từ khóa vị thành niên bị chặn kể cả khi đã tick xác nhận.
-            with self.assertRaises(Exception) as underage:
-                await process(
-                    0,
-                    ["512x512", *shared("school girl portrait", "", adult=True)],
-                )
-            self.assertIn("phải trưởng thành", str(underage.exception))
             self.assertEqual(len(FakePipe.calls), 5)
-            self.assertTrue(Path((await process(3, [None]))[0]["path"]).is_file())
-            self.assertTrue(
-                Path((await process(4, [None]))[0]["background"]["path"]).is_file()
-            )
+            transformed = await process(3, [None])
+            self.assertTrue(Path(transformed[0]["path"]).is_file())
+            self.assertEqual(transformed[1]["selected"], "image")
+            repaired = await process(4, [None])
+            self.assertTrue(Path(repaired[0]["background"]["path"]).is_file())
+            self.assertEqual(repaired[1]["selected"], "inpaint")
 
         mock_diffusers = types.ModuleType("diffusers")
         mock_diffusers.AutoPipelineForImage2Image = FakeDerived

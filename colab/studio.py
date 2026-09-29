@@ -36,22 +36,7 @@ DEFAULT_NEGATIVE = (
     "malformed fingers, deformed feet, extra toes, missing toes, fused toes, "
     "malformed toes, extra limbs"
 )
-# Không còn selector phong cách: người dùng tự viết prompt phong cách của mình
-# (hoặc nạp từ thư viện prompt). Hai hàng rào nội dung vẫn giữ nguyên và chạy
-# cho MỌI prompt: từ khóa trẻ em/vị thành niên luôn bị từ chối; prompt có nội
-# dung người lớn thì phải tick xác nhận 18+ trong giao diện.
-UNDERAGE_PROMPT = re.compile(
-    r"\b(?:underage|minor|child|children|preteen|teen(?:age|ager)?s?|loli|shota|"
-    r"school[- ]?girls?|school[- ]?boys?|little girl|little boy|young girl|young boy|"
-    r"trẻ em|vị thành niên|học sinh|bé gái|bé trai|"
-    r"(?:[1-9]|1[0-7])\s*(?:-?years?[- ]?old|yo|y/o|tuổi))\b",
-    re.IGNORECASE,
-)
-ADULT_PROMPT = re.compile(
-    r"\b(?:nsfw|not\s+safe\s+for\s+work|explicit|lewd|hentai|erotic|nude|naked|"
-    r"topless|bottomless|lingerie|underwear|panties|nipples?|areolae?|cleavage)\b",
-    re.IGNORECASE,
-)
+# Prompt do người dùng tự viết hoặc nạp từ thư viện; không lọc từ khóa nội dung.
 CONTENT_ROOT = Path("/content")
 # Thư viện prompt mẫu đóng kèm, dùng đúng định dạng file .txt mà UI đọc được.
 # Người dùng có thể nạp file riêng của mình thay thế.
@@ -448,17 +433,21 @@ def prompt_library_status(library):
     if library.get("description"):
         text += f"\n\n_{library['description']}_"
     if trimmed:
-        text += (
-            f"\n\n{trimmed} prompt dài hơn {PROMPT_LIBRARY_LIMIT} ký tự nên đã bị cắt bớt."
-        )
+        text += f"\n\n{trimmed} prompt dài hơn {PROMPT_LIBRARY_LIMIT} ký tự nên đã bị cắt bớt."
     return text
 
 
 def prompt_library_reset():
-    return ((), {"choices": (), "value": None, "interactive": False}, "Đã gỡ thư viện prompt.")
+    return (
+        (),
+        {"choices": (), "value": None, "interactive": False},
+        "Đã gỡ thư viện prompt.",
+    )
 
 
-def apply_prompt_choice(choice, items, prompt, negative, steps, cfg, seed, text_size, image_size):
+def apply_prompt_choice(
+    choice, items, prompt, negative, steps, cfg, seed, text_size, image_size
+):
     """Fill the editable prompt fields (and listed parameters) from one entry."""
     items = tuple(items or ())
     selected = next((item for item in items if item["label"] == choice), None)
@@ -659,23 +648,11 @@ class StudioRuntime:
         anatomy_weight,
         eyes_enabled,
         eyes_weight,
-        adult_confirmed=False,
     ):
         if not isinstance(prompt, str) or not prompt.strip() or len(prompt) > 2200:
             raise ValueError("Prompt gửi model phải có từ 1 đến 2200 ký tự.")
         if not isinstance(negative, str) or len(negative) > 1700:
             raise ValueError("Negative gửi model tối đa 1700 ký tự.")
-        if not isinstance(adult_confirmed, bool):
-            raise ValueError("Xác nhận 18+ không hợp lệ.")
-        # Hai hàng rào này chạy cho mọi prompt, không phụ thuộc preset nào.
-        if UNDERAGE_PROMPT.search(prompt):
-            raise ValueError(
-                "Prompt không được nhắc tới trẻ em hoặc vị thành niên; mọi nhân vật phải trưởng thành."
-            )
-        if ADULT_PROMPT.search(prompt) and not adult_confirmed:
-            raise ValueError(
-                "Prompt có nội dung người lớn: hãy tick xác nhận tất cả nhân vật đều từ 18 tuổi trở lên."
-            )
         steps = _number(steps, "Steps", 10, 45, integer=True)
         cfg = _number(cfg, "CFG", 1, 12)
         seed = _number(seed, "Seed", -1, 2**32 - 1, integer=True)
@@ -881,7 +858,6 @@ class StudioRuntime:
         eyes_enabled,
         eyes_weight,
         embed,
-        adult_confirmed=False,
     ):
         from PIL import Image, ImageChops, ImageFilter
 
@@ -896,7 +872,6 @@ class StudioRuntime:
             anatomy_weight,
             eyes_enabled,
             eyes_weight,
-            adult_confirmed=adult_confirmed,
         )
         if mode == "text":
             width, height = _preset_size(size)
@@ -1006,7 +981,6 @@ class StudioRuntime:
         eyes_enabled,
         eyes_weight,
         embed,
-        adult_confirmed=False,
     ):
         return self._generate(
             "text",
@@ -1027,7 +1001,6 @@ class StudioRuntime:
             eyes_enabled,
             eyes_weight,
             embed,
-            adult_confirmed,
         )
 
     def image_to_image(
@@ -1046,7 +1019,6 @@ class StudioRuntime:
         eyes_enabled,
         eyes_weight,
         embed,
-        adult_confirmed=False,
     ):
         return self._generate(
             "image",
@@ -1067,7 +1039,6 @@ class StudioRuntime:
             eyes_enabled,
             eyes_weight,
             embed,
-            adult_confirmed,
         )
 
     def inpaint(
@@ -1088,7 +1059,6 @@ class StudioRuntime:
         eyes_enabled,
         eyes_weight,
         embed,
-        adult_confirmed=False,
     ):
         source, mask = _editor_mask(editor, mask_file)
         return self._generate(
@@ -1110,7 +1080,6 @@ class StudioRuntime:
             eyes_enabled,
             eyes_weight,
             embed,
-            adult_confirmed,
         )
 
 
@@ -1120,23 +1089,51 @@ def build_app(runtime):
     from PIL import Image
 
     css = """
-    #wai-studio {max-width: 1220px !important; margin: auto !important;}
+    #wai-studio {max-width: 1440px !important; margin: auto !important;}
     #wai-studio .form {gap: 0.5rem;}
-    #wai-studio .block {border-radius: 10px;}
+    #wai-studio .block {border-radius: 12px;}
     #wai-studio span[data-testid="block-label"], #wai-studio .label-text {font-size: 0.82rem;}
-    .studio-hero {display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px;
-        padding: 10px 16px; border-radius: 12px; color: #fff;
-        background: linear-gradient(118deg, #21182f, #382641 64%, #704065);
-        box-shadow: 0 6px 20px #140f2026;}
-    .studio-hero h1 {color: #fff !important; font-size: 1.12rem; font-weight: 700; margin: 0;}
-    .studio-hero p {color: #e4d2e1; font-size: 0.8rem; margin: 0;}
-    .studio-badge {font-size: 0.6rem; letter-spacing: 0.12rem; font-weight: bold; color: #f4b3dc;}
-    .studio-warn {flex-basis: 100%; font-size: 0.74rem; color: #f2d5e9;
-        border-top: 1px solid #ffffff2b; padding-top: 5px; margin-top: 2px;}
-    .studio-hint, .studio-hint p {font-size: 0.74rem !important; line-height: 1.35;
-        color: #7a7386; margin: 0 !important;}
-    .studio-adult {border: 1px solid #e0b3d5; border-radius: 8px; background: #fdf4fb;}
-    .studio-primary button {min-height: 42px; font-weight: 600;}
+    #studio-workspace {gap: 24px; align-items: flex-start;}
+    #studio-controls, #studio-results {gap: 12px; min-width: 0 !important;}
+    .studio-hero {display: flex; flex-wrap: wrap; align-items: center;
+        justify-content: space-between; gap: 10px 20px; padding: 16px 20px;
+        border: 1px solid var(--border-color-primary); border-radius: 16px;
+        background: var(--block-background-fill);}
+    .studio-brand {display: flex; align-items: center; gap: 12px;}
+    .studio-mark {display: grid; place-items: center; width: 40px; height: 40px;
+        border-radius: 12px; background: #ede9fe; color: #6d28d9; font-size: 22px;}
+    .studio-hero h1 {font-size: 1.15rem; font-weight: 700; margin: 0;}
+    .studio-hero p {font-size: 0.78rem; color: var(--body-text-color); opacity: 0.72; margin: 2px 0 0;}
+    .studio-badge {font-size: 0.72rem; color: var(--body-text-color); opacity: 0.72;}
+    .studio-section {display: flex; align-items: center; gap: 8px;
+        font-size: 0.88rem; font-weight: 650; margin: 2px 0;}
+    .studio-section span {display: inline-grid; place-items: center; width: 22px;
+        height: 22px; border-radius: 7px; background: #ede9fe; color: #6d28d9;
+        font-size: 0.7rem;}
+    .studio-hint, .studio-hint p {font-size: 0.76rem !important; line-height: 1.5;
+        color: var(--body-text-color); opacity: 0.8; margin: 0 !important;}
+    #wai-studio .studio-primary {min-height: 44px; font-weight: 650;}
+    #studio-modes .tab-nav {flex-wrap: wrap; gap: 2px;}
+    #studio-modes .tab-nav button {font-size: 0.8rem; padding: 8px 10px;}
+    #studio-status {padding: 10px 12px; border-radius: 10px;
+        background: var(--block-background-fill); border: 1px solid var(--border-color-primary);}
+    #studio-gallery {height: clamp(360px, calc(100dvh - 460px), 640px) !important;}
+    #studio-security {border-top: 1px solid var(--border-color-primary); padding-top: 12px;}
+    @media (min-width: 1000px) {
+        #studio-controls {flex: 4 1 0% !important;}
+        #studio-results {flex: 6 1 0% !important; position: sticky; top: 16px;}
+    }
+    @media (max-width: 999px) {
+        #studio-workspace {flex-direction: column; gap: 20px;}
+        #studio-controls, #studio-results {width: 100%; flex: none !important;}
+        #studio-gallery {height: clamp(320px, 55vh, 560px) !important;}
+    }
+    @media (max-width: 480px) {
+        #wai-studio {padding: 10px !important;}
+        .studio-hero {padding: 12px;}
+        #studio-result-actions {flex-direction: column;}
+        #studio-result-actions button {width: 100%;}
+    }
     """
     with gr.Blocks(
         title="WAI Studio · Colab GPU",
@@ -1145,54 +1142,156 @@ def build_app(runtime):
         elem_id="wai-studio",
     ) as demo:
         gr.HTML(
-            "<div class='studio-hero'>"
-            "<span class='studio-badge'>✦ WAI · COLAB GPU</span>"
-            "<h1>Biến ý tưởng thành thế giới anime</h1>"
-            "<p>WAI-illustrious v17 · LoRA tay/chân/mắt đã xác minh</p>"
-            "<span class='studio-warn'>Link tạm thời <b>không cần đăng nhập</b>: ai có "
-            "link đều dùng được GPU Colab của bạn — đừng chia sẻ, dừng runtime để thu "
-            "hồi. Ảnh lưu dưới /content.</span>"
-            "</div>"
+            "<header class='studio-hero'>"
+            "<div class='studio-brand'><span class='studio-mark' aria-hidden='true'>✦</span>"
+            "<div><h1>WAI Studio</h1><p>Ý tưởng của bạn, thế giới anime của bạn.</p></div></div>"
+            "<span class='studio-badge'>WAI-illustrious v17 · Google Colab GPU</span>"
+            "</header>"
         )
-        with gr.Row(equal_height=False):
-            with gr.Column(scale=6, min_width=380):
-                adult_confirm = gr.Checkbox(
-                    label="Nội dung người lớn: tôi xác nhận tất cả nhân vật đều từ 18 tuổi trở lên",
-                    value=False,
-                    elem_classes="studio-adult",
-                )
+        with gr.Row(equal_height=False, elem_id="studio-workspace"):
+            with gr.Column(scale=4, min_width=0, elem_id="studio-controls"):
+                gr.HTML("<h2 class='studio-section'><span>01</span> Thiết lập ảnh</h2>")
                 prompt = gr.Textbox(
-                    label="Prompt gửi model · tự viết phong cách của bạn",
+                    label="Prompt gửi model",
                     value=DEFAULT_PROMPT,
-                    lines=3,
-                    max_lines=8,
+                    lines=4,
+                    max_lines=7,
                     placeholder=(
                         "Mô tả nhân vật, trang phục, khung cảnh, ánh sáng và phong cách "
                         "vẽ bạn muốn (anime illustration, cel shading, watercolor...)"
                     ),
-                    info=(
-                        "Đúng nội dung ô này được gửi model ở cả ba chế độ, không thêm "
-                        "thẻ ẩn. Nhắc tới trẻ em/vị thành niên luôn bị từ chối."
-                    ),
+                    info=("Gửi nguyên văn · tự viết phong cách trong prompt."),
                 )
-                negative = gr.Textbox(
-                    label="Negative gửi model · ngón tay / ngón chân",
-                    value=DEFAULT_NEGATIVE,
-                    lines=2,
-                    max_lines=6,
-                )
-                with gr.Row():
-                    eyes_trigger_button = gr.Button(
-                        "Thêm trigger `perfect eyes` cho LoRA mắt (sửa/xóa được)",
-                        size="sm",
-                        scale=2,
-                    )
-                    gr.HTML(
-                        "<p class='studio-hint'>Viết phong cách ngay trong prompt hoặc "
-                        "nạp từ thư viện bên dưới; không có selector phong cách.</p>"
-                    )
                 with gr.Accordion(
-                    "📚 Thư viện prompt · nạp danh sách từ file text", open=False
+                    "Negative prompt · loại trừ chi tiết",
+                    open=False,
+                    elem_id="studio-negative",
+                ):
+                    negative = gr.Textbox(
+                        label="Negative gửi model · ngón tay / ngón chân",
+                        value=DEFAULT_NEGATIVE,
+                        lines=3,
+                        max_lines=6,
+                        info="Nội dung này vẫn được gửi model khi thu gọn. Sửa hoặc xóa tùy ý.",
+                    )
+                eyes_trigger_button = gr.Button(
+                    "+ Thêm perfect eyes",
+                    size="sm",
+                    elem_id="studio-eye-trigger",
+                )
+                with gr.Tabs(selected="text", elem_id="studio-modes") as modes:
+                    with gr.Tab("Tạo ảnh", id="text"):
+                        with gr.Row(equal_height=False):
+                            text_size = gr.Dropdown(
+                                choices=list(SIZE_PRESETS),
+                                value="1024x1024",
+                                label="Kích thước",
+                                scale=1,
+                            )
+                            text_button = gr.Button(
+                                "Tạo ảnh từ prompt",
+                                variant="primary",
+                                scale=2,
+                                elem_classes="studio-primary",
+                            )
+                    with gr.Tab("Ảnh → ảnh", id="image"):
+                        image_source = gr.Image(
+                            label="Ảnh nguồn",
+                            type="pil",
+                            sources=["upload"],
+                            image_mode="RGB",
+                            height=230,
+                        )
+                        with gr.Row():
+                            image_size = gr.Dropdown(
+                                choices=list(SIZE_PRESETS),
+                                value="1024x1024",
+                                label="Kích thước đầu ra",
+                            )
+                            image_strength = gr.Slider(
+                                0.2,
+                                0.85,
+                                value=0.45,
+                                step=0.05,
+                                label="Denoise strength",
+                            )
+                        image_button = gr.Button(
+                            "Biến đổi ảnh",
+                            variant="primary",
+                            elem_classes="studio-primary",
+                        )
+                        gr.Markdown(
+                            "Ảnh nguồn khác tỷ lệ sẽ được cắt giữa cho khớp kích thước "
+                            "đầu ra, không làm méo.",
+                            elem_classes="studio-hint",
+                        )
+                    with gr.Tab("Sửa vùng", id="inpaint"):
+                        editor = gr.ImageEditor(
+                            label="Ảnh & vùng tô",
+                            type="pil",
+                            image_mode="RGBA",
+                            sources=["upload"],
+                            height=380,
+                            format="png",
+                            transforms=(),
+                            brush=gr.Brush(
+                                default_size=40, colors=["#ffffff"], color_mode="fixed"
+                            ),
+                            eraser=gr.Eraser(default_size=40),
+                            layers=False,
+                        )
+                        with gr.Accordion(
+                            "Mask từ file · tùy chọn", open=False, elem_id="studio-mask"
+                        ):
+                            mask_file = gr.Image(
+                                label="Hoặc tải mask trắng/đen PNG (ưu tiên hơn vùng tô)",
+                                type="pil",
+                                image_mode="L",
+                                sources=["upload"],
+                                height=150,
+                            )
+                        with gr.Row():
+                            target = gr.Dropdown(
+                                choices=["hands", "legs", "eyes", "custom"],
+                                value="hands",
+                                label="Chi tiết cần sửa",
+                            )
+                            inpaint_strength = gr.Slider(
+                                0.2,
+                                0.85,
+                                value=0.45,
+                                step=0.05,
+                                label="Denoise strength",
+                            )
+                            feather = gr.Slider(
+                                0,
+                                24,
+                                value=8,
+                                step=2,
+                                label="Làm mềm mép vùng sửa (px)",
+                            )
+                        with gr.Row():
+                            repair_hints_button = gr.Button(
+                                "Thêm gợi ý sửa vùng vào prompt đang hiển thị",
+                                size="sm",
+                                scale=2,
+                            )
+                            inpaint_button = gr.Button(
+                                "Sửa vùng đã tô",
+                                variant="primary",
+                                scale=1,
+                                elem_classes="studio-primary",
+                            )
+                        gr.Markdown(
+                            "**Trắng / nét cọ = sửa; đen = giữ nguyên.** Ảnh tải lên "
+                            "được thu về cạnh dài tối đa 1024 px cùng mask. Chọn "
+                            "tay/chân/mắt không tự thêm từ vào prompt.",
+                            elem_classes="studio-hint",
+                        )
+                with gr.Accordion(
+                    "Thư viện prompt",
+                    open=False,
+                    elem_id="studio-library",
                 ):
                     with gr.Row(equal_height=False):
                         prompt_file = gr.File(
@@ -1238,7 +1337,9 @@ def build_app(runtime):
                         "vào ô prompt ở trên.",
                         elem_classes="studio-hint",
                     )
-                with gr.Accordion("⚙️ Thông số ảnh và LoRA", open=False):
+                with gr.Accordion(
+                    "Thông số ảnh và LoRA", open=False, elem_id="studio-settings"
+                ):
                     with gr.Row():
                         steps = gr.Slider(
                             10, 45, value=25, step=1, label="Số bước (steps)"
@@ -1281,7 +1382,9 @@ def build_app(runtime):
                         eyes_weight = gr.Slider(
                             0.1,
                             1,
-                            value=runtime.lora_manifest.get("eyes", {}).get("weight", 0.45),
+                            value=runtime.lora_manifest.get("eyes", {}).get(
+                                "weight", 0.45
+                            ),
                             step=0.05,
                             label="Cường độ Eyes",
                         )
@@ -1294,152 +1397,63 @@ def build_app(runtime):
                         "cường độ ở đây không nạp lại checkpoint.",
                         elem_classes="studio-hint",
                     )
-                shared = [
-                    prompt,
-                    negative,
-                    steps,
-                    cfg,
-                    seed,
-                    count,
-                    anatomy,
-                    anatomy_weight,
-                    eyes,
-                    eyes_weight,
-                    embed,
-                    adult_confirm,
-                ]
-                with gr.Tabs():
-                    with gr.Tab("✦ Văn bản → ảnh"):
-                        with gr.Row(equal_height=False):
-                            text_size = gr.Dropdown(
-                                choices=list(SIZE_PRESETS),
-                                value="1024x1024",
-                                label="Kích thước",
-                                scale=1,
-                            )
-                            text_button = gr.Button(
-                                "Tạo ảnh từ prompt",
-                                variant="primary",
-                                scale=2,
-                                elem_classes="studio-primary",
-                            )
-                    with gr.Tab("◈ Ảnh → ảnh"):
-                        image_source = gr.Image(
-                            label="Ảnh nguồn",
-                            type="pil",
-                            sources=["upload"],
-                            image_mode="RGB",
-                            height=230,
-                        )
-                        with gr.Row():
-                            image_size = gr.Dropdown(
-                                choices=list(SIZE_PRESETS),
-                                value="1024x1024",
-                                label="Kích thước đầu ra",
-                            )
-                            image_strength = gr.Slider(
-                                0.2, 0.85, value=0.45, step=0.05, label="Denoise strength"
-                            )
-                        image_button = gr.Button(
-                            "Biến đổi ảnh",
-                            variant="primary",
-                            elem_classes="studio-primary",
-                        )
-                        gr.Markdown(
-                            "Ảnh nguồn khác tỷ lệ sẽ được cắt giữa cho khớp kích thước "
-                            "đầu ra, không làm méo.",
-                            elem_classes="studio-hint",
-                        )
-                    with gr.Tab("✎ Sửa vùng ảnh"):
-                        editor = gr.ImageEditor(
-                            label="Tải ảnh vào đây và dùng cọ tô vùng cần sửa",
-                            type="pil",
-                            image_mode="RGBA",
-                            sources=["upload"],
-                            height=380,
-                            format="png",
-                            transforms=(),
-                            brush=gr.Brush(
-                                default_size=40, colors=["#ffffff"], color_mode="fixed"
-                            ),
-                            eraser=gr.Eraser(default_size=40),
-                            layers=False,
-                        )
-                        mask_file = gr.Image(
-                            label="Hoặc tải mask trắng/đen PNG (ưu tiên hơn vùng tô)",
-                            type="pil",
-                            image_mode="L",
-                            sources=["upload"],
-                            height=150,
-                        )
-                        with gr.Row():
-                            target = gr.Dropdown(
-                                choices=["hands", "legs", "eyes", "custom"],
-                                value="hands",
-                                label="Chi tiết cần sửa",
-                            )
-                            inpaint_strength = gr.Slider(
-                                0.2,
-                                0.85,
-                                value=0.45,
-                                step=0.05,
-                                label="Denoise strength",
-                            )
-                            feather = gr.Slider(
-                                0,
-                                24,
-                                value=8,
-                                step=2,
-                                label="Làm mềm mép vùng sửa (px)",
-                            )
-                        with gr.Row():
-                            repair_hints_button = gr.Button(
-                                "Thêm gợi ý sửa vùng vào prompt đang hiển thị",
-                                size="sm",
-                                scale=2,
-                            )
-                            inpaint_button = gr.Button(
-                                "Sửa vùng đã tô",
-                                variant="primary",
-                                scale=1,
-                                elem_classes="studio-primary",
-                            )
-                        gr.Markdown(
-                            "**Trắng / nét cọ = sửa; đen = giữ nguyên.** Ảnh tải lên "
-                            "được thu về cạnh dài tối đa 1024 px cùng mask. Chọn "
-                            "tay/chân/mắt không tự thêm từ vào prompt.",
-                            elem_classes="studio-hint",
-                        )
-            with gr.Column(scale=5, min_width=340):
+            with gr.Column(scale=6, min_width=0, elem_id="studio-results"):
+                gr.HTML("<h2 class='studio-section'><span>02</span> Kết quả</h2>")
                 gallery = gr.Gallery(
                     label="Kết quả · nhấn để xem lớn",
                     columns=2,
-                    height=560,
+                    rows=1,
+                    height=600,
+                    preview=True,
+                    elem_id="studio-gallery",
                     object_fit="contain",
                     format="png",
                     buttons=["download", "fullscreen"],
                 )
                 status = gr.Markdown(
-                    f"Ảnh đầu tiên sẽ xuất hiện tại đây. Model đã nạp trong Google Colab. "
-                    f"**Chế độ:** {runtime.execution_mode}"
+                    f"Sẵn sàng nhận ý tưởng của bạn. **Chế độ:** {runtime.execution_mode}",
+                    elem_id="studio-status",
+                    elem_classes="studio-hint",
                 )
-                with gr.Row():
-                    to_image = gr.Button(
-                        "Dùng ảnh mới nhất để biến đổi", size="sm", scale=1
-                    )
+                with gr.Row(elem_id="studio-result-actions"):
+                    to_image = gr.Button("↗ Biến đổi ảnh mới nhất", size="sm", scale=1)
                     to_inpaint = gr.Button(
-                        "Dùng ảnh mới nhất để sửa vùng", size="sm", scale=1
+                        "✎ Sửa vùng ảnh mới nhất", size="sm", scale=1
                     )
-                downloads = gr.File(
-                    label="Tải ảnh PNG", file_count="multiple", interactive=False
-                )
+                with gr.Accordion(
+                    "Tải ảnh PNG · danh sách file",
+                    open=False,
+                    elem_id="studio-downloads",
+                ):
+                    downloads = gr.File(
+                        label="Tải ảnh PNG", file_count="multiple", interactive=False
+                    )
                 latest = gr.State(None)
                 gr.Markdown(
-                    "Ảnh chỉ nằm ở `/content/wai_outputs` của phiên Colab (không lưu "
-                    "Drive) — **tải xuống trước khi runtime hết hạn**.",
+                    "Tải từng ảnh bằng nút ⤓ trên ảnh, hoặc mở danh sách file. "
+                    "**Tải xuống trước khi Colab ngắt** — ảnh trong `/content` sẽ mất.",
                     elem_classes="studio-hint",
                 )
 
+        gr.Markdown(
+            "**Link tạm không có đăng nhập:** ai có link đều dùng được GPU của bạn. "
+            "Đừng chia sẻ link; dừng runtime để thu hồi.",
+            elem_id="studio-security",
+            elem_classes="studio-hint",
+        )
+        shared = [
+            prompt,
+            negative,
+            steps,
+            cfg,
+            seed,
+            count,
+            anatomy,
+            anatomy_weight,
+            eyes,
+            eyes_weight,
+            embed,
+        ]
         outputs = [gallery, downloads, status, latest]
         events = (
             (text_button, runtime.text_to_image, [text_size, *shared]),
@@ -1469,18 +1483,27 @@ def build_app(runtime):
                 raise gr.Error("Hãy tạo ít nhất một ảnh trước.")
             return Image.open(path).convert("RGB")
 
+        def transform_last(path):
+            return load_last(path), gr.update(selected="image")
+
         def edit_last(path):
             image = load_last(path).convert("RGBA")
-            return {"background": image, "layers": [], "composite": image}
+            return (
+                {"background": image, "layers": [], "composite": image},
+                gr.update(selected="inpaint"),
+            )
 
         to_image.click(
-            fn=load_last,
+            fn=transform_last,
             inputs=latest,
-            outputs=image_source,
+            outputs=[image_source, modes],
             api_visibility="private",
         )
         to_inpaint.click(
-            fn=edit_last, inputs=latest, outputs=editor, api_visibility="private"
+            fn=edit_last,
+            inputs=latest,
+            outputs=[editor, modes],
+            api_visibility="private",
         )
         # Không còn preset: hai ô prompt/negative là đúng những gì gửi model.
         # Trigger LoRA mắt và gợi ý sửa vùng đều là nút bấm tường minh, người
@@ -1595,7 +1618,10 @@ def build_app(runtime):
         demo.queue(max_size=4, default_concurrency_limit=1, api_open=False)
     # Gradio 6 applies CSS and themes at launch, not in the Blocks constructor.
     demo.studio_theme = gr.themes.Soft(
-        primary_hue="purple", secondary_hue="pink", neutral_hue="slate"
+        primary_hue="violet",
+        secondary_hue="slate",
+        neutral_hue="slate",
+        font=["ui-sans-serif", "system-ui", "sans-serif"],
     )
     demo.studio_css = css
     return demo

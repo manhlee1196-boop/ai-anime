@@ -2,6 +2,24 @@
 
 **Phạm vi chính:** notebook Google Colab `WAI_Illustrious_Studio_Colab.ipynb`, notebook nâng cao dùng chung các ô chuẩn bị model/LoRA, và các tài nguyên mà chúng ghim. Cloudflare trong `web/` là ứng dụng *khác*, không chạy checkpoint WAI nếu không có backend GPU bên ngoài.
 
+## Cập nhật 29/09/2026 — bỏ bộ lọc nội dung/prompt cục bộ
+
+- Đã xóa regex chặn từ khóa, tham số xác nhận tuổi, checkbox và CSS liên quan trong `colab/studio.py`; tái tạo notebook Studio bằng `scripts/build_colab_studio.py`.
+- Cả text, img2img và inpaint gửi nguyên văn hai ô prompt/negative, không yêu cầu xác nhận 18+. Giữ kiểm tra kiểu/độ dài, ảnh/mask, giới hạn tài nguyên, hash model/LoRA và chặn tải file weights qua Gradio. Không thay đổi chính sách/bộ lọc của dịch vụ bên ngoài.
+- `.venv/bin/python -m unittest discover -s tests -v`: **54 test: 53 đạt, 1 bỏ qua** do chưa cài PyTorch. Đã chạy các sự kiện Gradio với pipeline giả lập, kiểm tra từ khóa trước đây bị chặn vẫn tới pipeline, và xác nhận không còn checkbox tuổi. Chưa tạo ảnh thật trên GPU Colab.
+- `nbformat.validate` cho cả hai notebook, kiểm cú pháp Python của các ô (trừ lệnh magic IPython), notebook Studio khớp `build()`, `pip check` và `git diff --check`: đạt.
+- Phiên Colab/Gradio cũ không tự cập nhật: tải notebook đã sửa, chọn **Runtime → Restart runtime → Run all** và mở link Gradio mới.
+
+Các kết quả ngày 26/09 bên dưới là báo cáo trước đó; thay đổi bộ lọc được kiểm tra riêng như trên.
+
+## Cập nhật giao diện gọn — 29/09/2026
+
+- Desktop có hai cột 40/60: điều khiển bên trái, kết quả lớn bên phải; dưới 1000 px xếp thành một cột. Nút tạo ảnh ở trước thư viện/thông số. Negative, mask tải riêng và danh sách file được thu gọn, không vô hiệu hóa dữ liệu bên trong.
+- Kết quả dùng chế độ xem ảnh lớn, chiều cao thích ứng màn hình. Hai nút dùng ảnh mới nhất vừa nạp ảnh vừa chọn tab tương ứng. Không đổi pipeline, giới hạn tài nguyên hay 12 sự kiện; không đưa lại bộ lọc prompt/ô xác nhận tuổi. Đã xóa hướng dẫn cũ còn nói prompt bị từ chối.
+- Kiểm thử Gradio 6.15.2: **55 test: 54 đạt, 1 bỏ qua** (thiếu PyTorch); gồm thứ tự bố cục, phần thu gọn, ba luồng tạo ảnh qua pipeline giả lập, tự chuyển tab, tải PNG và bảo vệ file weights.
+- Kiểm tra trình duyệt Chromium tại 1440×1000 và 390×844: không tràn ngang, không lỗi JavaScript; đã thử trigger mắt và chuyển tab sửa vùng. Đây là kiểm tra giao diện, **không phải** tạo ảnh WAI thật trên Colab.
+- Notebook Studio đã tái tạo từ mã nguồn; muốn thấy giao diện mới phải mở notebook đã cập nhật và chạy lại, link Gradio cũ không tự đổi.
+
 ## 1. Danh tính tài nguyên: đối chiếu hai nguồn độc lập
 
 Đã đọc lại metadata API của **phiên bản gốc trên Civitai** và **file LFS tại commit được ghim trên Hugging Face**. Kết quả đối chiếu đúng *toàn bộ* SHA-256 và số byte ghi trong hai notebook:
@@ -20,7 +38,7 @@ API HF ghi ba kho `gated: false` tại thời điểm kiểm tra. Đó là trạ
 
 - Hai notebook **không gọi `google.colab.drive.mount`**, không đặt cờ sao chép/lưu Drive. `MODEL_PATH` mặc định `/content/wai_model_cache/waiIllustriousSDXL_v170.safetensors`, LoRA bật nhưng hai đường dẫn thủ công để rỗng, kết quả `/content/wai_outputs`. Ô 3 từ chối đường dẫn ngoài `/content` và `/content/drive`, kể cả cache local trỏ bằng symlink. Không còn fallback sang Drive khi đĩa thiếu; báo lỗi để người dùng giải phóng đĩa/tắt LoRA.
 - Ô 4 dùng `hf_hub_download(..., revision=commit, local_dir=/content/wai_model_cache, token=False)` khi chưa có checkpoint và **nạp chính file được tải**, không tạo bản sao thứ hai; nếu file đã có trong cùng runtime thì dùng lại và kiểm đầy đủ hash. Studio **chỉ chấp nhận WAI v17 trùng toàn bộ SHA-256**, bao gồm đường dẫn thủ công/cached; bản nâng cao cho phép checkpoint SDXL khác nhưng nêu rõ chưa xác thực phiên bản. Ô 5 tự tải LoRA được bật vào `/content/wai_lora_cache`, xác nhận size + SHA-256 + header; file thủ công vẫn bắt buộc đúng hash. File đã có sai hash bị từ chối, không tự ghi đè. Ô 6 kiểm lại LoRA trước khi nạp/khôi phục sau OOM.
-- Studio chọn phong cách/đổi ý tưởng gốc/negative gốc/bật tắt LoRA mắt sẽ **điền lại hai ô prompt cuối, có thể sửa trực tiếp**. Lệnh tạo text, img2img và inpaint dùng **đúng chuỗi hai ô tại thời điểm bấm tạo**, kể cả khi người dùng xóa thẻ preset hoặc `perfect eyes`: runtime không ghép lại preset hay ẩn thêm gợi ý sửa. Nút sửa vùng thêm từ vào **hai ô đang hiển thị**, không thay đổi ngầm lúc suy luận; adult preset vẫn yêu cầu xác nhận 18+ và kiểm một số từ khóa vị thành niên trong prompt dương.
+- Studio dùng **hai ô prompt/negative có thể sửa trực tiếp**, không còn selector phong cách. Lệnh tạo text, img2img và inpaint dùng **đúng chuỗi hai ô tại thời điểm bấm tạo**, kể cả khi người dùng xóa `perfect eyes`: runtime không ghép thêm thẻ ẩn. Nút trigger mắt và nút sửa vùng chỉ thêm từ vào **hai ô đang hiển thị** khi người dùng bấm. Từ bản cập nhật 29/09/2026, đã bỏ bộ lọc từ khóa nội dung và ô xác nhận 18+; vẫn kiểm tra kiểu/độ dài prompt và các giới hạn kỹ thuật.
 - Kiểm thử file/hàm kích thước nhỏ và mock giúp phát hiện sai luồng, **không** thay cho tải và xác minh ba file lớn thực tế từ Colab. Ba mã hash/size trong bảng vẫn là đối chiếu metadata độc lập với file thực nhận.
 
 ## 3. Kiểm thử mã đã thực hiện cho thay đổi này
@@ -38,7 +56,7 @@ Sandbox hiện **không có GPU**. Thử tải qua Hugging Face trực tiếp t�
 
 1. Mở [notebook Studio trên nhánh hiện tại](https://colab.research.google.com/github/manhlee1196-boop/ai-anime/blob/main/WAI_Illustrious_Studio_Colab.ipynb), chọn GPU và **Runtime → Restart runtime → Run all**. Không cần cấp quyền Google Drive. Để trống hai đường dẫn LoRA ở ô 3 nếu dùng bản tự tải. Link Gradio của phiên cũ **không tự cập nhật**.
 2. Ô 1 thấy GPU; ô 2 in `✅ Thư viện Studio đã sẵn sàng`; ô 4/5 in xác minh SHA-256 WAI v17 và LoRA; ô 6 in chế độ nạp và VRAM. Ô 4 có thể mất thời gian tải + hash toàn bộ 6,94 GB, **không còn dòng “Sao chép model từ Drive”**. Nếu thiếu dung lượng/mạng lỗi, dừng xử lý tại ô đó; đừng coi việc chạy các ô sau là đã xác nhận thành công.
-3. Ở giao diện, chọn **Bán thực 2.5D** và xem hai ô **“Prompt gửi model · sửa được”**. Xóa thẻ phong cách/`perfect eyes`, nhập một prompt riêng và negative riêng, bật metadata PNG nếu muốn tự đối chiếu; tạo ảnh và tải PNG. Thử **hai lần liên tiếp** cùng seed (ví dụ `12345`), so với Anime chuẩn giữ thông số tương đương. Dùng tab sửa vùng: chọn tay/chân/mắt, bấm nút thêm gợi ý rồi sửa chúng trước khi inpaint; thử không bấm để đảm bảo không có thẻ ẩn. Thử adult preset chỉ khi mọi nhân vật đều trưởng thành. Hiệu quả thực tế chỉ có thể đánh giá ở bước này.
+3. Ở giao diện, tự nhập phong cách trong **Prompt gửi model** và negative riêng; không còn selector phong cách hay ô xác nhận 18+. Bật metadata PNG nếu muốn tự đối chiếu; tạo ảnh và tải PNG. Thử **hai lần liên tiếp** cùng seed (ví dụ `12345`). Dùng tab sửa vùng: chọn tay/chân/mắt, bấm nút thêm gợi ý rồi sửa chúng trước khi inpaint; thử không bấm để đảm bảo không có thẻ ẩn. Thử cả text, img2img và inpaint. Hiệu quả thực tế chỉ có thể đánh giá ở bước này.
 4. **Tải tất cả ảnh cần giữ về máy trước khi runtime ngắt**: ảnh, checkpoint và LoRA trong `/content` sẽ mất cùng phiên. Nếu lỗi, gửi traceback ô 2/4/5/6/8, che thông tin riêng và URL `gradio.live` vì ai biết URL đều có thể dùng GPU của bạn.
 
-**Kết luận:** SHA-256 ghim khớp metadata Civitai/HF của đúng file; mã local-only và luồng prompt cuối đã qua kiểm thử cục bộ. Chưa xác nhận tạo ảnh WAI thật trên GPU Colab hoặc tốc độ/hiệu quả sửa ngón và bán thực 2.5D. Preset 18+ chỉ xác nhận của người dùng và kiểm một số từ khóa, **không xác minh tuổi/bộ lọc hoàn chỉnh**.
+**Kết luận:** SHA-256 ghim khớp metadata Civitai/HF của đúng file; mã local-only và luồng prompt cuối đã qua kiểm thử cục bộ. Chưa xác nhận tạo ảnh WAI thật trên GPU Colab hoặc tốc độ/hiệu quả sửa ngón và bán thực 2.5D. Studio không có bộ lọc từ khóa nội dung hoặc xác nhận tuổi; tuân thủ giấy phép model và điều khoản dịch vụ sử dụng.
