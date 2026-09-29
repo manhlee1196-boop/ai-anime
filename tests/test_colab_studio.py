@@ -17,7 +17,7 @@ import unittest
 from unittest.mock import patch
 
 from colab import studio
-from scripts.build_colab_studio import build
+from scripts.build_colab_studio import as_form, build
 
 ROOT = Path(__file__).resolve().parents[1]
 NOTEBOOK = ROOT / "WAI_Illustrious_Studio_Colab.ipynb"
@@ -133,6 +133,30 @@ class NotebookTests(unittest.TestCase):
             pass
         else:
             nbformat.validate(nbformat.read(NOTEBOOK, as_version=4))
+
+    def test_every_code_cell_collapses_into_a_compact_form(self):
+        """Cả hai notebook phải gọn: mỗi ô code là một form tiêu đề + nút Run."""
+        for path in (NOTEBOOK, BASE):
+            notebook = json.loads(path.read_text(encoding="utf-8"))
+            code_cells = [c for c in notebook["cells"] if c["cell_type"] == "code"]
+            self.assertTrue(code_cells, path.name)
+            for index, cell in enumerate(notebook["cells"]):
+                if cell["cell_type"] != "code":
+                    continue
+                first = "".join(cell["source"]).splitlines()[0]
+                with self.subTest(notebook=path.name, cell=index):
+                    self.assertRegex(first, r"^# @title \d+\.")
+                    self.assertIn('{ display-mode: "form" }', first)
+
+    def test_as_form_marks_a_cell_once_and_requires_a_title(self):
+        text = "# @title 9. Ô mới\nprint(1)\n"
+        marked = as_form(text)
+        self.assertEqual(
+            marked, '# @title 9. Ô mới { display-mode: "form" }\nprint(1)\n'
+        )
+        self.assertEqual(as_form(marked), marked)  # không lặp marker
+        with self.assertRaises(AssertionError):
+            as_form("print('ô không có tiêu đề')\n")
 
     @unittest.skipIf(
         not importlib.util.find_spec("packaging"), "packaging needed for cell 2 check"

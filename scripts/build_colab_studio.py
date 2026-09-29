@@ -7,11 +7,32 @@ The generated notebook does not fetch or execute repository Python files at runt
 import copy
 import json
 from pathlib import Path
+import re
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE = ROOT / "WAI_Illustrious_Colab.ipynb"
 MODULE = ROOT / "colab" / "studio.py"
 OUTPUT = ROOT / "WAI_Illustrious_Studio_Colab.ipynb"
+
+# Colab thu gọn ô code thành một thanh tiêu đề (kèm nút Run) khi dòng đầu là
+# `# @title ... { display-mode: "form" }`; code vẫn xem được bằng biểu tượng
+# ">_" ở góc ô. Nhờ vậy notebook đọc như một bảng 8 bước, không phơi cả
+# nghìn dòng mã của ô giao diện.
+FORM_MARKER = ' { display-mode: "form" }'
+TITLE_LINE = re.compile(r"^#\s*@title\s+(.+?)\s*$")
+
+
+def as_form(text):
+    """Ensure a cell's `# @title` line collapses the cell into a compact form."""
+    lines = text.split("\n")
+    title = TITLE_LINE.match(lines[0])
+    if not title:
+        raise AssertionError(
+            "Ô code phải bắt đầu bằng '# @title ...' thì mới thu gọn được."
+        )
+    if "display-mode" not in title.group(1):
+        lines[0] = f"# @title {title.group(1)}{FORM_MARKER}"
+    return "\n".join(lines)
 
 
 def markdown(text, cell_id):
@@ -28,7 +49,7 @@ def code(text, cell_id):
         "execution_count": None,
         "metadata": {"id": cell_id},
         "outputs": [],
-        "source": text.splitlines(keepends=True),
+        "source": as_form(text).splitlines(keepends=True),
     }
 
 
@@ -117,6 +138,8 @@ print("✅ Thư viện Studio đã sẵn sàng:", versions)
 > **Không cần Google Drive, Cloudflare, tài khoản hay API token.** Colab chạy checkpoint WAI-illustrious v17 + LoRA đã kiểm SHA-256; Gradio chỉ hiển thị giao diện. Ảnh mẫu web Cloudflare không liên quan tới model này.
 
 ### Chạy trong 3 bước
+
+> **Notebook đã thu gọn:** mỗi ô code chỉ hiện một thanh tiêu đề kèm nút **Run** (Colab form), kể cả ô 7 chứa toàn bộ mã giao diện — nên trang rất ngắn và dễ chạy tuần tự. Muốn xem hoặc sửa code của ô nào, bấm biểu tượng `>_` (hay ⋮ → *Show code*) ở góc ô đó; kết quả in ra vẫn hiển thị bình thường.
 1. Chọn **Runtime → Change runtime type → T4 GPU** (hoặc GPU mạnh hơn), rồi **Runtime → Run all**. Checkpoint ~6,94 GB và tối đa ~457 MB LoRA được tải **trực tiếp vào `/content`**, kiểm tra SHA-256 trước khi nạp, không gắn hay sao chép sang Drive. Nếu file còn trong cùng runtime sẽ dùng lại; phiên Colab mới phải tải lại. Cần ~9 GiB đĩa trống. Ô 4 kiểm toàn bộ hash, có thể mất một lúc.
 2. Chờ ô cuối in `Running on public URL`, mở liên kết `https://....gradio.live` — **không cần tài khoản/mật khẩu**. **Không có selector phong cách: bạn tự viết phong cách ngay trong prompt** (`anime illustration, cel shading`, `watercolor`, `cinematic lighting`…). Hai ô **Prompt gửi model** / **Negative gửi model** là đúng những gì được gửi ở cả ba chế độ, không thêm thẻ ẩn theo LoRA hay vùng sửa khi bấm tạo. Cần trigger cho LoRA mắt thì bấm nút **Thêm `perfect eyes`**; tab sửa vùng có nút **Thêm gợi ý sửa vùng vào prompt** — cả hai đều hiển thị trong ô để bạn sửa hoặc xóa trước khi tạo.
    - **Nạp nhiều prompt một lúc:** mở accordion **📚 Thư viện prompt · nạp danh sách từ file text**, tải file `.txt`/`.md`/`.json` (hoặc dán nội dung) có dạng `PROMPT 01 - Tên tiếng Việt` rồi đoạn prompt bên dưới (cũng đọc được bảng `Tên tiếng Việt | Nội dung prompts tiếng Anh`, JSON `[{"title","prompt"}]`, hoặc các đoạn prompt cách nhau dòng trống). Danh sách hiện ra để lọc và **chọn một dòng là hệ thống tự nạp prompt** vào ô *Prompt gửi model*; các dòng `Negative:`, `Steps:`, `CFG:`, `Size:`, `Seed:` trong file cũng được áp dụng. Chưa có file thì bấm **Nạp thư viện mẫu** để xem định dạng.
@@ -173,6 +196,13 @@ print("Mở link:", share_url)
 print("Không cần tài khoản/mật khẩu. Ai có link đều có thể dùng GPU Colab của bạn.")
 print("Link ngừng hoạt động khi Colab dừng/ngắt. KHÔNG chia sẻ link; dừng runtime để thu hồi.")
 """
+
+    # Thu gọn mọi ô code thành form: notebook chỉ còn 8 thanh tiêu đề + nút Run.
+    for cell in setup:
+        if cell["cell_type"] == "code":
+            cell["source"] = (
+                as_form("".join(cell["source"])).splitlines(keepends=True)
+            )
 
     cells = [
         markdown(introduction, "studio-intro"),
