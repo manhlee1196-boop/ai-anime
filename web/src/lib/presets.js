@@ -117,4 +117,4 @@ export const DEFAULTS = {
 };
 
 export const COLAB_URL =
-  "https://colab.research.google.com/github/manhlee1196-boop/ai-anime/blob/arena/01a0d84b-ai-anime/WAI_Illustrious_Colab.ipynb";
+  "https://colab.research.google.com/github/manhlee1196-boop/ai-anime/blob/main/WAI_Illustrious_Colab.ipynb";

@@ -1,6 +1,6 @@
 # WAI Studio cá nhân — giao diện tạo ảnh qua Google Colab
 
-[![Mở WAI Studio trong Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/manhlee1196-boop/ai-anime/blob/arena/01a0d84b-ai-anime/WAI_Illustrious_Studio_Colab.ipynb)
+[![Mở WAI Studio trong Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/manhlee1196-boop/ai-anime/blob/main/WAI_Illustrious_Studio_Colab.ipynb)
 
 **[WAI_Illustrious_Studio_Colab.ipynb](WAI_Illustrious_Studio_Colab.ipynb)** chạy WAI-illustrious v17 và hai LoRA tùy chọn trên GPU Colab; Gradio tạo **link tạm không cần đăng nhập**. Không cần Google Drive, Cloudflare hoặc API token. Checkpoint và LoRA được kiểm **toàn bộ SHA-256** trước khi nạp. [Báo cáo kiểm tra nguồn và vận hành](VERIFICATION.md) phân biệt điều đã thử cục bộ với việc **chưa thử tạo ảnh bằng GPU Colab thật**.
 
@@ -24,7 +24,7 @@
 
 # WAI-illustrious trên Google Colab (notebook nâng cao, không cần link)
 
-[![Mở trong Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/manhlee1196-boop/ai-anime/blob/arena/01a0d84b-ai-anime/WAI_Illustrious_Colab.ipynb)
+[![Mở trong Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/manhlee1196-boop/ai-anime/blob/main/WAI_Illustrious_Colab.ipynb)
 
 **[WAI_Illustrious_Colab.ipynb](WAI_Illustrious_Colab.ipynb)** không mở URL chia sẻ, vẫn tạo ảnh bằng checkpoint WAI-illustrious SDXL với hai LoRA tùy chọn và inpainting ô 8.
 
