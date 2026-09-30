@@ -15,7 +15,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 SIZE_PRESETS = (
-    "512x512",
+    "2688x2048",
     "768x768",
     "768x1024",
     "1024x768",
