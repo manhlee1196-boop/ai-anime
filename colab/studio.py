@@ -33,11 +33,17 @@ HIRES_SCALES = {HIRES_OFF: 1.0, "1.5×": 1.5, "2×": 2.0}
 HIRES_MAX_PIXELS = 4_200_000  # ≈ 2048×2048; giới hạn để không tràn VRAM/RAM Colab
 HIRES_STRENGTH_RANGE = (0.2, 0.7)
 HIRES_DEFAULT_STRENGTH = 0.4
+# Prompt mẫu viết theo THỨ TỰ CHUẨN của dân chuyên nghiệp (chất lượng → chủ thể
+# → ngoại hình → tư thế → bối cảnh → ánh sáng → phong cách → độ nét). Bạn sửa/xóa
+# tùy ý; Studio gửi đúng nội dung hai ô prompt/negative cho model.
 DEFAULT_PROMPT = (
-    "1girl, solo, cherry blossoms, spring, soft sunlight, "
-    "detailed eyes, detailed clothing, masterpiece, best quality"
+    "masterpiece, best quality, amazing quality, 1girl, solo, adult woman, "
+    "long dark hair, gentle smile, standing under cherry blossoms, petals falling, "
+    "spring, soft sunlight, cel shading, anime illustration, absurdres"
 )
 # Negative mặc định nhắm lỗi ngón tay/ngón chân; người dùng tự sửa theo ý mình.
+# Muốn ngắn hơn hãy nạp bộ "Chuẩn nhà phát hành WAI v17" trong UI — negative quá
+# dài làm giảm chất lượng ảnh theo khuyến nghị của chính nhà phát hành.
 DEFAULT_NEGATIVE = (
     "lowres, worst quality, low quality, blurry, bad anatomy, "
     "bad hands, deformed hands, extra fingers, missing fingers, fused fingers, "
@@ -153,6 +159,901 @@ def apply_repair_hints(positive, negative, target):
         _add_prompt_tags(positive, hint_pos.split(",")),
         _add_prompt_tags(negative, hint_neg.split(",")),
     )
+
+
+# ---------------------------------------------------------------------------
+# QUY TRÌNH PROMPT CHUYÊN NGHIỆP (thứ tự thẻ chuẩn + negative theo mục đích +
+# bộ kiểm tra prompt/thông số).
+#
+# Căn cứ đã đối chiếu (xem docs/QUY_TRINH_TAO_ANH.md, mục Nguồn):
+#   • Nhà phát hành WAI-illustrious v17: quality head "masterpiece, best quality,
+#     amazing quality"; negative ngắn "bad quality, worst quality, worst detail,
+#     sketch, censor"; steps 15–30; CFG 5–7; Euler a; hires 1.5× với denoise
+#     0.35–0.5; kèm cảnh báo KHÔNG thêm quá nhiều thẻ chất lượng/thẩm mỹ và
+#     không viết negative quá dài vì sẽ làm giảm chất lượng, ảnh dễ mờ.
+#   • Hướng dẫn cộng đồng Illustrious XL (SeaArt, tensor.art): họ Illustrious
+#     bám negative rất tốt — "worst quality, low quality, very displeasing,
+#     displeasing, oldest", "artistic error", "lowres, jpeg artifacts, censor,
+#     watermark, bad hands, bad anatomy, traditional media"; thứ tự prompt:
+#     chất lượng → nhãn phân loại → chủ thể → chi tiết → tư thế → bố cục/bối
+#     cảnh → ánh sáng → phong cách → "absurdres, highres" ở cuối.
+#   • SDXL/Illustrious mã hoá prompt theo khối 75 token: phần vượt quá bị bỏ
+#     qua khối sau (mất ưu tiên) nên prompt phải ngắn, đúng thứ tự ưu tiên và
+#     chỉ nhấn mạnh bằng (thẻ:1.1–1.2) thay vì lặp từ.
+#
+# Nguyên tắc của Studio vẫn giữ: mọi hàm dưới đây chỉ *trả về chuỗi hiển thị*
+# trong hai ô prompt/negative để người dùng sửa hoặc xóa; không có thẻ nào được
+# ghép ngầm lúc bấm tạo ảnh.
+# ---------------------------------------------------------------------------
+RECOMMENDED_STEPS = (15, 30)
+RECOMMENDED_CFG = (5.0, 7.0)
+RECOMMENDED_HIRES_STRENGTH = (0.35, 0.5)
+SDXL_TOKEN_CHUNK = 75  # khối token CLIP của SDXL/Illustrious
+QUALITY_HEAD = ("masterpiece", "best quality", "amazing quality")
+QUALITY_TAIL = ("absurdres",)
+
+# Negative theo mục đích: mỗi preset cố ý GIỮ NGẮN. Nhà phát hành cảnh báo
+# negative quá dài làm giảm chất lượng; chuyên nghiệp là chọn đúng bộ cho đúng
+# việc rồi cộng thêm vài thẻ riêng của ảnh đó, không dùng một danh sách khổng lồ.
+NEGATIVE_PRESETS = (
+    {
+        "id": "publisher",
+        "label": "Chuẩn nhà phát hành WAI v17 (ngắn nhất)",
+        "tags": (
+            "bad quality",
+            "worst quality",
+            "worst detail",
+            "sketch",
+            "censor",
+        ),
+        "when": "Mặc định an toàn cho mọi ảnh; ít rủi ro nghẹt chi tiết/làm mờ nhất.",
+    },
+    {
+        "id": "core",
+        "label": "Illustrious chuẩn · chất lượng + lỗi vẽ",
+        "tags": (
+            "worst quality",
+            "low quality",
+            "bad quality",
+            "lowres",
+            "jpeg artifacts",
+            "bad anatomy",
+            "bad hands",
+            "extra digit",
+            "fewer digits",
+            "watermark",
+            "signature",
+            "text",
+            "artistic error",
+            "very displeasing",
+            "oldest",
+        ),
+        "when": "Bộ dùng hằng ngày: vừa chặn lỗi chất lượng vừa chặn lỗi giải phẫu nhẹ.",
+    },
+    {
+        "id": "anatomy",
+        "label": "Sửa tay / chân / tỷ lệ cơ thể",
+        "tags": (
+            "bad anatomy",
+            "bad hands",
+            "deformed hands",
+            "extra digit",
+            "fewer digits",
+            "fused fingers",
+            "conjoined fingers",
+            "extra limbs",
+            "missing limbs",
+            "extra arms",
+            "extra legs",
+            "bad proportions",
+            "bad perspective",
+            "deformed feet",
+            "extra toes",
+            "fused toes",
+            "long neck",
+        ),
+        "when": "Ảnh có bàn tay/chân phức tạp; dùng kèm LoRA Anatomy hoặc inpaint vùng nhỏ.",
+    },
+    {
+        "id": "anime2d",
+        "label": "Giữ chất anime 2D (chống 3D/thực)",
+        "tags": (
+            "realistic",
+            "photorealistic",
+            "3d",
+            "cgi",
+            "render",
+            "plastic skin",
+            "realistic skin texture",
+            "dull colors",
+            "monochrome",
+            "greyscale",
+            "sketch",
+            "traditional media",
+            "jpeg artifacts",
+            "bad anatomy",
+        ),
+        "when": "WAI v17 dễ ra chất nhựa/3D khi ít thẻ chất lượng; bộ này ép về nét vẽ 2D.",
+    },
+    {
+        "id": "portrait",
+        "label": "Chân dung · mặt, mắt, răng",
+        "tags": (
+            "bad face",
+            "poorly drawn face",
+            "deformed eyes",
+            "asymmetrical eyes",
+            "cross-eyed",
+            "extra eyes",
+            "dull eyes",
+            "bad teeth",
+            "crooked teeth",
+            "skin blemishes",
+            "acne",
+            "bad anatomy",
+            "bad hands",
+            "extra digit",
+            "jpeg artifacts",
+            "watermark",
+            "text",
+        ),
+        "when": "Ảnh cận mặt; nên kết hợp LoRA mắt (trigger `perfect eyes`) và inpaint vùng mắt.",
+    },
+    {
+        "id": "scene",
+        "label": "Phong cảnh · không có nhân vật",
+        "tags": (
+            "1girl",
+            "1boy",
+            "solo",
+            "people",
+            "crowd",
+            "bad perspective",
+            "bad proportions",
+            "lowres",
+            "blurry",
+            "worst quality",
+            "low quality",
+            "jpeg artifacts",
+            "text",
+            "watermark",
+            "signature",
+            "logo",
+        ),
+        "when": "Background/key visual; chặn người lọt vào khung và lỗi phối cảnh.",
+    },
+    {
+        "id": "sfw",
+        "label": "An toàn nội dung (mọi nhân vật trưởng thành)",
+        "tags": (
+            "nsfw",
+            "explicit",
+            "nude",
+            "loli",
+            "shota",
+            "child",
+            "aged_down",
+            "censored",
+            "censor bars",
+            "worst quality",
+            "low quality",
+            "jpeg artifacts",
+        ),
+        "when": "WAI có nhãn phân loại general/sensitive/nsfw/explicit: đưa nhãn unwanted vào negative. Không thay thế bộ lọc nội dung hoàn chỉnh.",
+    },
+    {
+        "id": "inpaint",
+        "label": "Inpaint / sửa vùng (rất ngắn)",
+        "tags": (
+            "bad quality",
+            "worst quality",
+            "lowres",
+            "blurry",
+            "jpeg artifacts",
+            "watermark",
+            "text",
+            "bad anatomy",
+        ),
+        "when": "Khi sửa vùng nhỏ: negative ngắn để denoise thấp giữ được nét xung quanh.",
+    },
+)
+NEGATIVE_REPLACE = "Ghi đè ô negative"
+NEGATIVE_APPEND = "Nối thêm thẻ còn thiếu"
+NEGATIVE_MODES = (NEGATIVE_REPLACE, NEGATIVE_APPEND)
+
+# Thứ tự thẻ chuẩn: thẻ đứng trước được CLIP chú ý nhiều hơn, nên chất lượng và
+# chủ thể đi đầu, bối cảnh/ánh sáng/phong cách đi sau, thẻ độ nét chốt cuối.
+PROMPT_SECTIONS = (
+    "quality",
+    "rating",
+    "subject",
+    "appearance",
+    "outfit",
+    "pose",
+    "extra",
+    "composition",
+    "background",
+    "lighting",
+    "style",
+    "tail",
+)
+SECTION_LABELS = {
+    "quality": "Chất lượng",
+    "rating": "Nhãn phân loại",
+    "subject": "Chủ thể",
+    "appearance": "Ngoại hình",
+    "outfit": "Trang phục",
+    "pose": "Tư thế / hành động",
+    "extra": "Thẻ khác của bạn",
+    "composition": "Bố cục / góc máy",
+    "background": "Bối cảnh",
+    "lighting": "Ánh sáng / màu",
+    "style": "Phong cách",
+    "tail": "Độ nét (cuối prompt)",
+}
+# Thứ tự ưu tiên khi một thẻ khớp nhiều nhóm (khớp trước thắng).
+_SECTION_RULES = (
+    (
+        "quality",
+        r"^(?:masterpiece|(?:best|amazing|highest|great|top|ultra|high) quality|very aesthetic|newest)$",
+    ),
+    ("tail", r"^(?:absurdres|highres|high resolution|uhd|4k|8k)$"),
+    ("rating", r"^(?:general|sensitive|questionable|explicit|safe|nsfw|rating_\w+)$"),
+    (
+        "subject",
+        # `(?<![a-z])` để bắt được thẻ có số đứng trước như "1girl", "2boys":
+        # giữa số và chữ không có ranh giới từ nên \b thường không khớp.
+        r"(?:(?<![a-z])girls?\b|(?<![a-z])boys?\b|\bother\b|no humans|\bsolo\b|\bduo\b|\bcouple\b|"
+        r"\bgroup\b|\bfocus\b|\badult\b|\bmature\b|office worker|\bstudent\b|\bidol\b|"
+        r"\bmaid\b|\bknight\b|\bwitch\b|\belf\b|\bandroid\b|\brobot\b|\bwaitress\b|"
+        r"\bnurse\b|\bteacher\b|\bartists?\b|\bsamurai\b|\bninja\b|\bprincess\b|"
+        r"\bqueen\b|\bking\b|\bsoldiers?\b|\bpilots?\b|\bchef\b|\bbarista\b|"
+        r"\bresearchers?\b|\btravellers?\b|\btravelers?\b|\bangel\b|\bdemon\b|"
+        r"\bvampire\b|\bcat girl\b|\bfox girl\b|\bmagical girl\b|\bcharacter\b)",
+    ),
+    (
+        "pose",
+        r"(\bstanding\b|\bsitting\b|\bwalking\b|\brunning\b|\bleaning\b|\blying\b|"
+        r"\bkneeling\b|\bcrouching\b|\bjumping\b|\bdancing\b|\bflying\b|\bsleeping\b|"
+        r"\bstretching\b|\bholding\b|\breaching\b|\bpointing\b|\bwaving\b|\breading\b|"
+        r"\btyping\b|\bdrinking\b|\beating\b|\blooking\b|\bglancing\b|\bstaring\b|"
+        r"\bsmiling\b|\bgrinning\b|\bfrowning\b|\bcrying\b|\bpose\b|\bposes\b|"
+        r"\barms?\b|\bhands?\b|\blegs?\b|\bhead tilt\b|\bfrom behind\b|\bback\b|"
+        r"\bhand on hip\b|\bhand in pocket\b|\bcrossed\b|\bturned\b|\bmid-air\b)",
+    ),
+    (
+        "outfit",
+        r"(\bshirt\b|\bblouse\b|\bdress\b|\bskirt\b|\bjacket\b|\bcoat\b|\bsuit\b|"
+        r"\bblazer\b|\buniform\b|\bsweater\b|\bcardigan\b|\bhoodie\b|\bkimono\b|"
+        r"\byukata\b|\barmor\b|\bgloves?\b|\bsocks?\b|\bstockings?\b|\bshoes?\b|"
+        r"\bboots?\b|\bsneakers?\b|\bheels?\b|\btie\b|\bnecktie\b|\bscarf\b|\bhat\b|"
+        r"\bcap\b|\bribbon\b|\bbow\b|\bapron\b|\bvest\b|\btrousers\b|\bpants\b|"
+        r"\bjeans\b|\bshorts\b|\bbelt\b|\bbag\b|\bbackpack\b|\bjewelry\b|\bearing\b|"
+        r"\bnecklace\b|\bring\b|\bcollar\b|\bhood\b|\bsleeves?\b|\bgown\b|\brobe\b|"
+        r"\bcape\b|\bhelmet\b|\bmask\b|\boutfit\b|\bclothes\b|\bclothing\b|"
+        r"\bwearing\b|\bdress shirt\b|\bpencil skirt\b|\bturtleneck\b|\bknit\b)",
+    ),
+    (
+        "appearance",
+        r"(\bhair\b|\beyes?\b|\bskin\b|\bface\b|\bnose\b|\blips?\b|\bteeth\b|"
+        r"\bears?\b|\btattoo\b|\bfreckles\b|\bmole\b|\bscar\b|\bglasses\b|"
+        r"\bmakeup\b|\bexpression\b|\bsmile\b|\bblush\b|\btall\b|\bpetite\b|"
+        r"\bslim\b|\bcurvy\b|\bmuscular\b|\bbraid\b|\bponytail\b|\btwintails\b|"
+        r"\bbangs\b|\bbob cut\b|\bbun\b|\bwavy\b|\bstraight hair\b|\blong hair\b|"
+        r"\bshort hair\b|\bblue eyes\b|\bbody\b|\bproportions\b)",
+    ),
+    (
+        "composition",
+        r"(close-up|\bcowboy shot\b|\bupper body\b|\bfull body\b|\bportrait\b|"
+        r"wide shot|\bestablishing shot\b|dutch angle|from above|from below|"
+        r"low angle|high angle|bird'?s?-eye|straight-on|depth of field|\bbokeh\b|"
+        r"dynamic angle|rule of thirds|\bshot\b|\bangle\b|\bview\b|\bmacro\b|"
+        r"\bfisheye\b|\bframing\b|\bsilhouette\b|\bsymmetrical\b)",
+    ),
+    (
+        "background",
+        r"(\bbackground\b|\bcity\b|cityscape|\bstreet\b|\balley\b|\boffice\b|"
+        r"\bcaf[eé]\b|\brooftop\b|\bforest\b|\bsky\b|\bclouds?\b|cherry blossoms?|"
+        r"\bsakura\b|\brain\b|\bsnow\b|\bnight\b|\bday\b|\bsunset\b|\bsunrise\b|"
+        r"\bdawn\b|\bdusk\b|\bindoors\b|\boutdoors\b|\bsea\b|\bocean\b|\bbeach\b|"
+        r"\bmountains?\b|\bhills?\b|\bgarden\b|\bpark\b|\blibrary\b|\btrains?\b|"
+        r"\bstation\b|\bwindows?\b|\bdoors?\b|\bneon\b|\bvillage\b|\bcorridor\b|"
+        r"\belevator\b|\blobby\b|\bdesks?\b|classroom|\bbedroom\b|\bkitchen\b|"
+        r"\bbridge\b|\briver\b|\bfields?\b|\bflowers?\b|\bpetals?\b|\bstars\b|"
+        r"\bmoon\b|\bsun\b|\bweather\b|\bskyline\b|\bfoliage\b)",
+    ),
+    (
+        "lighting",
+        r"(\blight\b|\blights\b|\blighting\b|\bglow\b|\bglowing\b|sunlight|"
+        r"moonlight|backlight|backlit|rim light|\bshadows?\b|cinematic lighting|"
+        r"soft light|warm light|cool light|\bdramatic\b|\bmoody\b|lens flare|"
+        r"god rays|sunbeam|\bcolou?rs?\b|\bpalette\b|\bpastel\b|\bvivid\b|"
+        r"saturated|desaturated|\btone\b|\bcontrast\b|\bbrightness\b|\batmosphere\b|"
+        r"\bambient\b|\bwarm\b|\bcool\b|\bdim\b|\bbright\b)",
+    ),
+    (
+        "style",
+        r"(\banime\b|illustration|cel shading|cel shaded|watercolou?r|"
+        r"oil painting|acrylic|\bsketch\b|lineart|line art|flat colou?rs?|\bmanga\b|"
+        r"\bcomic\b|\bcinematic\b|film still|key visual|art nouveau|ukiyo-e|"
+        r"pixel art|\bchibi\b|semi-realistic|realistic|2\.5d|painterly|\bgouache\b|"
+        r"\bink\b|digital painting|art by|style of|\bstudio\b|screencap|"
+        r"retro artstyle|\bshading\b|\blineart\b|\bdetailed\b|\bdetail\b)",
+    ),
+)
+_SECTION_RULE_MAP = dict(_SECTION_RULES)
+# Thứ tự ưu tiên khi KHỚP, tách khỏi thứ tự hiển thị PROMPT_SECTIONS: nhóm bố cục
+# phải được xét trước ngoại hình, nếu không "upper body" bị `\bbody\b` của nhóm
+# ngoại hình bắt mất và prompt bị xếp sai chỗ.
+_SECTION_MATCH_ORDER = (
+    "quality",
+    "tail",
+    "rating",
+    "subject",
+    "composition",
+    "pose",
+    "outfit",
+    "appearance",
+    "background",
+    "lighting",
+    "style",
+)
+assert set(_SECTION_MATCH_ORDER) == set(
+    _SECTION_RULE_MAP
+), "Thứ tự khớp phải phủ đúng các nhóm có luật."
+_SECTION_RES = tuple(
+    (section, re.compile(_SECTION_RULE_MAP[section], re.IGNORECASE))
+    for section in _SECTION_MATCH_ORDER
+)
+# Khung neo theo loại ảnh: chỉ được THÊM khi nhóm tương ứng đang trống, để không
+# nhét thừa thẻ chất lượng (nhà phát hành cảnh báo thừa thẻ chất lượng làm mờ ảnh).
+PROMPT_SCAFFOLDS = {
+    "character": {
+        "label": "Nhân vật · 1 nhân vật",
+        "anchors": {
+            "quality": QUALITY_HEAD,
+            "subject": ("1girl", "solo"),
+            "style": ("anime illustration", "cel shading"),
+            "tail": QUALITY_TAIL,
+        },
+    },
+    "portrait": {
+        "label": "Chân dung cận mặt",
+        "anchors": {
+            "quality": QUALITY_HEAD,
+            "subject": ("1girl", "solo"),
+            "composition": ("close-up", "looking at viewer"),
+            "lighting": ("soft lighting",),
+            "style": ("anime illustration", "cel shading"),
+            "tail": QUALITY_TAIL,
+        },
+    },
+    "scene": {
+        "label": "Phong cảnh · không nhân vật",
+        "anchors": {
+            "quality": QUALITY_HEAD,
+            "subject": ("no humans",),
+            "composition": ("wide shot",),
+            "background": ("detailed background", "scenery"),
+            "style": ("anime background",),
+            "tail": QUALITY_TAIL,
+        },
+    },
+    "action": {
+        "label": "Hành động / key visual",
+        "anchors": {
+            "quality": QUALITY_HEAD,
+            "subject": ("1girl", "solo"),
+            "pose": ("dynamic pose",),
+            "composition": ("dynamic angle", "depth of field"),
+            "lighting": ("dramatic lighting",),
+            "style": ("anime key visual", "cel shading"),
+            "tail": QUALITY_TAIL,
+        },
+    },
+}
+SCAFFOLD_CHOICES = tuple((item["label"], key) for key, item in PROMPT_SCAFFOLDS.items())
+
+# Thẻ/cú pháp của hệ Pony không có tác dụng trên Illustrious/WAI.
+PONY_ONLY_TAGS = re.compile(
+    r"^(?:score_\w+|source_\w+|rating_(?:safe|explicit|questionable))$", re.IGNORECASE
+)
+WEIGHT_RE = re.compile(r"^\((?P<body>.+?):(?P<weight>-?\d+(?:\.\d+)?)\)$")
+QUALITY_TAG_SET = {
+    "masterpiece",
+    "best quality",
+    "amazing quality",
+    "highest quality",
+    "great quality",
+    "ultra quality",
+    "high quality",
+    "very aesthetic",
+    "newest",
+}
+STYLE_TAG_HINTS = (
+    "anime",
+    "illustration",
+    "cel shading",
+    "watercolor",
+    "manga",
+    "lineart",
+    "painting",
+    "flat color",
+    "key visual",
+    "film still",
+    "screencap",
+    "artstyle",
+)
+SUBJECT_TAG_RE = re.compile(
+    r"(?:\d+\s*)?(?:girls?|boys?|other)\b|no humans|\bsolo\b|\bfocus\b|"
+    r"\bcouple\b|\bduo\b|\bgroup\b",
+    re.IGNORECASE,
+)
+
+
+def negative_preset_choices():
+    """Dropdown choices: nhãn mô tả → id preset."""
+    return tuple((preset["label"], preset["id"]) for preset in NEGATIVE_PRESETS)
+
+
+def find_negative_preset(preset_id):
+    for preset in NEGATIVE_PRESETS:
+        if preset["id"] == preset_id:
+            return preset
+    raise ValueError("Chọn một bộ negative trong danh sách trước khi nạp.")
+
+
+def split_tags(text):
+    """Tách chuỗi prompt thành danh sách thẻ, giữ nguyên cú pháp nhấn mạnh."""
+    if not isinstance(text, str):
+        raise ValueError("Prompt phải là chuỗi văn bản.")
+    return [tag.strip() for tag in text.split(",") if tag.strip()]
+
+
+def tag_core(tag):
+    """Bỏ cú pháp nhấn mạnh ((thẻ), [thẻ], (thẻ:1.2)) để so khớp nội dung thẻ."""
+    core = tag.strip()
+    match = WEIGHT_RE.match(core)
+    if match:
+        core = match.group("body").strip()
+    return core.strip("()[] ").strip()
+
+
+def estimate_tokens(text):
+    """Ước lượng token CLIP (BPE) — heuristic, không dùng tokenizer thật.
+
+    Mỗi từ ≈ 1 token; dấu gạch dưới, số dài và dấu câu thường bị tách thành token
+    riêng nên được cộng thêm. Con số dùng để cảnh báo vượt khối 75 token, không
+    phải số token chính xác của CLIP.
+    """
+    if not isinstance(text, str) or not text.strip():
+        return 0
+    total = 1  # token mở đầu chuỗi
+    for word in re.findall(r"[^\s,]+", text):
+        total += 1
+        total += word.count("_")
+        total += max(0, len(re.findall(r"\d+", word)) - 1)
+        total += len(re.findall(r"[^\w]", word))
+        if len(word) > 12:
+            total += 1
+    return total
+
+
+def classify_tag(tag):
+    """Xếp một thẻ vào nhóm trong PROMPT_SECTIONS (không khớp → 'extra')."""
+    core = tag_core(tag)
+    for section, pattern in _SECTION_RES:
+        if pattern.search(core):
+            return section
+    return "extra"
+
+
+def sort_prompt_tags(tags):
+    """Sắp xếp thẻ theo thứ tự chuẩn, khử trùng lặp, giữ thứ tự gốc trong nhóm."""
+    buckets = {section: [] for section in PROMPT_SECTIONS}
+    seen = set()
+    duplicates = []
+    for tag in tags:
+        key = tag_core(tag).casefold()
+        if not key:
+            continue
+        if key in seen:
+            duplicates.append(tag)
+            continue
+        seen.add(key)
+        buckets[classify_tag(tag)].append(tag)
+    ordered = [tag for section in PROMPT_SECTIONS for tag in buckets[section]]
+    return (
+        ordered,
+        duplicates,
+        {section: list(buckets[section]) for section in PROMPT_SECTIONS},
+    )
+
+
+def structure_prompt(prompt, kind="character"):
+    """Sắp lại prompt theo thứ tự chuẩn và thêm thẻ neo còn thiếu của khung đã chọn.
+
+    Trả về (prompt, ghi chú) — chuỗi prompt chỉ để hiển thị trong ô prompt, người
+    dùng sửa/xóa được trước khi tạo ảnh.
+    """
+    if kind not in PROMPT_SCAFFOLDS:
+        raise ValueError("Chọn một khung prompt trong danh sách.")
+    tags = split_tags(prompt)
+    ordered, duplicates, buckets = sort_prompt_tags(tags)
+    scaffold = PROMPT_SCAFFOLDS[kind]["anchors"]
+    added = []
+    for section, anchors in scaffold.items():
+        if buckets.get(section):
+            continue
+        for anchor in anchors:
+            if all(tag_core(tag).casefold() != anchor.casefold() for tag in ordered):
+                ordered.append(anchor)
+                added.append(anchor)
+        ordered, _, _ = sort_prompt_tags(ordered)
+    result = ", ".join(ordered)
+    if len(result) > 2200:
+        raise ValueError(
+            "Prompt sau khi sắp xếp dài hơn 2200 ký tự. Hãy bỏ bớt thẻ ít quan trọng "
+            "rồi sắp xếp lại."
+        )
+    used = [
+        f"{SECTION_LABELS[section]} ({len(buckets[section])})"
+        for section in PROMPT_SECTIONS
+        if buckets[section]
+    ]
+    note = (
+        f"**{PROMPT_SCAFFOLDS[kind]['label']}** · đã sắp xếp {len(ordered)} thẻ theo "
+        "thứ tự: chất lượng → chủ thể → ngoại hình → trang phục → tư thế → bố cục → "
+        "bối cảnh → ánh sáng → phong cách → độ nét."
+    )
+    if used:
+        note += "\n\n- Phân nhóm: " + ", ".join(used) + "."
+    if added:
+        note += f"\n- Thêm thẻ neo còn thiếu: `{'`, `'.join(added)}`."
+    if duplicates:
+        note += f"\n- Bỏ {len(duplicates)} thẻ trùng: `{'`, `'.join(duplicates)}`."
+    note += "\n\nChuỗi này chỉ được ghi vào ô prompt để bạn xem và sửa; không có thẻ nào được thêm ngầm khi tạo ảnh."
+    return result, note
+
+
+def apply_negative_preset(preset_id, negative, mode=NEGATIVE_REPLACE):
+    """Nạp một bộ negative tối ưu vào ô negative đang hiển thị."""
+    preset = find_negative_preset(preset_id)
+    tags = list(preset["tags"])
+    if mode == NEGATIVE_APPEND:
+        result = _add_prompt_tags(negative or "", tags)
+    elif mode == NEGATIVE_REPLACE:
+        result = ", ".join(tags)
+    else:
+        raise ValueError("Chọn cách áp dụng: ghi đè hoặc nối thêm.")
+    if len(result) > 1700:
+        raise ValueError(
+            "Negative sau khi ghép dài hơn 1700 ký tự. Hãy dùng chế độ ghi đè."
+        )
+    action = "Nối thêm" if mode == NEGATIVE_APPEND else "Đã nạp"
+    note = (
+        f"{action} **{preset['label']}** ({len(tags)} thẻ) vào ô *Negative gửi model*. "
+        f"{preset['when']}"
+    )
+    return result, note
+
+
+def analyze_prompt(
+    prompt,
+    negative,
+    steps=None,
+    cfg=None,
+    size=None,
+    hires_scale=HIRES_OFF,
+    hires_strength=HIRES_DEFAULT_STRENGTH,
+):
+    """Kiểm tra prompt/thông số theo khuyến nghị WAI v17 + thực hành Illustrious.
+
+    Trả về (findings, stats); mỗi finding là (level, message) với level thuộc
+    {"ok", "warn", "info"}. Chỉ đọc và báo cáo, không sửa prompt.
+    """
+    findings = []
+    prompt = prompt if isinstance(prompt, str) else ""
+    negative = negative if isinstance(negative, str) else ""
+    tags = split_tags(prompt)
+    cores = [tag_core(tag) for tag in tags]
+    lowered = [core.casefold() for core in cores]
+    tokens = estimate_tokens(prompt)
+    neg_tags = split_tags(negative)
+    quality_tags = [core for core, low in zip(cores, lowered) if low in QUALITY_TAG_SET]
+    stats = {
+        "tags": len(tags),
+        "tokens": tokens,
+        "negative_tags": len(neg_tags),
+        "negative_tokens": estimate_tokens(negative),
+    }
+    if not tags:
+        findings.append(("warn", "Prompt trống: model sẽ tạo ảnh gần như ngẫu nhiên."))
+        return findings, stats
+
+    if tokens <= SDXL_TOKEN_CHUNK:
+        findings.append(
+            ("ok", f"Prompt ≈ {tokens} token, vừa trong một khối 75 token của SDXL.")
+        )
+    elif tokens <= SDXL_TOKEN_CHUNK * 2:
+        findings.append(
+            (
+                "warn",
+                f"Prompt ≈ {tokens} token: vượt khối 75 token nên phần cuối bị đẩy "
+                "sang khối sau và mất ưu tiên. Hãy bỏ thẻ ít quan trọng hoặc chèn "
+                "`BREAK` (viết hoa) để tách khối có chủ đích.",
+            )
+        )
+    else:
+        findings.append(
+            (
+                "warn",
+                f"Prompt ≈ {tokens} token — quá dài cho SDXL/Illustrious. Prompt dài "
+                "làm mỗi thẻ yếu đi; giữ khoảng 20–40 thẻ quan trọng nhất.",
+            )
+        )
+
+    if len(quality_tags) > 3:
+        findings.append(
+            (
+                "warn",
+                f"Có {len(quality_tags)} thẻ chất lượng ({', '.join(quality_tags[:5])}…). "
+                "Nhà phát hành WAI v17 cảnh báo thừa thẻ chất lượng/thẩm mỹ làm giảm "
+                "chất lượng và làm mờ ảnh; giữ 2–3 thẻ là đủ.",
+            )
+        )
+    elif not quality_tags:
+        findings.append(
+            (
+                "info",
+                "Chưa có thẻ chất lượng. WAI v17 khuyến nghị mở đầu bằng "
+                "`masterpiece, best quality, amazing quality` (không cần nhiều hơn).",
+            )
+        )
+
+    _, duplicates, _ = sort_prompt_tags(tags)
+    if duplicates:
+        findings.append(
+            (
+                "warn",
+                f"Thẻ trùng lặp: `{'`, `'.join(duplicates)}`. Lặp thẻ tốn token mà "
+                "không tăng trọng số; muốn nhấn mạnh hãy dùng `(thẻ:1.1)`.",
+            )
+        )
+
+    negative_cores = {tag_core(tag).casefold() for tag in neg_tags}
+    conflicts = sorted(
+        {core for core, low in zip(cores, lowered) if low in negative_cores}
+    )
+    if conflicts:
+        findings.append(
+            (
+                "warn",
+                f"Vừa có trong prompt vừa có trong negative: `{'`, `'.join(conflicts)}`. "
+                "Hai lệnh ngược nhau làm model dao động; giữ ở một phía.",
+            )
+        )
+
+    pony = sorted({core for core in cores if PONY_ONLY_TAGS.match(core)})
+    if pony:
+        findings.append(
+            (
+                "warn",
+                f"`{'`, `'.join(pony)}` là cú pháp của họ Pony (score_/source_). "
+                "WAI-illustrious không dùng hệ này; thay bằng thẻ chất lượng chuẩn.",
+            )
+        )
+
+    watermarkish = [
+        core
+        for core, low in zip(cores, lowered)
+        if low in {"text", "watermark", "signature", "logo", "username", "artist name"}
+    ]
+    if watermarkish:
+        findings.append(
+            (
+                "info",
+                f"`{'`, `'.join(watermarkish)}` đang nằm trong prompt dương: trừ khi "
+                "bạn thật sự muốn chữ/ký hiệu trong ảnh, hãy bỏ chúng và đưa sang "
+                "negative.",
+            )
+        )
+
+    if any(low == "detailed eyes" for low in lowered):
+        findings.append(
+            (
+                "info",
+                "`detailed eyes` được cộng đồng báo là gần như không tác dụng trên họ "
+                "Illustrious. Muốn mắt đẹp hãy bật LoRA mắt và thêm trigger "
+                "`perfect eyes`, hoặc mô tả cụ thể (`sharp focus on eyes`, màu mắt).",
+            )
+        )
+
+    has_style = any(hint in low for low in lowered for hint in STYLE_TAG_HINTS)
+    if not has_style:
+        findings.append(
+            (
+                "info",
+                "Chưa có thẻ phong cách. WAI v17 dễ ra chất 3D/nhựa khi thiếu thẻ "
+                "chất lượng và phong cách: thêm `cel shading, anime illustration` "
+                "(hoặc `realistic, 3d` vào negative nếu muốn giữ nét 2D).",
+            )
+        )
+    else:
+        findings.append(("ok", "Đã có thẻ phong cách/chất liệu vẽ trong prompt."))
+
+    subject_tags = []
+    seen_subjects = set()
+    for core in cores:
+        if SUBJECT_TAG_RE.search(core) and core.casefold() not in seen_subjects:
+            seen_subjects.add(core.casefold())
+            subject_tags.append(core)
+    if not subject_tags:
+        findings.append(
+            (
+                "info",
+                "Chưa khai báo số lượng chủ thể. Illustrious bám rất tốt các thẻ "
+                "`1girl, solo` / `1boy, solo` / `no humans`; thiếu chúng dễ thừa nhân vật.",
+            )
+        )
+    else:
+        findings.append(
+            ("ok", f"Đã khai báo chủ thể: `{'`, `'.join(subject_tags[:3])}`.")
+        )
+
+    weights = []
+    for tag in tags:
+        match = WEIGHT_RE.match(tag.strip())
+        if match:
+            weights.append((match.group("body"), float(match.group("weight"))))
+    heavy = [body for body, weight in weights if weight > 1.2 or weight < 0.5]
+    if heavy:
+        findings.append(
+            (
+                "warn",
+                f"Trọng số ngoài khoảng an toàn: `{'`, `'.join(heavy)}`. Quá 1.2 dễ "
+                "cháy nét/mất bố cục; ưu tiên mô tả bằng từ ngữ và chỉ nhấn 1.05–1.2.",
+            )
+        )
+    elif weights:
+        findings.append(
+            ("ok", f"Dùng nhấn mạnh `(thẻ:trọng số)` hợp lý cho {len(weights)} thẻ.")
+        )
+
+    underscores = [core for core in cores if "_" in core]
+    if underscores:
+        findings.append(
+            (
+                "info",
+                f"Có {len(underscores)} thẻ dùng dấu gạch dưới (`{'`, `'.join(underscores[:3])}`…). "
+                "Illustrious đọc cả dạng cách (`long hair`) và tốn ít token hơn.",
+            )
+        )
+
+    if not neg_tags:
+        findings.append(
+            (
+                "info",
+                "Negative trống. Họ Illustrious bám negative tốt; tối thiểu nên có "
+                "`bad quality, worst quality, worst detail, sketch, censor`.",
+            )
+        )
+    elif len(neg_tags) > 40 or stats["negative_tokens"] > 2 * SDXL_TOKEN_CHUNK:
+        findings.append(
+            (
+                "warn",
+                f"Negative có {len(neg_tags)} thẻ (≈{stats['negative_tokens']} token). "
+                "Nhà phát hành WAI v17 cảnh báo negative quá dài làm giảm chất lượng "
+                "và làm mờ ảnh; chọn một bộ theo mục đích rồi thêm vài thẻ riêng.",
+            )
+        )
+    else:
+        findings.append(("ok", f"Negative {len(neg_tags)} thẻ — độ dài hợp lý."))
+
+    if steps is not None:
+        try:
+            value = float(steps)
+        except (TypeError, ValueError):
+            value = None
+        if (
+            value is not None
+            and not RECOMMENDED_STEPS[0] <= value <= RECOMMENDED_STEPS[1]
+        ):
+            findings.append(
+                (
+                    "info",
+                    f"Steps = {int(value)}: WAI v17 khuyến nghị "
+                    f"{RECOMMENDED_STEPS[0]}–{RECOMMENDED_STEPS[1]} bước (Euler a). "
+                    "Nhiều bước hơn chủ yếu tốn thời gian.",
+                )
+            )
+    if cfg is not None:
+        try:
+            value = float(cfg)
+        except (TypeError, ValueError):
+            value = None
+        if value is not None and not RECOMMENDED_CFG[0] <= value <= RECOMMENDED_CFG[1]:
+            findings.append(
+                (
+                    "info",
+                    f"CFG = {value:g}: WAI v17 khuyến nghị "
+                    f"{RECOMMENDED_CFG[0]:g}–{RECOMMENDED_CFG[1]:g}. Trên 7 ảnh dễ "
+                    "cháy màu, dưới 5 dễ lệch prompt.",
+                )
+            )
+    if size:
+        match = re.match(r"^(\d+)x(\d+)$", str(size))
+        if match:
+            width, height = int(match.group(1)), int(match.group(2))
+            if width * height < 900_000:
+                findings.append(
+                    (
+                        "info",
+                        f"Kích thước {width}×{height} nhỏ hơn ~1 MP mà SDXL được huấn "
+                        "luyện. Hãy tạo ở 1024×1024/832×1216 rồi dùng hires 1.5–2×.",
+                    )
+                )
+    if hires_scale != HIRES_OFF and not (
+        RECOMMENDED_HIRES_STRENGTH[0]
+        <= float(hires_strength)
+        <= RECOMMENDED_HIRES_STRENGTH[1]
+    ):
+        findings.append(
+            (
+                "info",
+                f"Hires strength = {float(hires_strength):g}: nhà phát hành gợi ý "
+                f"{RECOMMENDED_HIRES_STRENGTH[0]}–{RECOMMENDED_HIRES_STRENGTH[1]} cho "
+                "bước hires (thấp giữ bố cục, cao thêm chi tiết nhưng dễ đổi nét).",
+            )
+        )
+    return findings, stats
+
+
+def format_prompt_report(findings, stats):
+    """Kết quả kiểm tra thành Markdown cho giao diện Studio."""
+    icons = {"warn": "⚠️", "info": "ℹ️", "ok": "✅"}
+    order = {"warn": 0, "info": 1, "ok": 2}
+    lines = [
+        "**🩺 Kết quả kiểm tra** · "
+        f"{stats['tags']} thẻ · ≈{stats['tokens']} token (ước lượng) · "
+        f"negative {stats['negative_tags']} thẻ"
+    ]
+    if not findings:
+        lines.append("\n✅ Không phát hiện vấn đề.")
+        return "\n".join(lines)
+    for level, message in sorted(findings, key=lambda item: order.get(item[0], 3)):
+        lines.append(f"\n{icons.get(level, 'ℹ️')} {message}")
+    lines.append(
+        "\n---\n**Thông số tham chiếu WAI v17:** Euler a · steps "
+        f"{RECOMMENDED_STEPS[0]}–{RECOMMENDED_STEPS[1]} · CFG "
+        f"{RECOMMENDED_CFG[0]:g}–{RECOMMENDED_CFG[1]:g} · ~1 MP (1024×1024, "
+        "832×1216) · hires 1.5× với strength "
+        f"{RECOMMENDED_HIRES_STRENGTH[0]}–{RECOMMENDED_HIRES_STRENGTH[1]}. "
+        "Báo cáo này chỉ đọc prompt/thông số, không sửa gì cả."
+    )
+    return "\n".join(lines)
+
+
+def run_prompt_check(
+    prompt,
+    negative,
+    steps,
+    cfg,
+    size,
+    hires_scale=HIRES_OFF,
+    hires_strength=HIRES_DEFAULT_STRENGTH,
+):
+    """Sự kiện UI: kiểm tra prompt/thông số hiện tại, không đổi giá trị nào."""
+    findings, stats = analyze_prompt(
+        prompt,
+        negative,
+        steps=steps,
+        cfg=cfg,
+        size=size,
+        hires_scale=hires_scale,
+        hires_strength=hires_strength,
+    )
+    return format_prompt_report(findings, stats)
 
 
 # ---------------------------------------------------------------------------
@@ -456,17 +1357,21 @@ def prompt_library_status(library):
     if library.get("description"):
         text += f"\n\n_{library['description']}_"
     if trimmed:
-        text += (
-            f"\n\n{trimmed} prompt dài hơn {PROMPT_LIBRARY_LIMIT} ký tự nên đã bị cắt bớt."
-        )
+        text += f"\n\n{trimmed} prompt dài hơn {PROMPT_LIBRARY_LIMIT} ký tự nên đã bị cắt bớt."
     return text
 
 
 def prompt_library_reset():
-    return ((), {"choices": (), "value": None, "interactive": False}, "Đã gỡ thư viện prompt.")
+    return (
+        (),
+        {"choices": (), "value": None, "interactive": False},
+        "Đã gỡ thư viện prompt.",
+    )
 
 
-def apply_prompt_choice(choice, items, prompt, negative, steps, cfg, seed, text_size, image_size):
+def apply_prompt_choice(
+    choice, items, prompt, negative, steps, cfg, seed, text_size, image_size
+):
     """Fill the editable prompt fields (and listed parameters) from one entry."""
     items = tuple(items or ())
     selected = next((item for item in items if item["label"] == choice), None)
@@ -1134,7 +2039,9 @@ class StudioRuntime:
                 f"{final_size[0]}×{final_size[1]}"
             )
             if hires[2]:
-                status += f" (đã giảm hệ số để không vượt {HIRES_MAX_PIXELS / 1e6:.1f} MP)"
+                status += (
+                    f" (đã giảm hệ số để không vượt {HIRES_MAX_PIXELS / 1e6:.1f} MP)"
+                )
         return gallery, paths, status, paths[-1]
 
     def text_to_image(
@@ -1390,6 +2297,54 @@ def build_app(runtime):
                         "nạp từ thư viện bên dưới; không có selector phong cách.</p>"
                     )
                 with gr.Accordion(
+                    "🧭 Quy trình chuẩn · khung prompt + negative tối ưu",
+                    open=False,
+                ):
+                    with gr.Row():
+                        scaffold_kind = gr.Dropdown(
+                            choices=list(SCAFFOLD_CHOICES),
+                            value="character",
+                            label="Khung prompt theo loại ảnh",
+                        )
+                        scaffold_button = gr.Button(
+                            "Sắp xếp prompt theo thứ tự chuẩn", size="sm"
+                        )
+                    with gr.Row():
+                        negative_choice = gr.Dropdown(
+                            choices=list(negative_preset_choices()),
+                            value=None,
+                            label="Negative tối ưu theo mục đích",
+                        )
+                        negative_mode = gr.Radio(
+                            choices=list(NEGATIVE_MODES),
+                            value=NEGATIVE_REPLACE,
+                            label="Cách áp dụng",
+                        )
+                    with gr.Row():
+                        negative_apply_button = gr.Button(
+                            "Nạp negative đã chọn", size="sm", scale=1
+                        )
+                        check_button = gr.Button(
+                            "🩺 Kiểm tra prompt & thông số", size="sm", scale=1
+                        )
+                    workflow_status = gr.Markdown(
+                        "**Quy trình gợi ý:** 1) sắp xếp prompt theo thứ tự chuẩn → "
+                        "2) chọn negative đúng mục đích → 3) kiểm tra prompt/thông số → "
+                        "4) tạo ở ~1 MP, dò 3–4 seed → 5) hires 1.5–2× → 6) inpaint "
+                        "vùng tay/mắt còn lỗi. Mọi nút ở đây chỉ ghi nội dung **hiển "
+                        "thị** vào hai ô prompt; không có thẻ nào được thêm ngầm.",
+                        elem_classes="studio-hint",
+                    )
+                    prompt_report = gr.Markdown("", elem_classes="studio-hint")
+                    gr.Markdown(
+                        "Thứ tự chuẩn: chất lượng → nhãn phân loại → chủ thể → ngoại "
+                        "hình → trang phục → tư thế → bố cục → bối cảnh → ánh sáng → "
+                        "phong cách → `absurdres`. Negative chia theo mục đích và cố "
+                        "ý ngắn: nhà phát hành WAI v17 cảnh báo negative quá dài làm "
+                        "giảm chất lượng ảnh.",
+                        elem_classes="studio-hint",
+                    )
+                with gr.Accordion(
                     "📚 Thư viện prompt · nạp danh sách từ file text", open=False
                 ):
                     with gr.Row(equal_height=False):
@@ -1479,7 +2434,9 @@ def build_app(runtime):
                         eyes_weight = gr.Slider(
                             0.1,
                             1,
-                            value=runtime.lora_manifest.get("eyes", {}).get("weight", 0.45),
+                            value=runtime.lora_manifest.get("eyes", {}).get(
+                                "weight", 0.45
+                            ),
                             step=0.05,
                             label="Cường độ Eyes",
                         )
@@ -1562,7 +2519,11 @@ def build_app(runtime):
                                 label="Kích thước đầu ra",
                             )
                             image_strength = gr.Slider(
-                                0.2, 0.85, value=0.45, step=0.05, label="Denoise strength"
+                                0.2,
+                                0.85,
+                                value=0.45,
+                                step=0.05,
+                                label="Denoise strength",
                             )
                         image_button = gr.Button(
                             "Biến đổi ảnh",
@@ -1770,6 +2731,40 @@ def build_app(runtime):
             outputs=[prompt, negative],
             api_visibility="private",
             queue=False,
+        )
+        # Quy trình chuẩn: ba nút đều chỉ ghi nội dung HIỂN THỊ vào hai ô prompt /
+        # ô báo cáo, người dùng xem và sửa được trước khi bấm tạo ảnh.
+        scaffold_button.click(
+            fn=structure_prompt,
+            inputs=[prompt, scaffold_kind],
+            outputs=[prompt, workflow_status],
+            api_visibility="private",
+            queue=False,
+            show_progress="hidden",
+        )
+        negative_apply_button.click(
+            fn=apply_negative_preset,
+            inputs=[negative_choice, negative, negative_mode],
+            outputs=[negative, workflow_status],
+            api_visibility="private",
+            queue=False,
+            show_progress="hidden",
+        )
+        check_button.click(
+            fn=run_prompt_check,
+            inputs=[
+                prompt,
+                negative,
+                steps,
+                cfg,
+                text_size,
+                hires_scale,
+                hires_strength,
+            ],
+            outputs=prompt_report,
+            api_visibility="private",
+            queue=False,
+            show_progress="hidden",
         )
         # Thư viện prompt: đọc danh sách từ file hoặc đoạn văn bản đã dán, rồi
         # chọn một dòng để nạp thẳng vào ô prompt gửi model.

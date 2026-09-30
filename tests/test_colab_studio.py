@@ -430,7 +430,9 @@ class PromptLibraryTests(unittest.TestCase):
                 ]
             )
         )
-        self.assertEqual([i["title"] for i in parsed["items"]], ["Chân dung", "Phong cảnh"])
+        self.assertEqual(
+            [i["title"] for i in parsed["items"]], ["Chân dung", "Phong cảnh"]
+        )
 
         plain = studio.parse_prompt_library(
             "1girl, under cherry blossoms, masterpiece\n\n"
@@ -453,7 +455,9 @@ class PromptLibraryTests(unittest.TestCase):
         library = studio.parse_prompt_library(
             "PROMPT 01 - Prompt rất dài\n" + "masterpiece, " * 400
         )
-        self.assertEqual(len(library["items"][0]["prompt"]), studio.PROMPT_LIBRARY_LIMIT)
+        self.assertEqual(
+            len(library["items"][0]["prompt"]), studio.PROMPT_LIBRARY_LIMIT
+        )
         self.assertTrue(library["items"][0]["truncated"])
         self.assertIn("đã bị cắt bớt", studio.prompt_library_status(library))
 
@@ -507,9 +511,7 @@ class PromptLibraryTests(unittest.TestCase):
         self.assertEqual(
             studio.prompt_library_dropdown(library["items"])["interactive"], True
         )
-        self.assertEqual(
-            studio.prompt_library_dropdown(())[ "choices"], ()
-        )
+        self.assertEqual(studio.prompt_library_dropdown(())["choices"], ())
         self.assertEqual(studio.prompt_library_reset()[0], ())
         # Kích thước trong file mẫu phải là preset hợp lệ của giao diện.
         sized = next(item for item in library["items"] if item["size"])
@@ -517,6 +519,195 @@ class PromptLibraryTests(unittest.TestCase):
         # Prompt mẫu phải qua được bộ kiểm tra độ dài của runtime.
         for item in library["items"]:
             self.assertLessEqual(len(item["prompt"]), 2200)
+
+
+class ProfessionalPromptTests(unittest.TestCase):
+    """Negative tối ưu, thứ tự thẻ chuẩn và bộ kiểm tra prompt/thông số."""
+
+    def test_negative_presets_are_short_purpose_built_and_unique(self):
+        ids = [preset["id"] for preset in studio.NEGATIVE_PRESETS]
+        self.assertEqual(len(ids), len(set(ids)), "id preset phải duy nhất")
+        # Đúng bộ negative mà nhà phát hành WAI-illustrious v17 công bố.
+        self.assertEqual(
+            studio.find_negative_preset("publisher")["tags"],
+            ("bad quality", "worst quality", "worst detail", "sketch", "censor"),
+        )
+        for preset in studio.NEGATIVE_PRESETS:
+            self.assertLessEqual(len(preset["tags"]), 20, preset["id"])
+            self.assertTrue(preset["label"].strip(), preset["id"])
+            self.assertTrue(preset["when"].strip(), preset["id"])
+            lowered = [tag.casefold() for tag in preset["tags"]]
+            self.assertEqual(len(lowered), len(set(lowered)), preset["id"])
+            for tag in preset["tags"]:
+                self.assertEqual(tag, tag.strip(), preset["id"])
+                self.assertNotIn(",", tag, preset["id"])
+        choices = studio.negative_preset_choices()
+        self.assertEqual([choice[1] for choice in choices], ids)
+        self.assertTrue(all(choice[0] for choice in choices))
+        with self.assertRaisesRegex(ValueError, "Chọn một bộ negative"):
+            studio.find_negative_preset("khong-ton-tai")
+
+    def test_apply_negative_preset_replaces_or_appends_once(self):
+        replaced, note = studio.apply_negative_preset(
+            "anatomy", studio.DEFAULT_NEGATIVE
+        )
+        self.assertEqual(
+            replaced, ", ".join(studio.find_negative_preset("anatomy")["tags"])
+        )
+        self.assertIn("Sửa tay", note)
+        appended, _ = studio.apply_negative_preset(
+            "anatomy", "bad anatomy, extra digit", studio.NEGATIVE_APPEND
+        )
+        self.assertTrue(appended.startswith("bad anatomy, extra digit, "))
+        self.assertEqual(appended.count("bad anatomy"), 1)
+        self.assertEqual(appended.count("extra digit"), 1)
+        # Không preset nào đẩy negative vượt giới hạn 1700 ký tự của runtime.
+        for preset in studio.NEGATIVE_PRESETS:
+            for mode in studio.NEGATIVE_MODES:
+                value, _ = studio.apply_negative_preset(
+                    preset["id"], studio.DEFAULT_NEGATIVE, mode
+                )
+                self.assertLessEqual(len(value), 1700, preset["id"])
+        with self.assertRaisesRegex(ValueError, "Chọn cách áp dụng"):
+            studio.apply_negative_preset("core", "", "xoa-het")
+
+    def test_structure_prompt_orders_tags_and_adds_missing_anchors(self):
+        messy = (
+            "cherry blossoms, 1girl, (blue eyes:1.4), detailed eyes, standing, "
+            "soft sunlight, long hair, 1girl, cel shading, watercolor"
+        )
+        result, note = studio.structure_prompt(messy, "character")
+        tags = studio.split_tags(result)
+        self.assertEqual(tags.count("1girl"), 1, "thẻ trùng phải bị bỏ")
+        self.assertIn("(blue eyes:1.4)", tags, "giữ nguyên cú pháp nhấn mạnh")
+        self.assertEqual(tags[:3], list(studio.QUALITY_HEAD))
+        self.assertEqual(tags[-1], "absurdres")
+        self.assertLess(tags.index("1girl"), tags.index("cherry blossoms"))
+        self.assertLess(tags.index("cel shading"), tags.index("absurdres"))
+        self.assertIn("Nhân vật", note)
+        self.assertIn("không có thẻ nào được thêm ngầm", note)
+        # Sắp xếp lại lần nữa không đổi gì (idempotent).
+        again, _ = studio.structure_prompt(result, "character")
+        self.assertEqual(again, result)
+        # Khung phong cảnh thêm "no humans" khi chưa khai báo chủ thể.
+        scene, scene_note = studio.structure_prompt(
+            "city street at night, wide shot", "scene"
+        )
+        self.assertIn("no humans", studio.split_tags(scene))
+        self.assertIn("no humans", scene_note)
+
+    def test_structure_prompt_rejects_unknown_kind_and_oversized_result(self):
+        with self.assertRaisesRegex(ValueError, "Chọn một khung prompt"):
+            studio.structure_prompt("1girl, solo", "khong-co")
+        huge = ", ".join(f"tag number {index}" for index in range(400))
+        with self.assertRaisesRegex(ValueError, "2200 ký tự"):
+            studio.structure_prompt(huge, "character")
+        self.assertEqual(studio.split_tags(""), [])
+
+    def test_estimate_tokens_is_a_documented_heuristic(self):
+        self.assertEqual(studio.estimate_tokens(""), 0)
+        self.assertEqual(studio.estimate_tokens("1girl"), 2)
+        self.assertEqual(studio.estimate_tokens("masterpiece, best quality"), 4)
+        long_prompt = ", ".join(f"very descriptive tag {index}" for index in range(40))
+        self.assertGreater(studio.estimate_tokens(long_prompt), studio.SDXL_TOKEN_CHUNK)
+        self.assertLessEqual(
+            studio.estimate_tokens(studio.DEFAULT_PROMPT), studio.SDXL_TOKEN_CHUNK
+        )
+
+    def test_classify_tag_separates_composition_from_appearance(self):
+        """'upper body' là bố cục, không phải ngoại hình dù có chữ 'body'."""
+        cases = {
+            "upper body": "composition",
+            "full body": "composition",
+            "close-up": "composition",
+            "long hair": "appearance",
+            "looking at viewer": "pose",
+            "white shirt": "outfit",
+            "cherry blossoms": "background",
+            "soft rim light": "lighting",
+            "cel shading": "style",
+            "absurdres": "tail",
+            "1girl": "subject",
+            "2boys": "subject",
+            "masterpiece": "quality",
+            "w_arknights": "extra",
+        }
+        for tag, section in cases.items():
+            with self.subTest(tag=tag):
+                self.assertEqual(studio.classify_tag(tag), section)
+        # Cú pháp nhấn mạnh được bóc trước khi xếp nhóm.
+        self.assertEqual(studio.classify_tag("(blue eyes:1.4)"), "appearance")
+        self.assertEqual(
+            set(studio._SECTION_MATCH_ORDER), set(studio._SECTION_RULE_MAP)
+        )
+
+    def test_analyze_prompt_flags_risky_choices(self):
+        prompt = (
+            "masterpiece, best quality, amazing quality, highest quality, "
+            "score_9, 1girl, 1girl, detailed eyes, text, (blue eyes:1.4), long_hair"
+        )
+        findings, stats = studio.analyze_prompt(
+            prompt,
+            "masterpiece, 1girl",
+            steps=40,
+            cfg=9,
+            size="512x512",
+            hires_scale="1.5×",
+            hires_strength=0.65,
+        )
+        grouped = {"warn": [], "info": [], "ok": []}
+        for level, message in findings:
+            grouped[level].append(message)
+        joined = {level: " ".join(items) for level, items in grouped.items()}
+        self.assertEqual(stats["tags"], 11)
+        self.assertIn("thẻ chất lượng", joined["warn"])
+        self.assertIn("Thẻ trùng lặp", joined["warn"])
+        self.assertIn("negative", joined["warn"])
+        self.assertIn("Pony", joined["warn"])
+        self.assertIn("Trọng số", joined["warn"])
+        self.assertIn("detailed eyes", joined["info"])
+        self.assertIn("gạch dưới", joined["info"])
+        self.assertIn("prompt dương", joined["info"])
+        self.assertIn("Steps = 40", joined["info"])
+        self.assertIn("CFG = 9", joined["info"])
+        self.assertIn("512×512", joined["info"])
+        self.assertIn("Hires strength = 0.65", joined["info"])
+        report = studio.format_prompt_report(findings, stats)
+        self.assertIn("🩺", report)
+        self.assertIn("⚠️", report)
+        self.assertIn("15–30", report)
+
+    def test_analyze_prompt_accepts_a_clean_professional_prompt(self):
+        findings, stats = studio.analyze_prompt(
+            studio.DEFAULT_PROMPT,
+            "bad quality, worst quality, worst detail, sketch, censor",
+            steps=28,
+            cfg=6,
+            size="832x1216",
+        )
+        self.assertEqual([level for level, _ in findings].count("warn"), 0)
+        messages = " ".join(message for _, message in findings)
+        self.assertIn("vừa trong một khối 75 token", messages)
+        self.assertIn("Đã khai báo chủ thể", messages)
+        self.assertIn("Đã có thẻ phong cách", messages)
+        self.assertEqual(stats["tags"], 15)
+        self.assertNotIn("⚠️", studio.format_prompt_report(findings, stats))
+        # Prompt rỗng được báo rõ thay vì im lặng.
+        empty, _ = studio.analyze_prompt("", "")
+        self.assertEqual(
+            empty, [("warn", "Prompt trống: model sẽ tạo ảnh gần như ngẫu nhiên.")]
+        )
+        # Negative quá dài bị cảnh báo theo khuyến nghị của nhà phát hành.
+        long_negative = ", ".join(f"bad thing {index}" for index in range(60))
+        warned, _ = studio.analyze_prompt(
+            "1girl, solo, anime illustration", long_negative
+        )
+        self.assertTrue(
+            any(
+                level == "warn" and "negative" in message.casefold()
+                for level, message in warned
+            )
+        )
 
 
 class RuntimeValidationTests(unittest.TestCase):
@@ -753,7 +944,9 @@ class RuntimeValidationTests(unittest.TestCase):
         self.assertEqual(refine["image"].size, (1024, 1024))
         self.assertEqual((refine["width"], refine["height"]), (1024, 1024))
         self.assertEqual(refine["strength"], 0.3)
-        self.assertEqual((refine["prompt"], refine["negative_prompt"]), ("anime cat", "bad paws"))
+        self.assertEqual(
+            (refine["prompt"], refine["negative_prompt"]), ("anime cat", "bad paws")
+        )
         self.assertEqual(refine["generator"].seed, 7)  # cùng seed, tái lập được
         self.assertEqual(tiling, [True])
         self.assertIn("512×512 → 1024×1024", status)
@@ -1206,8 +1399,7 @@ class RuntimeValidationTests(unittest.TestCase):
         eyes_button = next(
             c
             for c in config["components"]
-            if c["type"] == "button"
-            and "perfect eyes" in c["props"].get("value", "")
+            if c["type"] == "button" and "perfect eyes" in c["props"].get("value", "")
         )
         eyes_event = next(
             d
@@ -1226,7 +1418,8 @@ class RuntimeValidationTests(unittest.TestCase):
         repair_event = next(
             d
             for d in config["dependencies"]
-            if set(d["outputs"]) == field_ids and len(d["targets"]) == 1
+            if set(d["outputs"]) == field_ids
+            and len(d["targets"]) == 1
             and len(d["inputs"]) == 3
         )
         self.assertEqual(
@@ -1234,8 +1427,9 @@ class RuntimeValidationTests(unittest.TestCase):
             [prompt_field["id"], negative_field["id"]],
         )
         # 4 nút tạo ảnh + 3 nút dùng ảnh mới nhất + trigger mắt + gợi ý sửa vùng
-        # + 5 sự kiện của thư viện prompt.
-        self.assertEqual(len(config["dependencies"]), 14)
+        # + 5 sự kiện của thư viện prompt + 3 nút quy trình (sắp xếp prompt, nạp
+        # negative, kiểm tra prompt).
+        self.assertEqual(len(config["dependencies"]), 17)
         hires_fields = [
             c
             for c in config["components"]
@@ -1348,7 +1542,9 @@ class RuntimeValidationTests(unittest.TestCase):
             },
         )
         select_event = next(
-            d for d in config["dependencies"] if (choice["id"], "select") in d["targets"]
+            d
+            for d in config["dependencies"]
+            if (choice["id"], "select") in d["targets"]
         )
         parameters = [
             prompt_box["id"],
@@ -1456,6 +1652,132 @@ class RuntimeValidationTests(unittest.TestCase):
 
     @unittest.skipIf(
         Image is None or not importlib.util.find_spec("gradio"),
+        "Gradio and Pillow needed for workflow tools UI test",
+    )
+    def test_workflow_tools_only_fill_visible_fields(self):
+        """Ba nút quy trình chỉ ghi vào ô prompt/negative/báo cáo đang hiển thị."""
+        import asyncio
+        from gradio.state_holder import SessionState
+
+        demo = studio.build_app(self.runtime)
+        config = demo.get_config_file()
+        components = config["components"]
+
+        def component(kind, needle, field="label"):
+            return next(
+                c
+                for c in components
+                if c["type"] == kind and needle in str(c["props"].get(field, ""))
+            )
+
+        prompt_box = component("textbox", "Prompt gửi model")
+        negative_box = component("textbox", "Negative gửi model")
+        gallery = component("gallery", "Kết quả")
+        scaffold_kind = component("dropdown", "Khung prompt theo loại ảnh")
+        self.assertEqual(
+            [choice[1] for choice in scaffold_kind["props"]["choices"]],
+            list(studio.PROMPT_SCAFFOLDS),
+        )
+        negative_choice = component("dropdown", "Negative tối ưu theo mục đích")
+        self.assertEqual(
+            [choice[1] for choice in negative_choice["props"]["choices"]],
+            [preset["id"] for preset in studio.NEGATIVE_PRESETS],
+        )
+        self.assertIsNone(negative_choice["props"].get("value"))
+        negative_mode = component("radio", "Cách áp dụng")
+        self.assertEqual(negative_mode["props"]["value"], studio.NEGATIVE_REPLACE)
+        scaffold_button = component(
+            "button", "Sắp xếp prompt theo thứ tự chuẩn", "value"
+        )
+        negative_button = component("button", "Nạp negative đã chọn", "value")
+        check_button = component("button", "Kiểm tra prompt", "value")
+
+        def event(button):
+            return next(
+                d
+                for d in config["dependencies"]
+                if (button["id"], "click") in d["targets"]
+            )
+
+        structure_event = event(scaffold_button)
+        self.assertEqual(
+            structure_event["inputs"], [prompt_box["id"], scaffold_kind["id"]]
+        )
+        self.assertEqual(structure_event["outputs"][0], prompt_box["id"])
+        negative_event = event(negative_button)
+        self.assertEqual(
+            negative_event["inputs"],
+            [negative_choice["id"], negative_box["id"], negative_mode["id"]],
+        )
+        self.assertEqual(negative_event["outputs"][0], negative_box["id"])
+        check_event = event(check_button)
+        self.assertEqual(len(check_event["outputs"]), 1)
+        self.assertNotEqual(check_event["outputs"][0], prompt_box["id"])
+        report_id = check_event["outputs"][0]
+        self.assertEqual(
+            next(c for c in components if c["id"] == report_id)["type"], "markdown"
+        )
+        for dependency in (structure_event, negative_event, check_event):
+            # Không nút nào tạo ảnh hay đổi gallery.
+            self.assertFalse(dependency["queue"])
+            self.assertEqual(dependency["api_visibility"], "private")
+            self.assertNotIn(gallery["id"], dependency["outputs"])
+
+        session = SessionState(demo)
+
+        def fn_index(trigger):
+            return next(
+                d["id"] for d in config["dependencies"] if trigger in d["targets"]
+            )
+
+        async def process(trigger, inputs):
+            return (
+                await demo.process_api(
+                    fn_index(trigger), inputs, state=session, explicit_call=True
+                )
+            )["data"]
+
+        async def flow():
+            structured = await process(
+                (scaffold_button["id"], "click"),
+                ["1girl, standing, cherry blossoms, soft sunlight", "character"],
+            )
+            self.assertIn("masterpiece", structured[0])
+            self.assertTrue(structured[0].endswith("absurdres"))
+            self.assertIn("Nhân vật", structured[1])
+            loaded = await process(
+                (negative_button["id"], "click"),
+                ["core", studio.DEFAULT_NEGATIVE, studio.NEGATIVE_REPLACE],
+            )
+            self.assertEqual(
+                loaded[0], ", ".join(studio.find_negative_preset("core")["tags"])
+            )
+            self.assertIn("Illustrious chuẩn", loaded[1])
+            appended = await process(
+                (negative_button["id"], "click"),
+                ["core", "bad hands", studio.NEGATIVE_APPEND],
+            )
+            self.assertTrue(appended[0].startswith("bad hands, "))
+            self.assertEqual(appended[0].count("bad hands"), 1)
+            report = await process(
+                (check_button["id"], "click"),
+                [
+                    studio.DEFAULT_PROMPT,
+                    studio.DEFAULT_NEGATIVE,
+                    25,
+                    6.0,
+                    "1024x1024",
+                    studio.HIRES_OFF,
+                    studio.HIRES_DEFAULT_STRENGTH,
+                ],
+            )
+            self.assertIn("🩺", report[0])
+            self.assertIn("15–30", report[0])
+
+        asyncio.run(flow())
+
+    @unittest.skipIf(
+        Image is None or not importlib.util.find_spec("gradio"),
         "Gradio and Pillow needed for image event smoke test",
     )
     def test_gradio_events_preprocess_and_return_downloadable_pngs(self):
@@ -1529,9 +1851,7 @@ class RuntimeValidationTests(unittest.TestCase):
                     0,
                     [
                         "512x512",
-                        *shared(
-                            "  my own portrait  ", "  no hidden tags  ", eyes=True
-                        ),
+                        *shared("  my own portrait  ", "  no hidden tags  ", eyes=True),
                         studio.HIRES_OFF,
                         0.4,
                     ],

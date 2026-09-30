@@ -55,6 +55,8 @@ import {
   DEFAULTS,
   INSPIRATION,
   MODEL_INFO,
+  NEGATIVE_PRESETS,
+  PROMPT_ORDER,
   SIZE_PRESETS,
   STYLES,
 } from "./lib/presets";
@@ -375,6 +377,17 @@ export default function App() {
     }
     update("prompt", combined);
     notice(`Đã thêm phong cách ${style.name}.`, "success");
+  }
+
+  // Nạp một bộ negative tối ưu vào ô negative đang hiển thị (sửa được trước khi
+  // bấm tạo). Negative cố ý ngắn: danh sách quá dài làm giảm chất lượng ảnh.
+  function applyNegativePreset(preset) {
+    if (settings.negative_prompt.trim() === preset.tags) {
+      notice("Bộ negative này đang được dùng.");
+      return;
+    }
+    update("negative_prompt", preset.tags);
+    notice(`Đã nạp negative ${preset.name}.`, "success");
   }
 
   async function loadSource(input) {
@@ -858,6 +871,11 @@ export default function App() {
                   </button>
                 ))}
               </div>
+              <p className="field-note">
+                Viết thẻ theo thứ tự CLIP ưu tiên: {PROMPT_ORDER.join(" → ")}.
+                Thẻ đứng trước ảnh hưởng mạnh hơn; giữ khoảng 20–40 thẻ quan
+                trọng nhất.
+              </p>
             </section>
 
             <section className="control-section model-section">
@@ -1166,6 +1184,25 @@ export default function App() {
                       update("negative_prompt", event.target.value)
                     }
                   />
+                  <div className="styles-label">
+                    NEGATIVE TỐI ƯU THEO MỤC ĐÍCH
+                  </div>
+                  <div className="style-chips">
+                    {NEGATIVE_PRESETS.map((preset) => (
+                      <button
+                        type="button"
+                        key={preset.id}
+                        title={preset.hint}
+                        onClick={() => applyNegativePreset(preset)}
+                      >
+                        {preset.name} <Plus size={12} />
+                      </button>
+                    ))}
+                  </div>
+                  <p className="field-note">
+                    Mỗi bộ cố ý ngắn: negative quá dài làm giảm chất lượng ảnh.
+                    Ghi đè ô ở trên và bạn vẫn sửa được trước khi tạo.
+                  </p>
                   {settings.provider === "wai" && (
                     <>
                       <FieldHead title="Sampler" />

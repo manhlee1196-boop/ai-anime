@@ -69,6 +69,79 @@ export const STYLES = [
   },
 ];
 
+// Negative tối ưu theo mục đích. Mỗi bộ cố ý ngắn: với họ SDXL/Illustrious,
+// negative quá dài làm giảm chất lượng và khiến ảnh mờ hơn (khuyến nghị của nhà
+// phát hành WAI-illustrious v17). Chọn một bộ đúng việc rồi thêm vài thẻ riêng.
+// Xem docs/QUY_TRINH_TAO_ANH.md cho bảng tra "ảnh lỗi gì → thêm gì vào negative".
+export const NEGATIVE_PRESETS = [
+  {
+    id: "publisher",
+    name: "Chuẩn WAI v17",
+    tags: "bad quality, worst quality, worst detail, sketch, censor",
+    hint: "Bộ ngắn nhất do nhà phát hành WAI-illustrious v17 công bố",
+  },
+  {
+    id: "core",
+    name: "Illustrious chuẩn",
+    tags:
+      "worst quality, low quality, bad quality, lowres, jpeg artifacts, bad anatomy, " +
+      "bad hands, extra digit, fewer digits, watermark, signature, text, " +
+      "artistic error, very displeasing, oldest",
+    hint: "Dùng hằng ngày: lỗi chất lượng + lỗi vẽ + giải phẫu nhẹ",
+  },
+  {
+    id: "anatomy",
+    name: "Tay / chân",
+    tags:
+      "bad anatomy, bad hands, deformed hands, extra digit, fewer digits, " +
+      "fused fingers, conjoined fingers, extra limbs, missing limbs, extra arms, " +
+      "extra legs, bad proportions, bad perspective, deformed feet, extra toes, " +
+      "fused toes, long neck",
+    hint: "Ảnh có bàn tay/chân phức tạp; negative chỉ giảm xác suất lỗi",
+  },
+  {
+    id: "anime2d",
+    name: "Giữ chất 2D",
+    tags:
+      "realistic, photorealistic, 3d, cgi, render, plastic skin, " +
+      "realistic skin texture, dull colors, monochrome, greyscale, sketch, " +
+      "traditional media, jpeg artifacts, bad anatomy",
+    hint: "Chống ảnh ra chất nhựa/3D khi muốn nét vẽ anime 2D",
+  },
+  {
+    id: "portrait",
+    name: "Chân dung",
+    tags:
+      "bad face, poorly drawn face, deformed eyes, asymmetrical eyes, cross-eyed, " +
+      "extra eyes, dull eyes, bad teeth, crooked teeth, skin blemishes, acne, " +
+      "bad anatomy, bad hands, extra digit, jpeg artifacts, watermark, text",
+    hint: "Ảnh cận mặt: mắt, răng, da",
+  },
+  {
+    id: "scene",
+    name: "Phong cảnh",
+    tags:
+      "1girl, 1boy, solo, people, crowd, bad perspective, bad proportions, lowres, " +
+      "blurry, worst quality, low quality, jpeg artifacts, text, watermark, " +
+      "signature, logo",
+    hint: "Background không người; chặn nhân vật lọt vào khung",
+  },
+];
+
+// Thứ tự thẻ mà CLIP ưu tiên: thẻ đứng trước có ảnh hưởng lớn hơn.
+export const PROMPT_ORDER = [
+  "chất lượng",
+  "chủ thể",
+  "ngoại hình",
+  "trang phục",
+  "tư thế",
+  "bố cục",
+  "bối cảnh",
+  "ánh sáng",
+  "phong cách",
+  "absurdres",
+];
+
 export const INSPIRATION = [
   {
     title: "Đêm hoa anh đào",
