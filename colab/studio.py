@@ -25,6 +25,14 @@ SIZE_PRESETS = (
     "1024x1344",
     "1344x1024",
 )
+# Hires fix: SDXL chỉ học tốt quanh ~1 MP, nên ảnh lớn hơn được tạo theo 2 bước —
+# tạo ở kích thước gốc rồi phóng to (Lanczos) và tinh chỉnh bằng ảnh → ảnh ở
+# denoise thấp để thêm chi tiết thật thay vì chỉ làm mờ/nhòe.
+HIRES_OFF = "Tắt"
+HIRES_SCALES = {HIRES_OFF: 1.0, "1.5×": 1.5, "2×": 2.0}
+HIRES_MAX_PIXELS = 4_200_000  # ≈ 2048×2048; giới hạn để không tràn VRAM/RAM Colab
+HIRES_STRENGTH_RANGE = (0.2, 0.7)
+HIRES_DEFAULT_STRENGTH = 0.4
 DEFAULT_PROMPT = (
     "1girl, solo, cherry blossoms, spring, soft sunlight, "
     "detailed eyes, detailed clothing, masterpiece, best quality"
@@ -526,6 +534,30 @@ def _preset_size(size):
     return tuple(map(int, size.split("x")))
 
 
+def _hires_size(width, height, scale_label):
+    """Return (width, height, clamped) for the hires pass, or None when it is off.
+
+    Kích thước là bội số của 8 (yêu cầu của SDXL/VAE). Nếu bản phóng to vượt
+    HIRES_MAX_PIXELS thì hệ số được giảm cho vừa thay vì báo lỗi.
+    """
+    if scale_label not in HIRES_SCALES:
+        raise ValueError("Chọn độ phân giải cao có sẵn trong danh sách.")
+    scale = HIRES_SCALES[scale_label]
+    if scale <= 1:
+        return None
+    clamped = False
+    if width * height * scale * scale > HIRES_MAX_PIXELS:
+        scale = math.sqrt(HIRES_MAX_PIXELS / (width * height))
+        clamped = True
+    if scale < 1.05:
+        return None
+    return (
+        max(width, int(width * scale) // 8 * 8),
+        max(height, int(height * scale) // 8 * 8),
+        clamped,
+    )
+
+
 def _normalize_source(image, mask=None):
     """Resize source and painted mask together, keeping their pixel alignment."""
     from PIL import Image
@@ -833,6 +865,42 @@ class StudioRuntime:
                     "Vẫn thiếu VRAM sau khi thử CPU offload. Giảm kích thước ảnh."
                 ) from exc
 
+    def _hires_pass(
+        self,
+        image,
+        size,
+        positive,
+        negative,
+        steps,
+        cfg,
+        seed,
+        strength,
+        choices,
+    ):
+        """Upscale a finished base image, then let img2img add real detail."""
+        from PIL import Image
+
+        # VAE tiling giữ đỉnh VRAM thấp khi giải mã ảnh > 1 MP (pipe SDXL thật có
+        # hàm này; dùng chung VAE với pipeline ảnh → ảnh nên bật một lần là đủ).
+        enable_tiling = getattr(self.pipe, "enable_vae_tiling", None)
+        if callable(enable_tiling):
+            enable_tiling()
+        upscaled = image.convert("RGB").resize(size, Image.Resampling.LANCZOS)
+        return self._infer_with_retry(
+            "image",
+            upscaled,
+            None,
+            positive,
+            negative,
+            size[0],
+            size[1],
+            steps,
+            cfg,
+            seed,
+            strength,
+            choices,
+        )
+
     def _save_png(self, image, mode, seed, metadata, embed):
         from PIL.PngImagePlugin import PngInfo
 
@@ -882,6 +950,8 @@ class StudioRuntime:
         eyes_weight,
         embed,
         adult_confirmed=False,
+        hires_scale=HIRES_OFF,
+        hires_strength=HIRES_DEFAULT_STRENGTH,
     ):
         from PIL import Image, ImageChops, ImageFilter
 
@@ -926,8 +996,48 @@ class StudioRuntime:
                     "Mask phải tô một vùng nhỏ, không để rỗng hoặc trắng toàn bộ."
                 )
             width, height = source.size
+        elif mode == "upscale":
+            from PIL import ImageOps
+
+            if not isinstance(source, Image.Image):
+                raise ValueError("Tải ảnh lên để phóng to.")
+            if source.width * source.height > 20_000_000:
+                raise ValueError("Ảnh nguồn tối đa 20 MP.")
+            source = ImageOps.exif_transpose(source).convert("RGB")
+            if (
+                min(source.size) < 256
+                or max(source.width / source.height, source.height / source.width)
+                > 1.75
+            ):
+                raise ValueError(
+                    "Ảnh cần có cạnh ngắn ≥256 px và tỷ lệ không quá 1,75:1 để phóng to."
+                )
+            width = round(source.width / 8) * 8
+            height = round(source.height / 8) * 8
+            if (width, height) != source.size:  # SDXL/VAE cần bội số của 8
+                source = source.resize((width, height), Image.Resampling.LANCZOS)
+            strength = None
+            if hires_scale == HIRES_OFF:
+                raise ValueError("Chọn hệ số phóng 1.5× hoặc 2×.")
         else:
             raise ValueError("Chế độ tạo ảnh không được hỗ trợ.")
+
+        hires = None
+        if mode in ("text", "image", "upscale"):
+            hires = _hires_size(width, height, hires_scale)
+            if hires is None and mode == "upscale":
+                raise ValueError(
+                    f"Ảnh đã ở sát giới hạn ≈{HIRES_MAX_PIXELS / 1e6:.1f} MP, "
+                    "không thể phóng to thêm."
+                )
+            if hires:
+                hires_strength = _number(
+                    hires_strength, "Hires strength", *HIRES_STRENGTH_RANGE
+                )
+        elif hires_scale != HIRES_OFF:
+            raise ValueError("Độ phân giải cao không áp dụng cho chế độ sửa vùng.")
+        base_size = (width, height)
+        final_size = hires[:2] if hires else base_size
 
         paths = []
         gallery = []
@@ -937,20 +1047,35 @@ class StudioRuntime:
                 image_seed = (
                     secrets.randbelow(2**32) if seed == -1 else (seed + index) % 2**32
                 )
-                image = self._infer_with_retry(
-                    mode,
-                    source,
-                    mask,
-                    positive,
-                    negative,
-                    width,
-                    height,
-                    steps,
-                    cfg,
-                    image_seed,
-                    strength,
-                    choices,
-                )
+                if mode == "upscale":
+                    image = source  # không tạo lại: chỉ phóng to rồi tinh chỉnh
+                else:
+                    image = self._infer_with_retry(
+                        mode,
+                        source,
+                        mask,
+                        positive,
+                        negative,
+                        width,
+                        height,
+                        steps,
+                        cfg,
+                        image_seed,
+                        strength,
+                        choices,
+                    )
+                if hires:
+                    image = self._hires_pass(
+                        image,
+                        final_size,
+                        positive,
+                        negative,
+                        steps,
+                        cfg,
+                        image_seed,
+                        hires_strength,
+                        choices,
+                    )
                 if mode == "inpaint":
                     blend = (
                         ImageChops.multiply(
@@ -966,11 +1091,21 @@ class StudioRuntime:
                     "prompt": positive,
                     "negative_prompt": negative,
                     "seed": image_seed,
-                    "width": width,
-                    "height": height,
+                    "width": final_size[0],
+                    "height": final_size[1],
                     "steps": steps,
                     "cfg": cfg,
-                    "strength": strength if mode != "text" else None,
+                    "strength": strength if mode in ("image", "inpaint") else None,
+                    "hires": (
+                        {
+                            "scale": hires_scale,
+                            "base_width": base_size[0],
+                            "base_height": base_size[1],
+                            "strength": hires_strength,
+                        }
+                        if hires
+                        else None
+                    ),
                     "loras": [
                         {
                             "name": name,
@@ -984,12 +1119,22 @@ class StudioRuntime:
                 }
                 path = self._save_png(image, mode, image_seed, metadata, bool(embed))
                 paths.append(str(path))
-                gallery.append((str(path), f"Seed {image_seed} · {width}×{height}"))
+                gallery.append(
+                    (str(path), f"Seed {image_seed} · {final_size[0]}×{final_size[1]}")
+                )
                 selected.append(str(image_seed))
         status = (
             f"✅ Đã tạo {len(paths)} ảnh · seed: {', '.join(selected)}"
             f" · chế độ: {self.execution_mode} · đã lưu: {Path(paths[0]).parent}"
         )
+        if hires:
+            status += (
+                f" · {'phóng to' if mode == 'upscale' else 'hires fix'} "
+                f"{base_size[0]}×{base_size[1]} → "
+                f"{final_size[0]}×{final_size[1]}"
+            )
+            if hires[2]:
+                status += f" (đã giảm hệ số để không vượt {HIRES_MAX_PIXELS / 1e6:.1f} MP)"
         return gallery, paths, status, paths[-1]
 
     def text_to_image(
@@ -1007,6 +1152,8 @@ class StudioRuntime:
         eyes_weight,
         embed,
         adult_confirmed=False,
+        hires_scale=HIRES_OFF,
+        hires_strength=HIRES_DEFAULT_STRENGTH,
     ):
         return self._generate(
             "text",
@@ -1028,6 +1175,8 @@ class StudioRuntime:
             eyes_weight,
             embed,
             adult_confirmed,
+            hires_scale,
+            hires_strength,
         )
 
     def image_to_image(
@@ -1047,6 +1196,8 @@ class StudioRuntime:
         eyes_weight,
         embed,
         adult_confirmed=False,
+        hires_scale=HIRES_OFF,
+        hires_strength=HIRES_DEFAULT_STRENGTH,
     ):
         return self._generate(
             "image",
@@ -1068,6 +1219,51 @@ class StudioRuntime:
             eyes_weight,
             embed,
             adult_confirmed,
+            hires_scale,
+            hires_strength,
+        )
+
+    def upscale(
+        self,
+        source,
+        hires_scale,
+        hires_strength,
+        prompt,
+        negative,
+        steps,
+        cfg,
+        seed,
+        count,
+        anatomy_enabled,
+        anatomy_weight,
+        eyes_enabled,
+        eyes_weight,
+        embed,
+        adult_confirmed=False,
+    ):
+        """Phóng to một ảnh có sẵn (Lanczos + ảnh → ảnh), không tạo lại từ đầu."""
+        return self._generate(
+            "upscale",
+            source,
+            None,
+            None,
+            0,
+            None,
+            None,
+            prompt,
+            negative,
+            steps,
+            cfg,
+            seed,
+            count,
+            anatomy_enabled,
+            anatomy_weight,
+            eyes_enabled,
+            eyes_weight,
+            embed,
+            adult_confirmed,
+            hires_scale,
+            hires_strength,
         )
 
     def inpaint(
@@ -1135,6 +1331,8 @@ def build_app(runtime):
         border-top: 1px solid #ffffff2b; padding-top: 5px; margin-top: 2px;}
     .studio-hint, .studio-hint p {font-size: 0.74rem !important; line-height: 1.35;
         color: #7a7386; margin: 0 !important;}
+    .studio-hires {border: 1px solid #b9a3e0; border-radius: 10px; background: #f7f3fd;
+        padding: 6px 10px;}
     .studio-adult {border: 1px solid #e0b3d5; border-radius: 8px; background: #fdf4fb;}
     .studio-primary button {min-height: 42px; font-weight: 600;}
     """
@@ -1294,6 +1492,31 @@ def build_app(runtime):
                         "cường độ ở đây không nạp lại checkpoint.",
                         elem_classes="studio-hint",
                     )
+                with gr.Group(elem_classes="studio-hires"):
+                    gr.Markdown(
+                        "### 🔍 Ảnh độ phân giải cao", elem_classes="studio-hint"
+                    )
+                    with gr.Row():
+                        hires_scale = gr.Dropdown(
+                            choices=list(HIRES_SCALES),
+                            value=HIRES_OFF,
+                            label="Độ phân giải cao (hires fix)",
+                        )
+                        hires_strength = gr.Slider(
+                            *HIRES_STRENGTH_RANGE,
+                            value=HIRES_DEFAULT_STRENGTH,
+                            step=0.05,
+                            label="Hires strength (chi tiết thêm vào)",
+                        )
+                    gr.Markdown(
+                        "Chọn **1.5× hoặc 2×** để ảnh ra lớn hơn kích thước đã chọn "
+                        "(tối đa ≈4,2 MP, ví dụ 1024×1024 → 2048×2048): ảnh được tạo, "
+                        "phóng to rồi tinh chỉnh để thêm chi tiết. Áp dụng cho *Văn "
+                        "bản → ảnh* và *Ảnh → ảnh* (tab *Phóng to ảnh* có cài đặt "
+                        "riêng); tốn thêm thời gian và VRAM. Strength thấp giữ bố "
+                        "cục, cao thêm chi tiết nhưng dễ đổi nét.",
+                        elem_classes="studio-hint",
+                    )
                 shared = [
                     prompt,
                     negative,
@@ -1308,6 +1531,7 @@ def build_app(runtime):
                     embed,
                     adult_confirm,
                 ]
+                hires = [hires_scale, hires_strength]
                 with gr.Tabs():
                     with gr.Tab("✦ Văn bản → ảnh"):
                         with gr.Row(equal_height=False):
@@ -1348,6 +1572,38 @@ def build_app(runtime):
                         gr.Markdown(
                             "Ảnh nguồn khác tỷ lệ sẽ được cắt giữa cho khớp kích thước "
                             "đầu ra, không làm méo.",
+                            elem_classes="studio-hint",
+                        )
+                    with gr.Tab("⤢ Phóng to ảnh"):
+                        upscale_source = gr.Image(
+                            label="Ảnh cần phóng to (PNG/JPG/WebP)",
+                            type="pil",
+                            sources=["upload"],
+                            image_mode="RGB",
+                            height=230,
+                        )
+                        with gr.Row():
+                            upscale_scale = gr.Dropdown(
+                                choices=[k for k in HIRES_SCALES if k != HIRES_OFF],
+                                value="2×",
+                                label="Hệ số phóng",
+                            )
+                            upscale_strength = gr.Slider(
+                                *HIRES_STRENGTH_RANGE,
+                                value=HIRES_DEFAULT_STRENGTH,
+                                step=0.05,
+                                label="Hires strength",
+                            )
+                        upscale_button = gr.Button(
+                            "Phóng to ảnh",
+                            variant="primary",
+                            elem_classes="studio-primary",
+                        )
+                        gr.Markdown(
+                            "Không tạo lại ảnh: phóng to bằng Lanczos rồi tinh chỉnh "
+                            "bằng ảnh → ảnh theo prompt hiện tại (nên mô tả đúng nội "
+                            "dung ảnh). Kết quả tối đa ≈4,2 MP; ảnh đã lớn hơn sẽ bị "
+                            "giảm hệ số hoặc từ chối.",
                             elem_classes="studio-hint",
                         )
                     with gr.Tab("✎ Sửa vùng ảnh"):
@@ -1406,7 +1662,8 @@ def build_app(runtime):
                             )
                         gr.Markdown(
                             "**Trắng / nét cọ = sửa; đen = giữ nguyên.** Ảnh tải lên "
-                            "được thu về cạnh dài tối đa 1024 px cùng mask. Chọn "
+                            "được thu về cạnh dài tối đa 1024 px cùng mask (ảnh hires lớn hơn sẽ bị thu nhỏ "
+                            "khi sửa vùng). Chọn "
                             "tay/chân/mắt không tự thêm từ vào prompt.",
                             elem_classes="studio-hint",
                         )
@@ -1427,6 +1684,9 @@ def build_app(runtime):
                     to_image = gr.Button(
                         "Dùng ảnh mới nhất để biến đổi", size="sm", scale=1
                     )
+                    to_upscale = gr.Button(
+                        "Dùng ảnh mới nhất để phóng to", size="sm", scale=1
+                    )
                     to_inpaint = gr.Button(
                         "Dùng ảnh mới nhất để sửa vùng", size="sm", scale=1
                     )
@@ -1442,11 +1702,16 @@ def build_app(runtime):
 
         outputs = [gallery, downloads, status, latest]
         events = (
-            (text_button, runtime.text_to_image, [text_size, *shared]),
+            (text_button, runtime.text_to_image, [text_size, *shared, *hires]),
             (
                 image_button,
                 runtime.image_to_image,
-                [image_source, image_size, image_strength, *shared],
+                [image_source, image_size, image_strength, *shared, *hires],
+            ),
+            (
+                upscale_button,
+                runtime.upscale,
+                [upscale_source, upscale_scale, upscale_strength, *shared],
             ),
             (
                 inpaint_button,
@@ -1477,6 +1742,12 @@ def build_app(runtime):
             fn=load_last,
             inputs=latest,
             outputs=image_source,
+            api_visibility="private",
+        )
+        to_upscale.click(
+            fn=load_last,
+            inputs=latest,
+            outputs=upscale_source,
             api_visibility="private",
         )
         to_inpaint.click(
