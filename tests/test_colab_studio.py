@@ -715,6 +715,154 @@ class RuntimeValidationTests(unittest.TestCase):
                 FakePipe.calls[-1][1]["negative_prompt"], parameters["negative_prompt"]
             )
 
+    def test_hires_size_is_multiple_of_8_and_clamped_to_pixel_budget(self):
+        self.assertIsNone(studio._hires_size(1024, 1024, studio.HIRES_OFF))
+        self.assertEqual(studio._hires_size(512, 512, "2×"), (1024, 1024, False))
+        self.assertEqual(studio._hires_size(832, 1216, "1.5×"), (1248, 1824, False))
+        self.assertEqual(studio._hires_size(1024, 1024, "2×")[:2], (2048, 2048))
+        width, height, clamped = studio._hires_size(1344, 1024, "2×")  # 5,5 MP
+        self.assertTrue(clamped)
+        self.assertEqual((width % 8, height % 8), (0, 0))
+        self.assertLessEqual(width * height, studio.HIRES_MAX_PIXELS)
+        self.assertGreater(width, 1344)
+        with self.assertRaisesRegex(ValueError, "độ phân giải cao"):
+            studio._hires_size(512, 512, "4×")
+
+    @unittest.skipIf(Image is None, "Pillow needed for raster smoke tests")
+    def test_hires_fix_upscales_then_refines_with_img2img(self):
+        mock_diffusers = types.ModuleType("diffusers")
+        mock_diffusers.AutoPipelineForImage2Image = FakeDerived
+        mock_diffusers.AutoPipelineForInpainting = FakeDerived
+        tiling = []
+        self.pipe.enable_vae_tiling = lambda: tiling.append(True)
+        args = ("anime cat", "bad paws", 20, 5.5, 7, 1, True, 0.55, False, 0.45, True)
+        with patch.dict(sys.modules, {"diffusers": mock_diffusers}):
+            # Tắt: một lượt, không tiling, kích thước gốc.
+            _, paths, status, _ = self.runtime.text_to_image("512x512", *args)
+            self.assertEqual(len(FakePipe.calls), 1)
+            self.assertFalse(tiling)
+            self.assertNotIn("hires", status)
+            FakePipe.calls = []
+            gallery, paths, status, _ = self.runtime.text_to_image(
+                "512x512", *args, hires_scale="2×", hires_strength=0.3
+            )
+        self.assertEqual(len(FakePipe.calls), 2)
+        base, refine = (call[1] for call in FakePipe.calls)
+        self.assertNotIn("image", base)
+        self.assertEqual((base["width"], base["height"]), (512, 512))
+        self.assertEqual(refine["image"].size, (1024, 1024))
+        self.assertEqual((refine["width"], refine["height"]), (1024, 1024))
+        self.assertEqual(refine["strength"], 0.3)
+        self.assertEqual((refine["prompt"], refine["negative_prompt"]), ("anime cat", "bad paws"))
+        self.assertEqual(refine["generator"].seed, 7)  # cùng seed, tái lập được
+        self.assertEqual(tiling, [True])
+        self.assertIn("512×512 → 1024×1024", status)
+        self.assertIn("1024×1024", gallery[0][1])
+        with Image.open(paths[0]) as result:
+            self.assertEqual(result.size, (1024, 1024))
+            metadata = json.loads(result.info["parameters"])
+        self.assertEqual((metadata["width"], metadata["height"]), (1024, 1024))
+        self.assertEqual(
+            metadata["hires"],
+            {"scale": "2×", "base_width": 512, "base_height": 512, "strength": 0.3},
+        )
+        with self.assertRaisesRegex(ValueError, "Hires strength"):
+            self.runtime.text_to_image(
+                "512x512", *args, hires_scale="2×", hires_strength=0.95
+            )
+        with self.assertRaisesRegex(ValueError, "độ phân giải cao"):
+            self.runtime.text_to_image("512x512", *args, hires_scale="8×")
+
+    @unittest.skipIf(Image is None, "Pillow needed for raster smoke tests")
+    def test_upscale_existing_image_skips_base_generation(self):
+        mock_diffusers = types.ModuleType("diffusers")
+        mock_diffusers.AutoPipelineForImage2Image = FakeDerived
+        mock_diffusers.AutoPipelineForInpainting = FakeDerived
+        args = ("portrait", "bad", 20, 6, 5, 1, False, 0.55, False, 0.45, True)
+        with patch.dict(sys.modules, {"diffusers": mock_diffusers}):
+            # 605×803 → làm tròn bội số 8 (608×800) rồi 2× = 1216×1600.
+            gallery, paths, status, _ = self.runtime.upscale(
+                Image.new("RGB", (605, 803), "teal"), "2×", 0.35, *args
+            )
+            self.assertEqual(len(FakePipe.calls), 1)  # chỉ lượt tinh chỉnh
+            call = FakePipe.calls[0][1]
+            self.assertEqual(call["image"].size, (1216, 1600))
+            self.assertEqual(call["strength"], 0.35)
+            self.assertIn("phóng to 608×800 → 1216×1600", status)
+            with Image.open(paths[0]) as result:
+                self.assertEqual(result.size, (1216, 1600))
+                metadata = json.loads(result.info["parameters"])
+            self.assertEqual(metadata["operation"], "upscale")
+            self.assertIsNone(metadata["strength"])
+            self.assertEqual(metadata["hires"]["base_width"], 608)
+            self.assertIn("upscale", Path(paths[0]).name)
+            for source, scale, message in (
+                (None, "2×", "Tải ảnh"),
+                (Image.new("RGB", (512, 512)), studio.HIRES_OFF, "Chọn hệ số"),
+                (Image.new("RGB", (128, 512)), "2×", "cạnh ngắn"),
+                (Image.new("RGB", (2048, 2048)), "2×", "giới hạn"),
+            ):
+                with self.assertRaisesRegex(ValueError, message):
+                    self.runtime.upscale(source, scale, 0.4, *args)
+
+    @unittest.skipIf(Image is None, "Pillow needed for raster smoke tests")
+    def test_hires_fix_works_for_img2img_and_is_rejected_for_inpaint(self):
+        mock_diffusers = types.ModuleType("diffusers")
+        mock_diffusers.AutoPipelineForImage2Image = FakeDerived
+        mock_diffusers.AutoPipelineForInpainting = FakeDerived
+        with patch.dict(sys.modules, {"diffusers": mock_diffusers}):
+            _, paths, status, _ = self.runtime.image_to_image(
+                Image.new("RGB", (600, 500), "navy"),
+                "768x768",
+                0.5,
+                "forest",
+                "",
+                20,
+                6,
+                9,
+                1,
+                True,
+                0.55,
+                False,
+                0.45,
+                False,
+                hires_scale="1.5×",
+            )
+            self.assertEqual(
+                [call[1]["image"].size for call in FakePipe.calls],
+                [(768, 768), (1152, 1152)],
+            )
+            self.assertEqual(FakePipe.calls[0][1]["strength"], 0.5)
+            self.assertEqual(
+                FakePipe.calls[1][1]["strength"], studio.HIRES_DEFAULT_STRENGTH
+            )
+            with Image.open(paths[0]) as result:
+                self.assertEqual(result.size, (1152, 1152))
+            region = Image.new("L", (512, 512), 0)
+            ImageDraw.Draw(region).rectangle((10, 10, 60, 60), fill=255)
+            with self.assertRaisesRegex(ValueError, "không áp dụng"):
+                self.runtime._generate(
+                    "inpaint",
+                    Image.new("RGB", (512, 512)),
+                    region,
+                    "hands",
+                    0,
+                    0.5,
+                    None,
+                    "x",
+                    "",
+                    20,
+                    6,
+                    1,
+                    1,
+                    False,
+                    0.5,
+                    False,
+                    0.5,
+                    False,
+                    hires_scale="2×",
+                )
+
     @unittest.skipIf(Image is None, "Pillow needed for raster smoke tests")
     def test_img2img_and_painted_inpainting_keep_unmasked_pixels(self):
         mock_diffusers = types.ModuleType("diffusers")
@@ -1085,13 +1233,40 @@ class RuntimeValidationTests(unittest.TestCase):
             repair_event["inputs"][:2],
             [prompt_field["id"], negative_field["id"]],
         )
-        # 3 nút tạo ảnh + 2 nút dùng ảnh mới nhất + trigger mắt + gợi ý sửa vùng
+        # 4 nút tạo ảnh + 3 nút dùng ảnh mới nhất + trigger mắt + gợi ý sửa vùng
         # + 5 sự kiện của thư viện prompt.
-        self.assertEqual(len(config["dependencies"]), 12)
-        for dep in config["dependencies"][:3]:  # text, img2img, inpaint
+        self.assertEqual(len(config["dependencies"]), 14)
+        hires_fields = [
+            c
+            for c in config["components"]
+            if "hires" in str(c["props"].get("label") or "").lower()
+        ]
+        # Dropdown + slider dùng chung cho 2 tab tạo ảnh; slider thứ hai thuộc tab
+        # Phóng to ảnh (dropdown "Hệ số phóng" không chứa chữ hires).
+        self.assertEqual(
+            [c["type"] for c in hires_fields], ["dropdown", "slider", "slider"]
+        )
+        hires_ids = [c["id"] for c in hires_fields[:2]]
+        self.assertEqual(
+            [choice[0] for choice in hires_fields[0]["props"]["choices"]],
+            list(studio.HIRES_SCALES),
+        )
+        self.assertEqual(hires_fields[0]["props"]["value"], studio.HIRES_OFF)
+        for dep in config["dependencies"][:2]:  # text, img2img: có hires
+            self.assertEqual(dep["inputs"][-2:], hires_ids)
             self.assertEqual(
-                dep["inputs"][-12:-10], [prompt_field["id"], negative_field["id"]]
+                dep["inputs"][-14:-12], [prompt_field["id"], negative_field["id"]]
             )
+        upscale_dep = config["dependencies"][2]  # phóng to: hệ số/strength riêng
+        self.assertFalse(set(hires_ids) & set(upscale_dep["inputs"]))
+        self.assertEqual(
+            upscale_dep["inputs"][-12:-10], [prompt_field["id"], negative_field["id"]]
+        )
+        inpaint_dep = config["dependencies"][3]  # sửa vùng: không hires
+        self.assertFalse(set(hires_ids) & set(inpaint_dep["inputs"]))
+        self.assertEqual(
+            inpaint_dep["inputs"][-12:-10], [prompt_field["id"], negative_field["id"]]
+        )
         self.assertTrue(
             all(x["api_visibility"] == "private" for x in config["dependencies"])
         )
@@ -1335,16 +1510,16 @@ class RuntimeValidationTests(unittest.TestCase):
             # Không còn preset phong cách: nút trigger mắt chỉ thêm "perfect eyes"
             # vào đúng ô prompt đang hiển thị, negative giữ nguyên.
             triggered = await process(
-                5, [studio.DEFAULT_PROMPT, studio.DEFAULT_NEGATIVE]
+                7, [studio.DEFAULT_PROMPT, studio.DEFAULT_NEGATIVE]
             )
             self.assertIn("perfect eyes", triggered[0])
             self.assertEqual(triggered[1], studio.DEFAULT_NEGATIVE)
-            self.assertEqual(await process(5, triggered), triggered)
+            self.assertEqual(await process(7, triggered), triggered)
             # Nút gợi ý sửa vùng cũng chỉ đổi hai ô đang hiển thị.
-            leg_prompts = await process(6, [*triggered, "legs"])
+            leg_prompts = await process(8, [*triggered, "legs"])
             self.assertIn("natural toes", leg_prompts[0])
             self.assertIn("broken legs", leg_prompts[1])
-            self.assertEqual(await process(6, [*leg_prompts, "legs"]), leg_prompts)
+            self.assertEqual(await process(8, [*leg_prompts, "legs"]), leg_prompts)
             adult_prompts = (
                 "1girl, adult woman, nsfw, explicit, portrait",
                 "bad hands",
@@ -1357,6 +1532,8 @@ class RuntimeValidationTests(unittest.TestCase):
                         *shared(
                             "  my own portrait  ", "  no hidden tags  ", eyes=True
                         ),
+                        studio.HIRES_OFF,
+                        0.4,
                     ],
                     ("  my own portrait  ", "  no hidden tags  "),
                 ),
@@ -1367,11 +1544,13 @@ class RuntimeValidationTests(unittest.TestCase):
                         "512x512",
                         0.45,
                         *shared("paint this picture", "my bad quality"),
+                        studio.HIRES_OFF,
+                        0.4,
                     ],
                     ("paint this picture", "my bad quality"),
                 ),
                 (
-                    2,
+                    3,
                     [
                         editor,
                         None,
@@ -1383,7 +1562,7 @@ class RuntimeValidationTests(unittest.TestCase):
                     ("no repair suggestions", "bad hands"),
                 ),
                 (
-                    2,
+                    3,
                     [
                         editor,
                         file_data(mask),
@@ -1397,7 +1576,7 @@ class RuntimeValidationTests(unittest.TestCase):
                 # Prompt người lớn do người dùng tự viết, đã tick xác nhận 18+.
                 (
                     0,
-                    ["512x512", *shared(*adult_prompts, adult=True)],
+                    ["512x512", *shared(*adult_prompts, adult=True), "Tắt", 0.4],
                     adult_prompts,
                 ),
             ):
@@ -1413,21 +1592,47 @@ class RuntimeValidationTests(unittest.TestCase):
                 self.assertTrue(png.is_file())
                 with Image.open(png) as result:
                     self.assertEqual(result.format, "PNG")
+            # Hires fix qua đường sự kiện UI: 512×512 → 1,5× = 768×768, 2 lượt pipe.
+            calls_before = len(FakePipe.calls)
+            data = await process(
+                0, ["512x512", *shared("hires portrait", "bad"), "1.5×", 0.35]
+            )
+            self.assertIn("512×512 → 768×768", data[2])
+            self.assertEqual(len(FakePipe.calls), calls_before + 2)
+            self.assertEqual(FakePipe.calls[-1][1]["strength"], 0.35)
+            with Image.open(data[1][0]["path"]) as result:
+                self.assertEqual(result.size, (768, 768))
+            del FakePipe.calls[calls_before:]
+            # Tab Phóng to ảnh qua sự kiện UI: 512×512 → 1024×1024, một lượt pipe.
+            calls_before = len(FakePipe.calls)
+            data = await process(
+                2, [file_data(source), "2×", 0.4, *shared("upscale me", "bad")]
+            )
+            self.assertIn("phóng to 512×512 → 1024×1024", data[2])
+            self.assertEqual(len(FakePipe.calls), calls_before + 1)
+            with Image.open(data[1][0]["path"]) as result:
+                self.assertEqual(result.size, (1024, 1024))
+            del FakePipe.calls[calls_before:]
             # Chưa tick xác nhận 18+ thì prompt người lớn bị chặn, không tới pipe.
             with self.assertRaises(Exception) as blocked:
-                await process(0, ["512x512", *shared(*adult_prompts)])
+                await process(0, ["512x512", *shared(*adult_prompts), "Tắt", 0.4])
             self.assertIn("18 tuổi trở lên", str(blocked.exception))
             # Từ khóa vị thành niên bị chặn kể cả khi đã tick xác nhận.
             with self.assertRaises(Exception) as underage:
                 await process(
                     0,
-                    ["512x512", *shared("school girl portrait", "", adult=True)],
+                    [
+                        "512x512",
+                        *shared("school girl portrait", "", adult=True),
+                        "Tắt",
+                        0.4,
+                    ],
                 )
             self.assertIn("phải trưởng thành", str(underage.exception))
             self.assertEqual(len(FakePipe.calls), 5)
-            self.assertTrue(Path((await process(3, [None]))[0]["path"]).is_file())
+            self.assertTrue(Path((await process(4, [None]))[0]["path"]).is_file())
             self.assertTrue(
-                Path((await process(4, [None]))[0]["background"]["path"]).is_file()
+                Path((await process(6, [None]))[0]["background"]["path"]).is_file()
             )
 
         mock_diffusers = types.ModuleType("diffusers")
