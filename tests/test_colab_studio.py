@@ -629,6 +629,13 @@ class ProfessionalPromptTests(unittest.TestCase):
             "absurdres": "tail",
             "1girl": "subject",
             "2boys": "subject",
+            "female focus": "subject",
+            "sharp focus": "composition",
+            "thighhighs": "outfit",
+            "pantyhose": "outfit",
+            "glass wall": "background",
+            "marble floor": "background",
+            "wind": "background",
             "masterpiece": "quality",
             "w_arknights": "extra",
         }

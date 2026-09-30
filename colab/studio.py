@@ -404,7 +404,7 @@ _SECTION_RULES = (
         # `(?<![a-z])` để bắt được thẻ có số đứng trước như "1girl", "2boys":
         # giữa số và chữ không có ranh giới từ nên \b thường không khớp.
         r"(?:(?<![a-z])girls?\b|(?<![a-z])boys?\b|\bother\b|no humans|\bsolo\b|\bduo\b|\bcouple\b|"
-        r"\bgroup\b|\bfocus\b|\badult\b|\bmature\b|office worker|\bstudent\b|\bidol\b|"
+        r"\bgroup\b|\b(?:female|male|vehicle|animal|food|object|profile) focus\b|\badult\b|\bmature\b|office worker|\bstudent\b|\bidol\b|"
         r"\bmaid\b|\bknight\b|\bwitch\b|\belf\b|\bandroid\b|\brobot\b|\bwaitress\b|"
         r"\bnurse\b|\bteacher\b|\bartists?\b|\bsamurai\b|\bninja\b|\bprincess\b|"
         r"\bqueen\b|\bking\b|\bsoldiers?\b|\bpilots?\b|\bchef\b|\bbarista\b|"
@@ -431,7 +431,7 @@ _SECTION_RULES = (
         r"\bjeans\b|\bshorts\b|\bbelt\b|\bbag\b|\bbackpack\b|\bjewelry\b|\bearing\b|"
         r"\bnecklace\b|\bring\b|\bcollar\b|\bhood\b|\bsleeves?\b|\bgown\b|\brobe\b|"
         r"\bcape\b|\bhelmet\b|\bmask\b|\boutfit\b|\bclothes\b|\bclothing\b|"
-        r"\bwearing\b|\bdress shirt\b|\bpencil skirt\b|\bturtleneck\b|\bknit\b)",
+        r"\bwearing\b|\bdress shirt\b|\bpencil skirt\b|\bturtleneck\b|\bknit\b|thighhighs|pantyhose|\bgarter\b|\bsuspenders\b)",
     ),
     (
         "appearance",
@@ -448,7 +448,7 @@ _SECTION_RULES = (
         r"wide shot|\bestablishing shot\b|dutch angle|from above|from below|"
         r"low angle|high angle|bird'?s?-eye|straight-on|depth of field|\bbokeh\b|"
         r"dynamic angle|rule of thirds|\bshot\b|\bangle\b|\bview\b|\bmacro\b|"
-        r"\bfisheye\b|\bframing\b|\bsilhouette\b|\bsymmetrical\b)",
+        r"\bfisheye\b|\bframing\b|\bsilhouette\b|\bsymmetrical\b|\bfocus\b)",
     ),
     (
         "background",
@@ -460,7 +460,7 @@ _SECTION_RULES = (
         r"\bstation\b|\bwindows?\b|\bdoors?\b|\bneon\b|\bvillage\b|\bcorridor\b|"
         r"\belevator\b|\blobby\b|\bdesks?\b|classroom|\bbedroom\b|\bkitchen\b|"
         r"\bbridge\b|\briver\b|\bfields?\b|\bflowers?\b|\bpetals?\b|\bstars\b|"
-        r"\bmoon\b|\bsun\b|\bweather\b|\bskyline\b|\bfoliage\b)",
+        r"\bmoon\b|\bsun\b|\bweather\b|\bskyline\b|\bfoliage\b|\bwalls?\b|\bfloor\b|\bceiling\b|\bpillars?\b|\bstairs?\b|\bcolumns?\b|\bplants?\b|\bshelves\b|\bfurniture\b|\bwind\b|\bwindy\b|\bfog\b|\bmisty\b|\bstorm\b|\blightning\b|\bhumid\b)",
     ),
     (
         "lighting",
@@ -585,7 +585,7 @@ STYLE_TAG_HINTS = (
     "artstyle",
 )
 SUBJECT_TAG_RE = re.compile(
-    r"(?:\d+\s*)?(?:girls?|boys?|other)\b|no humans|\bsolo\b|\bfocus\b|"
+    r"(?:\d+\s*)?(?:girls?|boys?|other)\b|no humans|\bsolo\b|\b(?:female|male|vehicle|animal|food|object|profile) focus\b|"
     r"\bcouple\b|\bduo\b|\bgroup\b",
     re.IGNORECASE,
 )

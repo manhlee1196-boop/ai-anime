@@ -287,6 +287,45 @@ trước khi đăng công khai.
 
 ## Phụ lục A · Ba prompt mẫu theo thứ tự chuẩn
 
+### A0. Ví dụ nhân vật hoàn chỉnh (phân tích từng khối)
+
+Prompt đã kiểm bằng chính công cụ trong repo: **34 thẻ · ≈70 token** (72 sau khi thêm
+trigger `perfect eyes`) — còn dư chỗ trong khối 75 token; **🩺 báo 0 ⚠️ / 0 ℹ️ / 4 ✅**;
+nút *Sắp xếp prompt theo thứ tự chuẩn* **không đổi gì** vì prompt đã đúng thứ tự.
+
+```text
+masterpiece, best quality, amazing quality, general, 1girl, solo, adult woman, mature female, long straight black hair, purple eyes, gentle smile, mole under mouth, white dress shirt, navy blazer, red necktie, black pencil skirt, black gloves, thighhighs, standing, arms crossed, looking at viewer, upper body, straight-on, depth of field, sharp focus, modern office lobby, glass wall, city lights, night, warm rim light, cinematic lighting, cel shading, anime illustration, absurdres
+```
+
+| Khối | Thẻ | Ghi chú |
+| --- | --- | --- |
+| 1. Chất lượng | `masterpiece, best quality, amazing quality` | Đúng 3 thẻ nhà phát hành khuyên; thêm nữa dễ mờ ảnh |
+| 2. Nhãn phân loại | `general` | Họ Illustrious dùng `general/sensitive/nsfw/explicit` |
+| 3. Chủ thể | `1girl, solo, adult woman, mature female` | `mature female` chống dataset kéo nhân vật trẻ lại |
+| 4. Ngoại hình | `long straight black hair, purple eyes, gentle smile, mole under mouth` | **Khối nhận dạng** — dán nguyên văn vào mọi ảnh của nhân vật này |
+| 5. Trang phục | `white dress shirt, navy blazer, red necktie, black pencil skirt, black gloves, thighhighs` | Mô tả từng món, đừng gộp "office uniform" |
+| 6. Tư thế | `standing, arms crossed, looking at viewer` | Đổi khối này khi đổi ảnh, giữ khối 4 |
+| 7. Bố cục | `upper body, straight-on, depth of field, sharp focus` | `full body` / `close-up` / `cowboy shot` tuỳ ý |
+| 8. Bối cảnh | `modern office lobby, glass wall, city lights, night` | |
+| 9. Ánh sáng | `warm rim light, cinematic lighting` | |
+| 10. Phong cách | `cel shading, anime illustration` | Chống chất 3D/nhựa của v17 |
+| 11. Độ nét | `absurdres` | Chốt cuối prompt |
+
+**Negative** (bộ `core`, 15 thẻ):
+
+```text
+worst quality, low quality, bad quality, lowres, jpeg artifacts, bad anatomy, bad hands, extra digit, fewer digits, watermark, signature, text, artistic error, very displeasing, oldest
+```
+
+**Thông số:** `832x1216` · steps 28 · CFG 6 · Euler a · seed cố định (ví dụ `12345`) ·
+hires `1.5×` strength `0.4` · LoRA Anatomy 0.55 + Eyes 0.45, bấm nút thêm trigger
+`perfect eyes`.
+
+**Muốn cùng nhân vật ở cảnh khác:** giữ nguyên khối 3+4+5+10+11, chỉ thay khối 6/7/8/9 —
+ví dụ đổi `standing, arms crossed, looking at viewer` thành `sitting, holding a coffee cup,
+looking away` và `modern office lobby, glass wall, city lights, night` thành
+`rooftop at sunset, wind, orange sky`.
+
 ```text
 # 1. Chân dung dưới hoa anh đào (832×1216, 25 steps, CFG 6, hires 1.5× / 0.4)
 masterpiece, best quality, amazing quality, 1girl, solo, adult woman, long dark hair,
