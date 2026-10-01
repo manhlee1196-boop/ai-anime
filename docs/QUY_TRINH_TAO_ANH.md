@@ -2,11 +2,11 @@
 
 Tài liệu này là kết quả đối chiếu cách làm việc của người tạo ảnh AI có kinh nghiệm
 (nhà phát hành model, hướng dẫn Illustrious XL, quy trình production của hoạ sĩ AI)
-với quy trình hiện có trong repo, rồi **chuẩn hoá thành 8 bước** và bổ sung ba công cụ
+với quy trình hiện có trong repo, rồi **chuẩn hoá thành 9 bước** và bổ sung ba công cụ
 mới trong giao diện Studio.
 
 > **Muốn chạy thử ngay?** Mở **[PHIEU_CHAY_THU.md](PHIEU_CHAY_THU.md)** — phiếu kiểm tra
-> từng bước, có kết quả mong đợi để đối chiếu và 4 phép thử A/B trên GPU.
+> từng bước, có kết quả mong đợi để đối chiếu và 5 phép thử A/B trên GPU.
 
 **Trạng thái kiểm chứng:** các con số khuyến nghị (steps, CFG, hires strength, thứ tự
 thẻ, negative) lấy từ nhà phát hành WAI-illustrious v17 và hướng dẫn cộng đồng
@@ -17,7 +17,7 @@ trong `tests/`; chất lượng ảnh thật vẫn phải đánh giá bằng m�
 
 ---
 
-## 0. SOP 8 bước (bảng điều hành)
+## 0. SOP 9 bước (bảng điều hành)
 
 | # | Bước | Làm gì | Công cụ trong Studio | Tiêu chí "đạt" để sang bước sau |
 | --- | --- | --- | --- | --- |
@@ -27,8 +27,9 @@ trong `tests/`; chất lượng ảnh thật vẫn phải đánh giá bằng m�
 | 4 | Chọn negative | Chọn 1 bộ theo **mục đích**, thêm ≤ 5 thẻ riêng | Nút **Nạp negative đã chọn** (8 bộ) | Negative ≤ ~40 thẻ, không mâu thuẫn prompt |
 | 5 | Kiểm tra | Chạy bộ kiểm tra prompt/thông số | Nút **🩺 Kiểm tra prompt & thông số** | Không còn mục ⚠️ |
 | 6 | Dò seed | Tạo 3–4 ảnh cùng prompt, đổi seed, chọn 1 | *Văn bản → ảnh*, `Số ảnh` 1–4, seed | Có 1 ảnh đúng bố cục; **ghi lại seed** |
-| 7 | Phóng nét | Hires 1.5× (2× nếu cần), strength 0.35–0.5 | Khung **🔍 Ảnh độ phân giải cao** / tab **⤢ Phóng to ảnh** | Chi tiết tăng, bố cục/nét mặt không đổi |
-| 8 | Sửa cục bộ + QA | Inpaint vùng tay/mắt/chân, chạy checklist | Tab **✎ Sửa vùng ảnh** + nút gợi ý | Qua checklist mục 10, tải PNG về máy |
+| 7 | Tự sửa mặt/tay | Bật auto-detailer, strength 0,4 · ngưỡng 0,3 · 1–2 vùng | Khung **🔎 Tự sửa mặt / bàn tay** | Mặt/tay hết lỗi mà bố cục, nền và nét mặt không đổi (mục 7) |
+| 8 | Phóng nét | Hires 1.5× (2× nếu cần), strength 0.35–0.5 | Khung **🔍 Ảnh độ phân giải cao** / tab **⤢ Phóng to ảnh** | Chi tiết tăng, bố cục/nét mặt không đổi (mục 8) |
+| 9 | Sửa cục bộ + QA | Inpaint vùng tay/mắt/chân còn sót, chạy checklist | Tab **✎ Sửa vùng ảnh** + nút gợi ý | Qua checklist mục 10, tải PNG về máy |
 
 Nguyên tắc xuyên suốt: **thay đổi một biến mỗi lượt** (hoặc prompt, hoặc CFG, hoặc
 seed, hoặc LoRA weight). Đổi nhiều thứ cùng lúc thì không biết cái gì đã tạo ra khác
@@ -159,10 +160,11 @@ thẻ còn thiếu** (khi muốn giữ negative hiện tại và bổ sung).
 
 | Triệu chứng | Thêm vào negative | Ghi chú |
 | --- | --- | --- |
-| Thừa/thiếu/dính ngón tay | `extra digit, fewer digits, fused fingers, bad hands` | Negative chỉ giảm xác suất; tay phức tạp vẫn cần inpaint |
+| Thừa/thiếu/dính ngón tay | `extra digit, fewer digits, fused fingers, bad hands` | Negative chỉ giảm xác suất; bật **auto-detailer** (mục 7.1) hoặc inpaint cho tay phức tạp |
 | Chân/bàn chân sai | `deformed feet, extra toes, fused toes, bad anatomy` | LoRA Anatomy thiên về tay/chân/tư thế, không "chữa" mọi ca |
 | Ảnh ra như 3D/nhựa | `realistic, 3d, cgi, plastic skin` + thêm thẻ chất lượng/phong cách ở prompt | Cộng đồng WAI xác nhận `realistic` trong negative là cách nhanh nhất |
-| Mắt lệch/mờ | `deformed eyes, asymmetrical eyes, cross-eyed, dull eyes` | `detailed eyes` trong prompt **gần như không tác dụng** trên họ Illustrious (cộng đồng báo) — dùng LoRA mắt |
+| Mắt lệch/mờ | `deformed eyes, asymmetrical eyes, cross-eyed, dull eyes` | `detailed eyes` trong prompt **gần như không tác dụng** trên họ Illustrious (cộng đồng báo) — dùng LoRA mắt, rồi auto-detailer `Mặt` nếu vẫn lệch |
+| Mặt/tay lỗi dù prompt đúng | *không thêm negative* — bật **Tự sửa mặt/tay** = `Mặt + tay`, strength 0,3–0,45, cùng seed | Vẽ lại đúng vùng nhỏ hiệu quả hơn negative; xem mục 7.1 |
 | Ra chữ/watermark | `text, watermark, signature, logo, username` | Không đảm bảo hết; thử lại seed khác hiệu quả hơn |
 | Ảnh đơn sắc/xám | `monochrome, greyscale` | |
 | Người lọt vào ảnh phong cảnh | `1girl, 1boy, solo, people, crowd` | |
@@ -211,23 +213,74 @@ worst quality, low quality, jpeg artifacts, text, watermark, signature, logo
    xác nhận seed tái lập được.
 4. Từ seed cố định, **đổi một biến** mỗi lượt: thêm thẻ ánh sáng, đổi CFG 5.5 ↔ 6.5,
    đổi LoRA weight. Ghi lại mỗi lần đổi.
-5. Ảnh bị lỗi nhỏ → sang bước 7/8, đừng tạo lại từ đầu.
+5. Ảnh bị lỗi nhỏ → sang bước 7/8/9, đừng tạo lại từ đầu.
 
 Đây chính là "XY grid" của người dùng A1111/ComfyUI, làm thủ công: một trục là seed,
 một trục là thông số bạn đang thử.
 
-## 7. Sửa cục bộ (inpaint — thay cho ADetailer)
+## 7. Sửa mặt/tay: auto-detailer (tự động) rồi inpaint (thủ công)
 
-Studio không có ADetailer; tab **✎ Sửa vùng ảnh** là tương đương thủ công và kiểm soát
-được nhiều hơn:
+### 7.1 Auto-detailer — để máy tự tìm mặt/bàn tay
+
+Khung **🔎 Tự sửa mặt / bàn tay** (dưới khung hires, dùng cho *Văn bản → ảnh* và
+*Ảnh → ảnh*) là bản tương đương ADetailer:
+
+| Ô | Nên để | Ghi chú |
+| --- | --- | --- |
+| Tự sửa mặt/tay | `Tắt` → `Mặt` → `Mặt + tay` | Mặc định `Tắt`; mỗi loại vùng thêm một lượt inpaint |
+| Detailer strength | **0,3–0,45** | 0,25 giữ gần như nguyên nét; ≥ 0,5 vẽ lại mạnh, dễ đổi nét mặt |
+| Ngưỡng phát hiện | **0,3** (0,2 nếu bỏ sót) | Thấp = dò dễ hơn nhưng dễ nhận nhầm vùng không phải mặt/tay |
+| Số vùng tối đa | **1–2** | Vùng được chọn theo độ tin cậy cao nhất; 4 vùng = 4 lượt inpaint |
+
+Cách chạy: tạo ảnh → nếu mặt/tay lỗi thì bật **Mặt + tay** và **tạo lại cùng seed**
+(auto-detailer dùng lại seed gốc nên phần còn lại của ảnh gần như không đổi) → so hai
+bản. Vùng dò được nới thêm 25%, cạnh chia hết cho 8 và tối thiểu 512 px, được inpaint
+bằng **đúng prompt/negative bạn đang thấy** rồi dán lại với viền mềm 12 px; bố cục, nền,
+trang phục ngoài vùng đó không bị vẽ lại. Detailer chạy **trước** hires fix.
+
+Giới hạn cần biết: detector là YOLOv8 (`Bingsu/adetailer`, có tập huấn ảnh anime,
+mAP50 mặt ≈ 0,66 · tay ≈ 0,77 theo model card) nên **vẫn bỏ sót** tay bị che/mất nét,
+và nó **không sửa được** lỗi ở chân, trang phục hay hậu cảnh — dùng inpaint thủ công.
+Nếu nét mặt bị đổi, hạ strength; nếu mặt bị “lệch tông” so với ảnh, tắt và dùng inpaint.
+
+### 7.2 Inpaint thủ công — kiểm soát tối đa
+
+Tab **✎ Sửa vùng ảnh** cho vùng lỗi mà auto-detailer bỏ sót hoặc không hỗ trợ:
 
 1. Bấm **Dùng ảnh mới nhất để sửa vùng** (hoặc tải ảnh lên), tô **vùng nhỏ** quanh lỗi.
-2. Chọn `hands` / `legs` / `eyes` rồi bấm **Thêm gợi ý sửa vùng vào prompt đang hiển thị**
-   — thẻ được thêm vào hai ô để bạn **sửa/xóa** trước khi chạy.
+2. Chọn vùng trong **Chi tiết cần sửa** — `Bàn tay`, `Móng tay / móng chân`,
+   `Chân / bàn chân`, `Mắt`, `Khuôn mặt`, `Răng`, `Tóc`, `Da`, `Tùy chỉnh` — rồi bấm
+   **Thêm gợi ý sửa vùng vào prompt đang hiển thị**: cặp thẻ dương/âm của vùng đó được
+   thêm vào hai ô để bạn **sửa/xóa** trước khi chạy (bấm lại không nhân đôi).
 3. Denoise strength **0.35–0.55**: thấp giữ nguyên nét cũ, cao vẽ lại nhiều hơn.
 4. Sửa **từng vùng một**, chạy lại, rồi mới sang vùng khác. Tô cả khuôn mặt + thân người
    trong một mask sẽ làm đổi cả trang phục.
 5. Inpaint không hỗ trợ hires; ảnh lớn sẽ bị thu về cạnh dài 1024 px khi sửa vùng.
+
+### 7.3 Màu mắt & móng (khung 💅 Chi tiết mắt & móng)
+
+Khung này dùng chung cho *Văn bản → ảnh* và *Ảnh → ảnh*: chọn xong bấm **Thêm chi tiết
+mắt/móng vào prompt đang hiển thị**, thẻ được ghi **thẳng vào ô prompt** để sửa/xóa.
+
+| Ô | Lựa chọn | Thẻ được nạp (cú pháp Danbooru, họ Illustrious bám tốt) |
+| --- | --- | --- |
+| Màu mắt | xanh dương / xanh dương nhạt / xanh ngọc / xanh lá / nâu / hổ phách / đỏ / hồng / tím / vàng / xám / bạc / đen / hai màu / gradient / phát sáng | `blue eyes`, `aqua eyes`, `amber eyes`, `heterochromia, multicolored eyes`, `gradient eyes`, `glowing eyes, detailed pupils`… |
+| Kiểu dáng móng tay | tự nhiên ngắn / tròn ngắn / vuông / bầu dục / hạnh nhân / stiletto / coffin / móng dài / móng sắc | `short round nails`, `square nails`, `almond-shaped nails`, `stiletto nails, long fingernails`, `coffin nails`, `sharp fingernails` |
+| Màu sơn móng tay | đỏ / đen / hồng / trắng / xanh dương / tím / nude / gradient / kim tuyến / French / vẽ hoa văn / không sơn | `red nails, nail polish`, `glitter nails`, `french nails`, `nail art`, `natural nails` |
+| Màu sơn móng chân | đỏ / đen / hồng / trắng / xanh dương / tím / nude / kim tuyến / không sơn | `painted toenails, red nail polish`…, `natural toenails` |
+
+Mẹo dùng cho đúng:
+
+- **Phải thấy được vùng đó** thì model mới vẽ: móng tay cần tay đủ lớn trong khung
+  (thêm `hands, fingers spread` hoặc dùng *Chân dung cận*), móng chân cần thấy bàn chân
+  (`barefoot, feet`). Ảnh bán thân mà đòi `painted toenails` thì thẻ gần như vô nghĩa.
+- Mỗi thẻ đều chiếm token trong **khối 75** (mục 3.1): chỉ chọn 1 màu mắt + 1 kiểu +
+  1 màu sơn, đừng nạp cả bốn ô nếu ảnh không cận tay/chân.
+- Muốn **đổi** màu mắt/móng của ảnh đã có: dùng *Sửa vùng ảnh* (tô đúng vùng mắt/móng,
+  chọn `Mắt` hoặc `Móng tay / móng chân`, strength 0,4–0,55) hoặc auto-detailer `Mặt`
+  cho mắt; inpaint vùng nhỏ giữ được nét cũ tốt hơn tạo lại cả ảnh.
+- Thẻ kiểu/màu là **mô tả mong muốn**, không bảo đảm model vẽ đúng 100% — nếu móng ra sai
+  hình dạng, thử `close-up` bàn tay và giảm CFG xuống 5,5–6.
 
 ## 8. Hires & upscale
 
@@ -258,9 +311,13 @@ Trong phạm vi Studio: dùng cách 3, cộng với **thư viện prompt** (nạ
 
 Phóng to 100% và kiểm lần lượt:
 
-- [ ] **Tay:** đủ ngón, không dính, không thừa khớp; đồ vật cầm đúng hướng.
+- [ ] **Tay:** đủ ngón, không dính, không thừa khớp; đồ vật cầm đúng hướng. Còn lỗi →
+      auto-detailer `Tay` (mục 7.1) rồi inpaint.
 - [ ] **Chân/bàn chân:** đủ ngón, cổ chân không gãy, giày không chảy.
-- [ ] **Mặt:** hai mắt cân, đồng tử cùng hướng, răng không vỡ, tai đối xứng.
+- [ ] **Mặt:** hai mắt cân, đồng tử cùng hướng, răng không vỡ, tai đối xứng. Còn lỗi →
+      auto-detailer `Mặt` (mục 7.1) rồi inpaint.
+- [ ] **Auto-detailer (nếu có bật):** vùng được sửa **không** để lại viền cứng, không đổi
+      màu da/tông sáng so với phần còn lại; nếu có, hạ strength hoặc tắt.
 - [ ] **Chữ/ký hiệu:** không có chữ vô nghĩa, watermark, logo lạ.
 - [ ] **Trang phục:** không tan vào da, không thừa/thiếu lớp áo, hoa văn không rối.
 - [ ] **Bối cảnh:** phối cảnh đường chân trời, phản xạ/đổ bóng đúng hướng sáng.

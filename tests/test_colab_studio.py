@@ -104,6 +104,15 @@ class NotebookTests(unittest.TestCase):
             '"starlette>=1.3.1,<2"',
         ):
             self.assertIn(requirement, install)
+        # Auto-detailer: cài riêng, lỗi chỉ cảnh báo để không kéo sập cả Studio.
+        self.assertIn('-q install "ultralytics==8.4.170"', install)
+        self.assertIn('optional = {"ultralytics": ">=8.4,<9"}', install)
+        required = install[
+            install.index("required = {") : install.index(
+                "for package, constraint in required"
+            )
+        ]
+        self.assertNotIn("ultralytics", required)
         self.assertIn("✅ Thư viện Studio đã sẵn sàng:", install)
         ui_source = "".join(n["cells"][7]["source"])
         self.assertIn((ROOT / "colab/studio.py").read_text(encoding="utf-8"), ui_source)
@@ -205,6 +214,14 @@ class NotebookTests(unittest.TestCase):
         ):
             exec(check, {})
             self.assertIn("✅ Thư viện Studio đã sẵn sàng:", output.getvalue())
+            # ultralytics (auto-detailer) là tuỳ chọn: thiếu hoặc lệch phiên bản chỉ
+            # được cảnh báo, không chặn Studio như nhóm gói bắt buộc.
+            self.assertIn("Không có ultralytics", output.getvalue())
+            installed["ultralytics"] = "7.0.0"
+            with contextlib.redirect_stdout(io.StringIO()) as warn:
+                exec(check, {})
+            self.assertIn("ultralytics đang là 7.0.0", warn.getvalue())
+            installed.pop("ultralytics")
             modules["gradio_client"].__version__ = "1.14.0"
             with self.assertRaisesRegex(RuntimeError, "gradio-client đang là 1.14.0"):
                 exec(check, {})
@@ -1133,7 +1150,8 @@ class RuntimeValidationTests(unittest.TestCase):
             self.assertEqual(FakePipe.calls[-1][1]["prompt"], "natural portrait")
             self.assertEqual(FakePipe.calls[-1][1]["negative_prompt"], "")
             self.assertEqual(len(gallery), 1)
-            for target in ("hands", "legs", "eyes"):
+            # Mọi vùng (trừ "custom" không có thẻ) đều phải thêm gợi ý và idempotent.
+            for target in [key for key in studio.REPAIR_HINTS if key != "custom"]:
                 with self.subTest(target=target):
                     suggested = studio.apply_repair_hints(
                         "natural portrait", "bad anatomy", target
@@ -1435,8 +1453,8 @@ class RuntimeValidationTests(unittest.TestCase):
         )
         # 4 nút tạo ảnh + 3 nút dùng ảnh mới nhất + trigger mắt + gợi ý sửa vùng
         # + 5 sự kiện của thư viện prompt + 3 nút quy trình (sắp xếp prompt, nạp
-        # negative, kiểm tra prompt).
-        self.assertEqual(len(config["dependencies"]), 17)
+        # negative, kiểm tra prompt) + nút chi tiết mắt/móng.
+        self.assertEqual(len(config["dependencies"]), 18)
         hires_fields = [
             c
             for c in config["components"]
@@ -1453,18 +1471,44 @@ class RuntimeValidationTests(unittest.TestCase):
             list(studio.HIRES_SCALES),
         )
         self.assertEqual(hires_fields[0]["props"]["value"], studio.HIRES_OFF)
-        for dep in config["dependencies"][:2]:  # text, img2img: có hires
-            self.assertEqual(dep["inputs"][-2:], hires_ids)
+        detailer_fields = [
+            c
+            for c in config["components"]
+            if str(c["props"].get("label") or "").startswith(
+                (
+                    "Tự sửa mặt/tay",
+                    "Detailer strength",
+                    "Ngưỡng phát hiện",
+                    "Số vùng tối đa",
+                )
+            )
+        ]
+        self.assertEqual(
+            [c["type"] for c in detailer_fields],
+            ["dropdown", "slider", "slider", "slider"],
+        )
+        detailer_ids = [c["id"] for c in detailer_fields]
+        self.assertEqual(
+            [choice[0] for choice in detailer_fields[0]["props"]["choices"]],
+            list(studio.DETAILER_TARGETS),
+        )
+        # Mặc định Tắt: không ai bị sửa ảnh khi chưa chủ động bật.
+        self.assertEqual(detailer_fields[0]["props"]["value"], studio.DETAILER_OFF)
+        for dep in config["dependencies"][:2]:  # text, img2img: có hires + detailer
+            self.assertEqual(dep["inputs"][-6:-4], hires_ids)
+            self.assertEqual(dep["inputs"][-4:], detailer_ids)
             self.assertEqual(
-                dep["inputs"][-14:-12], [prompt_field["id"], negative_field["id"]]
+                dep["inputs"][-18:-16], [prompt_field["id"], negative_field["id"]]
             )
         upscale_dep = config["dependencies"][2]  # phóng to: hệ số/strength riêng
         self.assertFalse(set(hires_ids) & set(upscale_dep["inputs"]))
+        self.assertFalse(set(detailer_ids) & set(upscale_dep["inputs"]))
         self.assertEqual(
             upscale_dep["inputs"][-12:-10], [prompt_field["id"], negative_field["id"]]
         )
-        inpaint_dep = config["dependencies"][3]  # sửa vùng: không hires
+        inpaint_dep = config["dependencies"][3]  # sửa vùng: không hires, không detailer
         self.assertFalse(set(hires_ids) & set(inpaint_dep["inputs"]))
+        self.assertFalse(set(detailer_ids) & set(inpaint_dep["inputs"]))
         self.assertEqual(
             inpaint_dep["inputs"][-12:-10], [prompt_field["id"], negative_field["id"]]
         )
@@ -1473,6 +1517,48 @@ class RuntimeValidationTests(unittest.TestCase):
         )
         self.assertTrue(demo.studio_css)
         self.assertIsNotNone(demo.studio_theme)
+
+        # Chi tiết mắt & móng: 4 dropdown mặc định "Không thêm" + 1 nút chỉ ghi
+        # vào hai ô prompt đang hiển thị.
+        look_dropdowns = [
+            c
+            for c in config["components"]
+            if c["props"].get("label") in studio.LOOK_LABELS.values()
+        ]
+        self.assertEqual([c["type"] for c in look_dropdowns], ["dropdown"] * 4)
+        self.assertTrue(
+            all(c["props"]["value"] == studio.LOOK_OFF for c in look_dropdowns)
+        )
+        look_button = next(
+            c
+            for c in config["components"]
+            if c["type"] == "button" and "mắt/móng" in str(c["props"].get("value", ""))
+        )
+        look_event = next(
+            d
+            for d in config["dependencies"]
+            if (look_button["id"], "click") in d["targets"]
+        )
+        self.assertEqual(set(look_event["outputs"]), field_ids)
+        self.assertEqual(
+            look_event["inputs"][:2], [prompt_field["id"], negative_field["id"]]
+        )
+        self.assertEqual(
+            set(look_event["inputs"][2:]), {c["id"] for c in look_dropdowns}
+        )
+        self.assertFalse(look_event["queue"])
+        # Vùng sửa: nhãn tiếng Việt cho người dùng, giá trị vẫn là khóa tiếng Anh
+        # mà `_generate` kiểm tra nên hành vi sửa vùng cũ không đổi.
+        repair_dropdown = next(
+            c
+            for c in config["components"]
+            if c["props"].get("label") == "Chi tiết cần sửa"
+        )
+        self.assertEqual(
+            [value for _, value in repair_dropdown["props"]["choices"]],
+            list(studio.REPAIR_HINTS),
+        )
+        self.assertEqual(repair_dropdown["props"]["value"], "hands")
 
     @unittest.skipIf(
         not importlib.util.find_spec("gradio"), "Gradio needed for UI wiring test"
@@ -1835,6 +1921,13 @@ class RuntimeValidationTests(unittest.TestCase):
                 adult,
             ]
 
+        detailer_off = [
+            studio.DETAILER_OFF,
+            studio.DETAILER_DEFAULT_STRENGTH,
+            studio.DETAILER_DEFAULT_CONF,
+            studio.DETAILER_DEFAULT_MAX,
+        ]
+
         async def smoke():
             # Không còn preset phong cách: nút trigger mắt chỉ thêm "perfect eyes"
             # vào đúng ô prompt đang hiển thị, negative giữ nguyên.
@@ -1861,6 +1954,7 @@ class RuntimeValidationTests(unittest.TestCase):
                         *shared("  my own portrait  ", "  no hidden tags  ", eyes=True),
                         studio.HIRES_OFF,
                         0.4,
+                        *detailer_off,
                     ],
                     ("  my own portrait  ", "  no hidden tags  "),
                 ),
@@ -1873,6 +1967,7 @@ class RuntimeValidationTests(unittest.TestCase):
                         *shared("paint this picture", "my bad quality"),
                         studio.HIRES_OFF,
                         0.4,
+                        *detailer_off,
                     ],
                     ("paint this picture", "my bad quality"),
                 ),
@@ -1903,7 +1998,13 @@ class RuntimeValidationTests(unittest.TestCase):
                 # Prompt người lớn do người dùng tự viết, đã tick xác nhận 18+.
                 (
                     0,
-                    ["512x512", *shared(*adult_prompts, adult=True), "Tắt", 0.4],
+                    [
+                        "512x512",
+                        *shared(*adult_prompts, adult=True),
+                        "Tắt",
+                        0.4,
+                        *detailer_off,
+                    ],
                     adult_prompts,
                 ),
             ):
@@ -1922,7 +2023,14 @@ class RuntimeValidationTests(unittest.TestCase):
             # Hires fix qua đường sự kiện UI: 512×512 → 1,5× = 768×768, 2 lượt pipe.
             calls_before = len(FakePipe.calls)
             data = await process(
-                0, ["512x512", *shared("hires portrait", "bad"), "1.5×", 0.35]
+                0,
+                [
+                    "512x512",
+                    *shared("hires portrait", "bad"),
+                    "1.5×",
+                    0.35,
+                    *detailer_off,
+                ],
             )
             self.assertIn("512×512 → 768×768", data[2])
             self.assertEqual(len(FakePipe.calls), calls_before + 2)
@@ -1942,7 +2050,10 @@ class RuntimeValidationTests(unittest.TestCase):
             del FakePipe.calls[calls_before:]
             # Chưa tick xác nhận 18+ thì prompt người lớn bị chặn, không tới pipe.
             with self.assertRaises(Exception) as blocked:
-                await process(0, ["512x512", *shared(*adult_prompts), "Tắt", 0.4])
+                await process(
+                    0,
+                    ["512x512", *shared(*adult_prompts), "Tắt", 0.4, *detailer_off],
+                )
             self.assertIn("18 tuổi trở lên", str(blocked.exception))
             # Từ khóa vị thành niên bị chặn kể cả khi đã tick xác nhận.
             with self.assertRaises(Exception) as underage:
@@ -1953,6 +2064,7 @@ class RuntimeValidationTests(unittest.TestCase):
                         *shared("school girl portrait", "", adult=True),
                         "Tắt",
                         0.4,
+                        *detailer_off,
                     ],
                 )
             self.assertIn("phải trưởng thành", str(underage.exception))
@@ -2016,6 +2128,452 @@ class RuntimeValidationTests(unittest.TestCase):
                 )
         finally:
             demo.close()
+
+
+class FakeDetector:
+    """YOLO giả: cùng giao diện `predict()` mà `detect_detail_regions` dùng."""
+
+    def __init__(self, boxes, calls):
+        self.boxes = boxes
+        self.calls = calls
+
+    def predict(self, source, conf, verbose):
+        self.calls.append((source.size, conf, verbose))
+        hits = [
+            types.SimpleNamespace(xyxy=[[x1, y1, x2, y2]], conf=[score])
+            for x1, y1, x2, y2, score in self.boxes
+            if score >= conf
+        ]
+        return [types.SimpleNamespace(boxes=hits)]
+
+
+class AutoDetailerTests(unittest.TestCase):
+    """Auto-detailer mặt/tay: phát hiện → inpaint vùng cắt → dán lại viền mềm."""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tmp.cleanup)
+        self.root = Path(self.tmp.name)
+        root_patch = patch.object(studio, "CONTENT_ROOT", self.root)
+        root_patch.start()
+        self.addCleanup(root_patch.stop)
+        self.ck = self.root / "verified.safetensors"
+        self.ck.touch()
+        self.detections = {"face": [], "hands": []}
+        self.detector_calls = []
+        self.runtime = studio.StudioRuntime(
+            torch=FakeTorch,
+            pipe=FakePipe(),
+            create_pipeline=lambda offload: FakePipe(),
+            checkpoint=self.ck,
+            lora_paths={"anatomy": self.ck},
+            lora_manifest={"anatomy": {"weight": 0.55, "version": "v1", "sha256": "h"}},
+            vram_mode="auto",
+            use_offload=False,
+            output_dir=self.root / "output",
+            backup_dir=self.root / "backup",
+            detailer_cache=str(self.root / "detailer"),
+            detailer_detector=self.detector,
+        )
+        FakePipe.calls = []
+
+    def detector(self, kind, cache_dir):
+        assert cache_dir == self.runtime.detailer_cache
+        return FakeDetector(self.detections[kind], self.detector_calls)
+
+    def test_detailer_config_targets_and_ranges(self):
+        self.assertEqual(studio.detailer_targets("Tắt"), ())
+        self.assertEqual(studio.detailer_targets("Mặt"), ("face",))
+        self.assertEqual(studio.detailer_targets("Tay"), ("hands",))
+        self.assertEqual(studio.detailer_targets("Mặt + tay"), ("face", "hands"))
+        with self.assertRaisesRegex(ValueError, "auto-detailer"):
+            studio.detailer_targets("Cả người")
+        self.assertIsNone(studio.validate_detailer("Tắt", 0.9, 0.9, 9))
+        spec = studio.validate_detailer("Mặt + tay", 0.4, 0.3, 2)
+        self.assertEqual(spec["targets"], ("face", "hands"))
+        self.assertEqual(
+            (spec["strength"], spec["conf"], spec["max_regions"]), (0.4, 0.3, 2)
+        )
+        with self.assertRaisesRegex(ValueError, "Detailer strength"):
+            studio.validate_detailer("Mặt", 0.9, 0.3, 2)
+        with self.assertRaisesRegex(ValueError, "Ngưỡng phát hiện"):
+            studio.validate_detailer("Mặt", 0.4, 0.05, 2)
+        with self.assertRaisesRegex(ValueError, "Số vùng tối đa"):
+            studio.validate_detailer("Mặt", 0.4, 0.3, 9)
+
+    def test_pad_box_grows_snaps_to_8_and_stays_inside_image(self):
+        box = studio.pad_box((400, 300, 500, 380), (1024, 1024))
+        self.assertEqual(tuple(value % 8 for value in box), (0, 0, 0, 0))
+        self.assertLess(box[0], 400)  # có nới viền để đủ ngữ cảnh
+        self.assertGreater(box[2], 500)
+        self.assertGreater(box[3], 380)
+        corner = studio.pad_box((0, 0, 30, 30), (512, 512))
+        self.assertEqual(corner[:2], (0, 0))
+        self.assertGreaterEqual(corner[2] - corner[0], 64)  # đủ lớn cho VAE
+        self.assertGreaterEqual(corner[3] - corner[1], 64)
+        outside = studio.pad_box((2000, 2000, 3000, 3000), (512, 512))
+        self.assertTrue(all(0 <= value <= 512 for value in outside))
+
+    @unittest.skipIf(Image is None, "Pillow needed for detection tests")
+    def test_regions_sort_by_confidence_and_respect_limit(self):
+        image = Image.new("RGB", (1024, 1024), "gray")
+        self.detections = {
+            "face": [(100, 100, 200, 200, 0.35), (300, 300, 400, 400, 0.9)],
+            "hands": [(500, 500, 560, 560, 0.6)],
+        }
+        regions = studio.detect_detail_regions(
+            image,
+            ("face", "hands"),
+            0.3,
+            2,
+            detector=self.detector,
+            cache_dir=self.runtime.detailer_cache,
+        )
+        self.assertEqual([kind for _, kind, _ in regions], ["face", "hands"])
+        self.assertEqual([round(score, 2) for _, _, score in regions], [0.9, 0.6])
+        self.assertEqual(len(self.detector_calls), 2)  # mỗi loại weight một lượt dò
+        self.assertEqual(self.detector_calls[0][1:], (0.3, False))
+        self.assertTrue(all(region[0][2] <= 1024 for region in regions))
+        # Ngưỡng cao: không còn vùng nào để Studio báo rõ thay vì âm thầm bỏ qua.
+        self.assertEqual(
+            studio.detect_detail_regions(
+                image,
+                ("face",),
+                0.95,
+                2,
+                detector=self.detector,
+                cache_dir=self.runtime.detailer_cache,
+            ),
+            [],
+        )
+
+    def test_cached_weight_is_hash_pinned_like_checkpoint(self):
+        payload = b"yolov8n test weights"
+        cache = self.root / "cache"
+        cache.mkdir()
+        target = cache / "face_yolov8n.pt"
+        target.write_bytes(payload)
+        spec = {
+            "face": {
+                "file": target.name,
+                "sha256": hashlib.sha256(payload).hexdigest(),
+                "size": len(payload),
+                "version": "test",
+            }
+        }
+        with patch.dict(studio.DETAILER_MODELS, spec):
+            self.assertEqual(studio.ensure_detailer_weight("face", str(cache)), target)
+            target.write_bytes(payload + b"tampered")
+            with self.assertRaisesRegex(RuntimeError, "sai kích thước/SHA-256"):
+                studio.ensure_detailer_weight("face", str(cache))
+        with self.assertRaisesRegex(ValueError, "Detector không tồn tại"):
+            studio.ensure_detailer_weight("person", str(cache))
+
+    def test_downloaded_weight_is_verified_then_kept_or_deleted(self):
+        payload = b"downloaded yolov8n weights"
+        spec = {
+            "face": {
+                "file": "face_yolov8n.pt",
+                "sha256": hashlib.sha256(payload).hexdigest(),
+                "size": len(payload),
+                "version": "test",
+            }
+        }
+        state = {"payload": payload}
+
+        def fake_download(**kwargs):
+            self.assertEqual(kwargs["repo_id"], studio.DETAILER_REPO)
+            self.assertEqual(kwargs["revision"], studio.DETAILER_REVISION)
+            self.assertIs(kwargs["token"], False)  # không cần tài khoản/token
+            target = Path(kwargs["local_dir"]) / kwargs["filename"]
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(state["payload"])
+            return target
+
+        hub = types.SimpleNamespace(hf_hub_download=fake_download)
+        with (
+            patch.dict(studio.DETAILER_MODELS, spec),
+            patch.dict(sys.modules, {"huggingface_hub": hub}),
+        ):
+            good = self.root / "good"
+            self.assertEqual(
+                studio.ensure_detailer_weight("face", str(good)),
+                good / "face_yolov8n.pt",
+            )
+            state["payload"] = payload + b"corrupt"
+            bad = self.root / "bad"
+            with self.assertRaisesRegex(RuntimeError, "không khớp SHA-256"):
+                studio.ensure_detailer_weight("face", str(bad))
+            self.assertFalse((bad / "face_yolov8n.pt").exists())  # file sai bị xóa
+
+    def test_missing_ultralytics_raises_vietnamese_instruction(self):
+        with patch.dict(sys.modules, {"ultralytics": None}):
+            with self.assertRaisesRegex(RuntimeError, "ultralytics"):
+                studio.load_yolo_model(self.ck)
+
+    @unittest.skipIf(Image is None, "Pillow needed for detailer smoke test")
+    def test_text_to_image_repaints_detected_face_before_hires(self):
+        mock_diffusers = types.ModuleType("diffusers")
+        mock_diffusers.AutoPipelineForImage2Image = FakeDerived
+        mock_diffusers.AutoPipelineForInpainting = FakeDerived
+
+        class PatchPipe(FakePipe):
+            """Lượt inpaint trả ảnh đỏ để thấy đúng vùng được dán lại."""
+
+            def __call__(self, **kwargs):
+                if "mask_image" in kwargs:
+                    FakePipe.calls.append((self, kwargs))
+                    return types.SimpleNamespace(
+                        images=[
+                            Image.new("RGB", (kwargs["width"], kwargs["height"]), "red")
+                        ]
+                    )
+                return super().__call__(**kwargs)
+
+        self.runtime.pipe = PatchPipe()
+        self.detections["face"] = [(200, 150, 320, 300, 0.82)]
+        args = (
+            "anime portrait",
+            "bad hands",
+            20,
+            5.5,
+            11,
+            1,
+            True,
+            0.55,
+            False,
+            0.45,
+            True,
+        )
+        detailer = {
+            "detailer": "Mặt",
+            "detailer_strength": 0.4,
+            "detailer_conf": 0.3,
+            "detailer_max": 1,
+        }
+        with patch.dict(sys.modules, {"diffusers": mock_diffusers}):
+            _, paths, status, _ = self.runtime.text_to_image(
+                "512x512", *args, **detailer
+            )
+            self.assertEqual(len(FakePipe.calls), 2)  # tạo nền + inpaint vùng mặt
+            base, refine = (call[1] for call in FakePipe.calls)
+            self.assertNotIn("image", base)
+            self.assertEqual((base["width"], base["height"]), (512, 512))
+            self.assertEqual(refine["strength"], 0.4)
+            self.assertEqual(refine["padding_mask_crop"], 32)
+            self.assertEqual(
+                (refine["prompt"], refine["negative_prompt"]),
+                ("anime portrait", "bad hands"),  # đúng hai ô đang hiển thị
+            )
+            self.assertEqual(refine["generator"].seed, 11)  # seed gốc, tái lập được
+            self.assertEqual(refine["mask_image"].size, refine["image"].size)
+            self.assertTrue(all(value % 8 == 0 for value in refine["image"].size))
+            self.assertGreaterEqual(max(refine["image"].size), studio.DETAILER_MIN_CROP)
+            # Chạy trước hires fix: vùng cắt ở độ phân giải gốc, hires phóng sau.
+            FakePipe.calls = []
+            _, paths2, status2, _ = self.runtime.text_to_image(
+                "512x512", *args, hires_scale="2×", hires_strength=0.35, **detailer
+            )
+        self.assertEqual(len(FakePipe.calls), 3)
+        base, patch_call, hires_call = (call[1] for call in FakePipe.calls)
+        self.assertEqual((base["width"], base["height"]), (512, 512))
+        self.assertLessEqual(max(patch_call["image"].size), 512)
+        self.assertEqual((hires_call["width"], hires_call["height"]), (1024, 1024))
+        self.assertIn("auto-detailer đã sửa mặt", status)
+        self.assertIn("tin cậy 0.82", status)
+        self.assertIn("1024×1024", status2)
+        with Image.open(paths[0]) as result:
+            self.assertEqual(result.size, (512, 512))
+            self.assertEqual(result.convert("RGB").getpixel((260, 228)), (255, 0, 0))
+            self.assertEqual(result.convert("RGB").getpixel((10, 10)), (255, 255, 255))
+            metadata = json.loads(result.info["parameters"])
+        self.assertEqual(
+            metadata["detailer"],
+            {
+                "targets": ["face"],
+                "strength": 0.4,
+                "conf": 0.3,
+                "max_regions": 1,
+                "weights": ["Bingsu/adetailer@c310c21"],
+            },
+        )
+        self.assertEqual(metadata["prompt"], "anime portrait")
+        self.assertTrue(Path(paths2[0]).is_file())
+
+    @unittest.skipIf(Image is None, "Pillow needed for detailer smoke test")
+    def test_detailer_reports_no_detection_and_rejects_inpaint_mode(self):
+        mock_diffusers = types.ModuleType("diffusers")
+        mock_diffusers.AutoPipelineForImage2Image = FakeDerived
+        mock_diffusers.AutoPipelineForInpainting = FakeDerived
+        args = (
+            "anime portrait",
+            "bad hands",
+            20,
+            5.5,
+            11,
+            1,
+            True,
+            0.55,
+            False,
+            0.45,
+            True,
+        )
+        with patch.dict(sys.modules, {"diffusers": mock_diffusers}):
+            # Không dò thấy gì: báo rõ thay vì im lặng, ảnh vẫn được tạo.
+            _, _, status, _ = self.runtime.text_to_image(
+                "512x512", *args, detailer="Mặt + tay"
+            )
+            self.assertEqual(len(FakePipe.calls), 1)
+            self.assertIn("không thấy mặt/tay", status)
+            FakePipe.calls = []
+            # Cấu hình sai bị chặn trước khi tốn một lượt tạo ảnh nào.
+            with self.assertRaisesRegex(ValueError, "Detailer strength"):
+                self.runtime.text_to_image(
+                    "512x512", *args, detailer="Mặt", detailer_strength=0.95
+                )
+            self.assertEqual(FakePipe.calls, [])
+            with self.assertRaisesRegex(ValueError, "auto-detailer"):
+                self.runtime.text_to_image("512x512", *args, detailer="Cả người")
+            with self.assertRaisesRegex(ValueError, "Tắt"):
+                self.runtime._generate(
+                    "inpaint",
+                    None,
+                    None,
+                    "hands",
+                    8,
+                    0.45,
+                    "512x512",
+                    "anime portrait",
+                    "bad hands",
+                    20,
+                    6,
+                    5,
+                    1,
+                    True,
+                    0.55,
+                    False,
+                    0.45,
+                    False,
+                    detailer="Mặt",
+                )
+
+
+class RepairAndLookPromptTests(unittest.TestCase):
+    """Gợi ý sửa vùng (tay/móng/chân/mắt/mặt/răng/tóc/da) + chi tiết mắt & móng."""
+
+    def test_repair_regions_all_have_labels_and_stay_idempotent(self):
+        self.assertEqual(set(studio.REPAIR_LABELS), set(studio.REPAIR_HINTS))
+        for target in studio.REPAIR_HINTS:
+            with self.subTest(target=target):
+                if target == "custom":
+                    self.assertEqual(
+                        studio.apply_repair_hints("as-is", "bad", target),
+                        ("as-is", "bad"),
+                    )
+                    continue
+                filled = studio.apply_repair_hints(
+                    "natural portrait", "bad anatomy", target
+                )
+                self.assertNotEqual(filled, ("natural portrait", "bad anatomy"))
+                self.assertEqual(studio.apply_repair_hints(*filled, target), filled)
+                self.assertLessEqual(len(filled[0]), 2200)  # giới hạn _parameters
+                self.assertLessEqual(len(filled[1]), 1700)
+        # Thông báo lỗi phải kể tên các vùng mới để người dùng biết có gì để chọn.
+        with self.assertRaisesRegex(ValueError, "móng tay / móng chân"):
+            studio.apply_repair_hints("a", "", "unknown")
+
+    def test_new_repair_regions_cover_nails_face_teeth_hair_skin(self):
+        self.assertEqual(studio.REPAIR_LABELS["nails"], "Móng tay / móng chân")
+        for target, positive_tag, negative_tag in (
+            ("nails", "well-shaped fingernails", "deformed nails"),
+            ("face", "symmetrical face", "poorly drawn face"),
+            ("teeth", "straight teeth", "crooked teeth"),
+            ("hair", "natural hair strands", "messy hairline"),
+            ("skin", "even skin tone", "skin blemishes"),
+        ):
+            with self.subTest(target=target):
+                filled = studio.apply_repair_hints("portrait", "bad quality", target)
+                self.assertIn(positive_tag, filled[0])
+                self.assertIn(negative_tag, filled[1])
+        # Khóa gửi runtime vẫn là tiếng Anh: _generate("inpaint", target=...) không đổi.
+        self.assertIn("nails", studio.REPAIR_HINTS)
+
+    def test_look_defaults_to_nothing_and_rejects_unknown_choice(self):
+        self.assertEqual(studio.look_tags(), ())
+        with self.assertRaisesRegex(ValueError, "Chưa chọn chi tiết nào"):
+            studio.apply_look_tags("1girl", "bad hands")
+        with self.assertRaisesRegex(ValueError, "màu mắt"):
+            studio.apply_look_tags("1girl", "", "đỏ rực")
+        with self.assertRaisesRegex(ValueError, "màu sơn móng chân"):
+            studio.apply_look_tags(
+                "1girl",
+                "",
+                studio.LOOK_OFF,
+                studio.LOOK_OFF,
+                studio.LOOK_OFF,
+                "xanh neon",
+            )
+
+    def test_look_choices_write_visible_danbooru_tags(self):
+        filled, negative = studio.apply_look_tags(
+            "1girl, solo",
+            "bad hands",
+            "Hai màu (heterochromia)",
+            "Hạnh nhân (almond)",
+            "Đỏ",
+            "Đen",
+        )
+        self.assertEqual(
+            filled,
+            "1girl, solo, heterochromia, multicolored eyes, almond-shaped nails, "
+            "red nails, nail polish, painted toenails, black nail polish",
+        )
+        self.assertEqual(negative, "bad hands")  # negative không bị đụng tới
+        # Bấm lại không nhân đôi thẻ; thẻ nằm trong ô hiển thị nên xóa được.
+        again, _ = studio.apply_look_tags(
+            filled,
+            negative,
+            "Hai màu (heterochromia)",
+            "Hạnh nhân (almond)",
+            "Đỏ",
+            "Đen",
+        )
+        self.assertEqual(again, filled)
+        self.assertEqual(again.count("red nails"), 1)
+        # Chỉ chọn móng chân vẫn hoạt động độc lập.
+        toes, _ = studio.apply_look_tags(
+            "", "", studio.LOOK_OFF, studio.LOOK_OFF, studio.LOOK_OFF, "Không sơn"
+        )
+        self.assertEqual(toes, "natural toenails")
+
+    def test_every_look_option_is_classified_as_appearance_and_short(self):
+        tags = set()
+        for field, label, choices in studio.LOOK_FIELDS:
+            with self.subTest(field=field):
+                self.assertIn(studio.LOOK_OFF, choices)
+                self.assertTrue(len(choices) > 2, label)
+            for option in choices.values():
+                tags.update(option)
+        self.assertTrue(tags)
+        for tag in sorted(tags):
+            with self.subTest(tag=tag):
+                self.assertEqual(studio.classify_tag(tag), "appearance")
+        everything = studio.apply_look_tags(
+            "", "", *[list(choices)[-1] for _, _, choices in studio.LOOK_FIELDS]
+        )[0]
+        self.assertLessEqual(len(everything), 2200)
+
+    def test_structure_prompt_keeps_look_tags_in_appearance_group(self):
+        prompt, _ = studio.structure_prompt(
+            "1girl, solo, red nails, almond-shaped nails, blue eyes, upper body, "
+            "masterpiece, best quality",
+            "character",
+        )
+        groups = studio.sort_prompt_tags(studio.split_tags(prompt))[2]
+        for tag in ("red nails", "almond-shaped nails", "blue eyes"):
+            self.assertIn(tag, groups["appearance"])
+        # Nhóm Ngoại hình phải đứng trước Bố cục như thứ tự chuẩn.
+        self.assertLess(prompt.index("red nails"), prompt.index("upper body"), prompt)
 
 
 if __name__ == "__main__":

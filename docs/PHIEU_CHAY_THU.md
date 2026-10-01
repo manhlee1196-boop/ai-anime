@@ -12,7 +12,7 @@ cần tạo ảnh.
 
 ## Phần 0 · Mở đúng bản có tính năng mới
 
-- [ ] Mở notebook **của nhánh này** (bản `main` chưa có 3 nút mới):
+- [ ] Mở notebook **của nhánh này** (bản `main` chưa có 3 nút quy trình và auto-detailer):
 
   <https://colab.research.google.com/github/manhlee1196-boop/ai-anime/blob/arena/01a0f38a-ai-anime/WAI_Illustrious_Studio_Colab.ipynb>
 
@@ -26,6 +26,14 @@ cần tạo ảnh.
 - [ ] Ô cuối in `Running on public URL` → mở link `https://….gradio.live`.
 - [ ] Trong giao diện thấy accordion **🧭 Quy trình chuẩn · khung prompt + negative tối ưu**
       (ngay dưới nút *Thêm trigger `perfect eyes`*). **Không thấy = bạn đang mở nhầm bản cũ.**
+- [ ] Ngay dưới khung **🔍 Ảnh độ phân giải cao** thấy khung **🔎 Tự sửa mặt / bàn tay**
+      với 4 ô, mặc định **Tắt**, và khung **💅 Chi tiết mắt & móng** với 4 ô chọn + nút
+      *Thêm chi tiết mắt/móng vào prompt đang hiển thị* (mặc định **Không thêm**).
+- [ ] Trong tab **✎ Sửa vùng ảnh**, ô **Chi tiết cần sửa** có **9 lựa chọn** tiếng Việt
+      (Bàn tay, Móng tay / móng chân, Chân / bàn chân, Mắt, Khuôn mặt, Răng, Tóc, Da,
+      Tùy chỉnh).
+- [ ] Ô 2 **không** in dòng `⚠️ Chưa cài được ultralytics`. Nếu có, auto-detailer sẽ báo lỗi
+      khi bật (các chế độ khác vẫn chạy): thử **Runtime → Restart runtime → Run all**.
 
 > Link `gradio.live` **không có đăng nhập**: ai biết link đều dùng được GPU của bạn. Đừng
 > chia sẻ, và dừng runtime khi xong.
@@ -115,9 +123,28 @@ masterpiece, best quality, amazing quality, 1girl, solo, adult woman, long dark 
 - [ ] Xem metadata PNG (Properties → Details, hoặc kéo ảnh vào <https://exif.tools>) →
       prompt/negative trong file phải **giống nguyên văn** hai ô lúc bạn bấm tạo.
 
+### A6. Gợi ý sửa vùng + chi tiết mắt/móng (không tạo ảnh, không tốn GPU)
+
+- [ ] Vào tab **✎ Sửa vùng ảnh**, chọn lần lượt `Móng tay / móng chân`, `Khuôn mặt`,
+      `Răng`, `Tóc`, `Da` → mỗi lần bấm **Thêm gợi ý sửa vùng vào prompt đang hiển thị**:
+      hai ô prompt/negative phải dài ra đúng cặp thẻ của vùng đó; bấm **lần hai** không
+      nhân đôi thẻ.
+- [ ] Ở khung **💅 Chi tiết mắt & móng**: để cả 4 ô `Không thêm` rồi bấm nút → phải báo
+      lỗi "Chưa chọn chi tiết nào" và **không** đổi ô prompt.
+- [ ] Chọn `Màu mắt = Hai màu (heterochromia)`, `Kiểu dáng móng tay = Hạnh nhân (almond)`,
+      `Màu sơn móng tay = Đỏ`, `Màu sơn móng chân = Đen` → bấm nút. Ô prompt phải có đúng:
+      `heterochromia, multicolored eyes, almond-shaped nails, red nails, nail polish,
+      painted toenails, black nail polish`; ô **negative không đổi**.
+- [ ] Bấm nút lần nữa → không thẻ nào bị lặp (đếm `red nails` chỉ 1 lần). Xóa tay một thẻ
+      trong ô prompt → nó **không tự quay lại** khi bạn bấm tạo ảnh.
+- [ ] Bấm **🩺 Kiểm tra prompt & thông số** → đọc số token; nếu vượt 75 thì bỏ bớt thẻ
+      (mục 3.1 của quy trình).
+- [ ] Bấm **Sắp xếp prompt theo thứ tự chuẩn** → các thẻ mắt/móng phải nằm trong nhóm
+      **Ngoại hình**, không bị đẩy xuống nhóm khác.
+
 ---
 
-## Phần B · Tạo ảnh thật: 4 phép thử A/B (đây mới là phần quyết định)
+## Phần B · Tạo ảnh thật: 6 phép thử A/B (đây mới là phần quyết định)
 
 Mỗi phép thử **giữ nguyên seed** để chỉ negative/thông số thay đổi. Ghi kết quả vào bảng
 ở Phần D. Chụp/ghi lại seed bằng cách bật metadata PNG.
@@ -167,6 +194,41 @@ masterpiece, best quality, amazing quality, 1girl, solo, adult woman, short blac
       thẻ vừa thêm → strength **0.45** → chạy.
 - [ ] So ảnh trước/sau inpaint: ngón tay khá hơn mà **mặt và áo không đổi**?
 
+### B5. Auto-detailer · A/B mặt/tay (dùng lại prompt B4)
+
+Giữ nguyên prompt/negative/seed 2024 của B4, chỉ đổi khung **🔎 Tự sửa mặt / bàn tay**:
+
+- [ ] Lượt 1 — **Tắt** (mặc định). Ghi lại: mặt và tay lỗi gì.
+- [ ] Lượt 2 — **Mặt + tay**, strength **0.4**, ngưỡng **0.3**, **2 vùng**, cùng seed.
+      Kỳ vọng thanh trạng thái có `auto-detailer đã sửa mặt … · tin cậy 0,xx`.
+- [ ] Lượt 3 — **Mặt** thôi, strength **0.3** (nếu lượt 2 làm đổi nét mặt).
+- [ ] So 3 ảnh ở 100%: ngón tay/mắt khá hơn mà **bố cục, nền, áo, tông màu không đổi**?
+      Có viền cứng quanh vùng sửa không?
+- [ ] Thử ngưỡng **0.2** với ảnh tay bị che một phần: detector có bắt được thêm vùng nào
+      không, hay nhận nhầm vùng không phải tay?
+- [ ] (Tuỳ chọn) Đối chiếu hash weight: `sha256sum /content/wai_detailer_cache/*.pt` phải
+      khớp hai dòng `face_yolov8n.pt` / `hand_yolov8n.pt` trong `README.md`.
+- [ ] Ghi thời gian mỗi lượt: bật detailer 2 vùng chậm hơn bao nhiêu so với tắt?
+
+### B6. Cận tay · kiểu móng + màu sơn (A/B)
+
+Prompt (1024x1024, steps 28, CFG 6, seed 3110):
+
+```text
+masterpiece, best quality, amazing quality, 1girl, solo, adult woman, close-up, hands, fingers spread, hand on hip, elegant dress, indoor cafe background, warm light, cel shading, anime illustration, absurdres
+```
+
+- [ ] Lượt 1 — móng **tự nhiên**: khung 💅 để `Kiểu dáng móng tay = Tự nhiên, ngắn`,
+      `Màu sơn móng tay = Không sơn`.
+- [ ] Lượt 2 — `Hạnh nhân (almond)` + `Đỏ`, cùng seed.
+- [ ] Lượt 3 — `Dài nhọn (stiletto)` + `Kim tuyến`, cùng seed.
+- [ ] So 3 ảnh: hình dạng móng có đổi đúng ý không, số ngón tay có giữ nguyên 5 ngón,
+      màu sơn có đều không?
+- [ ] Thêm lượt 4 với **auto-detailer = Tay** (strength 0,35) nếu ngón/móng còn lỗi:
+      vùng tay có sạch hơn mà phần áo/nền không đổi?
+- [ ] Ghi lại: cần bao nhiêu token cho phần móng, và CFG nào cho móng "sạch" nhất
+      (thử 5,5 và 6,5).
+
 ---
 
 ## Phần C · Hires & phóng to
@@ -193,6 +255,13 @@ masterpiece, best quality, amazing quality, 1girl, solo, adult woman, short blac
 | B4-1 | core, tắt Anatomy | 2024 | 1024x1024, 28, CFG 6 | | |
 | B4-2 | anatomy, Anatomy 0.55 | 2024 | như trên | | |
 | B4-3 | inpaint hands 0.45 | 2024 | — | | |
+| B5-1 | core, detailer Tắt | 2024 | 1024x1024, 28, CFG 6 | | |
+| B5-2 | core, detailer Mặt + tay 0.4 | 2024 | như trên, ngưỡng 0.3, 2 vùng | | |
+| B5-3 | core, detailer Mặt 0.3 | 2024 | như trên, 2 vùng | | |
+| B6-1 | core, móng tự nhiên | 3110 | 1024x1024, 28, CFG 6 | | |
+| B6-2 | core, almond + đỏ | 3110 | như trên | | |
+| B6-3 | core, stiletto + kim tuyến | 3110 | như trên | | |
+| B6-4 | core, stiletto + detailer Tay 0.35 | 3110 | như trên | | |
 | C1/C2 | — | 12345 | hires 0.35 / 0.4 | | |
 
 Ghi thêm: chế độ nạp ở ô 6 (GPU trực tiếp / CPU offload), thời gian mỗi ảnh, và VRAM.

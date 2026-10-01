@@ -62,6 +62,14 @@ def build():
         install.rstrip()
         + ' "gradio==6.15.2" "pydantic>=2.12.5,<3" "starlette>=1.3.1,<2"\n'
         + """
+# ultralytics chỉ phục vụ tính năng *tự sửa mặt/tay* (auto-detailer) nên cài
+# riêng và chỉ cảnh báo khi thất bại: thiếu nó thì Studio vẫn chạy bình thường,
+# riêng auto-detailer báo lỗi rõ ràng lúc được bật.
+try:
+    get_ipython().run_line_magic("pip", '-q install "ultralytics==8.4.170"')
+except Exception as exc:
+    print("⚠️ Chưa cài được ultralytics nên auto-detailer sẽ tắt:", exc)
+
 from importlib.metadata import PackageNotFoundError, version
 from packaging.specifiers import SpecifierSet
 import gradio, gradio_client, pydantic, starlette, huggingface_hub
@@ -94,6 +102,17 @@ required = {
 for package, constraint in required.items():
     if versions[package] not in SpecifierSet(constraint):
         raise RuntimeError(f"{package} đang là {versions[package]}, cần {constraint}. Chọn Runtime → Restart runtime rồi Run all.")
+# Tính năng tuỳ chọn: lệch phiên bản thì chỉ nhắc, không chặn Studio.
+optional = {"ultralytics": ">=8.4,<9"}
+for package, constraint in optional.items():
+    try:
+        installed = version(package)
+    except PackageNotFoundError:
+        print(f"⚠️ Không có {package}: auto-detailer sẽ báo lỗi khi được bật, các chế độ khác vẫn chạy.")
+        continue
+    if installed not in SpecifierSet(constraint):
+        print(f"⚠️ {package} đang là {installed}, khác {constraint}: auto-detailer có thể lỗi. Có thể để tính năng này ở mức Tắt.")
+    versions[package] = installed
 # Bắt lỗi import trước khi tải checkpoint 6,94 GB ở ô 4.
 try:
     from diffusers import StableDiffusionXLPipeline, AutoPipelineForImage2Image, AutoPipelineForInpainting

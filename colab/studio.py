@@ -122,6 +122,10 @@ REPAIR_HINTS = {
         "natural hands, anatomically correct fingers, detailed fingers",
         "extra fingers, missing fingers, fused fingers, malformed fingers, deformed hands",
     ),
+    "nails": (
+        "natural nails, well-shaped fingernails, detailed nails",
+        "deformed nails, missing nails, extra nails, chipped nails, broken nails",
+    ),
     "legs": (
         "natural leg anatomy, well-formed feet, natural toes, balanced pose",
         "extra legs, broken legs, deformed feet, extra toes, missing toes, fused toes",
@@ -130,8 +134,128 @@ REPAIR_HINTS = {
         "symmetrical eyes, detailed irises, perfect eyes",
         "misaligned eyes, deformed eyes, extra eyes",
     ),
+    "face": (
+        "symmetrical face, detailed face, natural skin tone",
+        "bad face, poorly drawn face, asymmetrical eyes, deformed face, cross-eyed",
+    ),
+    "teeth": (
+        "natural teeth, straight teeth",
+        "bad teeth, crooked teeth, missing teeth, extra teeth",
+    ),
+    "hair": (
+        "detailed hair, natural hair strands, consistent hairline",
+        "messy hairline, fused hair strands, blurry hair, missing hair",
+    ),
+    "skin": (
+        "smooth skin, even skin tone, consistent shading",
+        "skin blemishes, acne, patchy skin, oily skin",
+    ),
     "custom": ("", ""),
 }
+# Nhãn tiếng Việt cho dropdown; GIÁ TRỊ gửi vào runtime vẫn là khóa tiếng Anh ở trên
+# (đúng khóa mà `_generate` kiểm tra khi sửa vùng), nên không đổi hành vi cũ.
+REPAIR_LABELS = {
+    "hands": "Bàn tay",
+    "nails": "Móng tay / móng chân",
+    "legs": "Chân / bàn chân",
+    "eyes": "Mắt",
+    "face": "Khuôn mặt",
+    "teeth": "Răng",
+    "hair": "Tóc",
+    "skin": "Da",
+    "custom": "Tùy chỉnh (tự viết)",
+}
+assert set(REPAIR_LABELS) == set(REPAIR_HINTS)
+
+# ---------------------------------------------------------------------------
+# CHI TIẾT MẮT & MÓNG: màu mắt, kiểu dáng móng tay, màu sơn móng tay/móng chân.
+#
+# Thẻ viết theo cú pháp Danbooru mà họ Illustrious bám tốt ("red nails",
+# "almond-shaped nails", "heterochromia"…), mỗi lựa chọn là MỘT NHÓM thẻ để ghép
+# được cả kiểu dáng + màu. Như mọi công cụ khác của Studio: chỉ ghi vào ô prompt
+# ĐANG HIỂN THỊ để bạn sửa/xóa; không có thẻ nào được ghép ngầm lúc tạo ảnh.
+# ---------------------------------------------------------------------------
+LOOK_OFF = "Không thêm"
+LOOK_FIELDS = (
+    (
+        "eye_color",
+        "Màu mắt",
+        {
+            LOOK_OFF: (),
+            "Xanh dương": ("blue eyes",),
+            "Xanh dương nhạt": ("light blue eyes",),
+            "Xanh ngọc": ("aqua eyes",),
+            "Xanh lá": ("green eyes",),
+            "Nâu": ("brown eyes",),
+            "Hổ phách": ("amber eyes",),
+            "Đỏ": ("red eyes",),
+            "Hồng": ("pink eyes",),
+            "Tím": ("purple eyes",),
+            "Vàng": ("yellow eyes",),
+            "Xám": ("grey eyes",),
+            "Bạc": ("silver eyes",),
+            "Đen": ("black eyes",),
+            "Hai màu (heterochromia)": ("heterochromia", "multicolored eyes"),
+            "Đổi màu (gradient)": ("gradient eyes",),
+            "Mắt phát sáng": ("glowing eyes", "detailed pupils"),
+        },
+    ),
+    (
+        "nail_shape",
+        "Kiểu dáng móng tay",
+        {
+            LOOK_OFF: (),
+            "Tự nhiên, ngắn": ("natural nails", "short nails"),
+            "Tròn ngắn": ("short round nails",),
+            "Vuông": ("square nails",),
+            "Bầu dục": ("oval nails",),
+            "Hạnh nhân (almond)": ("almond-shaped nails",),
+            "Dài nhọn (stiletto)": ("stiletto nails", "long fingernails"),
+            "Dài đầu vuông (coffin)": ("coffin nails", "long fingernails"),
+            "Móng dài": ("long fingernails",),
+            "Móng sắc": ("sharp fingernails",),
+        },
+    ),
+    (
+        "nail_color",
+        "Màu sơn móng tay",
+        {
+            LOOK_OFF: (),
+            "Đỏ": ("red nails", "nail polish"),
+            "Đen": ("black nails", "nail polish"),
+            "Hồng": ("pink nails", "nail polish"),
+            "Trắng": ("white nails", "nail polish"),
+            "Xanh dương": ("blue nails", "nail polish"),
+            "Tím": ("purple nails", "nail polish"),
+            "Nude / da": ("nude nails", "nail polish"),
+            "Gradient": ("gradient nails", "nail polish"),
+            "Kim tuyến": ("glitter nails", "nail polish"),
+            "French (đầu trắng)": ("french nails", "nail polish"),
+            "Vẽ hoa văn": ("nail art", "nail polish"),
+            "Không sơn": ("natural nails",),
+        },
+    ),
+    (
+        "toenail_color",
+        "Màu sơn móng chân",
+        {
+            LOOK_OFF: (),
+            "Đỏ": ("painted toenails", "red nail polish"),
+            "Đen": ("painted toenails", "black nail polish"),
+            "Hồng": ("painted toenails", "pink nail polish"),
+            "Trắng": ("painted toenails", "white nail polish"),
+            "Xanh dương": ("painted toenails", "blue nail polish"),
+            "Tím": ("painted toenails", "purple nail polish"),
+            "Nude / da": ("painted toenails", "nude nail polish"),
+            "Kim tuyến": ("painted toenails", "glitter nail polish"),
+            "Không sơn": ("natural toenails",),
+        },
+    ),
+)
+LOOK_OPTIONS = {field: choices for field, _, choices in LOOK_FIELDS}
+LOOK_LABELS = {field: label for field, label, _ in LOOK_FIELDS}
+for _field, _label, _choices in LOOK_FIELDS:
+    assert LOOK_OFF in _choices, f"{_label} phải có lựa chọn '{LOOK_OFF}'."
 
 
 def _add_prompt_tags(text, tags):
@@ -153,12 +277,57 @@ def add_eyes_trigger(prompt, negative):
 def apply_repair_hints(positive, negative, target):
     """Explicit UI action: append suggestions in the editable fields before inpainting."""
     if target not in REPAIR_HINTS:
-        raise ValueError("Chọn vùng sửa: tay, chân, mắt hoặc tùy chỉnh.")
+        raise ValueError(
+            "Chọn vùng sửa: "
+            + ", ".join(label.lower() for label in REPAIR_LABELS.values())
+            + "."
+        )
     hint_pos, hint_neg = REPAIR_HINTS[target]
     return (
         _add_prompt_tags(positive, hint_pos.split(",")),
         _add_prompt_tags(negative, hint_neg.split(",")),
     )
+
+
+def look_tags(
+    eye_color=LOOK_OFF,
+    nail_shape=LOOK_OFF,
+    nail_color=LOOK_OFF,
+    toenail_color=LOOK_OFF,
+):
+    """Danh sách thẻ của các lựa chọn mắt/móng, theo thứ tự mắt → móng tay → móng chân."""
+    chosen = {
+        "eye_color": eye_color,
+        "nail_shape": nail_shape,
+        "nail_color": nail_color,
+        "toenail_color": toenail_color,
+    }
+    tags = []
+    for field, label in LOOK_LABELS.items():
+        value = chosen.get(field, LOOK_OFF)
+        options = LOOK_OPTIONS[field]
+        if value not in options:
+            raise ValueError(f"Chọn {label.lower()} trong danh sách hoặc '{LOOK_OFF}'.")
+        tags.extend(options[value])
+    return tuple(tags)
+
+
+def apply_look_tags(
+    positive,
+    negative,
+    eye_color=LOOK_OFF,
+    nail_shape=LOOK_OFF,
+    nail_color=LOOK_OFF,
+    toenail_color=LOOK_OFF,
+):
+    """Hành động UI: thêm thẻ mắt/móng vào ô prompt đang hiển thị (sửa/xóa được)."""
+    tags = look_tags(eye_color, nail_shape, nail_color, toenail_color)
+    if not tags:
+        raise ValueError(
+            "Chưa chọn chi tiết nào: hãy chọn màu mắt, kiểu dáng móng hoặc màu sơn "
+            f"móng (khác '{LOOK_OFF}') rồi bấm lại."
+        )
+    return _add_prompt_tags(positive, tags), negative
 
 
 # ---------------------------------------------------------------------------
@@ -434,13 +603,15 @@ _SECTION_RULES = (
         r"\bwearing\b|\bdress shirt\b|\bpencil skirt\b|\bturtleneck\b|\bknit\b|thighhighs|pantyhose|\bgarter\b|\bsuspenders\b)",
     ),
     (
+        # Nhóm này bắt cả thẻ móng/màu mắt của công cụ 'Chi tiết mắt & móng'.
         "appearance",
         r"(\bhair\b|\beyes?\b|\bskin\b|\bface\b|\bnose\b|\blips?\b|\bteeth\b|"
         r"\bears?\b|\btattoo\b|\bfreckles\b|\bmole\b|\bscar\b|\bglasses\b|"
         r"\bmakeup\b|\bexpression\b|\bsmile\b|\bblush\b|\btall\b|\bpetite\b|"
         r"\bslim\b|\bcurvy\b|\bmuscular\b|\bbraid\b|\bponytail\b|\btwintails\b|"
         r"\bbangs\b|\bbob cut\b|\bbun\b|\bwavy\b|\bstraight hair\b|\blong hair\b|"
-        r"\bshort hair\b|\bblue eyes\b|\bbody\b|\bproportions\b)",
+        r"\bshort hair\b|\bblue eyes\b|\bbody\b|\bproportions\b|\bnails?\b|\bfingernails?\b|\btoenails?\b|\bnail polish\b|\bnail art\b|\bpupils?\b|\bheterochromia\b|\beyelashes\b|\beyebrows\b|\birides\b|\biris\b)",
+        # Móng và chi tiết mắt được xếp vào nhóm Ngoại hình thay vì 'extra'.
     ),
     (
         "composition",
@@ -1057,6 +1228,201 @@ def run_prompt_check(
 
 
 # ---------------------------------------------------------------------------
+# AUTO-DETAILER · tự phát hiện mặt / bàn tay rồi inpaint lại đúng vùng đó.
+#
+# Tương đương ADetailer của A1111/ComfyUI, viết theo kiến trúc của Studio:
+# detector YOLOv8 (cùng họ weight mà ADetailer dùng, tập huấn có cả ảnh anime)
+# trả bounding box → cắt vùng → inpaint vùng cắt bằng chính pipeline inpaint
+# đang có → dán lại với viền mềm. Hai ô prompt/negative đang hiển thị được dùng
+# NGUYÊN VĂN: không có thẻ nào được thêm ngầm lúc chạy.
+#
+# Weight detector được ghim SHA-256 + số byte như checkpoint/LoRA: file tải về
+# sai hash bị xóa và từ chối nạp.
+# ---------------------------------------------------------------------------
+DETAILER_OFF = "Tắt"
+DETAILER_TARGETS = {
+    DETAILER_OFF: (),
+    "Mặt": ("face",),
+    "Tay": ("hands",),
+    "Mặt + tay": ("face", "hands"),
+}
+DETAILER_LABELS = {"face": "mặt", "hands": "tay"}
+DETAILER_STRENGTH_RANGE = (0.2, 0.7)
+DETAILER_DEFAULT_STRENGTH = 0.4
+DETAILER_CONF_RANGE = (0.1, 0.9)
+DETAILER_DEFAULT_CONF = 0.3
+DETAILER_MAX_RANGE = (1, 4)
+DETAILER_DEFAULT_MAX = 2
+DETAILER_PADDING = 0.25  # nới bounding box thêm 25% mỗi chiều
+DETAILER_FEATHER = 12  # px làm mềm mép khi dán vùng đã sửa trở lại
+DETAILER_MIN_CROP = 512  # vùng nhỏ hơn sẽ được phóng lên trước khi inpaint
+DETAILER_REPO = "Bingsu/adetailer"
+DETAILER_REVISION = "c310c2160bcd1b249e93d1a1e4984949e5cc2d96"
+DETAILER_CACHE = "/content/wai_detailer_cache"
+DETAILER_MODELS = {
+    "face": {
+        "file": "face_yolov8n.pt",
+        "sha256": "70b640f8f60b1cf0dcc72f30caf3da9495eb2fb6509da48c53374ad6806e6a9c",
+        "size": 6_230_011,
+        "version": "Bingsu/adetailer@c310c21",
+    },
+    "hands": {
+        "file": "hand_yolov8n.pt",
+        "sha256": "3991202eb69e9ddcb3b9ba80cdeb41e734ffaf844403d6c9f47d515cd88c6f29",
+        "size": 6_237_883,
+        "version": "Bingsu/adetailer@c310c21",
+    },
+}
+
+
+def detailer_targets(label):
+    """Nhãn trong dropdown → các vùng cần phát hiện."""
+    if label not in DETAILER_TARGETS:
+        raise ValueError("Chọn auto-detailer: Tắt, Mặt, Tay hoặc Mặt + tay.")
+    return DETAILER_TARGETS[label]
+
+
+def validate_detailer(label, strength, conf, max_regions):
+    """Cấu hình auto-detailer hợp lệ, hoặc None khi người dùng để Tắt."""
+    targets = detailer_targets(label)
+    if not targets:
+        return None
+    return {
+        "label": label,
+        "targets": targets,
+        "strength": _number(strength, "Detailer strength", *DETAILER_STRENGTH_RANGE),
+        "conf": _number(conf, "Ngưỡng phát hiện", *DETAILER_CONF_RANGE),
+        "max_regions": _number(
+            max_regions, "Số vùng tối đa", *DETAILER_MAX_RANGE, integer=True
+        ),
+    }
+
+
+def sha256_file(path):
+    import hashlib
+
+    digest = hashlib.sha256()
+    with open(path, "rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def ensure_detailer_weight(kind, cache_dir=DETAILER_CACHE):
+    """Tải weight YOLOv8 một lần rồi dùng lại; từ chối file sai hash."""
+    if kind not in DETAILER_MODELS:
+        raise ValueError("Detector không tồn tại: " + str(kind))
+    spec = DETAILER_MODELS[kind]
+    folder = Path(cache_dir)
+    cached = folder / spec["file"]
+    if cached.is_file():
+        if (
+            cached.stat().st_size != spec["size"]
+            or sha256_file(cached) != spec["sha256"]
+        ):
+            raise RuntimeError(
+                f"File detector {spec['file']} trong {folder} sai kích thước/SHA-256. "
+                "Hãy tự xóa file đó rồi chạy lại; hệ thống không ghi đè file hỏng."
+            )
+        return cached
+    try:
+        from huggingface_hub import hf_hub_download
+    except ImportError as exc:  # pragma: no cover - ô 2 đã ghim huggingface_hub
+        raise RuntimeError(
+            "Thiếu huggingface_hub để tải weight auto-detailer. Chạy lại ô 2."
+        ) from exc
+    folder.mkdir(parents=True, exist_ok=True)
+    downloaded = Path(
+        hf_hub_download(
+            repo_id=DETAILER_REPO,
+            filename=spec["file"],
+            revision=DETAILER_REVISION,
+            local_dir=str(folder),
+            token=False,
+        )
+    )
+    if (
+        downloaded.stat().st_size != spec["size"]
+        or sha256_file(downloaded) != spec["sha256"]
+    ):
+        downloaded.unlink(missing_ok=True)
+        raise RuntimeError(
+            f"Weight {spec['file']} tải về không khớp SHA-256 đã ghim "
+            f"({spec['version']}); đã xóa file và không nạp. Kiểm tra mạng rồi thử lại."
+        )
+    return downloaded
+
+
+def load_yolo_model(path):
+    """Nạp weight YOLOv8; báo lỗi rõ ràng nếu ô 2 chưa cài ultralytics."""
+    try:
+        from ultralytics import YOLO
+    except ImportError as exc:
+        raise RuntimeError(
+            "Chưa cài `ultralytics` nên auto-detailer không chạy được. Chọn "
+            "Runtime → Restart runtime → Run all để ô 2 cài lại thư viện, hoặc "
+            "để auto-detailer ở mức Tắt."
+        ) from exc
+    return YOLO(str(path))
+
+
+def pad_box(box, size, padding=DETAILER_PADDING):
+    """Nới bounding box, kẹp trong ảnh, cạnh chia hết cho 8 và ≥ 64 px."""
+    width, height = size
+    left, top, right, bottom = box
+    x1, x2 = sorted((min(max(0.0, left), width), min(max(0.0, right), width)))
+    y1, y2 = sorted((min(max(0.0, top), height), min(max(0.0, bottom), height)))
+    grow_x = (x2 - x1) * padding
+    grow_y = (y2 - y1) * padding
+    x1 = max(0, int(x1 - grow_x) // 8 * 8)
+    y1 = max(0, int(y1 - grow_y) // 8 * 8)
+    x2 = min(width, math.ceil((x2 + grow_x) / 8) * 8)
+    y2 = min(height, math.ceil((y2 + grow_y) / 8) * 8)
+    if x2 - x1 < 64:
+        x2 = min(width, x1 + 64)
+        x1 = max(0, x2 - 64)
+    if y2 - y1 < 64:
+        y2 = min(height, y1 + 64)
+        y1 = max(0, y2 - 64)
+    return (x1, y1, x2, y2)
+
+
+def build_detailer_detector(kind, cache_dir=DETAILER_CACHE):
+    """Weight đã xác minh hash → detector YOLOv8 sẵn sàng predict."""
+    return load_yolo_model(ensure_detailer_weight(kind, cache_dir))
+
+
+def detect_detail_regions(
+    image,
+    targets,
+    conf,
+    max_regions,
+    detector=build_detailer_detector,
+    cache_dir=DETAILER_CACHE,
+):
+    """Trả về [(box, loại vùng, độ tin cậy)] theo độ tin cậy giảm dần."""
+    found = []
+    for kind in targets:
+        model = detector(kind, cache_dir)
+        for result in model.predict(source=image, conf=conf, verbose=False):
+            boxes = getattr(result, "boxes", None)
+            if boxes is None:
+                continue
+            for box in boxes:
+                coords = getattr(box, "xyxy", None)
+                scores = getattr(box, "conf", None)
+                if coords is None or len(coords) == 0:
+                    continue
+                x1, y1, x2, y2 = (float(value) for value in list(coords[0])[:4])
+                confidence = (
+                    float(scores[0]) if scores is not None and len(scores) else conf
+                )
+                found.append((pad_box((x1, y1, x2, y2), image.size), kind, confidence))
+    found.sort(key=lambda item: item[2], reverse=True)
+    return found[:max_regions]
+
+
+# ---------------------------------------------------------------------------
 # Thư viện prompt: nạp danh sách prompt từ file text rồi chọn một dòng để nạp.
 #
 #   === 50 PROMPTS – CHỦ ĐỀ ===
@@ -1545,6 +1911,8 @@ class StudioRuntime:
         use_offload,
         output_dir,
         backup_dir="/content/wai_outputs",
+        detailer_cache=DETAILER_CACHE,
+        detailer_detector=build_detailer_detector,
     ):
         if pipe is None or not Path(checkpoint).is_file():
             raise RuntimeError(
@@ -1574,6 +1942,8 @@ class StudioRuntime:
         self.use_offload = bool(use_offload)
         self.output_dir = Path(output_dir)
         self.backup_dir = Path(backup_dir)
+        self.detailer_cache = str(detailer_cache)
+        self.detailer_detector = detailer_detector
         self.lock = threading.Lock()
 
     @property
@@ -1770,6 +2140,72 @@ class StudioRuntime:
                     "Vẫn thiếu VRAM sau khi thử CPU offload. Giảm kích thước ảnh."
                 ) from exc
 
+    def _detail_pass(self, image, positive, negative, steps, cfg, seed, spec, choices):
+        """Auto-detailer: inpaint lại từng vùng mặt/tay vừa phát hiện được."""
+        from PIL import Image, ImageDraw, ImageFilter
+
+        regions = detect_detail_regions(
+            image,
+            spec["targets"],
+            spec["conf"],
+            spec["max_regions"],
+            detector=self.detailer_detector,
+            cache_dir=self.detailer_cache,
+        )
+        wanted = "/".join(DETAILER_LABELS[kind] for kind in spec["targets"])
+        if not regions:
+            return image, (
+                f"auto-detailer không thấy {wanted} nào ở ngưỡng "
+                f"{spec['conf']:g} — hãy hạ ngưỡng phát hiện rồi thử lại"
+            )
+        base = image.convert("RGB")
+        notes = []
+        for index, (box, kind, confidence) in enumerate(regions):
+            x1, y1, x2, y2 = box
+            crop = base.crop(box)
+            scale = 1.0
+            if max(crop.size) < DETAILER_MIN_CROP:
+                scale = DETAILER_MIN_CROP / max(crop.size)
+                crop = crop.resize(
+                    (
+                        max(64, round(crop.width * scale / 8) * 8),
+                        max(64, round(crop.height * scale / 8) * 8),
+                    ),
+                    Image.Resampling.LANCZOS,
+                )
+            mask = Image.new("L", crop.size, 0)
+            ImageDraw.Draw(mask).rectangle(
+                (0, 0, crop.width - 1, crop.height - 1), fill=255
+            )
+            refined = self._infer_with_retry(
+                "inpaint",
+                crop,
+                mask,
+                positive,
+                negative,
+                crop.width,
+                crop.height,
+                steps,
+                cfg,
+                seed + index,
+                spec["strength"],
+                choices,
+            )
+            if scale != 1.0:
+                box_size = (x2 - x1, y2 - y1)
+                refined = refined.resize(box_size, Image.Resampling.LANCZOS)
+                mask = mask.resize(box_size, Image.Resampling.LANCZOS)
+            blend = mask.filter(ImageFilter.GaussianBlur(radius=DETAILER_FEATHER))
+            base.paste(
+                Image.composite(refined.convert("RGB"), base.crop(box), blend),
+                (x1, y1),
+            )
+            notes.append(
+                f"{DETAILER_LABELS[kind]} {x2 - x1}×{y2 - y1}px "
+                f"@({x1},{y1}) · tin cậy {confidence:.2f}"
+            )
+        return base, "auto-detailer đã sửa " + "; ".join(notes)
+
     def _hires_pass(
         self,
         image,
@@ -1857,6 +2293,10 @@ class StudioRuntime:
         adult_confirmed=False,
         hires_scale=HIRES_OFF,
         hires_strength=HIRES_DEFAULT_STRENGTH,
+        detailer=DETAILER_OFF,
+        detailer_strength=DETAILER_DEFAULT_STRENGTH,
+        detailer_conf=DETAILER_DEFAULT_CONF,
+        detailer_max=DETAILER_DEFAULT_MAX,
     ):
         from PIL import Image, ImageChops, ImageFilter
 
@@ -1873,6 +2313,16 @@ class StudioRuntime:
             eyes_weight,
             adult_confirmed=adult_confirmed,
         )
+        # Kiểm tra cấu hình detailer trước cả phần kiểm tra ảnh nguồn: lỗi cấu hình
+        # phải báo ngay, không để người dùng tải ảnh lên rồi mới bị từ chối.
+        detailer_spec = validate_detailer(
+            detailer, detailer_strength, detailer_conf, detailer_max
+        )
+        if detailer_spec and mode == "inpaint":
+            raise ValueError(
+                "Chế độ sửa vùng đã vẽ lại đúng vùng bạn tô rồi; hãy để auto-detailer "
+                "ở mức Tắt, hoặc dùng Ảnh → ảnh nếu muốn tự sửa mặt/tay."
+            )
         if mode == "text":
             width, height = _preset_size(size)
         elif mode == "image":
@@ -1947,6 +2397,7 @@ class StudioRuntime:
         paths = []
         gallery = []
         selected = []
+        detail_notes = []
         with self.lock:  # one GPU pipeline, even if separate UI actions are clicked
             for index in range(count):
                 image_seed = (
@@ -1969,6 +2420,20 @@ class StudioRuntime:
                         strength,
                         choices,
                     )
+                if detailer_spec:
+                    # Sửa mặt/tay ở độ phân giải gốc, trước hires fix: vùng cắt nhỏ
+                    # nên rẻ hơn và ảnh đã sạch lỗi mới được phóng to.
+                    image, detail_note = self._detail_pass(
+                        image,
+                        positive,
+                        negative,
+                        steps,
+                        cfg,
+                        image_seed,
+                        detailer_spec,
+                        choices,
+                    )
+                    detail_notes.append(detail_note)
                 if hires:
                     image = self._hires_pass(
                         image,
@@ -2011,6 +2476,20 @@ class StudioRuntime:
                         if hires
                         else None
                     ),
+                    "detailer": (
+                        {
+                            "targets": list(detailer_spec["targets"]),
+                            "strength": detailer_spec["strength"],
+                            "conf": detailer_spec["conf"],
+                            "max_regions": detailer_spec["max_regions"],
+                            "weights": [
+                                DETAILER_MODELS[kind]["version"]
+                                for kind in detailer_spec["targets"]
+                            ],
+                        }
+                        if detailer_spec
+                        else None
+                    ),
                     "loras": [
                         {
                             "name": name,
@@ -2042,6 +2521,8 @@ class StudioRuntime:
                 status += (
                     f" (đã giảm hệ số để không vượt {HIRES_MAX_PIXELS / 1e6:.1f} MP)"
                 )
+        if detailer_spec:
+            status += f" · {detailer_spec['label'].lower()} → {detail_notes[-1]}"
         return gallery, paths, status, paths[-1]
 
     def text_to_image(
@@ -2061,6 +2542,10 @@ class StudioRuntime:
         adult_confirmed=False,
         hires_scale=HIRES_OFF,
         hires_strength=HIRES_DEFAULT_STRENGTH,
+        detailer=DETAILER_OFF,
+        detailer_strength=DETAILER_DEFAULT_STRENGTH,
+        detailer_conf=DETAILER_DEFAULT_CONF,
+        detailer_max=DETAILER_DEFAULT_MAX,
     ):
         return self._generate(
             "text",
@@ -2084,6 +2569,10 @@ class StudioRuntime:
             adult_confirmed,
             hires_scale,
             hires_strength,
+            detailer,
+            detailer_strength,
+            detailer_conf,
+            detailer_max,
         )
 
     def image_to_image(
@@ -2105,6 +2594,10 @@ class StudioRuntime:
         adult_confirmed=False,
         hires_scale=HIRES_OFF,
         hires_strength=HIRES_DEFAULT_STRENGTH,
+        detailer=DETAILER_OFF,
+        detailer_strength=DETAILER_DEFAULT_STRENGTH,
+        detailer_conf=DETAILER_DEFAULT_CONF,
+        detailer_max=DETAILER_DEFAULT_MAX,
     ):
         return self._generate(
             "image",
@@ -2128,6 +2621,10 @@ class StudioRuntime:
             adult_confirmed,
             hires_scale,
             hires_strength,
+            detailer,
+            detailer_strength,
+            detailer_conf,
+            detailer_max,
         )
 
     def upscale(
@@ -2474,6 +2971,87 @@ def build_app(runtime):
                         "cục, cao thêm chi tiết nhưng dễ đổi nét.",
                         elem_classes="studio-hint",
                     )
+                with gr.Group(elem_classes="studio-detailer"):
+                    gr.Markdown(
+                        "### 🔎 Tự sửa mặt / bàn tay", elem_classes="studio-hint"
+                    )
+                    with gr.Row():
+                        detailer_target = gr.Dropdown(
+                            choices=list(DETAILER_TARGETS),
+                            value=DETAILER_OFF,
+                            label="Tự sửa mặt/tay (auto-detailer)",
+                        )
+                        detailer_strength = gr.Slider(
+                            *DETAILER_STRENGTH_RANGE,
+                            value=DETAILER_DEFAULT_STRENGTH,
+                            step=0.05,
+                            label="Detailer strength (mức thay đổi vùng)",
+                        )
+                    with gr.Row():
+                        detailer_conf = gr.Slider(
+                            *DETAILER_CONF_RANGE,
+                            value=DETAILER_DEFAULT_CONF,
+                            step=0.05,
+                            label="Ngưỡng phát hiện (thấp = dễ tìm hơn)",
+                        )
+                        detailer_max = gr.Slider(
+                            *DETAILER_MAX_RANGE,
+                            value=DETAILER_DEFAULT_MAX,
+                            step=1,
+                            label="Số vùng tối đa sửa mỗi ảnh",
+                        )
+                    gr.Markdown(
+                        "Tự tìm **mặt** và **bàn tay** trong ảnh, cắt từng vùng ra, "
+                        "vẽ lại vùng đó bằng chính prompt/negative bạn đang thấy "
+                        "(không thêm thẻ ngầm), rồi dán lại với viền mềm. Weight dò "
+                        "YOLOv8 (~6 MB/file) tải một lần từ `Bingsu/adetailer`, kiểm "
+                        "SHA-256 như checkpoint. Áp dụng cho *Văn bản → ảnh* và *Ảnh "
+                        "→ ảnh*; mỗi vùng tốn thêm một lượt inpaint nên hãy bắt đầu "
+                        "với 1–2 vùng. Strength thấp giữ nét, cao sửa mạnh nhưng dễ "
+                        "lệch nét mặt.",
+                        elem_classes="studio-hint",
+                    )
+                with gr.Group(elem_classes="studio-look"):
+                    gr.Markdown(
+                        "### 💅 Chi tiết mắt & móng", elem_classes="studio-hint"
+                    )
+                    with gr.Row():
+                        eye_color = gr.Dropdown(
+                            choices=list(LOOK_OPTIONS["eye_color"]),
+                            value=LOOK_OFF,
+                            label=LOOK_LABELS["eye_color"],
+                        )
+                        nail_shape = gr.Dropdown(
+                            choices=list(LOOK_OPTIONS["nail_shape"]),
+                            value=LOOK_OFF,
+                            label=LOOK_LABELS["nail_shape"],
+                        )
+                    with gr.Row():
+                        nail_color = gr.Dropdown(
+                            choices=list(LOOK_OPTIONS["nail_color"]),
+                            value=LOOK_OFF,
+                            label=LOOK_LABELS["nail_color"],
+                        )
+                        toenail_color = gr.Dropdown(
+                            choices=list(LOOK_OPTIONS["toenail_color"]),
+                            value=LOOK_OFF,
+                            label=LOOK_LABELS["toenail_color"],
+                        )
+                    look_button = gr.Button(
+                        "Thêm chi tiết mắt/móng vào prompt đang hiển thị", size="sm"
+                    )
+                    gr.Markdown(
+                        "Chọn màu mắt, **kiểu dáng móng tay** và màu sơn móng tay/móng "
+                        "chân rồi bấm nút: các thẻ Danbooru tương ứng (`blue eyes`, "
+                        "`almond-shaped nails`, `red nails, nail polish`, `painted "
+                        "toenails`…) được **ghi thẳng vào ô *Prompt gửi model*** để bạn "
+                        "sửa hoặc xóa — không có thẻ nào được thêm ngầm khi tạo ảnh. "
+                        "Bấm lại không tạo thẻ trùng. Móng/mắt chỉ hiện rõ khi tay hoặc "
+                        "mặt đủ lớn trong khung: với ảnh cận tay/cận mặt hãy dùng kèm "
+                        "*Tự sửa mặt/tay* hoặc tab *Sửa vùng ảnh*; móng chân cần thấy "
+                        "bàn chân (khung *Chân / bàn chân*).",
+                        elem_classes="studio-hint",
+                    )
                 shared = [
                     prompt,
                     negative,
@@ -2489,6 +3067,12 @@ def build_app(runtime):
                     adult_confirm,
                 ]
                 hires = [hires_scale, hires_strength]
+                detailer = [
+                    detailer_target,
+                    detailer_strength,
+                    detailer_conf,
+                    detailer_max,
+                ]
                 with gr.Tabs():
                     with gr.Tab("✦ Văn bản → ảnh"):
                         with gr.Row(equal_height=False):
@@ -2591,7 +3175,9 @@ def build_app(runtime):
                         )
                         with gr.Row():
                             target = gr.Dropdown(
-                                choices=["hands", "legs", "eyes", "custom"],
+                                choices=[
+                                    (label, key) for key, label in REPAIR_LABELS.items()
+                                ],
                                 value="hands",
                                 label="Chi tiết cần sửa",
                             )
@@ -2663,11 +3249,22 @@ def build_app(runtime):
 
         outputs = [gallery, downloads, status, latest]
         events = (
-            (text_button, runtime.text_to_image, [text_size, *shared, *hires]),
+            (
+                text_button,
+                runtime.text_to_image,
+                [text_size, *shared, *hires, *detailer],
+            ),
             (
                 image_button,
                 runtime.image_to_image,
-                [image_source, image_size, image_strength, *shared, *hires],
+                [
+                    image_source,
+                    image_size,
+                    image_strength,
+                    *shared,
+                    *hires,
+                    *detailer,
+                ],
             ),
             (
                 upscale_button,
@@ -2731,6 +3328,14 @@ def build_app(runtime):
             outputs=[prompt, negative],
             api_visibility="private",
             queue=False,
+        )
+        look_button.click(
+            fn=apply_look_tags,
+            inputs=[prompt, negative, eye_color, nail_shape, nail_color, toenail_color],
+            outputs=[prompt, negative],
+            api_visibility="private",
+            queue=False,
+            show_progress="hidden",
         )
         # Quy trình chuẩn: ba nút đều chỉ ghi nội dung HIỂN THỊ vào hai ô prompt /
         # ô báo cáo, người dùng xem và sửa được trước khi bấm tạo ảnh.
