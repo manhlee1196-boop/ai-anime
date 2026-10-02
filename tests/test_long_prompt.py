@@ -18,15 +18,22 @@ class Tokenizer:
 class LongPromptTests(unittest.TestCase):
     def test_boundaries_no_truncation_and_break(self):
         tokenizer = Tokenizer()
-        for count, expected in [(0, 1), (75, 1), (76, 2), (150, 2), (600, 8)]:
+        for count, expected in [(0, 1), (75, 1), (76, 2), (150, 2), (199, 3), (200, 3)]:
             chunks = studio.clip_token_chunks(tokenizer, ' '.join(['word'] * count))
             self.assertEqual(len(chunks), expected)
             self.assertEqual(sum(map(len, chunks)), count)
         self.assertEqual(len(studio.clip_token_chunks(tokenizer, 'first BREAK second')), 2)
-        with self.assertRaisesRegex(ValueError, '600 token'):
-            studio.clip_token_chunks(tokenizer, ' '.join(['word'] * 601))
+        with self.assertRaisesRegex(ValueError, '200 token'):
+            studio.clip_token_chunks(tokenizer, ' '.join(['word'] * 201))
         with self.assertRaises(ValueError):
-            studio.clip_token_chunks(tokenizer, ' BREAK ' * 8)
+            studio.clip_token_chunks(tokenizer, ' BREAK ' * 3)
+
+    def test_token_limit_counts_across_breaks(self):
+        tokenizer = Tokenizer()
+        prompt = 'word ' * 75 + 'BREAK ' + 'word ' * 75 + 'BREAK ' + 'word ' * 50
+        self.assertEqual([len(c) for c in studio.clip_token_chunks(tokenizer, prompt)], [75, 75, 50])
+        with self.assertRaisesRegex(ValueError, '200 token'):
+            studio.clip_token_chunks(tokenizer, prompt + 'word')
 
     def test_embeddings_align_both_encoders_and_both_prompts(self):
         try:
@@ -75,4 +82,4 @@ class LongPromptTests(unittest.TestCase):
         self.assertEqual(first.calls[1][0, 2], 1001)
         self.assertTrue(np.all(first.calls[1][0, 3:] == 0))
         with self.assertRaises(ValueError):
-            studio.long_prompt_embeddings(pipe, '', 'word ' * 601, torch)
+            studio.long_prompt_embeddings(pipe, '', 'word ' * 201, torch)

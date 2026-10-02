@@ -943,8 +943,8 @@ def analyze_prompt(
         findings.append(
             (
                 "warn",
-                f"Prompt ≈ {tokens} token — Studio hỗ trợ tối đa 8 khối CLIP "
-                "(600 token mỗi ô nếu không chèn BREAK). Đây là ước lượng; tokenizer "
+                f"Prompt ≈ {tokens} token — Studio hỗ trợ tối đa 200 token mỗi ô, "
+                "tối đa 3 khối CLIP. Đây là ước lượng; tokenizer "
                 "thật sẽ kiểm tra trước suy luận. Prompt dài tăng VRAM và có thể giảm độ bám chi tiết.",
             )
         )
@@ -1884,7 +1884,8 @@ def _editor_mask(editor, uploaded_mask):
 
 # CLIP still sees 77 positions (BOS + 75 content + EOS). The UNet receives
 # concatenated per-chunk hidden states. This is not a larger CLIP context window.
-MAX_PROMPT_CHUNKS = 8
+MAX_PROMPT_TOKENS = 200
+MAX_PROMPT_CHUNKS = 3
 
 
 def clip_token_chunks(tokenizer, text):
@@ -1893,13 +1894,20 @@ def clip_token_chunks(tokenizer, text):
     if capacity != 75:
         raise ValueError("Long prompt hiện chỉ hỗ trợ tokenizer CLIP SDXL 77 vị trí.")
     chunks = []
+    token_count = 0
     for part in re.split(r"\bBREAK\b", text or ""):
         ids = tokenizer(part, add_special_tokens=False, truncation=False).input_ids
+        token_count += len(ids)
+        if token_count > MAX_PROMPT_TOKENS:
+            raise ValueError(
+                f"Prompt hoặc negative có {token_count} token, vượt giới hạn 200 token mỗi ô. "
+                "Hãy rút ngắn; không có nội dung nào bị cắt ngầm."
+            )
         chunks.extend([ids[i:i + capacity] for i in range(0, len(ids), capacity)] or [[]])
         if len(chunks) > MAX_PROMPT_CHUNKS:
             raise ValueError(
-                "Prompt hoặc negative vượt 8 khối CLIP (tối đa 600 token nội dung; "
-                "BREAK cũng chiếm khối). Hãy rút ngắn; không có nội dung nào bị cắt ngầm."
+                "Prompt hoặc negative vượt 3 khối CLIP do ngắt BREAK. "
+                "Hãy bớt BREAK hoặc rút ngắn; không có nội dung nào bị cắt ngầm."
             )
     return chunks
 
@@ -3050,8 +3058,8 @@ def build_app(runtime):
                         "nạp từ tab Thư viện; không có selector phong cách.</p>"
                     )
                 gr.Markdown(
-                    "**Prompt dài đã bật:** tự chia khối 75 token, tối đa 8 khối mỗi ô "
-                    "(600 token, tính riêng trên từng tokenizer). Dùng `BREAK` để ngắt khối. "
+                    "**Prompt dài đã bật:** tối đa 200 token mỗi ô, tính riêng trên từng tokenizer. "
+                    "Tự chia khối 75 token, tối đa 3 khối. Dùng `BREAK` để ngắt khối. "
                     "Không cắt ngầm; vượt giới hạn sẽ báo lỗi. Prompt dài tốn thêm VRAM. "
                     "Đây không phải mở rộng ngữ cảnh CLIP; cú pháp trọng số `(tag:1.2)` không được xử lý riêng.",
                     elem_classes="studio-hint",
