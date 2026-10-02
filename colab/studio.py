@@ -330,8 +330,8 @@ def apply_look_tags(
 #     watermark, bad hands, bad anatomy, traditional media"; thứ tự prompt:
 #     chất lượng → nhãn phân loại → chủ thể → chi tiết → tư thế → bố cục/bối
 #     cảnh → ánh sáng → phong cách → "absurdres, highres" ở cuối.
-#   • SDXL/Illustrious mã hoá prompt theo khối 75 token: phần vượt quá bị bỏ
-#     qua khối sau (mất ưu tiên) nên prompt phải ngắn, đúng thứ tự ưu tiên và
+#   • Studio mã hoá prompt dài theo nhiều khối CLIP 75 token, ghép embedding
+#     (không mở rộng ngữ cảnh bên trong CLIP) nên prompt phải ngắn, đúng thứ tự ưu tiên và
 #     chỉ nhấn mạnh bằng (thẻ:1.1–1.2) thay vì lặp từ.
 #
 # Nguyên tắc của Studio vẫn giữ: mọi hàm dưới đây chỉ *trả về chuỗi hiển thị*
@@ -934,17 +934,18 @@ def analyze_prompt(
         findings.append(
             (
                 "warn",
-                f"Prompt ≈ {tokens} token: vượt khối 75 token nên phần cuối bị đẩy "
-                "sang khối sau và mất ưu tiên. Hãy bỏ thẻ ít quan trọng hoặc chèn "
-                "`BREAK` (viết hoa) để tách khối có chủ đích.",
+                f"Prompt ≈ {tokens} token: Studio tự chia thành nhiều khối CLIP, "
+                "không cắt phần cuối ở 75 token. Có thể chèn `BREAK` để tách khối; "
+                "các khối không có ngữ cảnh chung trong CLIP. Prompt dài tốn thêm VRAM.",
             )
         )
     else:
         findings.append(
             (
                 "warn",
-                f"Prompt ≈ {tokens} token — quá dài cho SDXL/Illustrious. Prompt dài "
-                "làm mỗi thẻ yếu đi; giữ khoảng 20–40 thẻ quan trọng nhất.",
+                f"Prompt ≈ {tokens} token — Studio hỗ trợ tối đa 8 khối CLIP "
+                "(600 token mỗi ô nếu không chèn BREAK). Đây là ước lượng; tokenizer "
+                "thật sẽ kiểm tra trước suy luận. Prompt dài tăng VRAM và có thể giảm độ bám chi tiết.",
             )
         )
 
@@ -1881,6 +1882,79 @@ def _editor_mask(editor, uploaded_mask):
     return _normalize_source(original, binary)
 
 
+# CLIP still sees 77 positions (BOS + 75 content + EOS). The UNet receives
+# concatenated per-chunk hidden states. This is not a larger CLIP context window.
+MAX_PROMPT_CHUNKS = 8
+
+
+def clip_token_chunks(tokenizer, text):
+    """Tokenize without truncation; BREAK starts an explicit new CLIP block."""
+    capacity = int(tokenizer.model_max_length) - 2
+    if capacity != 75:
+        raise ValueError("Long prompt hiện chỉ hỗ trợ tokenizer CLIP SDXL 77 vị trí.")
+    chunks = []
+    for part in re.split(r"\bBREAK\b", text or ""):
+        ids = tokenizer(part, add_special_tokens=False, truncation=False).input_ids
+        chunks.extend([ids[i:i + capacity] for i in range(0, len(ids), capacity)] or [[]])
+        if len(chunks) > MAX_PROMPT_CHUNKS:
+            raise ValueError(
+                "Prompt hoặc negative vượt 8 khối CLIP (tối đa 600 token nội dung; "
+                "BREAK cũng chiếm khối). Hãy rút ngắn; không có nội dung nào bị cắt ngầm."
+            )
+    return chunks
+
+
+def long_prompt_embeddings(pipe, positive, negative, torch):
+    """SDXL dual-CLIP chunks; aligned positive/negative, penultimate hidden states.
+
+    Short prompts keep Diffusers' normal encoding path. For long prompts,
+    projected CLIP-G pooled embeddings are averaged over actual (not alignment
+    padding) chunks. This is a documented policy, not native long-context CLIP.
+    Encoding runs inside inference_mode and existing Accelerate offload hooks.
+    """
+    tokenizers = [getattr(pipe, "tokenizer", None), getattr(pipe, "tokenizer_2", None)]
+    encoders = [getattr(pipe, "text_encoder", None), getattr(pipe, "text_encoder_2", None)]
+    if not all(tokenizers) or not all(encoders):
+        raise ValueError("Cần đủ hai tokenizer/text encoder SDXL để mã hóa prompt dài.")
+    plans = []
+    for text in (positive, negative):
+        plans.append([
+            clip_token_chunks(tokenizer, pipe.maybe_convert_prompt(text, tokenizer)
+                              if hasattr(pipe, "maybe_convert_prompt") else text)
+            for tokenizer in tokenizers
+        ])
+    total = max(len(chunks) for plan in plans for chunks in plan)
+    if total == 1 and not re.search(r"\bBREAK\b", positive + " " + negative):
+        return None
+    device = pipe._execution_device
+    dtype = encoders[1].dtype
+    results = []
+    pooled_results = []
+    for plan in plans:
+        hidden_by_encoder = []
+        for index, (tokenizer, encoder, chunks) in enumerate(zip(tokenizers, encoders, plan)):
+            hidden = []
+            pooled = []
+            for chunk_index in range(total):
+                content = chunks[chunk_index] if chunk_index < len(chunks) else []
+                ids = [tokenizer.bos_token_id, *content, tokenizer.eos_token_id]
+                ids += [tokenizer.pad_token_id] * (77 - len(ids))
+                input_ids = torch.tensor([ids], dtype=torch.long, device=device)
+                encoded = encoder(input_ids, output_hidden_states=True)
+                hidden.append(encoded.hidden_states[-2].to(device=device, dtype=dtype))
+                if index == 1 and chunk_index < len(chunks):
+                    pooled.append(encoded[0].to(device=device, dtype=dtype))
+            hidden_by_encoder.append(torch.cat(hidden, dim=1))
+            if index == 1:
+                pooled_results.append(torch.stack(pooled).mean(dim=0))
+        results.append(torch.cat(hidden_by_encoder, dim=-1))
+    return {
+        "prompt_embeds": results[0], "negative_prompt_embeds": results[1],
+        "pooled_prompt_embeds": pooled_results[0],
+        "negative_pooled_prompt_embeds": pooled_results[1],
+    }
+
+
 class StudioRuntime:
     def __init__(
         self,
@@ -2032,6 +2106,13 @@ class StudioRuntime:
             options.update(mask_image=mask, padding_mask_crop=32)
         try:
             with self.torch.inference_mode():
+                # Real SDXL pipelines expose encode_prompt; tiny test doubles do not.
+                if callable(getattr(target, "encode_prompt", None)):
+                    embeddings = long_prompt_embeddings(target, positive, negative, self.torch)
+                    if embeddings is not None:
+                        options.pop("prompt")
+                        options.pop("negative_prompt")
+                        options.update(embeddings)
                 image = target(**options).images[0]
         finally:
             if other_pipe is not None and self.use_offload:
@@ -2968,6 +3049,13 @@ def build_app(runtime):
                         "<p class='studio-hint'>Viết phong cách ngay trong prompt hoặc "
                         "nạp từ tab Thư viện; không có selector phong cách.</p>"
                     )
+                gr.Markdown(
+                    "**Prompt dài đã bật:** tự chia khối 75 token, tối đa 8 khối mỗi ô "
+                    "(600 token, tính riêng trên từng tokenizer). Dùng `BREAK` để ngắt khối. "
+                    "Không cắt ngầm; vượt giới hạn sẽ báo lỗi. Prompt dài tốn thêm VRAM. "
+                    "Đây không phải mở rộng ngữ cảnh CLIP; cú pháp trọng số `(tag:1.2)` không được xử lý riêng.",
+                    elem_classes="studio-hint",
+                )
                 with gr.Tabs(selected="create", elem_id="studio-workspace-tabs") as workspace_tabs:
                     with gr.Tab("✦ Tạo ảnh", id="create"):
                         with gr.Tabs(selected="text", elem_id="studio-mode-tabs") as mode_tabs:
