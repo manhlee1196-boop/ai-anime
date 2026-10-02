@@ -2672,6 +2672,134 @@ class StudioRuntime:
         )
 
 
+# CSV is data only: lazily downloaded, pinned and verified; never executed.
+TAG_CSV_NAME = "danbooru_e621_merged_2026-10-01_pt20-ia-dd-ed-spc.csv"
+TAG_CSV_SHA256 = "287bb5ad86fcc56f535b9ebae8d3e696e5ff3fa5c057d6fa6884282fb083e738"
+TAG_CSV_URL = (
+    "https://raw.githubusercontent.com/manhlee1196-boop/ai-anime/"
+    "0a0d3b87a4f7fa77da3274674c4d89649f7c3657/" + TAG_CSV_NAME
+)
+TAG_CATEGORIES = {
+    "0": "Danbooru · Chung", "1": "Danbooru · Họa sĩ",
+    "3": "Danbooru · Tác phẩm", "4": "Danbooru · Nhân vật",
+    "5": "Danbooru · Metadata", "7": "e621 · Chung",
+    "8": "e621 · Họa sĩ", "9": "e621 · Người đóng góp",
+    "10": "e621 · Tác phẩm", "11": "e621 · Nhân vật",
+    "12": "e621 · Loài", "14": "e621 · Metadata", "15": "e621 · Lore",
+}
+TAG_THEMES = {
+    "Ngoại hình": r"hair|eyes?|ears?|face|skin|fur|wings?|tail|horns?",
+    "Trang phục & phụ kiện": r"dress|shirt|skirt|uniform|clothes|clothing|hat|ribbon|armor|jewelry|boots?|gloves?",
+    "Biểu cảm & tư thế": r"smile|blush|crying|laughing|looking|standing|sitting|lying|pose|running|wink",
+    "Bối cảnh & thiên nhiên": r"background|sky|cloud|forest|tree|flower|ocean|beach|city|street|indoors|outdoors|room|mountain|snow|rain",
+    "Ánh sáng & màu sắc": r"light|shadow|sunset|sunrise|night|glow|neon|monochrome|color|colour",
+    "Bố cục & kỹ thuật": r"view|portrait|close.up|full.body|perspective|focus|sketch|painting|watercolor|resolution|highres|absurdres|digital",
+}
+_TAG_ROWS = None
+_TAG_LOCK = threading.Lock()
+TAG_PAGE_SIZE = 60
+
+
+def normalize_csv_tag(value):
+    return re.sub(r"[_\s]+", " ", value.strip().lower())
+
+
+def parse_tag_csv(text):
+    import csv
+    import io
+
+    patterns = [(name, re.compile(pattern)) for name, pattern in TAG_THEMES.items()]
+    rows = []
+    for fields in csv.reader(io.StringIO(text)):
+        if len(fields) != 4:
+            continue
+        name, category, count, aliases = fields
+        if not name or category not in TAG_CATEGORIES or not count.isdigit():
+            continue
+        themes = tuple(label for label, pattern in patterns if pattern.search(name))
+        rows.append((name, category, int(count), normalize_csv_tag(name + "," + aliases), themes))
+    if not rows:
+        raise ValueError("CSV không chứa thẻ hợp lệ.")
+    return tuple(rows)
+
+
+def load_csv_tags():
+    """Shared read-only catalog, not per-session prompt state. Failed loads can retry."""
+    import hashlib
+    import urllib.request
+
+    global _TAG_ROWS
+    with _TAG_LOCK:
+        if _TAG_ROWS is not None:
+            return _TAG_ROWS
+        candidates = [Path(TAG_CSV_NAME), Path("/content") / TAG_CSV_NAME]
+        data = None
+        for candidate in candidates:
+            if candidate.is_file() and candidate.stat().st_size <= 12_000_000:
+                content = candidate.read_bytes()
+                if hashlib.sha256(content).hexdigest() == TAG_CSV_SHA256:
+                    data = content
+                    break
+        if data is None:
+            with urllib.request.urlopen(TAG_CSV_URL, timeout=45) as response:
+                data = response.read(12_000_001)
+            if len(data) > 12_000_000 or hashlib.sha256(data).hexdigest() != TAG_CSV_SHA256:
+                raise ValueError("CSV tải về không khớp SHA-256 đã xác minh.")
+        rows = parse_tag_csv(data.decode("utf-8-sig"))
+        if Path("/content").is_dir():
+            (Path("/content") / TAG_CSV_NAME).write_bytes(data)
+        _TAG_ROWS = rows
+        return rows
+
+
+def search_csv_tags(rows, query="", category="", theme="", sort="Phổ biến nhất", page=1):
+    query = normalize_csv_tag(query or "")
+    found = [row for row in rows if
+             (not query or query in row[3]) and
+             (not category or row[1] == category) and
+             (not theme or (not row[4] if theme == "Chưa phân nhóm" else theme in row[4]))]
+    found.sort(key=(lambda row: row[0]) if sort == "Tên A–Z" else (lambda row: (-row[2], row[0])))
+    pages = max(1, math.ceil(len(found) / TAG_PAGE_SIZE))
+    page = min(pages, max(1, int(page or 1)))
+    return found[(page - 1) * TAG_PAGE_SIZE:page * TAG_PAGE_SIZE], len(found), page, pages
+
+
+def browse_csv_tags(query, category, theme, sort, page):
+    import gradio as gr
+
+    try:
+        rows = load_csv_tags()
+        found, total, current, pages = search_csv_tags(rows, query, category, theme, sort, page)
+        choices = [(f"{row[0]} · {TAG_CATEGORIES[row[1]]} · {row[2]:,} lượt", row[0]) for row in found]
+        return gr.update(choices=choices, value=[]), current, (
+            f"**{total:,} thẻ phù hợp / {len(rows):,} thẻ** · Trang {current}/{pages}. "
+            "Chọn thẻ rồi nhấn Thêm. Đổi bộ lọc và nhấn Tìm để cập nhật; lựa chọn cũ sẽ được xóa."
+        )
+    except Exception as exc:
+        return gr.update(choices=[], value=[]), 1, (
+            f"Không nạp được kho thẻ ({type(exc).__name__}). Nhấn Tìm để thử lại, "
+            f"hoặc tải đúng file `{TAG_CSV_NAME}` lên thư mục `/content` bằng bảng Files của Colab. "
+            "Bạn vẫn có thể viết prompt và tạo ảnh bình thường."
+        )
+
+
+def apply_csv_tags(positive, negative, selected, destination):
+    if not selected:
+        return positive, negative, "Hãy tìm và chọn ít nhất một thẻ."
+    # Only canonical names in the verified catalog may be inserted.
+    valid = {row[0] for row in load_csv_tags()}
+    selected = list(dict.fromkeys(name for name in selected if name in valid))
+    current = negative if destination == "Negative prompt" else positive
+    existing = {normalize_csv_tag(tag) for tag in split_tags(current or "")}
+    additions = [name for name in selected if normalize_csv_tag(name) not in existing]
+    result = _add_prompt_tags(current or "", additions)
+    if destination == "Negative prompt":
+        negative = result
+    else:
+        positive = result
+    return positive, negative, f"Đã thêm {len(additions)} thẻ vào {destination}; bỏ qua thẻ trùng. Bạn có thể sửa/xóa trực tiếp trong ô prompt."
+
+
 def build_app(runtime):
     """Build Gradio Blocks without opening a public tunnel until launch cell runs."""
     import gradio as gr
@@ -2695,6 +2823,25 @@ def build_app(runtime):
         color: #7a7386; margin: 0 !important;}
     .studio-hires {border: 1px solid #b9a3e0; border-radius: 10px; background: #f7f3fd;
         padding: 6px 10px;}
+    /* Keep both tab bars on one horizontal, touch-scrollable row. */
+    #studio-workspace-tabs > .tab-nav, #studio-mode-tabs > .tab-nav,
+    #studio-workspace-tabs > [role="tablist"], #studio-mode-tabs > [role="tablist"] {
+        display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 4px;
+        scrollbar-width: thin; -webkit-overflow-scrolling: touch;
+        padding: 4px 0 8px; max-width: 100%;
+    }
+    #studio-workspace-tabs > .tab-nav button, #studio-mode-tabs > .tab-nav button,
+    #studio-workspace-tabs > [role="tablist"] button, #studio-mode-tabs > [role="tablist"] button {
+        flex: 0 0 auto; white-space: nowrap; min-height: 44px; border-radius: 9px;
+    }
+    #studio-workspace-tabs button[role="tab"][aria-selected="true"] {
+        background: #704065; color: #fff; font-weight: 700;
+    }
+    #studio-workspace-tabs, #studio-mode-tabs {min-width: 0;}
+    @media (max-width: 640px) {
+        #wai-studio {padding: 8px !important;}
+        .studio-hero {padding: 10px;}
+    }
     /* Danh sách prompt: cuộn được trong khung, mỗi dòng là một ô chạm cao. */
     .studio-prompt-list {max-height: 44vh; overflow-y: auto; -webkit-overflow-scrolling: touch;
         border: 1px solid #e2dced; border-radius: 10px; padding: 4px 8px; background: #fbfaff;}
@@ -2719,7 +2866,7 @@ def build_app(runtime):
             "</div>"
         )
         with gr.Row(equal_height=False):
-            with gr.Column(scale=6, min_width=380):
+            with gr.Column(scale=6, min_width=300):
                 prompt = gr.Textbox(
                     label="Prompt gửi model · tự viết phong cách của bạn",
                     value=DEFAULT_PROMPT,
@@ -2744,275 +2891,437 @@ def build_app(runtime):
                     )
                     gr.HTML(
                         "<p class='studio-hint'>Viết phong cách ngay trong prompt hoặc "
-                        "nạp từ thư viện bên dưới; không có selector phong cách.</p>"
+                        "nạp từ tab Thư viện; không có selector phong cách.</p>"
                     )
-                with gr.Accordion(
-                    "🧭 Quy trình chuẩn · khung prompt + negative tối ưu",
-                    open=False,
-                ):
-                    with gr.Row():
-                        scaffold_kind = gr.Dropdown(
-                            choices=list(SCAFFOLD_CHOICES),
-                            value="character",
-                            label="Khung prompt theo loại ảnh",
+                with gr.Tabs(selected="create", elem_id="studio-workspace-tabs") as workspace_tabs:
+                    with gr.Tab("✦ Tạo ảnh", id="create"):
+                        with gr.Tabs(selected="text", elem_id="studio-mode-tabs") as mode_tabs:
+                            with gr.Tab("✦ Văn bản → ảnh", id="text"):
+                                with gr.Row(equal_height=False):
+                                    text_size = gr.Dropdown(
+                                        choices=list(SIZE_PRESETS),
+                                        value="1024x1024",
+                                        label="Kích thước",
+                                        scale=1,
+                                    )
+                                    text_button = gr.Button(
+                                        "Tạo ảnh từ prompt",
+                                        variant="primary",
+                                        scale=2,
+                                        elem_classes="studio-primary",
+                                    )
+                            with gr.Tab("◈ Ảnh → ảnh", id="image"):
+                                image_source = gr.Image(
+                                    label="Ảnh nguồn",
+                                    type="pil",
+                                    sources=["upload"],
+                                    image_mode="RGB",
+                                    height=230,
+                                )
+                                with gr.Row():
+                                    image_size = gr.Dropdown(
+                                        choices=list(SIZE_PRESETS),
+                                        value="1024x1024",
+                                        label="Kích thước đầu ra",
+                                    )
+                                    image_strength = gr.Slider(
+                                        0.2,
+                                        0.85,
+                                        value=0.45,
+                                        step=0.05,
+                                        label="Denoise strength",
+                                    )
+                                image_button = gr.Button(
+                                    "Biến đổi ảnh",
+                                    variant="primary",
+                                    elem_classes="studio-primary",
+                                )
+                                gr.Markdown(
+                                    "Ảnh nguồn khác tỷ lệ sẽ được cắt giữa cho khớp kích thước "
+                                    "đầu ra, không làm méo.",
+                                    elem_classes="studio-hint",
+                                )
+                            with gr.Tab("⤢ Phóng to ảnh", id="upscale"):
+                                upscale_source = gr.Image(
+                                    label="Ảnh cần phóng to (PNG/JPG/WebP)",
+                                    type="pil",
+                                    sources=["upload"],
+                                    image_mode="RGB",
+                                    height=230,
+                                )
+                                with gr.Row():
+                                    upscale_scale = gr.Dropdown(
+                                        choices=[k for k in HIRES_SCALES if k != HIRES_OFF],
+                                        value="2×",
+                                        label="Hệ số phóng",
+                                    )
+                                    upscale_strength = gr.Slider(
+                                        *HIRES_STRENGTH_RANGE,
+                                        value=HIRES_DEFAULT_STRENGTH,
+                                        step=0.05,
+                                        label="Hires strength",
+                                    )
+                                upscale_button = gr.Button(
+                                    "Phóng to ảnh",
+                                    variant="primary",
+                                    elem_classes="studio-primary",
+                                )
+                                gr.Markdown(
+                                    "Không tạo lại ảnh: phóng to bằng Lanczos rồi tinh chỉnh "
+                                    "bằng ảnh → ảnh theo prompt hiện tại (nên mô tả đúng nội "
+                                    "dung ảnh). Kết quả tối đa ≈4,2 MP; ảnh đã lớn hơn sẽ bị "
+                                    "giảm hệ số hoặc từ chối.",
+                                    elem_classes="studio-hint",
+                                )
+                            with gr.Tab("✎ Sửa vùng ảnh", id="inpaint"):
+                                editor = gr.ImageEditor(
+                                    label="Tải ảnh vào đây và dùng cọ tô vùng cần sửa",
+                                    type="pil",
+                                    image_mode="RGBA",
+                                    sources=["upload"],
+                                    height=380,
+                                    format="png",
+                                    transforms=(),
+                                    brush=gr.Brush(
+                                        default_size=40, colors=["#ffffff"], color_mode="fixed"
+                                    ),
+                                    eraser=gr.Eraser(default_size=40),
+                                    layers=False,
+                                )
+                                mask_file = gr.Image(
+                                    label="Hoặc tải mask trắng/đen PNG (ưu tiên hơn vùng tô)",
+                                    type="pil",
+                                    image_mode="L",
+                                    sources=["upload"],
+                                    height=150,
+                                )
+                                with gr.Row():
+                                    target = gr.Dropdown(
+                                        choices=[
+                                            (label, key) for key, label in REPAIR_LABELS.items()
+                                        ],
+                                        value="hands",
+                                        label="Chi tiết cần sửa",
+                                    )
+                                    inpaint_strength = gr.Slider(
+                                        0.2,
+                                        0.85,
+                                        value=0.45,
+                                        step=0.05,
+                                        label="Denoise strength",
+                                    )
+                                    feather = gr.Slider(
+                                        0,
+                                        24,
+                                        value=8,
+                                        step=2,
+                                        label="Làm mềm mép vùng sửa (px)",
+                                    )
+                                with gr.Row():
+                                    repair_hints_button = gr.Button(
+                                        "Thêm gợi ý sửa vùng vào prompt đang hiển thị",
+                                        size="sm",
+                                        scale=2,
+                                    )
+                                    inpaint_button = gr.Button(
+                                        "Sửa vùng đã tô",
+                                        variant="primary",
+                                        scale=1,
+                                        elem_classes="studio-primary",
+                                    )
+                                gr.Markdown(
+                                    "**Trắng / nét cọ = sửa; đen = giữ nguyên.** Ảnh tải lên "
+                                    "được thu về cạnh dài tối đa 1024 px cùng mask (ảnh hires lớn hơn sẽ bị thu nhỏ "
+                                    "khi sửa vùng). Chọn "
+                                    "tay/chân/mắt không tự thêm từ vào prompt.",
+                                    elem_classes="studio-hint",
+                                )
+                    with gr.Tab("🏷️ Kho thẻ", id="tags"):
+                        gr.Markdown(
+                            "Nguồn CSV 01/10/2026 · 349.714 thẻ. Nhấn **Tìm / tải kho thẻ** để nạp lần đầu (~9 MB). "
+                            "Chủ đề được nhóm tự động theo tên, có thể chồng lặp; danh mục giữ theo nguồn. "
+                            "Kho có thể chứa thẻ nhạy cảm. Đây là từ khóa, không phải model hay ảnh huấn luyện.",
+                            elem_classes="studio-hint",
                         )
-                        scaffold_button = gr.Button(
-                            "Sắp xếp prompt theo thứ tự chuẩn", size="sm"
-                        )
-                    with gr.Row():
-                        negative_choice = gr.Dropdown(
-                            choices=list(negative_preset_choices()),
+                        tag_query = gr.Textbox(label="Tìm tên thẻ hoặc bí danh", placeholder="long hair, smile…")
+                        with gr.Row():
+                            tag_category = gr.Dropdown(
+                                choices=[("Tất cả danh mục", "")] + [(label, key) for key, label in TAG_CATEGORIES.items()],
+                                value="", label="Danh mục",
+                            )
+                            tag_theme = gr.Dropdown(
+                                choices=[("Tất cả chủ đề", "")] + [(name, name) for name in TAG_THEMES] + [("Chưa phân nhóm", "Chưa phân nhóm")],
+                                value="", label="Chủ đề",
+                            )
+                        with gr.Row():
+                            tag_sort = gr.Radio(choices=["Phổ biến nhất", "Tên A–Z"], value="Phổ biến nhất", label="Sắp xếp")
+                            tag_page = gr.Number(value=1, minimum=1, precision=0, label="Trang (60 thẻ / trang)")
+                        tag_search = gr.Button("Tìm / tải kho thẻ", size="sm")
+                        tag_selection = gr.Dropdown(choices=[], multiselect=True, label="Chọn thẻ trong trang kết quả", allow_custom_value=False)
+                        with gr.Row():
+                            tag_destination = gr.Radio(choices=["Prompt", "Negative prompt"], value="Prompt", label="Thêm vào")
+                            tag_add = gr.Button("Thêm thẻ đã chọn", size="sm")
+                        tag_status = gr.Markdown("Kho thẻ chưa được tải.", elem_classes="studio-hint")
+                    with gr.Tab("📚 Thư viện", id="library"):
+                        with gr.Row(equal_height=False):
+                            prompt_file = gr.File(
+                                label="File danh sách prompt (.txt/.md/.json · tối đa 2 MB)",
+                                file_types=[".txt", ".md", ".json"],
+                                file_count="single",
+                                type="filepath",
+                                scale=1,
+                            )
+                            prompt_paste = gr.Textbox(
+                                label="Hoặc dán nội dung file vào đây",
+                                lines=3,
+                                max_lines=8,
+                                placeholder=(
+                                    "=== 50 PROMPTS – CHỦ ĐỀ ===\n"
+                                    "PROMPT 01 - Tên tiếng Việt\n"
+                                    "1girl, solo, ..., masterpiece, best quality"
+                                ),
+                                scale=2,
+                            )
+                        with gr.Row():
+                            paste_button = gr.Button("Đọc danh sách đã dán", size="sm")
+                            sample_button = gr.Button(
+                                "Nạp thư viện mẫu (12 prompt)", size="sm"
+                            )
+                        prompt_choice = gr.Radio(
+                            choices=(),
                             value=None,
-                            label="Negative tối ưu theo mục đích",
+                            interactive=False,
+                            label="Chọn prompt để nạp (chạm một dòng)",
+                            elem_classes="studio-prompt-list",
                         )
-                        negative_mode = gr.Radio(
-                            choices=list(NEGATIVE_MODES),
-                            value=NEGATIVE_REPLACE,
-                            label="Cách áp dụng",
+                        load_choice_button = gr.Button(
+                            "⬇️ Nạp prompt đã chọn vào ô prompt", size="sm"
                         )
-                    with gr.Row():
-                        negative_apply_button = gr.Button(
-                            "Nạp negative đã chọn", size="sm", scale=1
+                        prompt_library_state = gr.State(())
+                        library_status = gr.Markdown(
+                            "Chưa nạp thư viện. Nạp file của bạn hoặc bấm **Nạp thư viện "
+                            "mẫu** để xem định dạng chuẩn.",
+                            elem_classes="studio-hint",
                         )
-                        check_button = gr.Button(
-                            "🩺 Kiểm tra prompt & thông số", size="sm", scale=1
+                        gr.Markdown(
+                            "Nhận: `PROMPT 01 - Tên` + đoạn prompt, bảng `Tên | Prompt`, "
+                            'JSON `[{"title", "prompt"}]`, hoặc các đoạn cách nhau dòng '
+                            "trống. Dòng `Negative:/Steps:/CFG:/Size:/Seed:` cũng được áp "
+                            "dụng (kẹp về dải của giao diện). Chạm một dòng trong danh "
+                            "sách là nạp ngay; trên điện thoại có thể chọn rồi bấm nút "
+                            "**⬇️ Nạp prompt đã chọn**.",
+                            elem_classes="studio-hint",
                         )
-                    workflow_status = gr.Markdown(
-                        "**Quy trình gợi ý:** 1) sắp xếp prompt theo thứ tự chuẩn → "
-                        "2) chọn negative đúng mục đích → 3) kiểm tra prompt/thông số → "
-                        "4) tạo ở ~1 MP, dò 3–4 seed → 5) hires 1.5–2× → 6) inpaint "
-                        "vùng tay/mắt còn lỗi. Mọi nút ở đây chỉ ghi nội dung **hiển "
-                        "thị** vào hai ô prompt; không có thẻ nào được thêm ngầm.",
-                        elem_classes="studio-hint",
-                    )
-                    prompt_report = gr.Markdown("", elem_classes="studio-hint")
-                    gr.Markdown(
-                        "Thứ tự chuẩn: chất lượng → nhãn phân loại → chủ thể → ngoại "
-                        "hình → trang phục → tư thế → bố cục → bối cảnh → ánh sáng → "
-                        "phong cách → `absurdres`. Negative chia theo mục đích và cố "
-                        "ý ngắn: nhà phát hành WAI v17 cảnh báo negative quá dài làm "
-                        "giảm chất lượng ảnh.",
-                        elem_classes="studio-hint",
-                    )
-                with gr.Accordion(
-                    "📚 Thư viện prompt · nạp danh sách từ file text", open=False
-                ):
-                    with gr.Row(equal_height=False):
-                        prompt_file = gr.File(
-                            label="File danh sách prompt (.txt/.md/.json · tối đa 2 MB)",
-                            file_types=[".txt", ".md", ".json"],
-                            file_count="single",
-                            type="filepath",
-                            scale=1,
+                    with gr.Tab("🧭 Quy trình", id="workflow"):
+                        with gr.Row():
+                            scaffold_kind = gr.Dropdown(
+                                choices=list(SCAFFOLD_CHOICES),
+                                value="character",
+                                label="Khung prompt theo loại ảnh",
+                            )
+                            scaffold_button = gr.Button(
+                                "Sắp xếp prompt theo thứ tự chuẩn", size="sm"
+                            )
+                        with gr.Row():
+                            negative_choice = gr.Dropdown(
+                                choices=list(negative_preset_choices()),
+                                value=None,
+                                label="Negative tối ưu theo mục đích",
+                            )
+                            negative_mode = gr.Radio(
+                                choices=list(NEGATIVE_MODES),
+                                value=NEGATIVE_REPLACE,
+                                label="Cách áp dụng",
+                            )
+                        with gr.Row():
+                            negative_apply_button = gr.Button(
+                                "Nạp negative đã chọn", size="sm", scale=1
+                            )
+                            check_button = gr.Button(
+                                "🩺 Kiểm tra prompt & thông số", size="sm", scale=1
+                            )
+                        workflow_status = gr.Markdown(
+                            "**Quy trình gợi ý:** 1) sắp xếp prompt theo thứ tự chuẩn → "
+                            "2) chọn negative đúng mục đích → 3) kiểm tra prompt/thông số → "
+                            "4) tạo ở ~1 MP, dò 3–4 seed → 5) hires 1.5–2× → 6) inpaint "
+                            "vùng tay/mắt còn lỗi. Mọi nút ở đây chỉ ghi nội dung **hiển "
+                            "thị** vào hai ô prompt; không có thẻ nào được thêm ngầm.",
+                            elem_classes="studio-hint",
                         )
-                        prompt_paste = gr.Textbox(
-                            label="Hoặc dán nội dung file vào đây",
-                            lines=3,
-                            max_lines=8,
-                            placeholder=(
-                                "=== 50 PROMPTS – CHỦ ĐỀ ===\n"
-                                "PROMPT 01 - Tên tiếng Việt\n"
-                                "1girl, solo, ..., masterpiece, best quality"
-                            ),
-                            scale=2,
+                        prompt_report = gr.Markdown("", elem_classes="studio-hint")
+                        gr.Markdown(
+                            "Thứ tự chuẩn: chất lượng → nhãn phân loại → chủ thể → ngoại "
+                            "hình → trang phục → tư thế → bố cục → bối cảnh → ánh sáng → "
+                            "phong cách → `absurdres`. Negative chia theo mục đích và cố "
+                            "ý ngắn: nhà phát hành WAI v17 cảnh báo negative quá dài làm "
+                            "giảm chất lượng ảnh.",
+                            elem_classes="studio-hint",
                         )
-                    with gr.Row():
-                        paste_button = gr.Button("Đọc danh sách đã dán", size="sm")
-                        sample_button = gr.Button(
-                            "Nạp thư viện mẫu (12 prompt)", size="sm"
+                    with gr.Tab("⚙️ Thông số", id="settings"):
+                        with gr.Row():
+                            steps = gr.Slider(
+                                10, 45, value=25, step=1, label="Số bước (steps)"
+                            )
+                            cfg = gr.Slider(
+                                1, 12, value=6, step=0.5, label="CFG / độ bám prompt"
+                            )
+                        with gr.Row():
+                            seed = gr.Number(
+                                value=-1,
+                                minimum=-1,
+                                maximum=2**32 - 1,
+                                precision=0,
+                                label="Seed (-1 = ngẫu nhiên)",
+                            )
+                            count = gr.Slider(
+                                1, 4, value=1, step=1, label="Số ảnh (tạo lần lượt)"
+                            )
+                        with gr.Row():
+                            anatomy = gr.Checkbox(
+                                label="Anatomy Helper · tay/chân",
+                                value="anatomy" in runtime.lora_paths,
+                                interactive="anatomy" in runtime.lora_paths,
+                            )
+                            anatomy_weight = gr.Slider(
+                                0.1,
+                                1,
+                                value=runtime.lora_manifest.get("anatomy", {}).get(
+                                    "weight", 0.55
+                                ),
+                                step=0.05,
+                                label="Cường độ Anatomy",
+                            )
+                        with gr.Row():
+                            eyes = gr.Checkbox(
+                                label="Perfect Eyes · mắt",
+                                value="eyes" in runtime.lora_paths,
+                                interactive="eyes" in runtime.lora_paths,
+                            )
+                            eyes_weight = gr.Slider(
+                                0.1,
+                                1,
+                                value=runtime.lora_manifest.get("eyes", {}).get(
+                                    "weight", 0.45
+                                ),
+                                step=0.05,
+                                label="Cường độ Eyes",
+                            )
+                        embed = gr.Checkbox(
+                            label="Nhúng prompt vào metadata PNG (tắt nếu chia sẻ ảnh)",
+                            value=False,
                         )
-                    # Trên điện thoại, dropdown lọc của Gradio mở bàn phím ảo và
-                    # danh sách bị cắt trong accordion nên rất khó chạm. Dùng danh
-                    # sách radio cuộn được (ô chạm cao) và thêm nút nạp dự phòng.
-                    prompt_choice = gr.Radio(
-                        choices=(),
-                        value=None,
-                        interactive=False,
-                        label="Chọn prompt để nạp (chạm một dòng)",
-                        elem_classes="studio-prompt-list",
-                    )
-                    load_choice_button = gr.Button(
-                        "⬇️ Nạp prompt đã chọn vào ô prompt", size="sm"
-                    )
-                    prompt_library_state = gr.State(())
-                    library_status = gr.Markdown(
-                        "Chưa nạp thư viện. Nạp file của bạn hoặc bấm **Nạp thư viện "
-                        "mẫu** để xem định dạng chuẩn.",
-                        elem_classes="studio-hint",
-                    )
-                    gr.Markdown(
-                        "Nhận: `PROMPT 01 - Tên` + đoạn prompt, bảng `Tên | Prompt`, "
-                        'JSON `[{"title", "prompt"}]`, hoặc các đoạn cách nhau dòng '
-                        "trống. Dòng `Negative:/Steps:/CFG:/Size:/Seed:` cũng được áp "
-                        "dụng (kẹp về dải của giao diện). Chạm một dòng trong danh "
-                        "sách là nạp ngay; trên điện thoại có thể chọn rồi bấm nút "
-                        "**⬇️ Nạp prompt đã chọn**.",
-                        elem_classes="studio-hint",
-                    )
-                with gr.Accordion("⚙️ Thông số ảnh và LoRA", open=False):
-                    with gr.Row():
-                        steps = gr.Slider(
-                            10, 45, value=25, step=1, label="Số bước (steps)"
+                        gr.Markdown(
+                            "LoRA chỉ bật được nếu đã xác minh ở ô cấu hình; tắt/bật và đổi "
+                            "cường độ ở đây không nạp lại checkpoint.",
+                            elem_classes="studio-hint",
                         )
-                        cfg = gr.Slider(
-                            1, 12, value=6, step=0.5, label="CFG / độ bám prompt"
-                        )
-                    with gr.Row():
-                        seed = gr.Number(
-                            value=-1,
-                            minimum=-1,
-                            maximum=2**32 - 1,
-                            precision=0,
-                            label="Seed (-1 = ngẫu nhiên)",
-                        )
-                        count = gr.Slider(
-                            1, 4, value=1, step=1, label="Số ảnh (tạo lần lượt)"
-                        )
-                    with gr.Row():
-                        anatomy = gr.Checkbox(
-                            label="Anatomy Helper · tay/chân",
-                            value="anatomy" in runtime.lora_paths,
-                            interactive="anatomy" in runtime.lora_paths,
-                        )
-                        anatomy_weight = gr.Slider(
-                            0.1,
-                            1,
-                            value=runtime.lora_manifest.get("anatomy", {}).get(
-                                "weight", 0.55
-                            ),
-                            step=0.05,
-                            label="Cường độ Anatomy",
-                        )
-                    with gr.Row():
-                        eyes = gr.Checkbox(
-                            label="Perfect Eyes · mắt",
-                            value="eyes" in runtime.lora_paths,
-                            interactive="eyes" in runtime.lora_paths,
-                        )
-                        eyes_weight = gr.Slider(
-                            0.1,
-                            1,
-                            value=runtime.lora_manifest.get("eyes", {}).get(
-                                "weight", 0.45
-                            ),
-                            step=0.05,
-                            label="Cường độ Eyes",
-                        )
-                    embed = gr.Checkbox(
-                        label="Nhúng prompt vào metadata PNG (tắt nếu chia sẻ ảnh)",
-                        value=False,
-                    )
-                    gr.Markdown(
-                        "LoRA chỉ bật được nếu đã xác minh ở ô cấu hình; tắt/bật và đổi "
-                        "cường độ ở đây không nạp lại checkpoint.",
-                        elem_classes="studio-hint",
-                    )
-                with gr.Group(elem_classes="studio-hires"):
-                    gr.Markdown(
-                        "### 🔍 Ảnh độ phân giải cao", elem_classes="studio-hint"
-                    )
-                    with gr.Row():
-                        hires_scale = gr.Dropdown(
-                            choices=list(HIRES_SCALES),
-                            value=HIRES_OFF,
-                            label="Độ phân giải cao (hires fix)",
-                        )
-                        hires_strength = gr.Slider(
-                            *HIRES_STRENGTH_RANGE,
-                            value=HIRES_DEFAULT_STRENGTH,
-                            step=0.05,
-                            label="Hires strength (chi tiết thêm vào)",
-                        )
-                    gr.Markdown(
-                        "Chọn **1.5× hoặc 2×** để ảnh ra lớn hơn kích thước đã chọn "
-                        "(tối đa ≈4,2 MP, ví dụ 1024×1024 → 2048×2048): ảnh được tạo, "
-                        "phóng to rồi tinh chỉnh để thêm chi tiết. Áp dụng cho *Văn "
-                        "bản → ảnh* và *Ảnh → ảnh* (tab *Phóng to ảnh* có cài đặt "
-                        "riêng); tốn thêm thời gian và VRAM. Strength thấp giữ bố "
-                        "cục, cao thêm chi tiết nhưng dễ đổi nét.",
-                        elem_classes="studio-hint",
-                    )
-                with gr.Group(elem_classes="studio-detailer"):
-                    gr.Markdown(
-                        "### 🔎 Tự sửa mặt / bàn tay", elem_classes="studio-hint"
-                    )
-                    with gr.Row():
-                        detailer_target = gr.Dropdown(
-                            choices=list(DETAILER_TARGETS),
-                            value=DETAILER_OFF,
-                            label="Tự sửa mặt/tay (auto-detailer)",
-                        )
-                        detailer_strength = gr.Slider(
-                            *DETAILER_STRENGTH_RANGE,
-                            value=DETAILER_DEFAULT_STRENGTH,
-                            step=0.05,
-                            label="Detailer strength (mức thay đổi vùng)",
-                        )
-                    with gr.Row():
-                        detailer_conf = gr.Slider(
-                            *DETAILER_CONF_RANGE,
-                            value=DETAILER_DEFAULT_CONF,
-                            step=0.05,
-                            label="Ngưỡng phát hiện (thấp = dễ tìm hơn)",
-                        )
-                        detailer_max = gr.Slider(
-                            *DETAILER_MAX_RANGE,
-                            value=DETAILER_DEFAULT_MAX,
-                            step=1,
-                            label="Số vùng tối đa sửa mỗi ảnh",
-                        )
-                    gr.Markdown(
-                        "Tự tìm **mặt** và **bàn tay** trong ảnh, cắt từng vùng ra, "
-                        "vẽ lại vùng đó bằng chính prompt/negative bạn đang thấy "
-                        "(không thêm thẻ ngầm), rồi dán lại với viền mềm. Weight dò "
-                        "YOLOv8 (~6 MB/file) tải một lần từ `Bingsu/adetailer`, kiểm "
-                        "SHA-256 như checkpoint. Áp dụng cho *Văn bản → ảnh* và *Ảnh "
-                        "→ ảnh*; mỗi vùng tốn thêm một lượt inpaint nên hãy bắt đầu "
-                        "với 1–2 vùng. Strength thấp giữ nét, cao sửa mạnh nhưng dễ "
-                        "lệch nét mặt.",
-                        elem_classes="studio-hint",
-                    )
-                with gr.Group(elem_classes="studio-look"):
-                    gr.Markdown(
-                        "### 💅 Chi tiết mắt & móng", elem_classes="studio-hint"
-                    )
-                    with gr.Row():
-                        eye_color = gr.Dropdown(
-                            choices=list(LOOK_OPTIONS["eye_color"]),
-                            value=LOOK_OFF,
-                            label=LOOK_LABELS["eye_color"],
-                        )
-                        nail_shape = gr.Dropdown(
-                            choices=list(LOOK_OPTIONS["nail_shape"]),
-                            value=LOOK_OFF,
-                            label=LOOK_LABELS["nail_shape"],
-                        )
-                    with gr.Row():
-                        nail_color = gr.Dropdown(
-                            choices=list(LOOK_OPTIONS["nail_color"]),
-                            value=LOOK_OFF,
-                            label=LOOK_LABELS["nail_color"],
-                        )
-                        toenail_color = gr.Dropdown(
-                            choices=list(LOOK_OPTIONS["toenail_color"]),
-                            value=LOOK_OFF,
-                            label=LOOK_LABELS["toenail_color"],
-                        )
-                    look_button = gr.Button(
-                        "Thêm chi tiết mắt/móng vào prompt đang hiển thị", size="sm"
-                    )
-                    gr.Markdown(
-                        "Chọn màu mắt, **kiểu dáng móng tay** và màu sơn móng tay/móng "
-                        "chân rồi bấm nút: các thẻ Danbooru tương ứng (`blue eyes`, "
-                        "`almond-shaped nails`, `red nails, nail polish`, `painted "
-                        "toenails`…) được **ghi thẳng vào ô *Prompt gửi model*** để bạn "
-                        "sửa hoặc xóa — không có thẻ nào được thêm ngầm khi tạo ảnh. "
-                        "Bấm lại không tạo thẻ trùng. Móng/mắt chỉ hiện rõ khi tay hoặc "
-                        "mặt đủ lớn trong khung: với ảnh cận tay/cận mặt hãy dùng kèm "
-                        "*Tự sửa mặt/tay* hoặc tab *Sửa vùng ảnh*; móng chân cần thấy "
-                        "bàn chân (khung *Chân / bàn chân*).",
-                        elem_classes="studio-hint",
-                    )
+                    with gr.Tab("✨ Chi tiết", id="details"):
+                        with gr.Group(elem_classes="studio-hires"):
+                            gr.Markdown(
+                                "### 🔍 Ảnh độ phân giải cao", elem_classes="studio-hint"
+                            )
+                            with gr.Row():
+                                hires_scale = gr.Dropdown(
+                                    choices=list(HIRES_SCALES),
+                                    value=HIRES_OFF,
+                                    label="Độ phân giải cao (hires fix)",
+                                )
+                                hires_strength = gr.Slider(
+                                    *HIRES_STRENGTH_RANGE,
+                                    value=HIRES_DEFAULT_STRENGTH,
+                                    step=0.05,
+                                    label="Hires strength (chi tiết thêm vào)",
+                                )
+                            gr.Markdown(
+                                "Chọn **1.5× hoặc 2×** để ảnh ra lớn hơn kích thước đã chọn "
+                                "(tối đa ≈4,2 MP, ví dụ 1024×1024 → 2048×2048): ảnh được tạo, "
+                                "phóng to rồi tinh chỉnh để thêm chi tiết. Áp dụng cho *Văn "
+                                "bản → ảnh* và *Ảnh → ảnh* (tab *Phóng to ảnh* có cài đặt "
+                                "riêng); tốn thêm thời gian và VRAM. Strength thấp giữ bố "
+                                "cục, cao thêm chi tiết nhưng dễ đổi nét.",
+                                elem_classes="studio-hint",
+                            )
+                        with gr.Group(elem_classes="studio-detailer"):
+                            gr.Markdown(
+                                "### 🔎 Tự sửa mặt / bàn tay", elem_classes="studio-hint"
+                            )
+                            with gr.Row():
+                                detailer_target = gr.Dropdown(
+                                    choices=list(DETAILER_TARGETS),
+                                    value=DETAILER_OFF,
+                                    label="Tự sửa mặt/tay (auto-detailer)",
+                                )
+                                detailer_strength = gr.Slider(
+                                    *DETAILER_STRENGTH_RANGE,
+                                    value=DETAILER_DEFAULT_STRENGTH,
+                                    step=0.05,
+                                    label="Detailer strength (mức thay đổi vùng)",
+                                )
+                            with gr.Row():
+                                detailer_conf = gr.Slider(
+                                    *DETAILER_CONF_RANGE,
+                                    value=DETAILER_DEFAULT_CONF,
+                                    step=0.05,
+                                    label="Ngưỡng phát hiện (thấp = dễ tìm hơn)",
+                                )
+                                detailer_max = gr.Slider(
+                                    *DETAILER_MAX_RANGE,
+                                    value=DETAILER_DEFAULT_MAX,
+                                    step=1,
+                                    label="Số vùng tối đa sửa mỗi ảnh",
+                                )
+                            gr.Markdown(
+                                "Tự tìm **mặt** và **bàn tay** trong ảnh, cắt từng vùng ra, "
+                                "vẽ lại vùng đó bằng chính prompt/negative bạn đang thấy "
+                                "(không thêm thẻ ngầm), rồi dán lại với viền mềm. Weight dò "
+                                "YOLOv8 (~6 MB/file) tải một lần từ `Bingsu/adetailer`, kiểm "
+                                "SHA-256 như checkpoint. Áp dụng cho *Văn bản → ảnh* và *Ảnh "
+                                "→ ảnh*; mỗi vùng tốn thêm một lượt inpaint nên hãy bắt đầu "
+                                "với 1–2 vùng. Strength thấp giữ nét, cao sửa mạnh nhưng dễ "
+                                "lệch nét mặt.",
+                                elem_classes="studio-hint",
+                            )
+                        with gr.Group(elem_classes="studio-look"):
+                            gr.Markdown(
+                                "### 💅 Chi tiết mắt & móng", elem_classes="studio-hint"
+                            )
+                            with gr.Row():
+                                eye_color = gr.Dropdown(
+                                    choices=list(LOOK_OPTIONS["eye_color"]),
+                                    value=LOOK_OFF,
+                                    label=LOOK_LABELS["eye_color"],
+                                )
+                                nail_shape = gr.Dropdown(
+                                    choices=list(LOOK_OPTIONS["nail_shape"]),
+                                    value=LOOK_OFF,
+                                    label=LOOK_LABELS["nail_shape"],
+                                )
+                            with gr.Row():
+                                nail_color = gr.Dropdown(
+                                    choices=list(LOOK_OPTIONS["nail_color"]),
+                                    value=LOOK_OFF,
+                                    label=LOOK_LABELS["nail_color"],
+                                )
+                                toenail_color = gr.Dropdown(
+                                    choices=list(LOOK_OPTIONS["toenail_color"]),
+                                    value=LOOK_OFF,
+                                    label=LOOK_LABELS["toenail_color"],
+                                )
+                            look_button = gr.Button(
+                                "Thêm chi tiết mắt/móng vào prompt đang hiển thị", size="sm"
+                            )
+                            gr.Markdown(
+                                "Chọn màu mắt, **kiểu dáng móng tay** và màu sơn móng tay/móng "
+                                "chân rồi bấm nút: các thẻ Danbooru tương ứng (`blue eyes`, "
+                                "`almond-shaped nails`, `red nails, nail polish`, `painted "
+                                "toenails`…) được **ghi thẳng vào ô *Prompt gửi model*** để bạn "
+                                "sửa hoặc xóa — không có thẻ nào được thêm ngầm khi tạo ảnh. "
+                                "Bấm lại không tạo thẻ trùng. Móng/mắt chỉ hiện rõ khi tay hoặc "
+                                "mặt đủ lớn trong khung: với ảnh cận tay/cận mặt hãy dùng kèm "
+                                "*Tự sửa mặt/tay* hoặc tab *Sửa vùng ảnh*; móng chân cần thấy "
+                                "bàn chân (khung *Chân / bàn chân*).",
+                                elem_classes="studio-hint",
+                            )
                 shared = [
                     prompt,
                     negative,
@@ -3033,148 +3342,7 @@ def build_app(runtime):
                     detailer_conf,
                     detailer_max,
                 ]
-                with gr.Tabs():
-                    with gr.Tab("✦ Văn bản → ảnh"):
-                        with gr.Row(equal_height=False):
-                            text_size = gr.Dropdown(
-                                choices=list(SIZE_PRESETS),
-                                value="1024x1024",
-                                label="Kích thước",
-                                scale=1,
-                            )
-                            text_button = gr.Button(
-                                "Tạo ảnh từ prompt",
-                                variant="primary",
-                                scale=2,
-                                elem_classes="studio-primary",
-                            )
-                    with gr.Tab("◈ Ảnh → ảnh"):
-                        image_source = gr.Image(
-                            label="Ảnh nguồn",
-                            type="pil",
-                            sources=["upload"],
-                            image_mode="RGB",
-                            height=230,
-                        )
-                        with gr.Row():
-                            image_size = gr.Dropdown(
-                                choices=list(SIZE_PRESETS),
-                                value="1024x1024",
-                                label="Kích thước đầu ra",
-                            )
-                            image_strength = gr.Slider(
-                                0.2,
-                                0.85,
-                                value=0.45,
-                                step=0.05,
-                                label="Denoise strength",
-                            )
-                        image_button = gr.Button(
-                            "Biến đổi ảnh",
-                            variant="primary",
-                            elem_classes="studio-primary",
-                        )
-                        gr.Markdown(
-                            "Ảnh nguồn khác tỷ lệ sẽ được cắt giữa cho khớp kích thước "
-                            "đầu ra, không làm méo.",
-                            elem_classes="studio-hint",
-                        )
-                    with gr.Tab("⤢ Phóng to ảnh"):
-                        upscale_source = gr.Image(
-                            label="Ảnh cần phóng to (PNG/JPG/WebP)",
-                            type="pil",
-                            sources=["upload"],
-                            image_mode="RGB",
-                            height=230,
-                        )
-                        with gr.Row():
-                            upscale_scale = gr.Dropdown(
-                                choices=[k for k in HIRES_SCALES if k != HIRES_OFF],
-                                value="2×",
-                                label="Hệ số phóng",
-                            )
-                            upscale_strength = gr.Slider(
-                                *HIRES_STRENGTH_RANGE,
-                                value=HIRES_DEFAULT_STRENGTH,
-                                step=0.05,
-                                label="Hires strength",
-                            )
-                        upscale_button = gr.Button(
-                            "Phóng to ảnh",
-                            variant="primary",
-                            elem_classes="studio-primary",
-                        )
-                        gr.Markdown(
-                            "Không tạo lại ảnh: phóng to bằng Lanczos rồi tinh chỉnh "
-                            "bằng ảnh → ảnh theo prompt hiện tại (nên mô tả đúng nội "
-                            "dung ảnh). Kết quả tối đa ≈4,2 MP; ảnh đã lớn hơn sẽ bị "
-                            "giảm hệ số hoặc từ chối.",
-                            elem_classes="studio-hint",
-                        )
-                    with gr.Tab("✎ Sửa vùng ảnh"):
-                        editor = gr.ImageEditor(
-                            label="Tải ảnh vào đây và dùng cọ tô vùng cần sửa",
-                            type="pil",
-                            image_mode="RGBA",
-                            sources=["upload"],
-                            height=380,
-                            format="png",
-                            transforms=(),
-                            brush=gr.Brush(
-                                default_size=40, colors=["#ffffff"], color_mode="fixed"
-                            ),
-                            eraser=gr.Eraser(default_size=40),
-                            layers=False,
-                        )
-                        mask_file = gr.Image(
-                            label="Hoặc tải mask trắng/đen PNG (ưu tiên hơn vùng tô)",
-                            type="pil",
-                            image_mode="L",
-                            sources=["upload"],
-                            height=150,
-                        )
-                        with gr.Row():
-                            target = gr.Dropdown(
-                                choices=[
-                                    (label, key) for key, label in REPAIR_LABELS.items()
-                                ],
-                                value="hands",
-                                label="Chi tiết cần sửa",
-                            )
-                            inpaint_strength = gr.Slider(
-                                0.2,
-                                0.85,
-                                value=0.45,
-                                step=0.05,
-                                label="Denoise strength",
-                            )
-                            feather = gr.Slider(
-                                0,
-                                24,
-                                value=8,
-                                step=2,
-                                label="Làm mềm mép vùng sửa (px)",
-                            )
-                        with gr.Row():
-                            repair_hints_button = gr.Button(
-                                "Thêm gợi ý sửa vùng vào prompt đang hiển thị",
-                                size="sm",
-                                scale=2,
-                            )
-                            inpaint_button = gr.Button(
-                                "Sửa vùng đã tô",
-                                variant="primary",
-                                scale=1,
-                                elem_classes="studio-primary",
-                            )
-                        gr.Markdown(
-                            "**Trắng / nét cọ = sửa; đen = giữ nguyên.** Ảnh tải lên "
-                            "được thu về cạnh dài tối đa 1024 px cùng mask (ảnh hires lớn hơn sẽ bị thu nhỏ "
-                            "khi sửa vùng). Chọn "
-                            "tay/chân/mắt không tự thêm từ vào prompt.",
-                            elem_classes="studio-hint",
-                        )
-            with gr.Column(scale=5, min_width=340):
+            with gr.Column(scale=5, min_width=300):
                 gallery = gr.Gallery(
                     label="Kết quả · nhấn để xem lớn",
                     columns=2,
@@ -3256,19 +3424,19 @@ def build_app(runtime):
             image = load_last(path).convert("RGBA")
             return {"background": image, "layers": [], "composite": image}
 
-        to_image.click(
+        to_image_event = to_image.click(
             fn=load_last,
             inputs=latest,
             outputs=image_source,
             api_visibility="private",
         )
-        to_upscale.click(
+        to_upscale_event = to_upscale.click(
             fn=load_last,
             inputs=latest,
             outputs=upscale_source,
             api_visibility="private",
         )
-        to_inpaint.click(
+        to_inpaint_event = to_inpaint.click(
             fn=edit_last, inputs=latest, outputs=editor, api_visibility="private"
         )
         # Không còn preset: hai ô prompt/negative là đúng những gì gửi model.
@@ -3450,6 +3618,31 @@ def build_app(runtime):
             queue=False,
             show_progress="hidden",
         )
+        tag_search.click(
+            fn=browse_csv_tags,
+            inputs=[tag_query, tag_category, tag_theme, tag_sort, tag_page],
+            outputs=[tag_selection, tag_page, tag_status],
+            api_visibility="private",
+        )
+        tag_add.click(
+            fn=apply_csv_tags,
+            inputs=[prompt, negative, tag_selection, tag_destination],
+            outputs=[prompt, negative, tag_status],
+            api_visibility="private", queue=False,
+        )
+        # Open the destination only when loading the latest image succeeded.
+        for event, destination in (
+            (to_image_event, "image"),
+            (to_upscale_event, "upscale"),
+            (to_inpaint_event, "inpaint"),
+        ):
+            event.success(
+                fn=lambda destination=destination: (
+                    gr.update(selected="create"), gr.update(selected=destination)
+                ),
+                inputs=[], outputs=[workspace_tabs, mode_tabs],
+                api_visibility="private", queue=False,
+            )
         demo.queue(max_size=4, default_concurrency_limit=1, api_open=False)
     # Gradio 6 applies CSS and themes at launch, not in the Blocks constructor.
     demo.studio_theme = gr.themes.Soft(

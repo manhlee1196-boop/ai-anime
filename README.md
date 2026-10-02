@@ -173,3 +173,53 @@ npx wrangler deploy --dry-run         # kiểm tra Worker/binding, không triể
 ```
 
 Các bài test và build **không phải** là bằng chứng checkpoint WAI đã chạy trên GPU hoặc Workers AI đã sinh ảnh thật trên một tài khoản Cloudflare.
+
+### Kho thẻ Danbooru / e621 cho prompt
+
+Trong giao diện web, mở **Thêm thẻ từ kho Danbooru / e621** ngay dưới ô Prompt.
+Nguồn là `danbooru_e621_merged_2026-10-01_pt20-ia-dd-ed-spc.csv` ở thư mục gốc
+(349.714 dòng, không có header: tên thẻ, mã danh mục, số lượt, bí danh).
+
+- Tìm tên hoặc bí danh; dấu gạch dưới và khoảng trắng được coi tương đương khi tìm.
+- Lọc theo danh mục của từng nguồn, kết hợp chủ đề; sắp xếp phổ biến nhất hoặc A–Z.
+- Chủ đề được suy đoán từ tên thẻ bằng quy tắc trong `web/src/lib/tags.js`, không phải nhãn chính thức của CSV. Một thẻ có thể khớp nhiều chủ đề; mục “Chưa phân nhóm” chứa các thẻ còn lại.
+- Chọn Prompt hoặc Negative prompt rồi nhấn thẻ để thêm tên chuẩn. Thẻ trùng được vô hiệu hóa; giới hạn lần lượt 2.000 / 1.500 ký tự. Xóa thẻ bằng cách sửa trực tiếp ô prompt.
+- Kho chỉ tải khi mở bộ chọn, được giữ trong bộ nhớ phiên trang; kết quả phân trang 40 thẻ. Có trạng thái tải, lỗi và nút thử lại. Kho có thể chứa từ khóa nhạy cảm, không phải bộ thẻ đã kiểm duyệt.
+
+Vite phục vụ CSV tại `/tags/<tên-tệp>` khi phát triển và đưa cùng tệp vào `dist/tags/`
+khi build qua `web/plugins/tag-resource.js`; không cần sao chép thủ công hoặc gọi API bên ngoài.
+CSV là tài nguyên từ khóa hỗ trợ tạo prompt, **không** phải checkpoint, LoRA hay bộ ảnh huấn luyện.
+Thẻ được đưa vào request tạo ảnh thông qua prompt hiện có, cho cả Workers AI và WAI.
+
+#### Dùng kho thẻ trong Colab / gradio.live
+
+`WAI_Illustrious_Studio_Colab.ipynb` cũng có bộ chọn **🏷️ Kho thẻ Danbooru / e621 · danh mục & chủ đề**
+ngay dưới Prompt / Negative. Chạy notebook rồi mở link Gradio ở ô 8:
+
+1. Mở mục kho thẻ và nhấn **Tìm / tải kho thẻ**. Lần đầu tải CSV ~9 MB từ GitHub ở commit cố định và kiểm tra SHA-256; không cần Drive/token.
+2. Nhập tên hoặc bí danh, chọn danh mục/chủ đề và cách sắp xếp; nhấn **Tìm** để cập nhật. Mỗi trang có 60 kết quả; nhập số trang rồi nhấn Tìm. Đặt lại trang 1 khi muốn xem đầu danh sách mới.
+3. Chọn nhiều thẻ trong kết quả, chọn Prompt hoặc Negative prompt, nhấn **Thêm thẻ đã chọn**. Nội dung hiển thị trực tiếp trong ô tương ứng; không có thẻ nào được thêm ngầm khi tạo ảnh. Đổi kết quả tìm kiếm sẽ xóa lựa chọn chưa thêm.
+
+Nếu GitHub không truy cập được, dùng bảng **Files** bên trái Colab để tải đúng CSV lên `/content/`, rồi nhấn Tìm lại.
+Kho chỉ nạp một lần vào RAM mỗi runtime, dùng chung dữ liệu chỉ đọc; prompt/lựa chọn vẫn riêng từng phiên Gradio.
+Không đưa toàn bộ danh sách 349.714 thẻ xuống trình duyệt. Lỗi kho thẻ không chặn viết prompt hoặc tạo ảnh.
+Sau khi cập nhật notebook, cần chạy lại ô 7–8 để giao diện Gradio đang chạy nhận tính năng mới.
+Mã nằm trong `colab/studio.py`; tái tạo notebook bằng `python scripts/build_colab_studio.py`.
+
+#### Bố cục tab ngang của Gradio Studio
+
+Giao diện mặc định mở **✦ Tạo ảnh**; các mục trước đây xếp dọc được gom thành 6 tab:
+
+| Tab | Nội dung |
+| --- | --- |
+| ✦ Tạo ảnh | Văn bản → ảnh, Ảnh → ảnh, Phóng to ảnh, Sửa vùng ảnh |
+| 🏷️ Kho thẻ | CSV Danbooru/e621, tìm kiếm, danh mục, chủ đề |
+| 📚 Thư viện | Nạp file/dán danh sách hoặc chọn prompt mẫu |
+| 🧭 Quy trình | Khung prompt, negative tối ưu, kiểm tra prompt/thông số |
+| ⚙️ Thông số | Steps, CFG, seed, số ảnh, LoRA, metadata PNG |
+| ✨ Chi tiết | Hires fix, auto-detailer, chi tiết mắt/móng |
+
+Prompt/Negative dùng chung nằm ngoài tab; chuyển tab không tạo bản sao hoặc đặt lại giá trị.
+Khung kết quả vẫn ở bên cạnh trên màn hình rộng, xuống dưới trên màn hình nhỏ.
+Thanh tab cuộn ngang trên điện thoại. Các nút dùng ảnh mới nhất tự mở đúng tab đích
+sau khi nạp ảnh thành công. Chạy lại ô 7–8 của notebook đã cập nhật để áp dụng.

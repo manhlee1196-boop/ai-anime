@@ -1221,8 +1221,19 @@ class RuntimeValidationTests(unittest.TestCase):
         # 4 nút tạo ảnh + 3 nút dùng ảnh mới nhất + trigger mắt + gợi ý sửa vùng
         # + gợi ý phong cách (look) + sắp xếp prompt + nạp negative + kiểm tra
         # prompt + 5 sự kiện của thư viện prompt.
-        # 19 sự kiện: ... + nút nạp prompt dự phòng cho điện thoại.
-        self.assertEqual(len(config["dependencies"]), 19)
+        # 24 sự kiện: 19 cũ + 2 kho thẻ + 3 chuyển tab sau khi dùng ảnh.
+        self.assertEqual(len(config["dependencies"]), 24)
+        # Six horizontal workspace tabs plus four generation modes.
+        tabs = [c for c in config["components"] if c["type"] == "tabitem"]
+        self.assertEqual(
+            [c["props"].get("id") for c in tabs],
+            ["create", "text", "image", "upscale", "inpaint", "tags",
+             "library", "workflow", "settings", "details"],
+        )
+        tab_groups = [c for c in config["components"] if c["type"] == "tabs"]
+        self.assertEqual([c["props"].get("selected") for c in tab_groups], ["create", "text"])
+        self.assertFalse(any(c["type"] == "accordion" for c in config["components"]))
+        self.assertIn("overflow-x: auto", demo.studio_css)
         # Không còn cảnh báo/ô tick xác nhận nội dung trong giao diện.
         self.assertFalse(
             any("18 tuổi" in str(c["props"]) for c in config["components"])
@@ -1277,6 +1288,12 @@ class RuntimeValidationTests(unittest.TestCase):
             for c in config["components"]
             if "hires" in str(c["props"].get("label") or "").lower()
         ]
+        # Match roles, not visual order: generation modes now precede Details.
+        hires_fields.sort(key=lambda c: {
+            "Độ phân giải cao (hires fix)": 0,
+            "Hires strength (chi tiết thêm vào)": 1,
+            "Hires strength": 2,
+        }[c["props"]["label"]])
         # Dropdown + slider dùng chung cho 2 tab tạo ảnh; slider thứ hai thuộc tab
         # Phóng to ảnh (dropdown "Hệ số phóng" không chứa chữ hires).
         self.assertEqual(

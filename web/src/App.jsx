@@ -37,6 +37,7 @@ import {
   WandSparkles,
   X,
 } from "lucide-react";
+import TagPicker from "./components/TagPicker";
 import MaskEditor from "./components/MaskEditor";
 import {
   deleteGeneration,
@@ -844,6 +845,7 @@ export default function App() {
                 <span>Hãy miêu tả điều bạn muốn nhìn thấy</span>
                 <span>{settings.prompt.length}/2000</span>
               </div>
+              <TagPicker settings={settings} update={update} />
               <div className="styles-label">
                 THỬ PHONG CÁCH <Sparkles size={12} />
               </div>
