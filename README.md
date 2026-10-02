@@ -232,24 +232,3 @@ họa sĩ/nhân vật/tác phẩm được giữ nguyên và thêm nhãn loại 
 Phụ đề chỉ dùng để hiển thị/tìm kiếm; prompt vẫn nhận đúng tên thẻ gốc. Không sửa CSV
 nguồn, không cần dịch vụ dịch bên ngoài. Bổ sung bản dịch trong `TAG_VI_LABELS` của
 `colab/studio.py` rồi chạy lại script tạo notebook.
-
-#### Prompt dài hơn 75 token (Colab Studio)
-
-Studio tự chia Prompt và Negative thành các khối tối đa 75 token nội dung rồi ghép
-hidden-state embedding của cả hai bộ mã hóa CLIP SDXL. Prompt ngắn vẫn dùng đường
-mã hóa mặc định của Diffusers. Prompt dài không bị cắt ngầm ở token 75; áp dụng cho
-text-to-image, image-to-image, inpaint, hires và auto-detailer qua cùng đường suy luận.
-
-- Tối đa **200 token nội dung / mỗi ô / mỗi tokenizer**, chia tối đa **3 khối CLIP**.
-  Vượt giới hạn sẽ báo lỗi, không tự cắt. Đây là giới hạn bảo vệ VRAM, không phải vô hạn.
-- Có thể viết `BREAK` để bắt đầu khối mới, ví dụ `nhóm thẻ nhân vật BREAK nhóm thẻ bối cảnh`.
-  BREAK không gửi thành từ vào encoder; khối ngắn vẫn chiếm một khối. Quá 3 khối sẽ
-  báo lỗi dù chưa đủ 200 token; hãy bớt BREAK. BOS/EOS và token đệm không tính vào 200 token.
-- Đây là chunked conditioning, **không mở rộng cửa sổ ngữ cảnh bên trong CLIP**.
-  Các khối được mã hóa độc lập. Positive/negative được đệm bằng khối rỗng để cùng chiều dài;
-  pooled embedding CLIP-G lấy trung bình các khối thực của mỗi ô (không tính khối đệm).
-- Không hỗ trợ riêng cú pháp trọng số kiểu A1111 `(tag:1.2)`. Prompt dài tốn thêm thời gian,
-  VRAM và không bảo đảm model thể hiện mọi thẻ. Bộ đếm trong tab Quy trình vẫn là ước lượng;
-  tokenizer thật kiểm tra giới hạn khi tạo ảnh.
-- Chạy lại ô 7–8 của notebook mới. Tính năng này chỉ áp dụng Colab/Gradio Studio,
-  không thay đổi backend Workers AI của giao diện web.
