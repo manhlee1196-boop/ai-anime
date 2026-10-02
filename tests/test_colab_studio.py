@@ -7,6 +7,7 @@ setup tests run even without them. No checkpoint/GPU/network required.
 import contextlib
 import hashlib
 import importlib.util
+import inspect
 import io
 import json
 from pathlib import Path
@@ -505,11 +506,9 @@ class PromptLibraryTests(unittest.TestCase):
         library = studio.load_sample_prompt_library()
         self.assertEqual(len(library["items"]), 12)
         self.assertEqual(
-            studio.prompt_library_dropdown(library["items"])["interactive"], True
+            studio.prompt_library_choices(library["items"])["interactive"], True
         )
-        self.assertEqual(
-            studio.prompt_library_dropdown(())[ "choices"], ()
-        )
+        self.assertEqual(studio.prompt_library_choices(())["choices"], ())
         self.assertEqual(studio.prompt_library_reset()[0], ())
         # Kích thước trong file mẫu phải là preset hợp lệ của giao diện.
         sized = next(item for item in library["items"] if item["size"])
@@ -597,35 +596,24 @@ class RuntimeValidationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Chọn vùng sửa"):
             studio.apply_repair_hints("portrait", "", "unknown")
 
-    def test_content_guards_reject_underage_and_gate_adult_prompts(self):
-        # Từ khóa trẻ em/vị thành niên bị từ chối với MỌI prompt, không cần preset.
-        for prompt in (
-            "underage character",
-            "school girl portrait",
-            "teenage",
-            "17-year-old",
-            "vị thành niên",
-        ):
-            with (
-                self.subTest(prompt=prompt),
-                self.assertRaisesRegex(ValueError, "phải trưởng thành"),
-            ):
-                self.params(prompt=prompt, adult_confirmed=True)
-            with self.assertRaisesRegex(ValueError, "phải trưởng thành"):
-                self.params(prompt=prompt)
-        # Nội dung người lớn do người dùng tự viết thì phải tick xác nhận 18+.
+    def test_prompt_and_negative_have_no_keyword_or_length_filters(self):
+        """Runtime không lọc từ khóa/độ dài: hai ô gửi model nguyên văn.
+
+        Giao diện cũng không còn ô tick xác nhận 18+ (đã gỡ 02/10/2026), nên
+        không có tham số nội dung nào trong `_parameters`.
+        """
+        self.assertFalse(hasattr(studio, "UNDERAGE_PROMPT"))
+        self.assertFalse(hasattr(studio, "ADULT_PROMPT"))
         adult = "1girl, adult woman, nsfw, explicit, detailed anatomy"
-        with self.assertRaisesRegex(ValueError, "18 tuổi trở lên"):
-            self.params(prompt=adult, adult_confirmed=False)
-        self.assertEqual(self.params(prompt=adult, adult_confirmed=True)[0], adult)
-        # Prompt không có từ khóa người lớn thì không cần tick.
-        safe = "1girl, adult woman, office worker, portrait, masterpiece"
-        self.assertEqual(self.params(prompt=safe)[0], safe)
-        # Từ khóa vị thành niên trong *negative* không kích hoạt hàng rào prompt dương.
+        self.assertEqual(self.params(prompt=adult)[0], adult)
+        # Không có hàng rào từ khóa: hai ô vẫn được truyền nguyên văn.
+        formerly_blocked = "school girl portrait, teen"
+        self.assertEqual(self.params(prompt=formerly_blocked)[0], formerly_blocked)
+        self.assertNotIn("adult_confirmed", inspect.signature(
+            studio.StudioRuntime._parameters
+        ).parameters)
         self.assertEqual(
-            self.params(
-                prompt="adult", negative="underage, child", adult_confirmed=True
-            )[1],
+            self.params(prompt="adult", negative="underage, child")[1],
             "underage, child",
         )
 
@@ -637,9 +625,6 @@ class RuntimeValidationTests(unittest.TestCase):
         self.assertEqual(self.params(eyes_enabled=True)[0], "anime portrait")
         self.assertEqual(self.params(eyes_enabled=False)[0], "anime portrait")
         for setting in (
-            dict(prompt=" "),
-            dict(prompt="x" * 2201),
-            dict(negative="x" * 1701),
             dict(steps=46),
             dict(cfg=float("nan")),
             dict(seed=-2),
@@ -1234,8 +1219,59 @@ class RuntimeValidationTests(unittest.TestCase):
             [prompt_field["id"], negative_field["id"]],
         )
         # 4 nút tạo ảnh + 3 nút dùng ảnh mới nhất + trigger mắt + gợi ý sửa vùng
-        # + 5 sự kiện của thư viện prompt.
-        self.assertEqual(len(config["dependencies"]), 14)
+        # + gợi ý phong cách (look) + sắp xếp prompt + nạp negative + kiểm tra
+        # prompt + 5 sự kiện của thư viện prompt.
+        # 19 sự kiện: ... + nút nạp prompt dự phòng cho điện thoại.
+        self.assertEqual(len(config["dependencies"]), 19)
+        # Không còn cảnh báo/ô tick xác nhận nội dung trong giao diện.
+        self.assertFalse(
+            any("18 tuổi" in str(c["props"]) for c in config["components"])
+        )
+        detailer_dropdown = next(
+            c
+            for c in config["components"]
+            if c["type"] == "dropdown" and "auto-detailer" in str(c["props"].get("label"))
+        )
+        self.assertEqual(
+            [choice[0] for choice in detailer_dropdown["props"]["choices"]],
+            list(studio.DETAILER_TARGETS),
+        )
+        self.assertEqual(detailer_dropdown["props"]["value"], studio.DETAILER_OFF)
+        detailer_sliders = [
+            c
+            for c in config["components"]
+            if c["type"] == "slider"
+            and any(
+                key in str(c["props"].get("label"))
+                for key in ("Detailer strength", "Ngưỡng phát hiện", "Số vùng tối đa")
+            )
+        ]
+        self.assertEqual(len(detailer_sliders), 3)
+        detailer_ids = [detailer_dropdown["id"]] + [c["id"] for c in detailer_sliders]
+        # 8 bộ negative tối ưu + khung prompt + nút kiểm tra prompt đều có mặt.
+        negative_choice = next(
+            c
+            for c in config["components"]
+            if c["type"] == "dropdown"
+            and "Negative tối ưu" in str(c["props"].get("label"))
+        )
+        self.assertEqual(
+            [choice[0] for choice in negative_choice["props"]["choices"]],
+            [label for label, _ in studio.negative_preset_choices()],
+        )
+        self.assertTrue(
+            any(
+                c["type"] == "dropdown"
+                and "Khung prompt" in str(c["props"].get("label"))
+                for c in config["components"]
+            )
+        )
+        self.assertTrue(
+            any(
+                c["type"] == "button" and "Kiểm tra prompt" in str(c["props"].get("value"))
+                for c in config["components"]
+            )
+        )
         hires_fields = [
             c
             for c in config["components"]
@@ -1252,21 +1288,23 @@ class RuntimeValidationTests(unittest.TestCase):
             list(studio.HIRES_SCALES),
         )
         self.assertEqual(hires_fields[0]["props"]["value"], studio.HIRES_OFF)
-        for dep in config["dependencies"][:2]:  # text, img2img: có hires
-            self.assertEqual(dep["inputs"][-2:], hires_ids)
+        for dep in config["dependencies"][:2]:  # text, img2img: có hires + detailer
+            position = dep["inputs"].index(prompt_field["id"])
             self.assertEqual(
-                dep["inputs"][-14:-12], [prompt_field["id"], negative_field["id"]]
+                dep["inputs"][position + 1], negative_field["id"]
             )
+            self.assertEqual(dep["inputs"][-6:-4], hires_ids)
+            self.assertEqual(dep["inputs"][-4:], detailer_ids)
         upscale_dep = config["dependencies"][2]  # phóng to: hệ số/strength riêng
         self.assertFalse(set(hires_ids) & set(upscale_dep["inputs"]))
-        self.assertEqual(
-            upscale_dep["inputs"][-12:-10], [prompt_field["id"], negative_field["id"]]
-        )
-        inpaint_dep = config["dependencies"][3]  # sửa vùng: không hires
+        self.assertFalse(set(detailer_ids) & set(upscale_dep["inputs"]))
+        position = upscale_dep["inputs"].index(prompt_field["id"])
+        self.assertEqual(upscale_dep["inputs"][position + 1], negative_field["id"])
+        inpaint_dep = config["dependencies"][3]  # sửa vùng: không hires/detailer
         self.assertFalse(set(hires_ids) & set(inpaint_dep["inputs"]))
-        self.assertEqual(
-            inpaint_dep["inputs"][-12:-10], [prompt_field["id"], negative_field["id"]]
-        )
+        self.assertFalse(set(detailer_ids) & set(inpaint_dep["inputs"]))
+        position = inpaint_dep["inputs"].index(prompt_field["id"])
+        self.assertEqual(inpaint_dep["inputs"][position + 1], negative_field["id"])
         self.assertTrue(
             all(x["api_visibility"] == "private" for x in config["dependencies"])
         )
@@ -1314,9 +1352,10 @@ class RuntimeValidationTests(unittest.TestCase):
 
         upload = component("file", "danh sách prompt")
         self.assertEqual(upload["props"]["file_types"], [".txt", ".md", ".json"])
-        choice = component("dropdown", "Chọn prompt để nạp")
+        choice = component("radio", "Chọn prompt để nạp")
         self.assertEqual(choice["props"]["choices"], [])
         self.assertFalse(choice["props"]["interactive"])
+        self.assertIn("studio-prompt-list", choice["props"].get("elem_classes", []))
         paste = component("button", "Đọc danh sách đã dán", "value")
         sample = component("button", "thư viện mẫu", "value")
         state = next(c for c in components if c["type"] == "state")
@@ -1363,6 +1402,14 @@ class RuntimeValidationTests(unittest.TestCase):
             select_event["inputs"], [choice["id"], state["id"], *parameters]
         )
         self.assertEqual(select_event["outputs"], [*parameters, library_box["id"]])
+        # Nút nạp dự phòng dùng chung tham số với sự kiện chọn dòng (tiện trên
+        # điện thoại khi thao tác chạm vào danh sách không như ý).
+        button = component("button", "Nạp prompt đã chọn", "value")
+        button_event = next(
+            d for d in config["dependencies"] if (button["id"], "click") in d["targets"]
+        )
+        self.assertEqual(button_event["inputs"], [choice["id"], state["id"], *parameters])
+        self.assertEqual(button_event["outputs"], select_event["outputs"])
 
         session = SessionState(demo)
 
@@ -1421,6 +1468,25 @@ class RuntimeValidationTests(unittest.TestCase):
             self.assertEqual(filled[3:7], [6.0, -1, "1024x1024", "1024x1024"])
             self.assertIn("Đã nạp", filled[7])
             self.assertIn("Prompt gửi model", filled[7])
+
+            # Nút nạp dự phòng (dùng trên điện thoại) chạy đúng cùng logic: chọn
+            # sẵn một dòng rồi bấm nút là prompt được nạp như khi chạm dòng.
+            by_button = await process(
+                (button["id"], "click"),
+                [
+                    items[1]["label"],
+                    None,
+                    "prompt cũ",
+                    "negative cũ",
+                    25,
+                    6.0,
+                    -1,
+                    "1024x1024",
+                    "1024x1024",
+                ],
+            )
+            self.assertEqual(by_button[0], items[1]["prompt"])
+            self.assertIn("Đã nạp", by_button[7])
 
             # Dán nội dung thay vì tải file lên.
             _, pasted, pasted_status = await process(
@@ -1490,7 +1556,7 @@ class RuntimeValidationTests(unittest.TestCase):
                 await demo.process_api(index, inputs, state=state, explicit_call=True)
             )["data"]
 
-        def shared(positive, negative, eyes=False, adult=False):
+        def shared(positive, negative, eyes=False):
             return [
                 positive,
                 negative,
@@ -1503,8 +1569,16 @@ class RuntimeValidationTests(unittest.TestCase):
                 eyes,
                 0.45,
                 False,
-                adult,
             ]
+
+        # Auto-detailer mặc định Tắt: chỉ bốn tham số cấu hình được truyền vào
+        # sự kiện tạo ảnh, không đổi số lượt gọi pipe.
+        detailer_args = [
+            studio.DETAILER_OFF,
+            studio.DETAILER_DEFAULT_STRENGTH,
+            studio.DETAILER_DEFAULT_CONF,
+            studio.DETAILER_DEFAULT_MAX,
+        ]
 
         async def smoke():
             # Không còn preset phong cách: nút trigger mắt chỉ thêm "perfect eyes"
@@ -1534,6 +1608,7 @@ class RuntimeValidationTests(unittest.TestCase):
                         ),
                         studio.HIRES_OFF,
                         0.4,
+                        *detailer_args,
                     ],
                     ("  my own portrait  ", "  no hidden tags  "),
                 ),
@@ -1546,6 +1621,7 @@ class RuntimeValidationTests(unittest.TestCase):
                         *shared("paint this picture", "my bad quality"),
                         studio.HIRES_OFF,
                         0.4,
+                        *detailer_args,
                     ],
                     ("paint this picture", "my bad quality"),
                 ),
@@ -1573,10 +1649,16 @@ class RuntimeValidationTests(unittest.TestCase):
                     ],
                     tuple(leg_prompts),
                 ),
-                # Prompt người lớn do người dùng tự viết, đã tick xác nhận 18+.
+                # Prompt do người dùng tự viết; không còn ô tick xác nhận nào.
                 (
                     0,
-                    ["512x512", *shared(*adult_prompts, adult=True), "Tắt", 0.4],
+                    [
+                        "512x512",
+                        *shared(*adult_prompts),
+                        "Tắt",
+                        0.4,
+                        *detailer_args,
+                    ],
                     adult_prompts,
                 ),
             ):
@@ -1595,7 +1677,14 @@ class RuntimeValidationTests(unittest.TestCase):
             # Hires fix qua đường sự kiện UI: 512×512 → 1,5× = 768×768, 2 lượt pipe.
             calls_before = len(FakePipe.calls)
             data = await process(
-                0, ["512x512", *shared("hires portrait", "bad"), "1.5×", 0.35]
+                0,
+                [
+                    "512x512",
+                    *shared("hires portrait", "bad"),
+                    "1.5×",
+                    0.35,
+                    *detailer_args,
+                ],
             )
             self.assertIn("512×512 → 768×768", data[2])
             self.assertEqual(len(FakePipe.calls), calls_before + 2)
@@ -1613,23 +1702,25 @@ class RuntimeValidationTests(unittest.TestCase):
             with Image.open(data[1][0]["path"]) as result:
                 self.assertEqual(result.size, (1024, 1024))
             del FakePipe.calls[calls_before:]
-            # Chưa tick xác nhận 18+ thì prompt người lớn bị chặn, không tới pipe.
-            with self.assertRaises(Exception) as blocked:
-                await process(0, ["512x512", *shared(*adult_prompts), "Tắt", 0.4])
-            self.assertIn("18 tuổi trở lên", str(blocked.exception))
-            # Từ khóa vị thành niên bị chặn kể cả khi đã tick xác nhận.
-            with self.assertRaises(Exception) as underage:
-                await process(
-                    0,
-                    [
-                        "512x512",
-                        *shared("school girl portrait", "", adult=True),
-                        "Tắt",
-                        0.4,
-                    ],
-                )
-            self.assertIn("phải trưởng thành", str(underage.exception))
-            self.assertEqual(len(FakePipe.calls), 5)
+            # Không còn ô tick/không có bộ lọc: prompt tới pipe nguyên văn.
+            await process(
+                0,
+                [
+                    "512x512",
+                    *shared(*adult_prompts),
+                    "Tắt",
+                    0.4,
+                    *detailer_args,
+                ],
+            )
+            self.assertEqual(
+                (
+                    FakePipe.calls[-1][1]["prompt"],
+                    FakePipe.calls[-1][1]["negative_prompt"],
+                ),
+                adult_prompts,
+            )
+            self.assertEqual(len(FakePipe.calls), 6)
             self.assertTrue(Path((await process(4, [None]))[0]["path"]).is_file())
             self.assertTrue(
                 Path((await process(6, [None]))[0]["background"]["path"]).is_file()
