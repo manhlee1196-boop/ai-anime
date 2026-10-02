@@ -223,3 +223,12 @@ Prompt/Negative dùng chung nằm ngoài tab; chuyển tab không tạo bản sa
 Khung kết quả vẫn ở bên cạnh trên màn hình rộng, xuống dưới trên màn hình nhỏ.
 Thanh tab cuộn ngang trên điện thoại. Các nút dùng ảnh mới nhất tự mở đúng tab đích
 sau khi nạp ảnh thành công. Chạy lại ô 7–8 của notebook đã cập nhật để áp dụng.
+
+Kho thẻ Gradio hiển thị phụ đề tiếng Việt trước tên gốc, ví dụ **Tóc dài — long_hair**,
+**Mắt xanh dương — blue_eyes**. Có thể tìm bằng nhãn tiếng Việt có dấu hoặc tên/bí danh gốc.
+Từ điển tích hợp bao phủ một nhóm thẻ thông dụng và các tổ hợp màu được xác định rõ;
+**không phải bản dịch đầy đủ 349.714 thẻ**. Thẻ chưa dịch ghi “Chưa có bản dịch”; tên
+họa sĩ/nhân vật/tác phẩm được giữ nguyên và thêm nhãn loại bằng tiếng Việt.
+Phụ đề chỉ dùng để hiển thị/tìm kiếm; prompt vẫn nhận đúng tên thẻ gốc. Không sửa CSV
+nguồn, không cần dịch vụ dịch bên ngoài. Bổ sung bản dịch trong `TAG_VI_LABELS` của
+`colab/studio.py` rồi chạy lại script tạo notebook.

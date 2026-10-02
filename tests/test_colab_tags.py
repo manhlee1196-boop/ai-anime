@@ -41,6 +41,18 @@ class TagCatalogTests(unittest.TestCase):
         self.assertEqual(hashlib.sha256(data).hexdigest(), studio.TAG_CSV_SHA256)
         self.assertEqual(len(studio.parse_tag_csv(data.decode('utf-8'))), 349714)
 
+    def test_vietnamese_captions_search_and_canonical_prompt(self):
+        self.assertEqual(studio.csv_tag_caption("long_hair", "0"), "Tóc dài — long_hair")
+        self.assertEqual(studio.csv_tag_caption("blue_eyes", "0"), "Mắt xanh dương — blue_eyes")
+        self.assertEqual(studio.csv_tag_caption("example_artist", "1"), "Họa sĩ — example_artist")
+        self.assertEqual(studio.csv_tag_caption("untranslated", "0"), "Chưa có bản dịch — untranslated")
+        found, total, _, _ = studio.search_csv_tags(self.rows, "tóc dài")
+        self.assertEqual(total, 1)
+        self.assertEqual(found[0][0], "long_hair")
+        with patch.object(studio, "load_csv_tags", return_value=self.rows):
+            positive, _, _ = studio.apply_csv_tags("", "", [found[0][0]], "Prompt")
+        self.assertEqual(positive, "long_hair")
+
     def test_reject_invalid_csv(self):
         with self.assertRaises(ValueError):
             studio.parse_tag_csv('<html>Not Found</html>')

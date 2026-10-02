@@ -2695,6 +2695,81 @@ TAG_THEMES = {
     "Ánh sáng & màu sắc": r"light|shadow|sunset|sunrise|night|glow|neon|monochrome|color|colour",
     "Bố cục & kỹ thuật": r"view|portrait|close.up|full.body|perspective|focus|sketch|painting|watercolor|resolution|highres|absurdres|digital",
 }
+# Vietnamese captions are display/search metadata only, never generation tokens.
+TAG_VI_LABELS = {
+    "solo": "Một nhân vật", "1girl": "Một nhân vật nữ", "1boy": "Một nhân vật nam",
+    "2girls": "Hai nhân vật nữ", "2boys": "Hai nhân vật nam",
+    "multiple_girls": "Nhiều nhân vật nữ", "multiple_boys": "Nhiều nhân vật nam",
+    "male": "Giới tính nam", "female": "Giới tính nữ", "duo": "Hai nhân vật",
+    "anthro": "Động vật nhân hóa", "mammal": "Động vật có vú",
+    "canid": "Họ chó", "canine": "Loài chó", "felid": "Họ mèo", "feline": "Loài mèo",
+    "long_hair": "Tóc dài", "short_hair": "Tóc ngắn", "medium_hair": "Tóc dài vừa",
+    "very_long_hair": "Tóc rất dài", "curly_hair": "Tóc xoăn", "wavy_hair": "Tóc gợn sóng",
+    "straight_hair": "Tóc thẳng", "messy_hair": "Tóc rối", "ponytail": "Tóc đuôi ngựa",
+    "twintails": "Tóc buộc hai bên", "braid": "Tóc tết", "bangs": "Tóc mái",
+    "hair": "Tóc", "fur": "Lông thú", "tail": "Đuôi", "wings": "Đôi cánh",
+    "horns": "Sừng", "animal_ears": "Tai động vật", "cat_ears": "Tai mèo",
+    "looking_at_viewer": "Nhìn người xem", "looking_away": "Nhìn sang chỗ khác",
+    "smile": "Mỉm cười", "blush": "Đỏ mặt", "open_mouth": "Miệng mở",
+    "closed_mouth": "Miệng khép", "closed_eyes": "Nhắm mắt", "wink": "Nháy mắt",
+    "crying": "Đang khóc", "tears": "Nước mắt", "laughing": "Đang cười",
+    "angry": "Tức giận", "surprised": "Ngạc nhiên", "sleeping": "Đang ngủ",
+    "standing": "Đang đứng", "sitting": "Đang ngồi", "lying": "Đang nằm",
+    "walking": "Đang đi bộ", "running": "Đang chạy", "jumping": "Đang nhảy",
+    "arms_up": "Giơ tay lên", "crossed_arms": "Khoanh tay", "hand_on_hip": "Tay chống hông",
+    "dress": "Váy liền", "shirt": "Áo sơ mi", "skirt": "Chân váy",
+    "clothing": "Trang phục", "school_uniform": "Đồng phục học sinh",
+    "jacket": "Áo khoác", "kimono": "Áo kimono", "armor": "Áo giáp",
+    "hat": "Mũ", "ribbon": "Ruy băng", "gloves": "Găng tay", "boots": "Ủng",
+    "glasses": "Kính mắt", "earrings": "Khuyên tai", "necklace": "Vòng cổ",
+    "simple_background": "Nền đơn giản", "transparent_background": "Nền trong suốt",
+    "indoors": "Trong nhà", "outdoors": "Ngoài trời", "sky": "Bầu trời",
+    "cloud": "Mây", "clouds": "Những đám mây", "forest": "Rừng", "tree": "Cây",
+    "flower": "Hoa", "flowers": "Những bông hoa", "cherry_blossoms": "Hoa anh đào",
+    "ocean": "Đại dương", "beach": "Bãi biển", "city": "Thành phố",
+    "street": "Đường phố", "room": "Căn phòng", "mountain": "Núi",
+    "snow": "Tuyết", "rain": "Mưa", "water": "Nước", "night": "Ban đêm",
+    "sunset": "Hoàng hôn", "sunrise": "Bình minh", "sunlight": "Ánh nắng",
+    "moonlight": "Ánh trăng", "backlighting": "Ánh sáng ngược", "shadow": "Bóng đổ",
+    "monochrome": "Đơn sắc", "greyscale": "Thang xám", "blurry": "Mờ nhòe",
+    "portrait": "Chân dung", "close-up": "Cận cảnh", "full_body": "Toàn thân",
+    "upper_body": "Nửa thân trên", "from_above": "Góc nhìn từ trên",
+    "from_below": "Góc nhìn từ dưới", "from_side": "Góc nhìn bên cạnh",
+    "from_behind": "Góc nhìn từ phía sau", "depth_of_field": "Độ sâu trường ảnh",
+    "sketch": "Phác thảo", "watercolor": "Màu nước", "lineart": "Nét vẽ",
+    "highres": "Độ phân giải cao", "hi_res": "Độ phân giải cao",
+    "absurdres": "Độ phân giải cực cao", "absurd_res": "Độ phân giải cực cao",
+    "lowres": "Độ phân giải thấp", "animated": "Ảnh động", "comic": "Truyện tranh",
+    "text": "Chữ trong ảnh", "signature": "Chữ ký", "watermark": "Dấu bản quyền",
+    "translation_request": "Yêu cầu dịch", "translated": "Đã dịch",
+    "official_art": "Tranh chính thức", "original": "Sáng tác gốc",
+    "breasts": "Ngực", "large_breasts": "Ngực lớn", "small_breasts": "Ngực nhỏ",
+    "cleavage": "Khe ngực", "nude": "Khỏa thân", "nipples": "Núm vú",
+    "genitals": "Bộ phận sinh dục", "nsfw": "Nội dung nhạy cảm",
+}
+# Only compose a translation for these exact, unambiguous color/tag patterns.
+for _color, _vi_color in {
+    "black": "đen", "white": "trắng", "blue": "xanh dương", "green": "xanh lá",
+    "red": "đỏ", "yellow": "vàng", "orange": "cam", "pink": "hồng",
+    "purple": "tím", "brown": "nâu", "grey": "xám", "gray": "xám",
+    "silver": "bạc", "gold": "vàng kim",
+}.items():
+    for _part, _vi_part in {"hair": "Tóc", "eyes": "Mắt", "background": "Nền",
+                            "dress": "Váy", "shirt": "Áo", "skirt": "Chân váy"}.items():
+        TAG_VI_LABELS.setdefault(f"{_color}_{_part}", f"{_vi_part} {_vi_color}")
+TAG_VI_LABELS["blonde_hair"] = "Tóc vàng"
+
+
+def csv_tag_caption(name, category):
+    """Do not invent translations for proper names or unknown vocabulary."""
+    translated = TAG_VI_LABELS.get(name)
+    if translated:
+        return f"{translated} — {name}"
+    kind = {"1": "Họa sĩ", "8": "Họa sĩ", "3": "Tác phẩm", "10": "Tác phẩm",
+            "4": "Nhân vật", "11": "Nhân vật", "9": "Người đóng góp"}.get(category)
+    return f"{kind or 'Chưa có bản dịch'} — {name}"
+
+
 _TAG_ROWS = None
 _TAG_LOCK = threading.Lock()
 TAG_PAGE_SIZE = 60
@@ -2717,7 +2792,7 @@ def parse_tag_csv(text):
         if not name or category not in TAG_CATEGORIES or not count.isdigit():
             continue
         themes = tuple(label for label, pattern in patterns if pattern.search(name))
-        rows.append((name, category, int(count), normalize_csv_tag(name + "," + aliases), themes))
+        rows.append((name, category, int(count), normalize_csv_tag(name + "," + aliases + "," + TAG_VI_LABELS.get(name, "")), themes))
     if not rows:
         raise ValueError("CSV không chứa thẻ hợp lệ.")
     return tuple(rows)
@@ -2770,7 +2845,7 @@ def browse_csv_tags(query, category, theme, sort, page):
     try:
         rows = load_csv_tags()
         found, total, current, pages = search_csv_tags(rows, query, category, theme, sort, page)
-        choices = [(f"{row[0]} · {TAG_CATEGORIES[row[1]]} · {row[2]:,} lượt", row[0]) for row in found]
+        choices = [(f"{csv_tag_caption(row[0], row[1])} · {TAG_CATEGORIES[row[1]]} · {row[2]:,} lượt", row[0]) for row in found]
         return gr.update(choices=choices, value=[]), current, (
             f"**{total:,} thẻ phù hợp / {len(rows):,} thẻ** · Trang {current}/{pages}. "
             "Chọn thẻ rồi nhấn Thêm. Đổi bộ lọc và nhấn Tìm để cập nhật; lựa chọn cũ sẽ được xóa."
@@ -3040,10 +3115,12 @@ def build_app(runtime):
                         gr.Markdown(
                             "Nguồn CSV 01/10/2026 · 349.714 thẻ. Nhấn **Tìm / tải kho thẻ** để nạp lần đầu (~9 MB). "
                             "Chủ đề được nhóm tự động theo tên, có thể chồng lặp; danh mục giữ theo nguồn. "
+                            "Nhãn tiếng Việt đứng trước tên gốc; thẻ chưa dịch được ghi rõ, tên riêng giữ nguyên. "
+                            "Khi thêm vào prompt chỉ dùng tên thẻ gốc. "
                             "Kho có thể chứa thẻ nhạy cảm. Đây là từ khóa, không phải model hay ảnh huấn luyện.",
                             elem_classes="studio-hint",
                         )
-                        tag_query = gr.Textbox(label="Tìm tên thẻ hoặc bí danh", placeholder="long hair, smile…")
+                        tag_query = gr.Textbox(label="Tìm tiếng Việt, tên thẻ hoặc bí danh", placeholder="tóc dài, long hair, smile…")
                         with gr.Row():
                             tag_category = gr.Dropdown(
                                 choices=[("Tất cả danh mục", "")] + [(label, key) for key, label in TAG_CATEGORIES.items()],
