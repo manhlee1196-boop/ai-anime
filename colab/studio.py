@@ -3436,7 +3436,6 @@ def build_app(runtime):
                         choices=[],
                         value=None,
                         label="Gợi ý tag · nhãn Việt — tag tiếng Anh gốc",
-                        placeholder="Gõ cụm cuối trong prompt để tìm tag",
                         allow_custom_value=False,
                         scale=4,
                     )
