@@ -130,12 +130,17 @@ class NotebookTests(unittest.TestCase):
         compile(ui_source, "studio-ui", "exec")
         launch_source = "".join(n["cells"][8]["source"])
         self.assertIn("studio_local_url, share_url", launch_source)
+        self.assertIn("giao diện nội bộ vẫn chạy", launch_source)
+        self.assertIn("Cloudflare Quick Tunnel", launch_source)
         compile(launch_source, "studio-launch", "exec")
-        proxy_source = "".join(n["cells"][9]["source"])
-        self.assertIn("google.colab.kernel.proxyPort", proxy_source)
-        self.assertIn("ProxyHandler({})", proxy_source)
-        self.assertIn("IFrame", proxy_source)
-        compile(proxy_source, "studio-colab-proxy", "exec")
+        tunnel_source = "".join(n["cells"][9]["source"])
+        self.assertIn("trycloudflare.com", tunnel_source)
+        self.assertIn("cloudflared-linux-{architecture}", tunnel_source)
+        self.assertIn("--protocol", tunnel_source)
+        self.assertIn("cloudflare_tunnel_process", tunnel_source)
+        self.assertIn("ProxyHandler({})", tunnel_source)
+        self.assertNotIn("google.colab.kernel.proxyPort", tunnel_source)
+        compile(tunnel_source, "studio-cloudflare-tunnel", "exec")
         try:
             import nbformat
         except ImportError:

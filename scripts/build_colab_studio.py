@@ -165,18 +165,18 @@ def build():
 
     introduction = """# WAI Studio · tạo ảnh anime trên Google Colab bằng liên kết tạm thời
 
-> **Không cần Google Drive, Cloudflare, tài khoản hay API token.** Colab chạy checkpoint WAI-illustrious v17 + LoRA đã kiểm SHA-256; Gradio chỉ hiển thị giao diện. Ảnh mẫu web Cloudflare không liên quan tới model này.
+> **Không cần Google Drive, tài khoản hay API token.** Link Gradio ở ô 8 không cần Cloudflare; ô 9 dùng Cloudflare Quick Tunnel tùy chọn làm link dự phòng. Colab chạy checkpoint WAI-illustrious v17 + LoRA đã kiểm SHA-256; Gradio chỉ hiển thị giao diện.
 
 ### Chạy trong 3 bước
 
 > **Notebook đã thu gọn:** mỗi ô code chỉ hiện một thanh tiêu đề kèm nút **Run** (Colab form), kể cả ô 7 chứa toàn bộ mã giao diện và ô 9 mở giao diện dự phòng — nên trang rất ngắn và dễ chạy tuần tự. Muốn xem hoặc sửa code của ô nào, bấm biểu tượng `>_` (hay ⋮ → *Show code*) ở góc ô đó; kết quả in ra vẫn hiển thị bình thường.
 1. Chọn **Runtime → Change runtime type → T4 GPU** (hoặc GPU mạnh hơn), rồi **Runtime → Run all**. Checkpoint ~6,94 GB và tối đa ~457 MB LoRA được tải **trực tiếp vào `/content`**, kiểm tra SHA-256 trước khi nạp, không gắn hay sao chép sang Drive. Nếu file còn trong cùng runtime sẽ dùng lại; phiên Colab mới phải tải lại. Cần ~9 GiB đĩa trống. Ô 4 kiểm toàn bộ hash, có thể mất một lúc.
-2. Ô 8 tạo liên kết tạm `https://....gradio.live` — **không cần tài khoản/mật khẩu**. Nếu link công khai báo 504, ô 9 mở cùng giao diện qua proxy của Colab và hiển thị ngay trong notebook; giữ runtime hoạt động, không cần chạy lại model. **Không có selector phong cách: bạn tự viết phong cách ngay trong prompt** (`anime illustration, cel shading`, `watercolor`, `cinematic lighting`…). Khi gõ tiếng Việt hoặc English vào prompt, gợi ý tag hiện theo cụm cuối; chọn một dòng rồi bấm **Thêm tag đã chọn** để nối tên tiếng Anh chuẩn vào prompt mà không xóa phần bạn đã viết — không tự chèn khi gõ. Hai ô **Prompt gửi model** / **Negative gửi model** là đúng những gì được gửi ở cả ba chế độ, không thêm thẻ ẩn theo LoRA hay vùng sửa khi bấm tạo. Cần trigger cho LoRA mắt thì bấm nút **Thêm `perfect eyes`**; tab sửa vùng có nút **Thêm gợi ý sửa vùng vào prompt** — cả hai đều hiển thị trong ô để bạn sửa hoặc xóa trước khi tạo.
+2. Ô 8 tạo liên kết tạm `https://....gradio.live` — **không cần tài khoản/mật khẩu**. Nếu Gradio Share không tạo link, hoặc link `gradio.live` báo 504/bị ngắt kết nối, ô 9 tạo URL tạm `https://….trycloudflare.com` tới cùng giao diện đang chạy; không cần tài khoản Cloudflare hay API token. Ô 9 chạy tự động khi chọn **Runtime → Run all**, tải cloudflared một lần rồi lưu binary trong `/content`; giữ runtime hoạt động. Link `trycloudflare.com` cũng là URL công khai, không có đăng nhập — đừng chia sẻ. **Không có selector phong cách: bạn tự viết phong cách ngay trong prompt** (`anime illustration, cel shading`, `watercolor`, `cinematic lighting`…). Khi gõ tiếng Việt hoặc English vào prompt, gợi ý tag hiện theo cụm cuối; chọn một dòng rồi bấm **Thêm tag đã chọn** để nối tên tiếng Anh chuẩn vào prompt mà không xóa phần bạn đã viết — không tự chèn khi gõ. Hai ô **Prompt gửi model** / **Negative gửi model** là đúng những gì được gửi ở cả ba chế độ, không thêm thẻ ẩn theo LoRA hay vùng sửa khi bấm tạo. Cần trigger cho LoRA mắt thì bấm nút **Thêm `perfect eyes`**; tab sửa vùng có nút **Thêm gợi ý sửa vùng vào prompt** — cả hai đều hiển thị trong ô để bạn sửa hoặc xóa trước khi tạo.
    - **Nạp nhiều prompt một lúc:** mở accordion **📚 Thư viện prompt · nạp danh sách từ file text**, tải file `.txt`/`.md`/`.json` (hoặc dán nội dung) có dạng `PROMPT 01 - Tên tiếng Việt` rồi đoạn prompt bên dưới (cũng đọc được bảng `Tên tiếng Việt | Nội dung prompts tiếng Anh`, JSON `[{"title","prompt"}]`, hoặc các đoạn prompt cách nhau dòng trống). Danh sách hiện ra dưới dạng **danh sách chạm cuộn được** (dễ dùng trên điện thoại) và **chạm một dòng là hệ thống tự nạp prompt** vào ô *Prompt gửi model*, hoặc chọn dòng rồi bấm **⬇️ Nạp prompt đã chọn**; các dòng `Negative:`, `Steps:`, `CFG:`, `Size:`, `Seed:` trong file cũng được áp dụng. Chưa có file thì bấm **Nạp thư viện mẫu** để xem định dạng.
    - **Làm theo quy trình chuyên nghiệp:** accordion **🧭 Quy trình chuẩn · khung prompt + negative tối ưu** có ba nút. **Sắp xếp prompt theo thứ tự chuẩn** xếp lại thẻ của bạn theo thứ tự CLIP ưu tiên (chất lượng → chủ thể → ngoại hình → trang phục → tư thế → bố cục → bối cảnh → ánh sáng → phong cách → `absurdres`), bỏ thẻ trùng và thêm thẻ neo còn thiếu của khung đã chọn. **Nạp negative đã chọn** đưa một trong 8 bộ negative tối ưu theo mục đích (chuẩn nhà phát hành WAI v17, Illustrious chuẩn, tay/chân, giữ chất 2D, chân dung, phong cảnh, an toàn nội dung, inpaint) vào ô negative — ghi đè hoặc nối thêm. **🩺 Kiểm tra prompt & thông số** báo prompt ≈ bao nhiêu token so với khối 75 token của SDXL, thẻ chất lượng thừa, thẻ trùng, thẻ vừa dương vừa âm, cú pháp Pony, trọng số quá 1.2, negative quá dài và steps/CFG/kích thước/hires ngoài khuyến nghị. Cả ba nút **chỉ ghi nội dung hiển thị** vào hai ô prompt/ô báo cáo để bạn sửa; không có thẻ nào được thêm ngầm khi tạo ảnh. Quy trình đầy đủ: [docs/QUY_TRINH_TAO_ANH.md](https://github.com/manhlee1196-boop/ai-anime/blob/main/docs/QUY_TRINH_TAO_ANH.md).
 3. **Giữ Colab kết nối.** Link chỉ tồn tại khi phiên Colab/Gradio còn chạy; dừng runtime để ngắt link. Ảnh chỉ nằm tại `/content/wai_outputs` hoặc đường dẫn cục bộ đã đặt ở ô 3: **tải PNG về trước khi phiên hết**, nếu không sẽ mất cả model, LoRA và ảnh. Lần sau Run all để có link mới.
 
-**Bảo mật:** `share=True` tạo URL Internet *không có đăng nhập*. Bất kỳ ai biết URL đều có thể dùng GPU Colab của bạn; không chia sẻ URL hoặc notebook có output chứa URL ở nơi công khai. File checkpoint/LoRA bị chặn khỏi đường tải file Gradio; URL không phải cơ chế xác thực. [Tài liệu share link](https://www.gradio.app/guides/understanding-gradio-share-links). Metadata prompt trong PNG chỉ được nhúng khi bạn bật tùy chọn tương ứng.
+**Bảo mật:** link `gradio.live` và URL Cloudflare Quick Tunnel (`trycloudflare.com`) đều là URL Internet *không có đăng nhập*. Bất kỳ ai biết link đều có thể dùng GPU Colab của bạn; không chia sẻ URL hoặc notebook có output chứa URL ở nơi công khai. File checkpoint/LoRA bị chặn khỏi đường tải file Gradio; URL không phải cơ chế xác thực. [Tài liệu share link](https://www.gradio.app/guides/understanding-gradio-share-links). Metadata prompt trong PNG chỉ được nhúng khi bạn bật tùy chọn tương ứng.
 
 **RAM gần đầy nhưng VRAM còn trống?** `VRAM_MODE=auto` ở ô 3 ưu tiên GPU trực tiếp khi VRAM trống lúc nạp ≥ 12,5 GiB + 0,4 GiB/LoRA (bật cả hai: 13,3 GiB); thiếu VRAM/OOM mới thử CPU offload. Ô 6 và UI cho biết chế độ thực tế. CPU offload vẫn tính toán từng phần trên GPU, nhưng tốn RAM hệ thống. Nếu OOM, giảm kích thước ảnh, chọn `low_vram` hoặc tắt LoRA rồi **Restart runtime → Run all**. GPU trống khi không tạo ảnh là bình thường. Đổi đường dẫn, chế độ bộ nhớ hoặc danh sách LoRA cũng cần restart và Run all để không giữ pipeline cũ.
 """
@@ -219,53 +219,160 @@ _, studio_local_url, share_url = studio_app.launch(
     enable_monitoring=False, show_error=True,
 )
 if not share_url:
-    studio_app.close()
-    raise RuntimeError("Gradio chưa tạo được link. Kiểm tra mạng Colab rồi chạy lại ô 8.")
-print("Mở link:", share_url)
-print("Không cần tài khoản/mật khẩu. Ai có link đều có thể dùng GPU Colab của bạn.")
+    print("⚠️ Gradio Share chưa tạo được link công khai; giao diện nội bộ vẫn chạy. Ô 9 sẽ tạo link Cloudflare Quick Tunnel.")
+else:
+    print("Mở link:", share_url)
+    print("Không cần tài khoản/mật khẩu. Ai có link đều có thể dùng GPU Colab của bạn.")
 print("Link ngừng hoạt động khi Colab dừng/ngắt. KHÔNG chia sẻ link; dừng runtime để thu hồi.")
 """
-    proxy = """# @title 9. Mở giao diện qua proxy Colab (dự phòng Gradio Live)
+    quick_tunnel = """# @title 9. Tạo link Cloudflare Quick Tunnel (dự phòng Gradio Live)
+import platform
+import re
+import subprocess
+import time
 from html import escape
+from pathlib import Path
 from urllib.parse import urlparse
 from urllib.request import ProxyHandler, build_opener
 
-from google.colab.output import eval_js
-from IPython.display import HTML, IFrame, display
+from IPython.display import HTML, display
 
 if "studio_app" not in globals() or not globals().get("studio_local_url"):
     raise RuntimeError("Chạy ô 8 trước để khởi động giao diện WAI Studio.")
+
+
+def _stop_cloudflare_tunnel(process):
+    if process is None or process.poll() is not None:
+        return
+    process.terminate()
+    try:
+        process.wait(timeout=5)
+    except subprocess.TimeoutExpired:
+        process.kill()
+        process.wait(timeout=5)
+
+
+# Nếu chạy lại ô này, thu hồi tunnel cũ trước khi kiểm tra/tạo URL mới.
+_stop_cloudflare_tunnel(globals().get("cloudflare_tunnel_process"))
+cloudflare_tunnel_process = None
+cloudflare_tunnel_url = None
+
 local_url = studio_local_url.rstrip("/")
-# Bypass notebook HTTP_PROXY for the loopback health check; otherwise localhost
-# may be sent to an external proxy and falsely time out.
-local_opener = build_opener(ProxyHandler({}))
 try:
-    with local_opener.open(local_url + "/config", timeout=10) as response:
+    local_parts = urlparse(local_url)
+    local_port = local_parts.port
+except ValueError as exc:
+    raise RuntimeError(f"URL Gradio nội bộ không hợp lệ: {studio_local_url!r}.") from exc
+if (local_parts.scheme != "http"
+        or local_parts.hostname not in {"127.0.0.1", "localhost", "::1"}
+        or not local_port):
+    raise RuntimeError(f"Không nhận ra URL Gradio nội bộ: {studio_local_url!r}.")
+# Bỏ qua HTTP_PROXY của Colab khi kiểm tra localhost; nếu không, yêu cầu có
+# thể bị gửi nhầm qua proxy Internet và báo timeout dù Gradio vẫn đang chạy.
+try:
+    with build_opener(ProxyHandler({})).open(local_url + "/config", timeout=15) as response:
         if response.status != 200:
             raise RuntimeError(f"Gradio trả HTTP {response.status} ở giao diện nội bộ.")
 except Exception as exc:
     raise RuntimeError(
-        "Giao diện nội bộ chưa phản hồi. Kiểm tra ô 8 và chạy lại nếu cần."
+        "Không kết nối được Gradio nội bộ. Kiểm tra ô 8; chưa khởi động Cloudflare tunnel."
     ) from exc
 
-port = urlparse(studio_local_url).port
-if not port:
-    raise RuntimeError(f"Không xác định được cổng Gradio từ {studio_local_url!r}.")
+machine = platform.machine().lower()
+architecture = {"x86_64": "amd64", "amd64": "amd64", "aarch64": "arm64", "arm64": "arm64"}.get(machine)
+if architecture is None:
+    raise RuntimeError(f"cloudflared chưa hỗ trợ kiến trúc Colab này: {machine}.")
+cloudflared_path = Path("/content/cloudflared")
+download_url = f"https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-{architecture}"
+
+# Tải bản nhị phân chính chủ một lần vào /content; các lần chạy sau dùng cache.
+cloudflared_ready = False
+if cloudflared_path.is_file() and cloudflared_path.stat().st_size > 1_000_000:
+    cloudflared_path.chmod(0o755)
+    try:
+        version_check = subprocess.run(
+            [str(cloudflared_path), "--version"], capture_output=True,
+            text=True, timeout=15,
+        )
+    except (OSError, subprocess.SubprocessError):
+        version_check = None
+    cloudflared_ready = version_check is not None and version_check.returncode == 0
+if not cloudflared_ready:
+    download_path = cloudflared_path.with_name("cloudflared.download")
+    print("Đang tải cloudflared từ bản phát hành chính thức của Cloudflare…")
+    try:
+        subprocess.run(
+            ["wget", "-q", "-O", str(download_path), download_url],
+            check=True, timeout=180,
+        )
+        if not download_path.is_file() or download_path.stat().st_size < 1_000_000:
+            raise RuntimeError("File tải về quá nhỏ hoặc không phải binary cloudflared.")
+        download_path.chmod(0o755)
+        download_path.replace(cloudflared_path)
+    except Exception as exc:
+        download_path.unlink(missing_ok=True)
+        raise RuntimeError(
+            "Không tải được cloudflared. Kiểm tra Internet của Colab rồi chạy lại ô 9."
+        ) from exc
+    try:
+        version_check = subprocess.run(
+            [str(cloudflared_path), "--version"], capture_output=True, text=True,
+            timeout=15, check=True,
+        )
+    except (OSError, subprocess.SubprocessError) as exc:
+        cloudflared_path.unlink(missing_ok=True)
+        raise RuntimeError("Bản cloudflared tải về không chạy được; chạy lại ô 9 để thử tải lại.") from exc
+cloudflared_path.chmod(0o755)
+version_output = (version_check.stdout or version_check.stderr).strip()
+print("cloudflared:", version_output.splitlines()[0] if version_output else "binary sẵn sàng")
+
+cloudflare_log_path = Path("/tmp/wai-studio-cloudflared.log")
+command = [
+    str(cloudflared_path), "tunnel", "--no-autoupdate", "--protocol", "http2",
+    "--url", local_url,
+]
+with cloudflare_log_path.open("w", encoding="utf-8") as tunnel_log:
+    cloudflare_tunnel_process = subprocess.Popen(
+        command, stdout=tunnel_log, stderr=subprocess.STDOUT, start_new_session=True
+    )
+cloudflare_tunnel_log_path = str(cloudflare_log_path)
+
+# URL Quick Tunnel được cloudflared in ra trong log. Chờ tối đa 90 giây và
+# dừng tiến trình nếu Cloudflare không cấp được URL.
+deadline = time.monotonic() + 90
+log_text = ""
 try:
-    proxy_url = eval_js(f"google.colab.kernel.proxyPort({port})")
-except Exception as exc:
-    print(f"⚠️ Colab chưa cấp được proxy URL ({type(exc).__name__}). Hãy chạy lại ô 9.")
-else:
-    if not isinstance(proxy_url, str) or not proxy_url.startswith("https://"):
-        print("⚠️ Colab chưa trả proxy URL hợp lệ. Hãy chạy lại ô 9.")
-    else:
-        print("Đang mở giao diện qua proxy của Colab; giữ runtime hoạt động và không chia sẻ URL này.")
-        print("Nếu khung dưới chưa hiện, mở link trong tab mới:", proxy_url)
-        display(HTML(
-            f'<p><a href="{escape(proxy_url, quote=True)}" target="_blank" '
-            'rel="noopener">Mở WAI Studio trong tab mới</a></p>'
-        ))
-        display(IFrame(src=proxy_url, width="100%", height=900))
+    while time.monotonic() < deadline:
+        if cloudflare_tunnel_process.poll() is not None:
+            break
+        log_text = cloudflare_log_path.read_text(encoding="utf-8", errors="replace")
+        matches = re.findall(r"https://[a-z0-9-]+\.trycloudflare\.com", log_text, re.IGNORECASE)
+        if matches and cloudflare_tunnel_process.poll() is None:
+            cloudflare_tunnel_url = matches[-1]
+            break
+        time.sleep(0.5)
+except KeyboardInterrupt:
+    _stop_cloudflare_tunnel(cloudflare_tunnel_process)
+    cloudflare_tunnel_process = None
+    raise
+
+if not cloudflare_tunnel_url:
+    log_text = cloudflare_log_path.read_text(encoding="utf-8", errors="replace")
+    log_tail = "\\n".join(log_text.splitlines()[-20:])[-3000:]
+    _stop_cloudflare_tunnel(cloudflare_tunnel_process)
+    cloudflare_tunnel_process = None
+    raise RuntimeError(
+        "Cloudflare chưa tạo được URL trycloudflare.com trong 90 giây. "
+        "Kiểm tra mạng hoặc log bên dưới rồi chạy lại ô 9.\\n" + log_tail
+    )
+
+print("✅ Mở WAI Studio qua Cloudflare Quick Tunnel:", cloudflare_tunnel_url)
+print("Không cần tài khoản/API token. URL công khai, không có đăng nhập — đừng chia sẻ.")
+print("Giữ Colab hoạt động. Để thu hồi link, chạy lại ô 9 hoặc dừng runtime.")
+display(HTML(
+    f'<p><a href="{escape(cloudflare_tunnel_url, quote=True)}" target="_blank" '
+    'rel="noopener">Mở WAI Studio trong tab mới</a></p>'
+))
 """
 
     # Thu gọn mọi ô code thành form: notebook có 9 thanh tiêu đề + nút Run.
@@ -280,9 +387,9 @@ else:
         *setup,
         code(ui, "studio-ui"),
         code(launch, "studio-launch"),
-        code(proxy, "studio-colab-proxy"),
+        code(quick_tunnel, "studio-cloudflare-tunnel"),
         markdown(
-            "**Khi gặp lỗi:** nếu ô 2 chỉ hiện dòng `ERROR: pip's dependency resolver...`, hãy xem ô đó có in `✅ Thư viện Studio đã sẵn sàng` không; riêng dòng này có thể là cảnh báo không chặn cài đặt. Nếu không có dấu ✅ hoặc có traceback, mở lại notebook mới nhất, chọn *Runtime → Restart runtime → Run all* và gửi đầy đủ traceback nếu vẫn lỗi (che link Gradio và thông tin riêng). Nếu không có GPU, chọn GPU trong Runtime; nếu RAM gần đầy nhưng VRAM còn trống, để `VRAM_MODE=auto` rồi xem VRAM và `Chế độ sau khi nạp` ở ô 6 (CPU offload vẫn dùng GPU từng phần). Nếu OOM, giảm kích thước ảnh; nếu cần, chỉnh `VRAM_MODE=low_vram` hoặc tắt LoRA ở ô 3 rồi khởi động lại runtime. Nếu link `gradio.live` báo 504 nhưng giao diện nội bộ còn chạy, dùng ô 9: ô này mở proxy Colab (chỉ trong phiên notebook) và nhúng giao diện ngay bên dưới; giữ runtime hoạt động. Khi Share Links phục hồi, chạy lại riêng ô 8 để lấy link công khai mới. **Link công khai không có đăng nhập; đừng chia sẻ.** Notebook cơ sở và hash tài nguyên xem [README của dự án](https://github.com/manhlee1196-boop/ai-anime/blob/main/README.md).",
+            "**Khi gặp lỗi:** nếu ô 2 chỉ hiện dòng `ERROR: pip's dependency resolver...`, hãy xem ô đó có in `✅ Thư viện Studio đã sẵn sàng` không; riêng dòng này có thể là cảnh báo không chặn cài đặt. Nếu không có dấu ✅ hoặc có traceback, mở lại notebook mới nhất, chọn *Runtime → Restart runtime → Run all* và gửi đầy đủ traceback nếu vẫn lỗi (che link Gradio và thông tin riêng). Nếu không có GPU, chọn GPU trong Runtime; nếu RAM gần đầy nhưng VRAM còn trống, để `VRAM_MODE=auto` rồi xem VRAM và `Chế độ sau khi nạp` ở ô 6 (CPU offload vẫn dùng GPU từng phần). Nếu OOM, giảm kích thước ảnh; nếu cần, chỉnh `VRAM_MODE=low_vram` hoặc tắt LoRA ở ô 3 rồi khởi động lại runtime. Nếu Gradio Share không tạo link, hoặc `gradio.live` báo 504/giao diện bị ngắt trong khi Gradio nội bộ vẫn chạy, chạy ô 9 để mở Cloudflare Quick Tunnel và dùng URL `trycloudflare.com` được in ra; giữ runtime hoạt động, không cần nạp lại model. Khi Gradio Share Links phục hồi, có thể chạy riêng ô 8 để lấy link mới. Cả hai link đều công khai và không có đăng nhập — đừng chia sẻ. Notebook cơ sở và hash tài nguyên xem [README của dự án](https://github.com/manhlee1196-boop/ai-anime/blob/main/README.md).",
             "studio-help",
         ),
     ]
