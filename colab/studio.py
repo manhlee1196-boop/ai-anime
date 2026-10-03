@@ -3074,6 +3074,9 @@ def csv_tag_caption(name, category, vietnamese_label=None):
 
 _TAG_ROWS = None
 _TAG_LOCK = threading.Lock()
+_TAG_LABEL_WORD_INDEX_ROWS = None
+_TAG_LABEL_WORD_INDEX = None
+_TAG_LABEL_INDEX_LOCK = threading.Lock()
 TAG_PAGE_SIZE = 60
 # Search-only wording helps natural Vietnamese prompt fragments find canonical tags.
 # These synonyms are never displayed or inserted into the model prompt.
@@ -3114,6 +3117,53 @@ def normalize_csv_tag(value):
     value = unicodedata.normalize("NFKD", str(value or "").casefold())
     value = "".join(char for char in value if not unicodedata.combining(char))
     return re.sub(r"[\s_-]+", " ", value).strip()
+
+
+def _normalize_tag_text_preserving_accents(value):
+    """Normalize separators/case but keep Vietnamese marks to disambiguate captions."""
+    value = unicodedata.normalize("NFC", str(value or "").casefold())
+    return re.sub(r"[\s_-]+", " ", value).strip()
+
+
+def _tag_query_pattern(query, allow_partial_last=False, preserve_accents=False):
+    """Match whole words/phrases, optionally treating the last typed word as a prefix."""
+    normalize = (
+        _normalize_tag_text_preserving_accents if preserve_accents else normalize_csv_tag
+    )
+    words = normalize(query).split()
+    if not words:
+        return None
+    escaped = [re.escape(word) for word in words]
+    if allow_partial_last:
+        escaped[-1] += r"\w*"
+    return re.compile(r"(?<!\w)" + r"\s+".join(escaped) + r"(?!\w)")
+
+
+def _tag_field_pattern(query):
+    """Match an exact comma-delimited name/alias in the normalized search index."""
+    return re.compile(r"(?:^|,)\s*" + re.escape(query) + r"\s*(?:,|$)")
+
+
+def _caption_search_matches(rows, raw_query, pattern):
+    """Use a cached caption-word index for the shared catalog; preserve query accents."""
+    query_words = re.findall(r"\w+", _normalize_tag_text_preserving_accents(raw_query))
+    candidates = rows
+    if query_words and rows is _TAG_ROWS:
+        global _TAG_LABEL_WORD_INDEX_ROWS, _TAG_LABEL_WORD_INDEX
+        with _TAG_LABEL_INDEX_LOCK:
+            if _TAG_LABEL_WORD_INDEX_ROWS is not rows:
+                word_index = {}
+                for row in rows:
+                    label = _normalize_tag_text_preserving_accents(row[5])
+                    for word in set(re.findall(r"\w+", label)):
+                        word_index.setdefault(word, []).append(row)
+                _TAG_LABEL_WORD_INDEX = word_index
+                _TAG_LABEL_WORD_INDEX_ROWS = rows
+            candidates = _TAG_LABEL_WORD_INDEX.get(query_words[0], ())
+    return [
+        row for row in candidates
+        if pattern.search(_normalize_tag_text_preserving_accents(row[5]))
+    ]
 
 
 def parse_tag_csv(text):
@@ -3170,13 +3220,37 @@ def load_csv_tags():
         return rows
 
 
-def search_csv_tags(rows, query="", category="", theme="", sort="Phổ biến nhất", page=1):
-    # Một prompt nhiều thẻ có thể dán nguyên vào đây; mỗi cụm cách nhau bằng
-    # dấu phẩy/chấm phẩy/xuống dòng được tìm độc lập trên toàn bộ catalog.
-    queries = [
-        normalized for part in re.split(r"[,;\n]+", str(query or ""))
-        if (normalized := normalize_csv_tag(part))
+def search_csv_tags(
+    rows, query="", category="", theme="", sort="Phổ biến nhất", page=1,
+    allow_partial_last=False,
+):
+    # Mỗi cụm cách nhau bằng dấu phẩy/chấm phẩy/xuống dòng được tìm độc lập.
+    raw_queries = [
+        part.strip() for part in re.split(r"[,;\n]+", str(query or ""))
+        if normalize_csv_tag(part)
     ]
+    query_specs = []
+    for query_id, raw_query in enumerate(raw_queries):
+        normalized = normalize_csv_tag(raw_query)
+        query_specs.append({
+            "id": query_id,
+            "raw": raw_query,
+            "normalized": normalized,
+            "exact_field": _tag_field_pattern(normalized),
+            "phrase": _tag_query_pattern(normalized),
+            "partial": (
+                _tag_query_pattern(normalized, allow_partial_last=True)
+                if allow_partial_last else None
+            ),
+            "caption": (
+                _tag_query_pattern(raw_query, preserve_accents=True)
+                if (
+                    _normalize_tag_text_preserving_accents(raw_query) != normalized
+                    and len(normalized.split()) <= 3
+                )
+                else None
+            ),
+        })
 
     def passes_filters(row):
         return (
@@ -3184,30 +3258,61 @@ def search_csv_tags(rows, query="", category="", theme="", sort="Phổ biến nh
             and (not theme or (not row[4] if theme == "Chưa phân nhóm" else theme in row[4]))
         )
 
-    found = []
+    # Khi cụm ngắn có dấu, ưu tiên nhãn Việt khớp chính tả; tránh va chạm
+    # sau khi bỏ dấu như “đỏ”/“độ”. Những cụm câu dài dùng nhánh tìm kiếm thường.
+    caption_matches = {}
+    for spec in query_specs:
+        if spec["caption"] is None:
+            continue
+        matches = {
+            (row[0], row[1])
+            for row in _caption_search_matches(rows, spec["raw"], spec["caption"])
+            if passes_filters(row)
+        }
+        if matches:
+            caption_matches[spec["id"]] = matches
+
+    found_by_key = {}
+    match_scores = {}
     matched_queries = set()
     for row in rows:
         if not passes_filters(row):
             continue
-        if not queries:
-            found.append(row)
+        key = (row[0], row[1])
+        if not query_specs:
+            found_by_key[key] = row
             continue
-        hits = [needle for needle in queries if needle in row[3]]
-        if hits:
-            found.append(row)
-            matched_queries.update(hits)
+        score = 0
+        for spec in query_specs:
+            raw_caption_hits = caption_matches.get(spec["id"])
+            if raw_caption_hits is not None:
+                query_score = 4 if key in raw_caption_hits else 0
+            elif spec["exact_field"].search(row[3]):
+                query_score = 3
+            elif spec["phrase"].search(row[3]):
+                query_score = 2
+            elif spec["partial"] and spec["partial"].search(row[3]):
+                query_score = 1
+            else:
+                query_score = 0
+            if query_score:
+                matched_queries.add(spec["id"])
+                score = max(score, query_score)
+        if score:
+            found_by_key[key] = row
+            match_scores[key] = score
 
-    # Nếu cả một cụm tự nhiên không khớp nguyên văn, tìm các từ có nghĩa riêng
-    # trong cụm đó. Ví dụ “một cô gái tóc dài” khớp “1girl” và “long_hair”.
-    missing_queries = [needle for needle in queries if needle not in matched_queries]
+    # Nếu cả cụm tự nhiên không khớp nguyên văn, tìm các cụm con có nghĩa riêng.
+    # Ví dụ “một cô gái tóc dài” khớp “1girl” và “long_hair”.
+    missing_queries = [
+        spec["normalized"] for spec in query_specs if spec["id"] not in matched_queries
+    ]
     fallback_terms = []
     for needle in missing_queries:
         phrase_words = [
             term for term in needle.split()
             if term not in _TAG_QUERY_STOPWORDS or term == "co"
         ]
-        # Multiword matches avoid noisy hits on generic terms like “hair/tóc”;
-        # selected gender words still match their Vietnamese/English synonyms.
         for width in (3, 2):
             fallback_terms.extend(
                 " ".join(phrase_words[index:index + width])
@@ -3216,17 +3321,34 @@ def search_csv_tags(rows, query="", category="", theme="", sort="Phổ biến nh
         fallback_terms.extend(
             term for term in phrase_words if term in _TAG_QUERY_SINGLETONS
         )
-    fallback_terms = list(dict.fromkeys(fallback_terms))
-    if fallback_terms:
-        included = {(row[0], row[1]) for row in found}
+    fallback_patterns = [
+        pattern for term in dict.fromkeys(fallback_terms)
+        if (pattern := _tag_query_pattern(term)) is not None
+    ]
+    if fallback_patterns:
         for row in rows:
-            if (row[0], row[1]) in included or not passes_filters(row):
+            key = (row[0], row[1])
+            if key in found_by_key or not passes_filters(row):
                 continue
-            padded_index = f" {row[3].replace(',', ' ')} "
-            if any(f" {term} " in padded_index for term in fallback_terms):
-                found.append(row)
+            if any(pattern.search(row[3]) for pattern in fallback_patterns):
+                found_by_key[key] = row
+                match_scores[key] = 0.5
 
-    found.sort(key=(lambda row: row[0]) if sort == "Tên A–Z" else (lambda row: (-row[2], row[0])))
+    found = list(found_by_key.values())
+    if sort == "Khớp nhất":
+        # Exact catalog entries outrank words that merely occur within another
+        # tag or alias. For a very short exact query, hide weaker prefix hits.
+        best_score = max(match_scores.values(), default=0)
+        short_query = max((len(spec["normalized"]) for spec in query_specs), default=0) <= 3
+        if best_score >= 3 and short_query:
+            found = [row for row in found if match_scores.get((row[0], row[1])) == best_score]
+        found.sort(key=lambda row: (
+            -match_scores.get((row[0], row[1]), 0), -row[2], row[0]
+        ))
+    elif sort == "Tên A–Z":
+        found.sort(key=lambda row: row[0])
+    else:
+        found.sort(key=lambda row: (-row[2], row[0]))
     pages = max(1, math.ceil(len(found) / TAG_PAGE_SIZE))
     page = min(pages, max(1, int(page or 1)))
     return found[(page - 1) * TAG_PAGE_SIZE:page * TAG_PAGE_SIZE], len(found), page, pages
@@ -3285,9 +3407,27 @@ def get_prompt_tag_suggestions(prompt_text, rows=None, limit=PROMPT_TAG_SUGGESTI
         return [], "Gõ ít nhất 2 ký tự tiếng Việt hoặc English vào cụm cuối của prompt."
 
     rows = load_csv_tags() if rows is None else rows
-    found, total, _, _ = search_csv_tags(
-        rows, fragment, sort="Phổ biến nhất", page=1
+    normalized_fragment = normalize_csv_tag(fragment)
+    caption_pattern = (
+        _tag_query_pattern(fragment, preserve_accents=True)
+        if (
+            _normalize_tag_text_preserving_accents(fragment) != normalized_fragment
+            and len(normalized_fragment.split()) <= 3
+        )
+        else None
     )
+    caption_matches = (
+        _caption_search_matches(rows, fragment, caption_pattern)
+        if caption_pattern else []
+    )
+    if caption_matches:
+        caption_matches.sort(key=lambda row: (-row[2], row[0]))
+        found, total = caption_matches, len(caption_matches)
+    else:
+        found, total, _, _ = search_csv_tags(
+            rows, fragment, sort="Khớp nhất", page=1,
+            allow_partial_last=len(normalized_fragment) >= 3,
+        )
     choices = [
         (csv_tag_caption(row[0], row[1], row[5]), row[0])
         for row in found[:max(1, int(limit))]

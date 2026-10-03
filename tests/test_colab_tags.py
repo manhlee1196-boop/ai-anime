@@ -19,6 +19,15 @@ class TagCatalogTests(unittest.TestCase):
             'blue_eyes,0,50,\r\n'
             '1girl,0,80,,Một nhân vật nữ\r\n'
             'red_dress,0,40,,Váy đỏ\r\n'
+            'bow,0,100,no,Nơ\r\n'
+            'hair_bow,0,80,bow in hair,Nơ cài tóc\r\n'
+            'bowtie,0,70,,Nơ cổ\r\n'
+            'no_humans,0,500,,Không có người\r\n'
+            'nockers,0,400,,Chưa có bản dịch\r\n'
+            'highres,5,1000,do phan giai cao,Độ phân giải cao\r\n'
+            'blush,0,900,do mat,Đỏ mặt\r\n'
+            'red_hair,0,200,,Tóc đỏ\r\n'
+            'multicolored_hair,0,800,black and red hair,Tóc nhiều màu\r\n'
             'city,7,30,town\r\n'
             'example_artist,1,20,'
         )
@@ -31,7 +40,10 @@ class TagCatalogTests(unittest.TestCase):
         self.assertEqual((total, page, pages), (1, 1, 1))
         self.assertEqual(studio.search_csv_tags(self.rows, "longhair")[1], 1)
         self.assertEqual(studio.search_csv_tags(self.rows, category="1")[1], 1)
-        self.assertEqual(studio.search_csv_tags(self.rows, theme="Chưa phân nhóm")[1], 2)
+        self.assertEqual(
+            studio.search_csv_tags(self.rows, theme="Chưa phân nhóm")[1],
+            sum(not row[4] for row in self.rows),
+        )
         self.assertEqual(
             studio.search_csv_tags(self.rows, sort="Tên A–Z")[0][0][0], "1girl"
         )
@@ -146,6 +158,29 @@ class TagCatalogTests(unittest.TestCase):
             "1girl, một cô gái tóc dài", rows=self.rows
         )
         self.assertTrue({"1girl", "long_hair"}.issubset({tag for _, tag in natural}))
+
+    def test_inline_vietnamese_suggestions_disambiguate_short_words_and_rank_exact_tags(self):
+        bows, _ = studio.get_prompt_tag_suggestions("1girl, nơ", rows=self.rows)
+        self.assertEqual(
+            [tag for _, tag in bows], ["bow", "hair_bow", "bowtie"]
+        )
+        self.assertFalse({"no_humans", "nockers"} & {tag for _, tag in bows})
+        selected_prompt, _ = studio.apply_prompt_tag_suggestion(
+            "1girl, nơ", bows[0][1], rows=self.rows
+        )
+        self.assertEqual(selected_prompt, "1girl, nơ, bow")
+
+        reds, _ = studio.get_prompt_tag_suggestions("1girl, đỏ", rows=self.rows)
+        red_tags = {tag for _, tag in reds}
+        self.assertIn("blush", red_tags)
+        self.assertIn("red_hair", red_tags)
+        self.assertNotIn("highres", red_tags)
+
+        english, _ = studio.get_prompt_tag_suggestions("1girl, red hair", rows=self.rows)
+        self.assertEqual(english[0], ("Tóc đỏ — red_hair", "red_hair"))
+
+        catalog, _, _, _ = studio.search_csv_tags(self.rows, "nơ")
+        self.assertEqual({row[0] for row in catalog}, {"bow", "hair_bow", "bowtie"})
 
     def test_inline_suggestion_appends_canonical_tag_without_losing_text_or_duplicates(self):
         with patch.object(studio, "load_csv_tags", return_value=self.rows):
