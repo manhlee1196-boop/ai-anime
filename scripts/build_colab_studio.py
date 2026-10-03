@@ -368,7 +368,7 @@ if not cloudflare_tunnel_url:
 
 print("✅ Mở WAI Studio qua Cloudflare Quick Tunnel:", cloudflare_tunnel_url)
 print("Không cần tài khoản/API token. URL công khai, không có đăng nhập — đừng chia sẻ.")
-print("Giữ Colab hoạt động. Để thu hồi link, chạy lại ô 9 hoặc dừng runtime.")
+print("Giữ Colab hoạt động. Chạy lại ô 9 để đổi URL; dừng tunnel: _stop_cloudflare_tunnel(cloudflare_tunnel_process).")
 display(HTML(
     f'<p><a href="{escape(cloudflare_tunnel_url, quote=True)}" target="_blank" '
     'rel="noopener">Mở WAI Studio trong tab mới</a></p>'
