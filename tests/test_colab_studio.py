@@ -1206,7 +1206,7 @@ class RuntimeValidationTests(unittest.TestCase):
         inline_suggestions = next(
             c for c in config["components"]
             if c["type"] == "dropdown"
-            and "Gợi ý tag" in str(c["props"].get("label"))
+            and "Gợi ý prompt tiếp theo" in str(c["props"].get("label"))
         )
         inline_apply = next(
             c for c in config["components"]

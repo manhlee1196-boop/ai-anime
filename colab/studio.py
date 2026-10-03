@@ -3575,7 +3575,7 @@ def build_app(runtime):
                     prompt_tag_suggestion = gr.Dropdown(
                         choices=[],
                         value=None,
-                        label="Gợi ý tag · nhãn Việt — tag tiếng Anh gốc",
+                        label="Gợi ý prompt tiếp theo · nhãn Việt — tag tiếng Anh gốc",
                         allow_custom_value=False,
                         scale=4,
                     )
@@ -3583,10 +3583,11 @@ def build_app(runtime):
                         "Thêm tag đã chọn", size="sm", scale=1
                     )
                 prompt_tag_status = gr.Markdown(
-                    "Gợi ý theo cụm cuối sau dấu phẩy/chấm phẩy/xuống dòng. Lần đầu có thể "
-                    "mất chút thời gian để nạp kho; dữ liệu được dùng lại trong runtime. "
-                    "Chọn tag rồi bấm **Thêm tag đã chọn** để thêm tên tiếng Anh gốc vào "
-                    "cuối prompt; phần bạn đang viết được giữ nguyên và không tự chèn khi gõ.",
+                    "Khi gõ prompt, gợi ý tag/cụm tiếp theo dựa trên phần cuối sau dấu "
+                    "phẩy, chấm phẩy hoặc xuống dòng. Lần đầu có thể mất chút thời gian "
+                    "để nạp kho; dữ liệu được dùng lại trong runtime. Chọn gợi ý rồi bấm "
+                    "**Thêm tag đã chọn** để thêm tên tiếng Anh gốc vào cuối prompt; phần "
+                    "bạn đang viết được giữ nguyên và không tự chèn khi gõ.",
                     elem_classes="studio-hint",
                 )
                 negative = gr.Textbox(
