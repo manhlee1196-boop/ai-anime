@@ -5,7 +5,7 @@
 **[WAI_Illustrious_Studio_Colab.ipynb](WAI_Illustrious_Studio_Colab.ipynb)** chạy WAI-illustrious v17 và hai LoRA tùy chọn trên GPU Colab; Gradio tạo **link tạm không cần đăng nhập**. Không cần Google Drive, Cloudflare hoặc API token. Checkpoint và LoRA được kiểm **toàn bộ SHA-256** trước khi nạp. [Báo cáo kiểm tra nguồn và vận hành](VERIFICATION.md) phân biệt điều đã thử cục bộ với việc **chưa thử tạo ảnh bằng GPU Colab thật**.
 
 1. Mở notebook từ nút trên → **Runtime → Change runtime type → T4 GPU** (hoặc mạnh hơn) → **Runtime → Run all**. Lần đầu notebook tải checkpoint ~6,94 GB và tối đa ~457 MB LoRA **trực tiếp vào `/content`**, không gắn Drive/không sao chép file qua lại. Cần khoảng **9 GiB đĩa trống**; tốc độ vẫn tùy mạng Colab và bước kiểm hash. Chọn/tắt LoRA, `VRAM_MODE` và đường dẫn tùy chỉnh **dưới `/content`** ở ô 3 trước khi nạp. Để `ANATOMY_LORA_PATH`/`EYE_LORA_PATH` rỗng nếu muốn tải tự động. **Cả 8 ô code được thu gọn thành form của Colab** — mỗi ô chỉ còn một thanh tiêu đề kèm nút **Run** (kể cả ô 7 chứa ~1.500 dòng mã giao diện), nên trang ngắn và chạy tuần tự dễ; muốn xem hoặc sửa code của ô nào thì bấm biểu tượng `>_` (⋮ → *Show code*) ở góc ô đó, output vẫn hiện bình thường.
-2. Khi ô cuối in URL `https://….gradio.live`, mở link để tạo ảnh bằng văn bản, ảnh → ảnh hoặc tô/tải mask sửa tay/chân/mắt (kèm hires `1.5×`/`2×`, tab phóng to ảnh và **auto-detailer** tự sửa mặt/tay nếu bật). **Không có selector phong cách: bạn tự viết phong cách trong prompt** (hoặc nạp từ thư viện prompt / dùng accordion **🧭 Quy trình chuẩn** và **🎨 Gợi ý phong cách**). Điều chỉnh kích thước, steps, CFG, seed, strength, số ảnh, LoRA và **hai ô prompt thực sự gửi model**.
+2. Khi ô cuối in URL `https://….gradio.live`, mở link để tạo ảnh bằng văn bản, ảnh → ảnh hoặc tô/tải mask sửa tay/chân/mắt (kèm hires `1.5×`/`2×`, tab phóng to ảnh và **auto-detailer** tự sửa mặt/tay nếu bật). **Không có selector phong cách: bạn tự viết phong cách trong prompt** (hoặc nạp từ thư viện prompt / dùng accordion **🧭 Quy trình chuẩn** và **🎨 Gợi ý phong cách**). Khi gõ prompt, gợi ý tag Việt/English hiện theo cụm cuối; chọn một dòng rồi bấm **Thêm tag đã chọn** để thêm tên tiếng Anh chuẩn vào cuối prompt mà vẫn giữ phần bạn đã viết — không tự chèn khi gõ. Điều chỉnh kích thước, steps, CFG, seed, strength, số ảnh, LoRA và **hai ô prompt thực sự gửi model**.
 3. Ảnh chỉ lưu dưới **`/content/wai_outputs`** (hoặc thư mục `/content` được chọn); model ở `/content/wai_model_cache`, LoRA ở `/content/wai_lora_cache`. **Tải ảnh về trước khi phiên Colab kết thúc**: cả ảnh và weights cục bộ sẽ mất khi runtime ngắt, phiên sau cần tải lại. Link cũng ngừng hoạt động khi Colab ngắt.
 
 **Ảnh độ phân giải lớn (hires fix):** trên giao diện `gradio.live`, khung **🔍 Ảnh độ phân giải cao** (luôn hiển thị, ngay trên các tab) cho chọn **Độ phân giải cao** = `1.5×` hoặc `2×` cho tab *Văn bản → ảnh* và *Ảnh → ảnh*. Studio tạo ảnh ở kích thước đã chọn (SDXL học tốt nhất quanh ~1 MP), phóng to bằng Lanczos rồi chạy thêm một lượt ảnh → ảnh cùng prompt/seed/LoRA ở **Hires strength** (mặc định 0,4; thấp giữ bố cục, cao thêm chi tiết nhưng dễ đổi nét). Ví dụ `1024×1024` → `2048×2048`, `832×1216` → `1248×1824`. Kích thước cuối luôn chia hết cho 8 và **tối đa ≈4,2 MP**: nếu vượt (như `1344×1024` × 2) hệ số tự giảm cho vừa và thanh trạng thái báo rõ. VAE tiling được bật để giảm đỉnh VRAM; vẫn tốn thêm thời gian, VRAM có thể phải chuyển sang CPU offload, nếu OOM hãy chọn `1.5×` hoặc kích thước gốc nhỏ hơn. PNG và metadata (nếu bật) ghi kích thước cuối cùng và thông số hires. Tab **⤢ Phóng to ảnh** phóng to một ảnh có sẵn (tải lên hoặc nút *Dùng ảnh mới nhất để phóng to*) mà không tạo lại từ đầu, cùng giới hạn ≈4,2 MP. Tab *Sửa vùng ảnh* không hỗ trợ hires và vẫn thu ảnh về cạnh dài tối đa 1024 px. Chưa thử trên GPU Colab thật (xem `VERIFICATION.md`).
@@ -61,7 +61,7 @@ Bạn có thể tự kiểm tra SHA-256 trong Colab: `sha256sum /content/wai_mod
 - Anatomy Helper được mô tả tập huấn luyện có nhiều ảnh bàn chân và có thể kéo theo thiên lệch phong cách/nội dung; bạn có thể **tắt LoRA này** hoặc chỉ dùng inpaint thủ công. LoRA mắt dùng trigger `perfect eyes`: notebook nâng cao tự thêm khi bật; Studio **không tự thêm** mà có nút **Thêm trigger `perfect eyes` cho LoRA mắt** để bạn bấm rồi sửa/xóa tùy ý. LoRA tay/chân chủ yếu hướng tới **bàn tay/bàn chân và tư thế**, không chứng nhận chữa lỗi ống chân; dùng inpaint ô 8 cho các lỗi chân còn lại.
 - Nếu hết **RAM hệ thống** khi nạp checkpoint, cần Colab high-RAM; notebook không thể cấp thêm GPU/RAM. Ảnh chỉ nằm dưới `/content` và mất khi runtime kết thúc (hãy tải xuống trước). `EMBED_METADATA=True` nhúng prompt/nguồn ảnh vào PNG; tắt trước khi chia sẻ nếu không muốn lộ thông tin.
 - **Nạp thư viện prompt trong giao diện Studio (ô 7, đã tối ưu cho điện thoại).** Danh sách prompt hiện là **danh sách chạm (radio) cuộn được** thay cho dropdown lọc: mỗi dòng cao ≥42 px, khung giới hạn ~44% chiều cao màn hình nên không còn cảnh bàn phím ảo che danh sách; **chạm một dòng là nạp ngay**, và nếu thao tác chạm không như ý thì chọn dòng rồi bấm **⬇️ Nạp prompt đã chọn**. Chi tiết định dạng đọc file bên dưới. Mở accordion **📚 Thư viện prompt · nạp danh sách từ file text**, tải file `.txt`/`.md`/`.json` (tối đa 2 MB) hoặc dán nội dung, hệ thống đọc ra danh sách để lọc và **chọn một dòng là prompt được nạp thẳng vào ô *Prompt gửi model***. Định dạng được nhận: `PROMPT 01 - Tên tiếng Việt` rồi đoạn prompt bên dưới, bảng một dòng `Tên tiếng Việt | Nội dung prompts tiếng Anh`, JSON `[{"title", "prompt"}]`, hoặc các đoạn prompt cách nhau dòng trống. Các dòng `Negative:`, `Steps:`, `CFG:`, `Size: 832x1216`, `Seed:` trong mỗi prompt cũng được áp dụng và bị kẹp về dải giao diện cho phép (steps 10–45, CFG 1–12, kích thước theo preset); prompt dài hơn 2000 ký tự bị cắt bớt. File chỉ được đọc trong phiên Colab, không tải lên dịch vụ nào; chưa có file thì bấm **Nạp thư viện mẫu** (12 prompt) để xem định dạng.
-- **Giao diện Studio gọn một màn hình.** Ô 7 xếp lại thành hai cột: cột trái là prompt/negative + trigger `perfect eyes` + các accordion **đóng sẵn** (📚 Thư viện prompt, 🧭 Quy trình chuẩn, 🎨 Gợi ý phong cách, ⚙️ Thông số ảnh và LoRA) + ba tab chế độ; cột phải là gallery kết quả. Điều khiển ghép thành từng cặp trên một hàng (steps/CFG, seed/số ảnh, checkbox LoRA + cường độ), nút phụ dùng cỡ nhỏ, nút tạo ảnh cỡ lớn; ghi chú phụ chuyển thành chữ nhỏ màu nhạt hoặc dòng `info` dưới ô nhập nên không còn các đoạn văn dài chiếm chỗ. Hiện có **19 sự kiện** Gradio: 4 nút tạo ảnh, 3 nút *Dùng ảnh mới nhất*, trigger mắt, gợi ý sửa vùng, gợi ý phong cách, sắp xếp prompt, nạp negative, kiểm tra prompt, 5 sự kiện thư viện prompt và nút **⬇️ Nạp prompt đã chọn**. Hành vi vẫn như cũ: đúng hai ô *Prompt/Negative gửi model* là nội dung gửi model, không thẻ ẩn.
+- **Giao diện Studio gọn một màn hình.** Ô 7 xếp lại thành hai cột: cột trái là prompt/negative + trigger `perfect eyes` + các accordion **đóng sẵn** (📚 Thư viện prompt, 🧭 Quy trình chuẩn, 🎨 Gợi ý phong cách, ⚙️ Thông số ảnh và LoRA) + ba tab chế độ; cột phải là gallery kết quả. Điều khiển ghép thành từng cặp trên một hàng (steps/CFG, seed/số ảnh, checkbox LoRA + cường độ), nút phụ dùng cỡ nhỏ, nút tạo ảnh cỡ lớn; ghi chú phụ chuyển thành chữ nhỏ màu nhạt hoặc dòng `info` dưới ô nhập nên không còn các đoạn văn dài chiếm chỗ. Hiện có **21 sự kiện** Gradio: 4 nút tạo ảnh, 3 nút *Dùng ảnh mới nhất*, 2 sự kiện gợi ý tag inline, trigger mắt, gợi ý sửa vùng, gợi ý phong cách, sắp xếp prompt, nạp negative, kiểm tra prompt, 5 sự kiện thư viện prompt và nút **⬇️ Nạp prompt đã chọn**. Hành vi vẫn như cũ: đúng hai ô *Prompt/Negative gửi model* là nội dung gửi model, không thẻ ẩn.
 - **🧭 Quy trình chuẩn · khung prompt + negative tối ưu (ô 7).** Ba nút hỗ trợ, tất cả **chỉ ghi vào nội dung hiển thị** để bạn sửa: **Sắp xếp prompt theo thứ tự chuẩn** (chất lượng → chủ thể → ngoại hình → trang phục → tư thế → bố cục → bối cảnh → ánh sáng → phong cách → `absurdres`, bỏ thẻ trùng, thêm thẻ neo của khung đã chọn), **Nạp negative đã chọn** (8 bộ: chuẩn nhà phát hành WAI v17, Illustrious chuẩn, tay/chân, giữ chất 2D, chân dung, phong cảnh, an toàn nội dung, inpaint; ghi đè hoặc nối thêm) và **🩺 Kiểm tra prompt & thông số** (ước lượng token so với khối 75 token của SDXL, thẻ chất lượng thừa/trùng/vừa dương vừa âm, cú pháp Pony, trọng số > 1.2, negative quá dài, steps/CFG/kích thước/hires ngoài khuyến nghị). Accordion **🎨 Gợi ý phong cách** chỉ thêm các thẻ mô tả (màu mắt, kiểu/màu móng) vào hai ô đang hiển thị. Quy trình đầy đủ: [`docs/QUY_TRINH_TAO_ANH.md`](docs/QUY_TRINH_TAO_ANH.md).
 - **Tự sửa mặt/tay (auto-detailer, tùy chọn).** Ô 2 **cài thêm `ultralytics==8.4.170`** (chỉ cảnh báo nếu thất bại, các chế độ khác vẫn chạy). Khi bật mục **Tự sửa mặt/tay** trong *Thông số ảnh và LoRA*, Studio tải weight YOLOv8 (`face_yolov8n.pt`, `hand_yolov8n.pt`) từ `Bingsu/adetailer` @ `c310c216` vào **`/content/wai_detailer_cache`**, **kiểm SHA-256 đầy đủ** (khớp metadata HF đã đối chiếu) rồi phát hiện mặt/bàn tay và inpaint lại đúng vùng đó với strength/ngưỡng/số vùng bạn chọn. Weight sai hash bị xóa và không nạp; cần mạng ở lần bật đầu tiên. Tính năng này chỉ là gợi ý chỉnh sửa, **không đảm bảo** hết lỗi ngón/mặt.
 
@@ -176,28 +176,27 @@ Các bài test và build **không phải** là bằng chứng checkpoint WAI đ�
 
 ### Kho thẻ Danbooru / e621 cho prompt
 
-Trong giao diện web, mở **Thêm thẻ từ kho Danbooru / e621** ngay dưới ô Prompt.
+Trong `WAI_Illustrious_Studio_Colab.ipynb`, mở tab **🏷️ Kho thẻ**.
 Nguồn là `danbooru_e621_merged_2026-10-01_pt20-ia-dd-ed-spc.csv` ở thư mục gốc
-(349.714 dòng, không có header: tên thẻ, mã danh mục, số lượt, bí danh).
+(349.714 dòng, không có header: tên thẻ, mã danh mục, số lượt, bí danh, nhãn tiếng Việt).
+Cột thứ năm là chú giải hiển thị; nhãn dịch được lập chỉ mục để tìm kiếm, còn tên thẻ và bí danh tiếng Anh vẫn được giữ nguyên.
 
-- Tìm tên hoặc bí danh; dấu gạch dưới và khoảng trắng được coi tương đương khi tìm.
-- Lọc theo danh mục của từng nguồn, kết hợp chủ đề; sắp xếp phổ biến nhất hoặc A–Z.
-- Chủ đề được suy đoán từ tên thẻ bằng quy tắc trong `web/src/lib/tags.js`, không phải nhãn chính thức của CSV. Một thẻ có thể khớp nhiều chủ đề; mục “Chưa phân nhóm” chứa các thẻ còn lại.
-- Chọn Prompt hoặc Negative prompt rồi nhấn thẻ để thêm tên chuẩn. Thẻ trùng được vô hiệu hóa; giới hạn lần lượt 2.000 / 1.500 ký tự. Xóa thẻ bằng cách sửa trực tiếp ô prompt.
-- Kho chỉ tải khi mở bộ chọn, được giữ trong bộ nhớ phiên trang; kết quả phân trang 40 thẻ. Có trạng thái tải, lỗi và nút thử lại. Kho có thể chứa từ khóa nhạy cảm, không phải bộ thẻ đã kiểm duyệt.
-
-Vite phục vụ CSV tại `/tags/<tên-tệp>` khi phát triển và đưa cùng tệp vào `dist/tags/`
-khi build qua `web/plugins/tag-resource.js`; không cần sao chép thủ công hoặc gọi API bên ngoài.
-CSV là tài nguyên từ khóa hỗ trợ tạo prompt, **không** phải checkpoint, LoRA hay bộ ảnh huấn luyện.
-Thẻ được đưa vào request tạo ảnh thông qua prompt hiện có, cho cả Workers AI và WAI.
+- Tìm quét toàn bộ 349.714 thẻ bằng tiếng Việt hoặc English; dấu gạch dưới, gạch nối và khoảng trắng tương đương, có thể gõ tiếng Việt không dấu.
+- Ngay dưới ô **Prompt**, khi gõ tiếng Việt hoặc English sẽ có tối đa 8 gợi ý cho cụm cuối (sau dấu phẩy/chấm phẩy/xuống dòng). Lần đầu trong runtime có thể cần chờ nạp CSV; dữ liệu sau đó được dùng lại. Chọn nhãn Việt — tag gốc, rồi bấm **Thêm tag đã chọn** để thêm tag tiếng Anh chuẩn vào cuối prompt; phần đang viết vẫn được giữ nguyên và không tự chèn khi gõ.
+- Có thể dán prompt nhiều cụm, phân tách bằng dấu phẩy, chấm phẩy hoặc xuống dòng; nếu cụm dài không khớp nguyên văn, tìm tiếp theo các từ khóa riêng trong cụm.
+- Lọc theo danh mục của nguồn, kết hợp chủ đề; sắp xếp phổ biến nhất hoặc A–Z. Chủ đề được suy đoán từ tên thẻ, không phải nhãn chính thức của CSV.
+- Chọn nhiều kết quả, chọn Prompt hoặc Negative prompt rồi nhấn **Thêm thẻ đã chọn**. Prompt nhận tên thẻ tiếng Anh chuẩn; nhãn Việt chỉ dùng để hiển thị/tìm kiếm.
+- Kho được nạp một lần vào RAM mỗi runtime; mỗi trang có 60 kết quả. Đây là từ khóa tạo prompt, không phải checkpoint, LoRA hay bộ ảnh huấn luyện; nội dung có thể chứa từ khóa nhạy cảm.
 
 #### Dùng kho thẻ trong Colab / gradio.live
 
 `WAI_Illustrious_Studio_Colab.ipynb` cũng có bộ chọn **🏷️ Kho thẻ Danbooru / e621 · danh mục & chủ đề**
 ngay dưới Prompt / Negative. Chạy notebook rồi mở link Gradio ở ô 8:
 
-1. Mở mục kho thẻ và nhấn **Tìm / tải kho thẻ**. Lần đầu tải CSV ~9 MB từ GitHub ở commit cố định và kiểm tra SHA-256; không cần Drive/token.
-2. Nhập tên hoặc bí danh, chọn danh mục/chủ đề và cách sắp xếp; nhấn **Tìm** để cập nhật. Mỗi trang có 60 kết quả; nhập số trang rồi nhấn Tìm. Đặt lại trang 1 khi muốn xem đầu danh sách mới.
+Gợi ý inline ở ngay dưới Prompt dò cụm cuối khi bạn gõ. Chọn kết quả rồi bấm **Thêm tag đã chọn** để nối tên tiếng Anh chuẩn vào prompt mà không xóa phần tiếng Việt; muốn tìm nhiều cụm cùng lúc thì mở tab kho thẻ:
+
+1. Mở mục kho thẻ và nhấn **Tìm / tải kho thẻ**. Colab tải bản CSV gốc ~9 MB từ GitHub ở commit cố định và kiểm tra SHA-256; bản trong repo đã có thêm cột nhãn tiếng Việt (~13,7 MB), cả hai dạng đều được hỗ trợ.
+2. Nhập cụm tiếng Việt hoặc English, hoặc dán các tag trong prompt cách nhau bằng dấu phẩy/xuống dòng; bộ tìm kiếm quét toàn bộ kho, bỏ qua dấu tiếng Việt và tìm cả tên/bí danh. Chọn danh mục/chủ đề và cách sắp xếp nếu cần; nhấn **Tìm** để cập nhật. Mỗi trang có 60 kết quả; nhập số trang rồi nhấn Tìm.
 3. Chọn nhiều thẻ trong kết quả, chọn Prompt hoặc Negative prompt, nhấn **Thêm thẻ đã chọn**. Nội dung hiển thị trực tiếp trong ô tương ứng; không có thẻ nào được thêm ngầm khi tạo ảnh. Đổi kết quả tìm kiếm sẽ xóa lựa chọn chưa thêm.
 
 Nếu GitHub không truy cập được, dùng bảng **Files** bên trái Colab để tải đúng CSV lên `/content/`, rồi nhấn Tìm lại.
@@ -224,11 +223,13 @@ Khung kết quả vẫn ở bên cạnh trên màn hình rộng, xuống dưới
 Thanh tab cuộn ngang trên điện thoại. Các nút dùng ảnh mới nhất tự mở đúng tab đích
 sau khi nạp ảnh thành công. Chạy lại ô 7–8 của notebook đã cập nhật để áp dụng.
 
-Kho thẻ Gradio hiển thị phụ đề tiếng Việt trước tên gốc, ví dụ **Tóc dài — long_hair**,
-**Mắt xanh dương — blue_eyes**. Có thể tìm bằng nhãn tiếng Việt có dấu hoặc tên/bí danh gốc.
-Từ điển tích hợp bao phủ một nhóm thẻ thông dụng và các tổ hợp màu được xác định rõ;
-**không phải bản dịch đầy đủ 349.714 thẻ**. Thẻ chưa dịch ghi “Chưa có bản dịch”; tên
-họa sĩ/nhân vật/tác phẩm được giữ nguyên và thêm nhãn loại bằng tiếng Việt.
-Phụ đề chỉ dùng để hiển thị/tìm kiếm; prompt vẫn nhận đúng tên thẻ gốc. Không sửa CSV
-nguồn, không cần dịch vụ dịch bên ngoài. Bổ sung bản dịch trong `TAG_VI_LABELS` của
-`colab/studio.py` rồi chạy lại script tạo notebook.
+Kho thẻ Gradio hiển thị nhãn tiếng Việt trước tên gốc, ví dụ **Tóc dài — long_hair**,
+**Mắt xanh dương — blue_eyes**. Có thể tìm bằng nhãn Việt có dấu/không dấu, tag hoặc
+bí danh tiếng Anh; nhiều cụm trong một prompt được tìm riêng trên toàn bộ catalog.
+CSV có cột chú giải Việt ở vị trí thứ năm. Từ điển/quy tắc dịch bao phủ thẻ thông dụng
+và các tổ hợp rõ nghĩa; đây **không phải bản dịch máy đầy đủ cho 349.714 thẻ**. Tên
+họa sĩ/nhân vật/tác phẩm được giữ nguyên kèm nhãn loại; mục chưa dịch được ghi rõ.
+Khi thêm kết quả, prompt nhận đúng tên thẻ tiếng Anh gốc — nhãn Việt không gửi vào model.
+Tạo lại cột nhãn bằng `python scripts/add_vietnamese_tag_captions.py`; sau khi chỉnh từ điển
+`TAG_VI_LABELS`/quy tắc trong `colab/studio.py`, chạy script trên, cập nhật
+`TAG_CSV_SHA256` theo hash được in ra rồi chạy `python scripts/build_colab_studio.py`.

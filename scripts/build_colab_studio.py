@@ -117,10 +117,17 @@ print("✅ Thư viện Studio đã sẵn sàng:", versions)
 
 
 def build():
-    original = json.loads(BASE.read_text(encoding="utf-8"))
+    # Some repository snapshots keep only the self-contained Studio notebook;
+    # in that case, reuse its six verified setup cells as the regeneration base.
+    using_legacy_base = BASE.is_file()
+    source = BASE if using_legacy_base else OUTPUT
+    if not source.is_file():
+        raise FileNotFoundError(f"Thiếu notebook nguồn: {BASE} và {OUTPUT}")
+    original = json.loads(source.read_text(encoding="utf-8"))
     setup = copy.deepcopy(original["cells"][1:7])
     install = "".join(setup[1]["source"])
-    assert install.count("%pip -q install") == 1 and "gradio==" not in install
+    if using_legacy_base:
+        assert install.count("%pip -q install") == 1 and "gradio==" not in install
     setup[1]["source"] = STUDIO_INSTALL_CELL.splitlines(keepends=True)
 
     # The original notebook allows a custom SDXL checkpoint. This personal WAI
@@ -131,6 +138,8 @@ def build():
 
     def insert_once(old, new):
         nonlocal prepare
+        if new in prepare:
+            return
         assert prepare.count(old) == 1, old
         prepare = prepare.replace(old, new)
 
@@ -150,7 +159,8 @@ def build():
         "        inspect_checkpoint(downloaded, verify_official=True)\n        checkpoint = downloaded",
         "        inspect_checkpoint(downloaded, verify_official=True)\n        WAI_STUDIO_VERSION_VERIFIED = True\n        checkpoint = downloaded",
     )
-    prepare += '\nif not WAI_STUDIO_VERSION_VERIFIED:\n    raise RuntimeError("Studio chỉ nhận checkpoint WAI-illustrious v17 đúng SHA-256. Đổi MODEL_PATH sang bản gốc, rồi chạy lại ô 4.")\n'
+    if "if not WAI_STUDIO_VERSION_VERIFIED:" not in prepare:
+        prepare += '\nif not WAI_STUDIO_VERSION_VERIFIED:\n    raise RuntimeError("Studio chỉ nhận checkpoint WAI-illustrious v17 đúng SHA-256. Đổi MODEL_PATH sang bản gốc, rồi chạy lại ô 4.")\n'
     setup[3]["source"] = prepare.splitlines(keepends=True)
 
     introduction = """# WAI Studio · tạo ảnh anime trên Google Colab bằng liên kết tạm thời
@@ -161,7 +171,7 @@ def build():
 
 > **Notebook đã thu gọn:** mỗi ô code chỉ hiện một thanh tiêu đề kèm nút **Run** (Colab form), kể cả ô 7 chứa toàn bộ mã giao diện — nên trang rất ngắn và dễ chạy tuần tự. Muốn xem hoặc sửa code của ô nào, bấm biểu tượng `>_` (hay ⋮ → *Show code*) ở góc ô đó; kết quả in ra vẫn hiển thị bình thường.
 1. Chọn **Runtime → Change runtime type → T4 GPU** (hoặc GPU mạnh hơn), rồi **Runtime → Run all**. Checkpoint ~6,94 GB và tối đa ~457 MB LoRA được tải **trực tiếp vào `/content`**, kiểm tra SHA-256 trước khi nạp, không gắn hay sao chép sang Drive. Nếu file còn trong cùng runtime sẽ dùng lại; phiên Colab mới phải tải lại. Cần ~9 GiB đĩa trống. Ô 4 kiểm toàn bộ hash, có thể mất một lúc.
-2. Chờ ô cuối in `Running on public URL`, mở liên kết `https://....gradio.live` — **không cần tài khoản/mật khẩu**. **Không có selector phong cách: bạn tự viết phong cách ngay trong prompt** (`anime illustration, cel shading`, `watercolor`, `cinematic lighting`…). Hai ô **Prompt gửi model** / **Negative gửi model** là đúng những gì được gửi ở cả ba chế độ, không thêm thẻ ẩn theo LoRA hay vùng sửa khi bấm tạo. Cần trigger cho LoRA mắt thì bấm nút **Thêm `perfect eyes`**; tab sửa vùng có nút **Thêm gợi ý sửa vùng vào prompt** — cả hai đều hiển thị trong ô để bạn sửa hoặc xóa trước khi tạo.
+2. Chờ ô cuối in `Running on public URL`, mở liên kết `https://....gradio.live` — **không cần tài khoản/mật khẩu**. **Không có selector phong cách: bạn tự viết phong cách ngay trong prompt** (`anime illustration, cel shading`, `watercolor`, `cinematic lighting`…). Khi gõ tiếng Việt hoặc English vào prompt, gợi ý tag hiện theo cụm cuối; chọn một dòng rồi bấm **Thêm tag đã chọn** để nối tên tiếng Anh chuẩn vào prompt mà không xóa phần bạn đã viết — không tự chèn khi gõ. Hai ô **Prompt gửi model** / **Negative gửi model** là đúng những gì được gửi ở cả ba chế độ, không thêm thẻ ẩn theo LoRA hay vùng sửa khi bấm tạo. Cần trigger cho LoRA mắt thì bấm nút **Thêm `perfect eyes`**; tab sửa vùng có nút **Thêm gợi ý sửa vùng vào prompt** — cả hai đều hiển thị trong ô để bạn sửa hoặc xóa trước khi tạo.
    - **Nạp nhiều prompt một lúc:** mở accordion **📚 Thư viện prompt · nạp danh sách từ file text**, tải file `.txt`/`.md`/`.json` (hoặc dán nội dung) có dạng `PROMPT 01 - Tên tiếng Việt` rồi đoạn prompt bên dưới (cũng đọc được bảng `Tên tiếng Việt | Nội dung prompts tiếng Anh`, JSON `[{"title","prompt"}]`, hoặc các đoạn prompt cách nhau dòng trống). Danh sách hiện ra dưới dạng **danh sách chạm cuộn được** (dễ dùng trên điện thoại) và **chạm một dòng là hệ thống tự nạp prompt** vào ô *Prompt gửi model*, hoặc chọn dòng rồi bấm **⬇️ Nạp prompt đã chọn**; các dòng `Negative:`, `Steps:`, `CFG:`, `Size:`, `Seed:` trong file cũng được áp dụng. Chưa có file thì bấm **Nạp thư viện mẫu** để xem định dạng.
    - **Làm theo quy trình chuyên nghiệp:** accordion **🧭 Quy trình chuẩn · khung prompt + negative tối ưu** có ba nút. **Sắp xếp prompt theo thứ tự chuẩn** xếp lại thẻ của bạn theo thứ tự CLIP ưu tiên (chất lượng → chủ thể → ngoại hình → trang phục → tư thế → bố cục → bối cảnh → ánh sáng → phong cách → `absurdres`), bỏ thẻ trùng và thêm thẻ neo còn thiếu của khung đã chọn. **Nạp negative đã chọn** đưa một trong 8 bộ negative tối ưu theo mục đích (chuẩn nhà phát hành WAI v17, Illustrious chuẩn, tay/chân, giữ chất 2D, chân dung, phong cảnh, an toàn nội dung, inpaint) vào ô negative — ghi đè hoặc nối thêm. **🩺 Kiểm tra prompt & thông số** báo prompt ≈ bao nhiêu token so với khối 75 token của SDXL, thẻ chất lượng thừa, thẻ trùng, thẻ vừa dương vừa âm, cú pháp Pony, trọng số quá 1.2, negative quá dài và steps/CFG/kích thước/hires ngoài khuyến nghị. Cả ba nút **chỉ ghi nội dung hiển thị** vào hai ô prompt/ô báo cáo để bạn sửa; không có thẻ nào được thêm ngầm khi tạo ảnh. Quy trình đầy đủ: [docs/QUY_TRINH_TAO_ANH.md](https://github.com/manhlee1196-boop/ai-anime/blob/main/docs/QUY_TRINH_TAO_ANH.md).
 3. **Giữ Colab kết nối.** Link chỉ tồn tại khi phiên Colab/Gradio còn chạy; dừng runtime để ngắt link. Ảnh chỉ nằm tại `/content/wai_outputs` hoặc đường dẫn cục bộ đã đặt ở ô 3: **tải PNG về trước khi phiên hết**, nếu không sẽ mất cả model, LoRA và ảnh. Lần sau Run all để có link mới.

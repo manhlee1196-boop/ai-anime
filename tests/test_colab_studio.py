@@ -86,15 +86,16 @@ class FakeDerived:
 class NotebookTests(unittest.TestCase):
     def test_notebook_is_self_contained_clean_and_reuses_verified_setup(self):
         n = json.loads(NOTEBOOK.read_text(encoding="utf-8"))
-        old = json.loads(BASE.read_text(encoding="utf-8"))
         self.assertEqual(
             n, build(), "Regenerate with python scripts/build_colab_studio.py"
         )
         self.assertEqual(n["nbformat"], 4)
         self.assertEqual(n["nbformat_minor"], 0)
         self.assertEqual(len(n["cells"]), 10)
-        for index in (1, 3, 5, 6):
-            self.assertEqual(n["cells"][index]["source"], old["cells"][index]["source"])
+        if BASE.is_file():
+            old = json.loads(BASE.read_text(encoding="utf-8"))
+            for index in (1, 3, 5, 6):
+                self.assertEqual(n["cells"][index]["source"], old["cells"][index]["source"])
         prepare = "".join(n["cells"][4]["source"])
         self.assertIn("WAI_STUDIO_VERSION_VERIFIED = False", prepare)
         self.assertIn("if not WAI_STUDIO_VERSION_VERIFIED:", prepare)
@@ -137,7 +138,8 @@ class NotebookTests(unittest.TestCase):
 
     def test_every_code_cell_collapses_into_a_compact_form(self):
         """Cả hai notebook phải gọn: mỗi ô code là một form tiêu đề + nút Run."""
-        for path in (NOTEBOOK, BASE):
+        notebooks = [NOTEBOOK, *([BASE] if BASE.is_file() else [])]
+        for path in notebooks:
             notebook = json.loads(path.read_text(encoding="utf-8"))
             code_cells = [c for c in notebook["cells"] if c["cell_type"] == "code"]
             self.assertTrue(code_cells, path.name)
@@ -1188,6 +1190,44 @@ class RuntimeValidationTests(unittest.TestCase):
         self.assertEqual(prompt_field["props"]["value"], studio.DEFAULT_PROMPT)
         self.assertEqual(negative_field["props"]["value"], studio.DEFAULT_NEGATIVE)
         field_ids = {c["id"] for c in fields}
+
+        inline_suggestions = next(
+            c for c in config["components"]
+            if c["type"] == "dropdown"
+            and "Gợi ý tag" in str(c["props"].get("label"))
+        )
+        inline_apply = next(
+            c for c in config["components"]
+            if c["type"] == "button"
+            and "thêm tag đã chọn" in c["props"].get("value", "").casefold()
+        )
+        inline_status = next(
+            c for c in config["components"]
+            if c["type"] == "markdown"
+            and "Gợi ý theo cụm cuối" in str(c["props"].get("value"))
+        )
+        live_suggestion_event = next(
+            d for d in config["dependencies"]
+            if (prompt_field["id"], "input") in d["targets"]
+        )
+        self.assertEqual(live_suggestion_event["inputs"], [prompt_field["id"]])
+        self.assertEqual(
+            live_suggestion_event["outputs"], [inline_suggestions["id"], inline_status["id"]]
+        )
+        self.assertFalse(live_suggestion_event["queue"])
+        apply_suggestion_event = next(
+            d for d in config["dependencies"]
+            if (inline_apply["id"], "click") in d["targets"]
+        )
+        self.assertEqual(
+            apply_suggestion_event["inputs"], [prompt_field["id"], inline_suggestions["id"]]
+        )
+        self.assertEqual(
+            apply_suggestion_event["outputs"],
+            [prompt_field["id"], inline_status["id"], inline_suggestions["id"]],
+        )
+        self.assertFalse(apply_suggestion_event["queue"])
+
         eyes_button = next(
             c
             for c in config["components"]
@@ -1218,11 +1258,9 @@ class RuntimeValidationTests(unittest.TestCase):
             repair_event["inputs"][:2],
             [prompt_field["id"], negative_field["id"]],
         )
-        # 4 nút tạo ảnh + 3 nút dùng ảnh mới nhất + trigger mắt + gợi ý sửa vùng
-        # + gợi ý phong cách (look) + sắp xếp prompt + nạp negative + kiểm tra
-        # prompt + 5 sự kiện của thư viện prompt.
-        # 24 sự kiện: 19 cũ + 2 kho thẻ + 3 chuyển tab sau khi dùng ảnh.
-        self.assertEqual(len(config["dependencies"]), 24)
+        # Bên cạnh các sự kiện hiện có còn có 2 sự kiện gợi ý tag inline,
+        # 2 sự kiện kho thẻ và 3 chuyển tab sau khi dùng ảnh.
+        self.assertEqual(len(config["dependencies"]), 26)
         # Six horizontal workspace tabs plus four generation modes.
         tabs = [c for c in config["components"] if c["type"] == "tabitem"]
         self.assertEqual(
