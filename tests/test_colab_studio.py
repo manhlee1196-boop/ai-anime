@@ -133,6 +133,7 @@ class NotebookTests(unittest.TestCase):
         compile(launch_source, "studio-launch", "exec")
         proxy_source = "".join(n["cells"][9]["source"])
         self.assertIn("google.colab.kernel.proxyPort", proxy_source)
+        self.assertIn("ProxyHandler({})", proxy_source)
         self.assertIn("IFrame", proxy_source)
         compile(proxy_source, "studio-colab-proxy", "exec")
         try:

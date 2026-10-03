@@ -228,7 +228,7 @@ print("Link ngừng hoạt động khi Colab dừng/ngắt. KHÔNG chia sẻ lin
     proxy = """# @title 9. Mở giao diện qua proxy Colab (dự phòng Gradio Live)
 from html import escape
 from urllib.parse import urlparse
-from urllib.request import urlopen
+from urllib.request import ProxyHandler, build_opener
 
 from google.colab.output import eval_js
 from IPython.display import HTML, IFrame, display
@@ -236,8 +236,11 @@ from IPython.display import HTML, IFrame, display
 if "studio_app" not in globals() or not globals().get("studio_local_url"):
     raise RuntimeError("Chạy ô 8 trước để khởi động giao diện WAI Studio.")
 local_url = studio_local_url.rstrip("/")
+# Bypass notebook HTTP_PROXY for the loopback health check; otherwise localhost
+# may be sent to an external proxy and falsely time out.
+local_opener = build_opener(ProxyHandler({}))
 try:
-    with urlopen(local_url + "/config", timeout=10) as response:
+    with local_opener.open(local_url + "/config", timeout=10) as response:
         if response.status != 200:
             raise RuntimeError(f"Gradio trả HTTP {response.status} ở giao diện nội bộ.")
 except Exception as exc:
