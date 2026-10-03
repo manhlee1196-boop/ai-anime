@@ -91,7 +91,7 @@ class NotebookTests(unittest.TestCase):
         )
         self.assertEqual(n["nbformat"], 4)
         self.assertEqual(n["nbformat_minor"], 0)
-        self.assertEqual(len(n["cells"]), 10)
+        self.assertEqual(len(n["cells"]), 11)
         if BASE.is_file():
             old = json.loads(BASE.read_text(encoding="utf-8"))
             for index in (1, 3, 5, 6):
@@ -128,7 +128,13 @@ class NotebookTests(unittest.TestCase):
                 self.assertEqual(cell["execution_count"], None)
                 self.assertEqual(cell["outputs"], [])
         compile(ui_source, "studio-ui", "exec")
-        compile("".join(n["cells"][8]["source"]), "studio-launch", "exec")
+        launch_source = "".join(n["cells"][8]["source"])
+        self.assertIn("studio_local_url, share_url", launch_source)
+        compile(launch_source, "studio-launch", "exec")
+        proxy_source = "".join(n["cells"][9]["source"])
+        self.assertIn("google.colab.kernel.proxyPort", proxy_source)
+        self.assertIn("IFrame", proxy_source)
+        compile(proxy_source, "studio-colab-proxy", "exec")
         try:
             import nbformat
         except ImportError:
