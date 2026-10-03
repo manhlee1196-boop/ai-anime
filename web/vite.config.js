@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import tagResource from "./plugins/tag-resource.js";
 
 // The Vite preview is deliberately offline: it previews the actual interface,
 // while generation requires deploying the Worker with a Cloudflare AI binding.
@@ -36,7 +37,7 @@ function localApiNotice() {
 }
 
 export default defineConfig({
-  plugins: [react(), localApiNotice()],
+  plugins: [react(), localApiNotice(), tagResource()],
   server: {
     host: "0.0.0.0",
     port: 5173,
