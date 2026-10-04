@@ -3270,7 +3270,93 @@ _TAG_VI_WORDS = {
     "fox": "cáo", "wolf": "sói", "rabbit": "thỏ", "bird": "chim",
     "horse": "ngựa", "dragon": "rồng", "mouse": "chuột", "deer": "nai",
     "tiger": "hổ", "lion": "sư tử", "bear": "gấu", "raccoon": "gấu mèo",
+    # Họa tiết, chất liệu và trạng thái — đủ an toàn để ghép phía sau danh từ tiếng Việt.
+    "striped": "kẻ sọc", "plaid": "kẻ caro", "checkered": "kẻ ca-rô", "dotted": "chấm tròn",
+    "torn": "rách", "ripped": "xé rách", "wet": "ướt", "dry": "khô", "tight": "ôm sát",
+    "matte": "nhám", "glowing": "phát sáng", "lit": "được chiếu sáng", "shadowed": "có bóng",
+    "lace": "ren", "denim": "jean", "jeans": "jean", "leather": "da", "latex": "latex",
+    "rubber": "cao su", "wool": "len", "silk": "lụa", "satin": "sa tanh", "velvet": "nhung",
+    "cotton": "cotton", "metal": "kim loại", "golden": "màu vàng", "glass": "thủy tinh",
+    "paper": "giấy", "wooden": "bằng gỗ", "stone": "đá", "snow": "tuyết", "water": "nước",
+    "frilled": "nhún xếp", "ruffled": "xếp tầng", "pleated": "xếp ly", "buttons": "cúc",
+    "patterned": "có hoa văn", "print": "họa tiết",
+    "textured": "có kết cấu", "smooth": "trơn", "furry": "nhiều lông", "bald": "trọc",
+    "clean": "sạch", "dirty": "bẩn", "bloody": "vấy máu", "sweaty": "đầm mồ hôi",
+    "dusty": "bụi bặm", "old": "cũ", "new": "mới", "mini": "siêu ngắn", "micro": "rất nhỏ",
+    "half": "một nửa", "partial": "một phần",
+    "partially": "một phần", "mostly": "chủ yếu", "barely": "hầu như không",
+    "muscular": "cơ bắp", "chubby": "mũm mĩm", "overweight": "thừa cân", "obese": "béo phì",
+    "feminine": "nữ tính", "masculine": "nam tính", "cute": "dễ thương", "sexy": "gợi cảm",
+    "formal": "trang trọng", "casual": "thường ngày", "sporty": "thể thao", "military": "quân đội",
+    "school": "học đường", "christmas": "Giáng sinh", "halloween": "Halloween",
+    "summer": "mùa hè", "winter": "mùa đông", "spring": "mùa xuân", "autumn": "mùa thu",
+    # Bộ phận cơ thể đứng ở vị trí bổ ngữ: "Đồ xăm ở cánh tay", "Hoa văn chân"…
+    "head": "đầu", "face": "mặt", "hair": "tóc", "fur": "lông", "skin": "da",
+    "eye": "mắt", "eyes": "mắt", "ear": "tai", "ears": "tai", "nose": "mũi",
+    "mouth": "miệng", "lip": "môi", "lips": "môi", "chin": "cằm", "cheek": "gò má",
+    "neck": "cổ", "shoulder": "vai", "shoulders": "vai", "chest": "ngực",
+    "back": "lưng", "stomach": "bụng", "belly": "bụng", "navel": "rốn",
+    "armpit": "nách", "armpits": "nách", "butt": "mông", "ass": "mông",
+    "arm": "cánh tay", "arms": "cánh tay", "elbow": "khuỷu tay", "wrist": "cổ tay",
+    "hand": "bàn tay", "hands": "bàn tay", "finger": "ngón tay", "fingers": "ngón tay",
+    "leg": "chân", "legs": "chân", "thigh": "đùi", "thighs": "đùi", "knee": "đầu gối",
+    "ankle": "cổ chân", "foot": "bàn chân", "feet": "bàn chân", "toe": "ngón chân",
+    "toes": "ngón chân", "tail": "đuôi", "wing": "cánh", "wings": "cánh",
+    "horn": "sừng", "horns": "sừng", "paw": "chân thú", "paws": "chân thú",
+    "penis": "dương vật", "vulva": "âm hộ", "anus": "hậu môn", "breast": "ngực",
+    "breasts": "ngực", "nipple": "núm vú", "nipples": "núm vú", "genitals": "bộ phận sinh dục",
+    "body": "cơ thể", "figure": "dáng người", "silhouette": "bóng", "profile": "góc nghiêng",
+    "fire": "lửa", "smoke": "khói", "steam": "hơi nước",
+    "spiked": "có gai", "puffy": "phồng", "cropped": "lửng", "sailor": "thủy thủ",
+    "bat": "dơi", "bunny": "thỏ", "demon": "quỷ", "devil": "quỷ", "angel": "thiên thần",
+    "ghost": "ma", "skeleton": "bộ xương", "witch": "phù thủy", "maid": "hầu gái",
+    "ninja": "ninja", "pirate": "cướp biển", "robot": "người máy", "mecha": "mecha",
+    "frog": "ếch", "snake": "rắn", "spider": "nhện", "insect": "côn trùng",
+    "butterfly": "bươm bướm", "bee": "ong", "fish": "cá", "shark": "cá mập",
+    "whale": "cá voi", "octopus": "bạch tuộc", "squid": "mực", "crab": "cua",
+    "goat": "dê", "sheep": "cừu", "cow": "bò", "pig": "lợn", "duck": "vịt",
+    "swan": "thiên nga", "owl": "cú mèo", "eagle": "đại bàng", "crow": "quạ",
+    "panda": "gấu trúc", "koala": "koala", "otter": "rái cá", "ferret": "chồn bạc",
+    "squirrel": "sóc", "hedgehog": "nhím gai", "hyena": "linh cẩu", "jackal": "chồn sói",
+    "mythological": "thần thoại", "prehistoric": "tiền sử", "extinct": "tuyệt chủng",
+    "inanimate": "vô tri", "object": "vật thể", "food": "thức ăn", "drink": "đồ uống",
+    "dessert": "món tráng miệng", "meat": "thịt", "fruit": "trái cây", "vegetable": "rau",
+    "cake": "bánh ngọt", "cookie": "bánh quy", "candy": "kẹo", "chocolate": "sô-cô-la",
+    "bread": "bánh mì", "rice": "cơm", "egg": "trứng", "milk": "sữa",
+    "coffee": "cà phê", "tea": "trà", "beer": "bia", "wine": "rượu vang", "sake": "rượu sake",
+    "book": "sách", "letter": "bức thư", "envelope": "phong bì", "card": "thẻ",
+    "money": "tiền", "coin": "đồng xu", "key": "chìa khóa", "clock": "đồng hồ",
+    "sword": "kiếm", "shield": "khiên", "bomb": "bom", "arrow": "mũi tên",
+    "spotlight": "đèn rọi", "candle": "nến", "lamp": "đèn", "lantern": "đèn lồng",
+    "fireworks": "pháo hoa", "explosion": "vụ nổ", "magic": "phép thuật",
+    "sparkle": "ánh lấp lánh", "sparkles": "ánh lấp lánh", "bubble": "bọt khí",
+    "bubbles": "bọt khí", "blood": "máu", "pus": "mủ", "saliva": "nước bọt",
+    "tears": "nước mắt",
 }
+# Tính từ mô tả (hình thái, trạng thái, kích thước) — khác với danh từ bổ nghĩa ở
+# vị trí trong cụm tiếng Việt, nên tách riêng.
+_TAG_VI_ADJECTIVE_MODIFIERS = frozenset({
+    "long", "short", "medium", "very", "small", "big", "large", "huge", "thick", "thin",
+    "curly", "wavy", "straight", "messy", "braided", "fluffy", "spiky", "pointy", "round",
+    "wide", "narrow", "open", "closed", "multicolored", "striped", "plaid", "checkered",
+    "dotted", "spotted", "gradient", "marbled", "torn", "ripped", "wet", "dry", "tight",
+    "loose", "sheer", "shiny", "glossy", "matte", "glowing", "lit", "shadowed", "frilled",
+    "ruffled", "pleated", "textured", "smooth", "furry", "bald", "clean", "dirty", "bloody",
+    "sweaty", "dusty", "old", "new", "mini", "micro", "half", "partial", "partially",
+    "mostly", "barely", "muscular", "chubby", "overweight", "obese", "slim", "fit", "tall",
+    "young", "feminine", "masculine", "cute", "sexy", "formal", "casual", "sporty",
+    "patterned", "translucent", "transparent", "puffy", "cropped", "spiked", "golden",
+    "single", "double", "extra", "matching", "asymmetrical",
+    "light", "dark", "bright", "pale",
+})
+# Danh từ bổ nghĩa (vật liệu, loài, bộ phận, đồ vật) đứng ngay sau danh từ chính và
+# ngược thứ tự so với tiếng Anh: rabbit_ear_hat → "Mũ tai thỏ".
+_TAG_VI_NOUN_MODIFIERS = frozenset(
+    part for part in _TAG_VI_WORDS
+    if part not in _TAG_VI_ADJECTIVE_MODIFIERS and part not in _TAG_VI_COLORS
+)
+
+
 _TAG_VI_COMPOSITE_HEADS = {
     "hair": "Tóc", "eyes": "Mắt", "background": "Nền", "skin": "Da",
     "dress": "Váy", "shirt": "Áo sơ mi", "skirt": "Chân váy", "sleeves": "Tay áo",
@@ -3286,6 +3372,70 @@ _TAG_VI_COMPOSITE_HEADS = {
     "ribbon": "Ruy băng", "necklace": "Vòng cổ", "flower": "Hoa", "flowers": "Hoa",
     "sky": "Bầu trời", "cloud": "Mây", "clouds": "Mây",
 }
+# Danh từ ghép được mở rộng theo các nhóm hay gặp nhất trong catalog. Mỗi mục ở đây
+# Mỗi mục mở ra một họ thẻ "<modifier>_<danh từ>" mà không phải liệt kê từng thẻ một.
+_TAG_VI_COMPOSITE_HEADS.update({
+    # Trang phục
+    "uniform": "Đồng phục", "clothes": "Quần áo", "clothing": "Trang phục",
+    "underwear": "Đồ lót", "swimwear": "Đồ bơi", "swimsuit": "Đồ bơi",
+    "bikini": "Bikini", "bra": "Áo ngực", "thong": "Quần lót dây",
+    "top": "Áo", "tank": "Áo ba lỗ", "costume": "Trang phục", "suit": "Bộ đồ",
+    "bodysuit": "Đồ liền thân", "leotard": "Leotard", "jumpsuit": "Áo liền quần",
+    "sweater": "Áo len", "cardigan": "Áo cardigan", "vest": "Áo ghi-lê",
+    "hoodie": "Áo hoodie", "hood": "Mũ trùm", "kimono": "Kimono",
+    "cloak": "Áo choàng", "cape": "Áo choàng", "apron": "Tạp dề",
+    "armor": "Giáp", "helmet": "Mũ bảo hiểm", "cap": "Mũ lưỡi trai",
+    "headband": "Băng đô", "headwear": "Phụ kiện đầu", "legwear": "Đồ che chân",
+    "armwear": "Đồ che tay", "lingerie": "Đồ lót nữ", "sleepwear": "Đồ ngủ",
+    "sneakers": "Giày thể thao", "heels": "Giày cao gót", "loafers": "Giày lười",
+    # Phụ kiện
+    "belt": "Thắt lưng", "buckle": "Khóa", "collar": "Cổ áo", "tie": "Cà vạt",
+    "necktie": "Cà vạt", "bowtie": "Nơ cổ", "scarf": "Khăn quàng",
+    "veil": "Màn che mặt", "goggles": "Kính bảo hộ", "eyewear": "Kính",
+    "jewelry": "Trang sức", "bracelet": "Vòng tay", "anklet": "Vòng chân",
+    "earring": "Khuyên tai", "earrings": "Khuyên tai", "pendant": "Mặt dây chuyền",
+    "tiara": "Vương miện nhỏ", "crown": "Vương miện", "brooch": "Trâm cài",
+    "tattoo": "Hình xăm", "piercing": "Khuyên", "makeup": "Trang điểm",
+    "lipstick": "Son môi", "perfume": "Nước hoa", "handbag": "Túi xách",
+    "bag": "Túi", "backpack": "Ba lô", "purse": "Túi cầm tay",
+    # Cơ thể
+    "eye": "Mắt", "eyelid": "Mí mắt", "eyelash": "Lông mi", "eyelashes": "Lông mi",
+    "eyebrow": "Lông mày", "eyebrows": "Lông mày", "pupil": "Đồng tử",
+    "pupils": "Đồng tử", "sclera": "Củng mạc", "iris": "Mống mắt",
+    "ear": "Tai", "horn": "Sừng", "wing": "Cánh", "nose": "Mũi",
+    "nostril": "Lỗ mũi", "snout": "Mõm", "muzzle": "Mõm", "beak": "Mỏ",
+    "lip": "Môi", "lips": "Môi", "cheek": "Má", "cheeks": "Má",
+    "chin": "Cằm", "jaw": "Hàm", "forehead": "Trán", "temple": "Thái dương",
+    "neck": "Cổ", "throat": "Cổ họng", "shoulder": "Vai", "shoulders": "Vai",
+    "chest": "Ngực", "pecs": "Cơ ngực", "pectorals": "Cơ ngực",
+    "back": "Lưng", "spine": "Cột sống", "waist": "Eo", "hip": "Hông",
+    "hips": "Hông", "belly": "Bụng", "stomach": "Bụng", "navel": "Rốn",
+    "armpit": "Nách", "armpits": "Nách", "butt": "Mông", "ass": "Mông",
+    "arm": "Cánh tay", "elbow": "Khuỷu tay", "wrist": "Cổ tay",
+    "hand": "Bàn tay", "palm": "Lòng bàn tay", "finger": "Ngón tay",
+    "thumb": "Ngón cái", "nail": "Móng tay", "nails": "Móng tay",
+    "fingernails": "Móng tay", "toenails": "Móng chân", "leg": "Chân",
+    "thigh": "Đùi", "knee": "Đầu gối", "knees": "Đầu gối", "calf": "Bắp chân",
+    "heel": "Gót chân", "sole": "Lòng bàn chân", "paw": "Bàn chân thú",
+    "paws": "Bàn chân thú", "hindpaw": "Bàn chân sau", "forepaw": "Bàn chân trước",
+    # Sinh dục (nhãn mô tả, khớp cách Studio đang hiển thị)
+    "penis": "Dương vật", "dick": "Dương vật", "cock": "Dương vật",
+    "balls": "Tinh hoàn", "testicles": "Tinh hoàn", "scrotum": "Bìu",
+    "vulva": "Âm hộ", "pussy": "Âm hộ", "vagina": "Âm đạo",
+    "anus": "Hậu môn", "asshole": "Hậu môn", "clitoris": "Âm vật",
+    "areola": "Quầng vú", "areolas": "Quầng vú", "nipple": "Núm vú",
+    "sheath": "Bao dương vật", "ovipositor": "Cơ quan đẻ trứng",
+})
+# Với các danh từ này, tiếng Việt tự nhiên hơn khi nối màu bằng "màu".
+_TAG_VI_COLOR_MARKER_HEADS = frozenset({
+    "hair", "background", "skin", "dress", "shirt", "skirt", "gloves", "boots", "shoes",
+    "clothes", "clothing", "uniform", "underwear", "swimsuit", "swimwear", "bikini", "bra",
+    "top", "suit", "jacket", "coat", "sweater", "vest", "hood", "cape", "cloak", "apron",
+    "socks", "stockings", "thighhighs", "kneehighs", "panties", "pantyhose", "shorts",
+    "pants", "legwear", "armwear", "jewelry", "collar", "hat", "cap", "helmet",
+})
+
+
 _TAG_VI_NAME_CATEGORIES = frozenset({"1", "3", "4", "8", "9", "10", "11", "15"})
 _TAG_VI_CATEGORY_FALLBACKS = {
     "1": "Họa sĩ", "3": "Tác phẩm", "4": "Nhân vật", "5": "Metadata",
@@ -3305,6 +3455,220 @@ for _color, _vi_color in _TAG_VI_COLORS.items():
     }.items():
         TAG_VI_LABELS.setdefault(f"{_color}_{_part}", f"{_vi_part} {_vi_color}")
 TAG_VI_LABELS["blonde_hair"] = "Tóc vàng"
+TAG_VI_LABELS.update({
+    # Bổ sung theo độ phổ biến: thẻ một từ và tổ hợp mà quy tắc ghép không với tới.
+    "photoshop_(medium)": "Ảnh chỉnh bằng Photoshop",     "pokemon_(species)": "Loài Pokémon",
+    "tuft": "Túm lông",     "humanoid": "Dạng người",
+    "human": "Người",     "commission": "Tranh đặt hàng",
+    "untranslatable_commentary": "Chú thích không dịch được",     "clothing_cutout": "Lỗ cắt trên quần áo",
+    "hyper": "Phóng đại",     "v": "Tư thế chữ V",
+    "pokemon_(creature)": "Pokémon (sinh vật)",     "mythological_equine": "Ngựa thần thoại",
+    ":3": "Biểu cảm :3",     "korean_commentary": "Chú thích tiếng Hàn",
+    "video": "Video",     "legs": "Đôi chân",
+    "bear": "Gấu",     "non-mammal_breasts": "Ngực của loài không phải thú",
+    "low_twintails": "Tóc hai búi thấp",     "mostly_nude": "Khỏa thân phần lớn",
+    "meme": "Meme",     "faceless_male": "Nam không có mặt",
+    "membrane_(anatomy)": "Màng (giải phẫu)",     "4_fingers": "Bốn ngón tay",
+    "chinese_clothes": "Quần áo kiểu Trung Quốc",     "swept_bangs": "Tóc mái rẽ một bên",
+    "colored_inner_hair": "Tóc lớp trong tô màu",     "curvy_figure": "Dáng người cong",
+    "gem": "Đá quý",     "freckles": "Tàn nhang",
+    "fish": "Cá",     "machine": "Máy móc",
+    "caprine": "Họ dê",     "partial_commentary": "Chú thích một phần",
+    "overweight_male": "Nam thừa cân",     "headphones": "Tai nghe chụp đầu",
+    "^_^": "Biểu cảm ^_^",     "cum_in_mouth": "Tinh dịch trong miệng",
+    "sideboob": "Nghiêng lộ ngực bên",     "shiny_skin": "Da bóng",
+    "digitigrade": "Đi bằng ngón chân",     "denim": "Vải bò",
+    "slit_pupils": "Đồng tử khe dọc",     "beret": "Mũ beret",
+    "pussy_juice": "Dịch âm hộ",     "helmet": "Mũ bảo hiểm",
+    "plantigrade": "Bàn chân áp đất",     "bright_pupils": "Đồng tử sáng",
+    "from_front_position": "Tư thế nhìn từ phía trước",     "backsack": "Ba lô",
+    "black_hairband": "Băng buộc tóc đen",     "facial_mark": "Điểm trên mặt",
+    "witch_hat": "Mũ phù thủy",     "on_top": "Ở phía trên",
+    "pink_nipples": "Núm vú hồng",     "tentacles": "Xúc tu",
+    "playboy_bunny": "Đồ thỏ Playboy",     "moon": "Mặt trăng",
+    "rose": "Hoa hồng",     "crown": "Vương miện",
+    "url": "Đường link",     "nose_blush": "Đỏ sống mũi",
+    "beak": "Mỏ",     "breath": "Hơi thở",
+    "cumshot": "Xuất tinh lên ảnh",     "fox_girl": "Cô gái cáo",
+    "alternate_hairstyle": "Kiểu tóc khác",     "ear_ring": "Khuyên vành tai",
+    "nude_anthro": "Nhân vật nhân hóa khỏa thân",     "facial_tuft": "Túm lông mặt",
+    "holding_hands": "Nắm tay nhau",     "halterneck": "Áo quàng cổ",
+    "hood_down": "Hạ mũ trùm",     "kemono": "Kemono",
+    "furry": "Furry",     "bed_sheet": "Ga trải giường",
+    "bob_cut": "Tóc bob",     "age_difference": "Chênh lệch tuổi tác",
+    "membranous_wings": "Cánh màng",     "cum_in_pussy": "Tinh dịch trong âm hộ",
+    "arm_support": "Đỡ người bằng tay",     "smaller_male": "Nam nhỏ hơn",
+    "demon_horns": "Sừng quỷ",     "beard": "Râu quai nón",
+    "smartphone": "Điện thoại thông minh",     "larger_male": "Nam to hơn",
+    "mature_female": "Nữ trưởng thành",     "pony": "Ngựa pony",
+    "testicles": "Tinh hoàn",     "overweight_anthro": "Nhân vật nhân hóa thừa cân",
+    "penis_in_ass": "Dương vật trong hậu môn",     "elf": "Tiên",
+    "eye_contact": "Giao tiếp bằng mắt",     "humanoid_hands": "Bàn tay dạng người",
+    "crossover": "Giao thoa tác phẩm",     "suit": "Bộ vest",
+    "bedroom_eyes": "Ánh mắt gợi tình",     "after_sex": "Sau khi quan hệ",
+    "generation_4_pokemon": "Pokémon thế hệ 4",     "garter_straps": "Dây giữ bít tất",
+    "shirt_lift": "Tốc áo",     "trembling": "Run rẩy",
+    "glans": "Quy đầu",     "flying_sweatdrops": "Giọt mồ hôi văng",
+    "male_anthro": "Nhân vật nam nhân hóa",     "dark-skinned_male": "Nam da sẫm",
+    "cheek_tuft": "Túm lông má",     "demon_girl": "Cô gái quỷ",
+    "lipstick": "Son môi",     "unicorn": "Kỳ lân",
+    "groping": "Sờ soạng",     "electronics": "Đồ điện tử",
+    "cleavage_cutout": "Lỗ cắt khoe khe ngực",     "paid_reward_available": "Có phần thưởng trả phí",
+    "dildo": "Dương vật giả",     "spots": "Đốm",
+    "drill_hair": "Tóc xoắn",     "bottle": "Cái chai",
+    "bandages": "Băng gạc",     "pectoral": "Cơ ngực",
+    "floral_print": "Họa tiết hoa",     "goggles": "Kính bảo hộ",
+    "blush_lines": "Vệt đỏ mặt",     "eyewear_on_head": "Kính đội trên đầu",
+    "on_bottom": "Ở phía dưới",     "antenna_hair": "Tóc anten",
+    "1other": "Một nhân vật khác",     "cardigan": "Áo cardigan",
+    "container": "Vật chứa",     "logo": "Logo",
+    "umbrella": "Cái ô",     "high_ponytail": "Tóc đuôi ngựa cao",
+    "faceless_character": "Nhân vật không mặt",     "crossed_legs": "Bắt chéo chân",
+    "oral_penetration": "Thâm nhập bằng miệng",     "underboob": "Ngực lộ phía dưới",
+    "standing_on_one_leg": "Đứng một chân",     "no_bra": "Không mặc áo ngực",
+    "handjob": "Thủ dâm bằng tay",     "female_pubic_hair": "Lông mu nữ",
+    "whiskers": "Râu mép",     "cameltoe": "Lộ khe quần lót",
+    "no_shoes": "Không đi giày",     "side-tie_bikini_bottom": "Quần bikini buộc bên",
+    "sisters": "Chị em gái",     "rope": "Dây thừng",
+    "child": "Trẻ em",     "bestiality": "Quan hệ với động vật",
+    "copyright_request": "Yêu cầu bản quyền",     "holding_cup": "Cầm cốc",
+    "mammal_humanoid": "Động vật có vú dạng người",     "outline": "Đường viền",
+    "forced": "Bị ép buộc",     "restrained": "Bị giữ chặt",
+    "hand_on_butt": "Tay đặt lên mông",     "heart-shaped_pupils": "Đồng tử hình tim",
+    "back": "Lưng",     "stuffed_toy": "Thú nhồi bông",
+    "parody": "Tranh chế",     "dipstick_tail": "Đuôi cụt",
+    "building": "Tòa nhà",     "magical_girl": "Thiếu nữ phép thuật",
+    "x_hair_ornament": "Phụ kiện tóc chữ X",     "finger_claws": "Móng vuốt ở ngón tay",
+    "cowgirl_position": "Tư thế cưỡi ngựa",     "lingerie": "Đồ lót nữ gợi cảm",
+    "4koma": "Truyện tranh 4 khung",     "ass_visible_through_thighs": "Lộ mông qua kẽ đùi",
+    "yaoi": "Yaoi",     "facial_piercing": "Khuyên mặt",
+    "true_fox": "Cáo thật",     "animated_gif": "GIF động",
+    "first_person_view": "Góc nhìn thứ nhất",     "own_hands_together": "Chắp hai tay trước mặt",
+    "undressing": "Đang cởi quần áo",     "hyper_genitalia": "Bộ phận sinh dục phóng đại",
+    "armwear": "Đồ che cánh tay",     "human_on_anthro": "Người với nhân vật nhân hóa",
+    "full-length_portrait": "Ảnh toàn thân",     "no_panties": "Không mặc quần lót",
+    "threesome": "Quan hệ ba người",     "md5_mismatch": "MD5 không khớp",
+    "cross": "Thập tự",     "tiger": "Hổ",
+    "snout": "Mõm",     "deer": "Nai",
+    "backpack": "Ba lô",     "underwear_only": "Chỉ mặc đồ lót",
+    "pointing": "Chỉ tay",     "military": "Quân đội",
+    "alien": "Người ngoài hành tinh",     "hair_accessory": "Phụ kiện tóc",
+    "straddling": "Ngồi dạng chân qua",     "arthropod": "Động vật chân khớp",
+    "skeb_commission": "Tranh đặt trên Skeb",     "transformation": "Biến hình",
+    "translucent": "Bán trong suốt",     "towel": "Khăn tắm",
+    "leg_up": "Giơ chân",     "cutie_mark": "Cutie mark",
+    "gesture": "Cử chỉ tay",     "two-piece_swimsuit": "Đồ bơi hai mảnh",
+    "vore": "Nuốt chửng",     "murid": "Họ chuột",
+    "thigh_gap": "Kẽ đùi",     "wariza": "Ngồi kiểu wariza",
+    "animal_print": "Họa tiết da thú",     "quadruped": "Bốn chân",
+    "leash": "Dây dắt",     "murine": "Thuộc họ chuột",
+    "doggystyle": "Tư thế doggy",     "double-parted_bangs": "Tóc mái rẽ ngôi giữa",
+    "light_smile": "Mỉm cười nhẹ",     "curtains": "Rèm cửa",
+    "scrunchie": "Dây buộc tóc vải",     "mouth_hold": "Cầm bằng miệng",
+    "crossed_bangs": "Tóc mái chéo",     "fingering": "Kích thích bằng ngón tay",
+    "clothes_pull": "Kéo quần áo",     "non-mammal_nipples": "Núm vú của loài không phải thú",
+    "scar_on_face": "Sẹo trên mặt",     "rape": "Cưỡng dâm",
+    "knife": "Con dao",     "legs_up": "Giơ hai chân",
+    "obi": "Đai obi",     "spiked_hair": "Tóc có gai",
+    "mob_cap": "Mũ trùm đầu",     "cum_on_face": "Tinh dịch trên mặt",
+    "sex_from_behind": "Quan hệ từ phía sau",     "6+girls": "Sáu nhân vật nữ trở lên",
+    "cloudy_sky": "Bầu trời nhiều mây",     "nude_female": "Nữ khỏa thân",
+    "candy": "Kẹo",     "third-party_source": "Nguồn bên thứ ba",
+    "outside_border": "Ngoài viền ảnh",     "antlers": "Gạc",
+    "generation_3_pokemon": "Pokémon thế hệ 3",     "christmas": "Giáng sinh",
+    "holidays": "Ngày lễ",     "cover": "Ảnh bìa",
+    "muscular_female": "Nữ cơ bắp",     "shoulder_armor": "Giáp vai",
+    "thong": "Quần lót dây",     "hair_tubes": "Ống tóc",
+    "eyepatch": "Miếng che mắt",     "armband": "Băng tay",
+    "facing_viewer": "Đối diện người xem",     "abdominal_bulge": "Bụng phình",
+    "second-party_source": "Nguồn bên thứ hai",     "skirt_lift": "Tốc váy",
+    "latex": "Latex",     "crossdressing": "Trang phục chéo giới",
+    "suspenders": "Dây treo quần",     "veil": "Màn che mặt",
+    "strapless_leotard": "Leotard không quai",     "submissive_male": "Nam phục tùng",
+    "juliet_sleeves": "Tay áo phồng kiểu Juliet",     "alpha_channel": "Kênh alpha",
+    "nude_male": "Nam khỏa thân",     "clothed_anthro": "Nhân vật nhân hóa mặc đồ",
+    "areola_slip": "Trượt hở quầng vú",     "floppy_ears": "Tai cụp",
+    "voluptuous": "Nóng bỏng",     "tight_clothing": "Quần áo bó",
+    "topless_female": "Nữ ngực trần",     "big_muscles": "Cơ bắp lớn",
+    "dot_nose": "Mũi chấm",     "bug": "Bọ",
+    "cloak": "Áo choàng",     "foot_focus": "Tập trung vào bàn chân",
+    "head_wings": "Cánh trên đầu",     "nature": "Thiên nhiên",
+    "sound": "Âm thanh",     "monster": "Quái vật",
+    "blazer": "Áo blazer",     "snake": "Rắn",
+    "puffy_long_sleeves": "Tay dài phồng",     "hyper_penis": "Dương vật phóng đại",
+    "box": "Cái hộp",     "tassel": "Tua rua",
+    "bandaid": "Băng cá nhân",     ">_<": "Biểu cảm >_<",
+    "tiara": "Vương miện nhỏ",     "hand_on_breast": "Tay đặt lên ngực",
+    "generation_2_pokemon": "Pokémon thế hệ 2",     "staff": "Gậy trường",
+    "kiss": "Hôn",     "generation_6_pokemon": "Pokémon thế hệ 6",
+    "clothing_aside": "Kéo quần áo sang bên",     "eeveelution": "Eeveelution",
+    "robe": "Áo choàng dài",     "cum_on_penis": "Tinh dịch trên dương vật",
+    "grabbing_another's_breast": "Bóp ngực người khác",     "outstretched_arm": "Duỗi cánh tay",
+    "stuffed_animal": "Thú nhồi bông",     ";d": "Biểu cảm ;d",
+    "mustelid": "Họ chồn",     "side_view": "Nhìn từ bên",
+    "restraints": "Dụng cụ trói",     "brooch": "Trâm cài",
+    "polearm": "Vũ khí cán dài",     "gag": "Nhét miệng",
+    "scan": "Ảnh scan",     "young_male": "Nam trẻ",
+    "kissing": "Đang hôn",     "larger_female": "Nữ to hơn",
+    "outstretched_arms": "Duỗi hai cánh tay",     "fishnets": "Đồ lót lưới",
+    "bat_wings": "Cánh dơi",     "bara": "Bara",
+    "aged_down": "Trẻ hóa",     "perineum": "Tầng sinh môn",
+    "single_hair_bun": "Một búi tóc",     "official_alternate_hairstyle": "Kiểu tóc thay thế chính thức",
+    "white_sailor_collar": "Cổ thủy thủ trắng",     "girl_on_top": "Nữ ở phía trên",
+    "cum_on_breasts": "Tinh dịch trên ngực",     "smirk": "Cười mỉa",
+    "torn_clothing": "Quần áo rách",     "ahegao": "Ahegao",
+    "fully_clothed": "Mặc kín",     "blue_sailor_collar": "Cổ thủy thủ xanh dương",
+    "neck_tuft": "Túm lông cổ",     "melee_weapon": "Vũ khí cận chiến",
+    "extra_ears": "Tai phụ",     "hand_on_own_chest": "Tay đặt lên ngực mình",
+    "pokemorph": "Nhân vật dạng Pokémon",     "baseball_cap": "Mũ lưỡi trai",
+    "demon_tail": "Đuôi quỷ",     "hooded_jacket": "Áo khoác có mũ",
+    "bovine": "Họ bò",     "onomatopoeia": "Từ tượng thanh",
+    "crossgender": "Xuyên giới tính",     "prehistoric_species": "Loài tiền sử",
+    "thought_bubble": "Bong bóng suy nghĩ",     "athletic": "Dáng thể thao",
+    "lifting_own_clothes": "Tự tốc quần áo",     "breasts_out": "Ngực lộ ra",
+    "musical_note": "Nốt nhạc",     "clothed_female": "Nữ mặc đồ",
+    "clenched_hand": "Nắm tay",     "hat_bow": "Nơ trên mũ",
+    "alcohol": "Đồ uống có cồn",     "overweight_female": "Nữ thừa cân",
+    "katana": "Kiếm katana",     "mixed-language_commentary": "Chú thích nhiều ngôn ngữ",
+    "short_twintails": "Tóc hai búi ngắn",     "hat_ribbon": "Ruy băng trên mũ",
+    "beverage": "Đồ uống",     "topless_male": "Nam ngực trần",
+    "side_braid": "Bím tóc bên",     "goat": "Dê",
+    "cum_drip": "Tinh dịch nhỏ giọt",     "star_(sky)": "Ngôi sao",
+    "traditional_media_(artwork)": "Chất liệu truyền thống",     "on_front": "Ở phía trước",
+    "flaccid": "Không cương",     "lion": "Sư tử",
+    "profanity": "Lời thô tục",     "smoke": "Khói",
+    "wing_collar": "Còng cổ có cánh",     "loafers": "Giày lười",
+    "polka_dot": "Họa tiết chấm bi",     "hindpaw": "Bàn chân sau",
+    "humanoid_pointy_ears": "Tai nhọn dạng người",     "smaller_female": "Nữ nhỏ hơn",
+    "two_tone_hair": "Tóc hai tông màu",     "butterfly": "Bươm bướm",
+    "character_request": "Yêu cầu nhân vật",     "single_thighhigh": "Một tất cao đùi",
+    "pegasus": "Ngựa Pegasus",     "chibi_only": "Chỉ có chibi",
+    "low_ponytail": "Tóc đuôi ngựa thấp",     "maid_apron": "Tạp dề hầu gái",
+    "revision": "Bản chỉnh sửa",     "bouncing_breasts": "Ngực nảy",
+    "knees_up": "Co gối",     "generation_5_pokemon": "Pokémon thế hệ 5",
+    "shaded_face": "Mặt có đổ bóng",     "hood_up": "Kéo mũ trùm",
+    "microphone": "Micro",     "countershade_torso": "Đổ bóng ngược thân trên",
+    "disembodied_penis": "Dương vật rời",     "ribbon_trim": "Viền ruy băng",
+    "heart_eyes": "Mắt hình trái tim",     "anger_vein": "Gân tức giận",
+    "black_and_white": "Đen trắng",     "toenails": "Móng chân",
+    "instrument": "Nhạc cụ",     "cropped_jacket": "Áo khoác lửng",
+    "wristband": "Băng cổ tay",     "condom": "Bao cao su",
+    "tachi-e": "Tachi-e",     "light_particles": "Hạt sáng",
+    "on_ground": "Trên mặt đất",     "shark": "Cá mập",
+    "monster_girl": "Quái vật nữ",     "3d_animation": "Hoạt hình 3D",
+    "bridal_gauntlets": "Găng tay cô dâu",     "nails": "Móng tay",
+    "spoken_heart": "Trái tim trong bong bóng",     "gloves_(marking)": "Hoa văn găng tay",
+    "corset": "Áo corset",     "red_neckerchief": "Khăn quàng cổ đỏ",
+    "partially_submerged": "Ngâm một phần",     "arm_hair": "Lông tay",
+    "armpit_hair": "Lông nách",     "body_hair": "Lông cơ thể",
+    "leg_hair": "Lông chân",     "back_hair": "Lông lưng",
+    "stomach_hair": "Lông bụng",     "hand_hair": "Lông tay",
+    "foot_hair": "Lông chân",     "hair_over_eyes": "Tóc che mắt",
+    "smiling_at_viewer": "Cười nhìn người xem",     "holding_book": "Cầm sách",
+    "mole_under_mouth": "Nốt ruồi dưới môi",     "sleeves_past_fingers": "Tay áo quá ngón tay",
+    "highleg_leotard": "Leotard cắt cao",     "glistening_body": "Cơ thể bóng nhẫy",
+    "presenting_vulva": "Hướng âm hộ ra trước",
+})
 
 
 def _compose_vietnamese_tag_label(name):
@@ -3318,11 +3682,18 @@ def _compose_vietnamese_tag_label(name):
         modifiers = parts[:-size]
         if not head or not modifiers or any(part not in _TAG_VI_WORDS for part in modifiers):
             continue
-        animals = [part for part in modifiers if part in {"animal", "cat", "dog", "fox", "wolf", "rabbit", "bird", "horse", "dragon", "mouse", "deer", "tiger", "lion", "bear", "raccoon"}]
         colors = [part for part in modifiers if part in _TAG_VI_COLORS]
         shades = [part for part in modifiers if part in {"light", "dark", "bright", "pale"}]
-        descriptors = [part for part in modifiers if part not in animals and part not in colors and part not in shades]
-        translated = [*(_TAG_VI_WORDS[part] for part in animals), *(_TAG_VI_WORDS[part] for part in descriptors)]
+        qualifiers = [part for part in modifiers if part in _TAG_VI_NOUN_MODIFIERS]
+        adjectives = [
+            part for part in modifiers
+            if part not in _TAG_VI_NOUN_MODIFIERS and part not in colors and part not in shades
+        ]
+        # Tiếng Việt đặt danh từ bổ nghĩa trước tính từ và ngược chuỗi danh từ tiếng Anh.
+        translated = [
+            *(_TAG_VI_WORDS[part] for part in reversed(qualifiers)),
+            *(_TAG_VI_WORDS[part] for part in adjectives),
+        ]
         translated_colors = [_TAG_VI_COLORS[part] for part in colors]
         if translated_colors and shades:
             translated_colors.extend(_TAG_VI_WORDS[part] for part in shades)
@@ -3330,7 +3701,7 @@ def _compose_vietnamese_tag_label(name):
             translated.extend(_TAG_VI_WORDS[part] for part in shades)
         if translated_colors:
             color_phrase = " ".join(translated_colors)
-            if head_key in {"hair", "background", "skin", "dress", "shirt", "skirt", "gloves", "boots", "shoes"}:
+            if head_key in _TAG_VI_COLOR_MARKER_HEADS:
                 color_phrase = "màu " + color_phrase
             translated.append(color_phrase)
         return f"{head} {' '.join(translated)}".strip()
@@ -3361,6 +3732,21 @@ def vietnamese_tag_label(name, category):
 
 def _is_translated_tag_label(label, category):
     return bool(label and label != _TAG_VI_CATEGORY_FALLBACKS.get(category, TAG_VI_TRANSLATION_FALLBACK))
+
+
+def _prefer_vietnamese_label(supplied_label, name, category):
+    """Chọn nhãn Việt mới nhất, ưu tiên từ điển trong mã hơn cột chú giải của CSV.
+
+    CSV được ghim ở một commit nên cột thứ năm đóng băng tại thời điểm tạo tệp. Khi
+    từ điển trong file này được bổ sung, thẻ mà CSV vẫn ghi "Chưa có bản dịch" phải
+    lấy theo mã — nếu không, Studio và file dịch sẽ tụt hậu so với từ điển ngay cả
+    khi bản dịch đã có. Chiều ngược lại cũng đúng: nhãn trong CSV còn được giữ khi
+    mã không sinh ra bản dịch nào.
+    """
+    label = vietnamese_tag_label(name, category)
+    if _is_translated_tag_label(label, category):
+        return label
+    return supplied_label or label
 
 
 def csv_tag_caption(name, category, vietnamese_label=None):
@@ -3476,7 +3862,7 @@ def parse_tag_csv(text):
         if not name or category not in TAG_CATEGORIES or not count.isdigit():
             continue
         supplied_label = fields[4].strip() if len(fields) == 5 else ""
-        label = supplied_label or vietnamese_tag_label(name, category)
+        label = _prefer_vietnamese_label(supplied_label, name, category)
         search_label = label if _is_translated_tag_label(label, category) else ""
         themes = tuple(label for label, pattern in patterns if pattern.search(name))
         search_synonyms = TAG_VI_SEARCH_SYNONYMS.get(name, "")

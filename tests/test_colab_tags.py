@@ -373,3 +373,55 @@ class TagCatalogTests(unittest.TestCase):
             rows = studio.load_csv_tags()
             self.assertEqual(len(rows), 349714)
             self.assertIs(rows, studio.load_csv_tags())
+
+
+class VietnameseGlossaryTests(unittest.TestCase):
+    """Từ điển mở rộng phải thắng cột chú giải cũ và không sinh nhãn vô nghĩa."""
+
+    def test_new_glossary_label_wins_over_stale_csv_fallback(self):
+        rows = studio.parse_tag_csv("long_hair,0,100,,Chưa có bản dịch\r\n")
+        self.assertEqual(rows[0][5], "Tóc dài")
+
+    def test_glossary_never_invents_a_translation_for_proper_names(self):
+        rows = studio.parse_tag_csv("hatsune_miku,4,900,,Nhân vật\r\nsome_artist,1,800,,Họa sĩ\r\n")
+        self.assertEqual([row[0] for row in rows], ["hatsune_miku", "some_artist"])
+        self.assertEqual(rows[0][5], "Nhân vật")  # nhãn loại, không phải bản dịch
+        self.assertFalse(studio._is_translated_tag_label(rows[0][5], rows[0][1]))
+
+    def test_csv_only_label_is_kept_when_the_glossary_is_silent(self):
+        rows = studio.parse_tag_csv("zzz_custom_tag,0,10,,Nhãn tự viết trong CSV\r\n")
+        self.assertEqual(rows[0][5], "Nhãn tự viết trong CSV")
+
+    def test_composition_uses_vietnamese_word_order(self):
+        self.assertEqual(studio.vietnamese_tag_label("rabbit_ear_hat", "0"), "Mũ tai thỏ")
+        self.assertEqual(studio.vietnamese_tag_label("cat_eye_glasses", "0"), "Kính mắt mèo")
+        self.assertEqual(studio.vietnamese_tag_label("striped_skirt", "0"), "Chân váy kẻ sọc")
+        self.assertEqual(studio.vietnamese_tag_label("leather_jacket", "0"), "Áo khoác da")
+        self.assertEqual(studio.vietnamese_tag_label("black_bra", "0"), "Áo ngực màu đen")
+        # Không có trong từ điển/quy tắc → giữ nguyên nhãn loại, không bịa dịch.
+        self.assertEqual(studio.vietnamese_tag_label("qlty_mpd000x0v0024", "4"), "Nhân vật")
+
+    def test_glossary_labels_are_clean_single_phrases(self):
+        self.assertGreater(len(studio.TAG_VI_LABELS), 1200)
+        for tag, label in studio.TAG_VI_LABELS.items():
+            self.assertTrue(label and label == label.strip(), tag)
+            self.assertNotIn(",", label)
+            self.assertNotIn("\n", label)
+            self.assertNotIn('"', label)
+            self.assertNotEqual(label, tag.replace("_", " "))
+            self.assertNotEqual(label, studio.TAG_VI_TRANSLATION_FALLBACK)
+
+    def test_glossary_contains_no_foreign_scripts(self):
+        foreign = {
+            tag: label
+            for tag, label in studio.TAG_VI_LABELS.items()
+            if any("\u3040" <= ch <= "\u30ff" or "\u4e00" <= ch <= "\u9fff" or "\ub800" <= ch <= "\ub8ff"
+                   for ch in label)
+        }
+        self.assertEqual(foreign, {})
+
+    def test_translate_file_covers_the_common_tags(self):
+        rows = studio.load_csv_tags()
+        names = {row[0] for row in rows if studio._is_translated_tag_label(row[5], row[1])}
+        top = {row[0] for row in rows[:500]}
+        self.assertGreater(len(top & names) / 500, 0.9)

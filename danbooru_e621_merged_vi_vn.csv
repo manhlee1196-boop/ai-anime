@@ -172,6 +172,7 @@ necktie,0,Cà vạt
 translated,5,Đã dịch
 pleated_skirt,0,Chân váy xếp ly
 fingers,7,Ngón tay
+photoshop_(medium),5,Ảnh chỉnh bằng Photoshop
 multiple_boys,0,Nhiều nhân vật nam
 barefoot,0,Chân trần
 black_gloves,0,Găng tay đen
@@ -185,10 +186,12 @@ male/male,7,Nam và nam
 biped,7,Đi bằng hai chân
 socks,0,Tất
 looking_at_another,0,Nhìn người khác
+pokemon_(species),12,Loài Pokémon
 medium_hair,0,Tóc dài vừa
 alternate_costume,0,Trang phục thay thế
 male_penetrating,7,Nhân vật nam chủ động thâm nhập
 virtual_youtuber,0,YouTuber ảo
+tuft,7,Túm lông
 sleeveless,0,Không tay
 animal_genitalia,7,Bộ phận sinh dục động vật
 collar,0,Vòng cổ
@@ -200,6 +203,7 @@ belt,0,Thắt lưng
 detached_sleeves,0,Tay áo rời
 markings,0,Dấu vết / hoa văn
 group,7,Nhóm
+humanoid,12,Dạng người
 official_alternate_costume,0,Trang phục thay thế chính thức
 bottomwear,7,Trang phục thân dưới
 hand_up,0,Giơ tay
@@ -231,6 +235,7 @@ headgear,0,Đồ đội đầu
 fox,0,Cáo
 grey_background,0,Nền xám
 bowtie,0,Nơ cổ
+human,12,Người
 black_body,7,Cơ thể đen
 equid,12,Họ ngựa
 holding_weapon,0,Cầm vũ khí
@@ -292,7 +297,7 @@ legwear,7,Trang phục chân
 hair_flower,0,Hoa cài tóc
 black_shirt,0,Áo đen
 miniskirt,0,Váy ngắn
-black_jacket,0,Áo khoác đen
+black_jacket,0,Áo khoác màu đen
 serafuku,0,Đồng phục thủy thủ
 domestic_cat,12,Mèo nhà
 open_jacket,0,Áo khoác mở
@@ -341,6 +346,8 @@ leotard,0,Đồ liền thân
 watermark,0,Dấu bản quyền
 from_side,0,Góc nhìn bên cạnh
 cape,0,Áo choàng
+commission,5,Tranh đặt hàng
+untranslatable_commentary,5,Chú thích không dịch được
 red_bow,0,Nơ đỏ
 bird,0,Chim
 rabbit_ears,0,Tai thỏ
@@ -400,7 +407,7 @@ hands_up,0,Giơ hai tay
 black_choker,0,Vòng cổ choker đen
 orange_body,7,Cơ thể cam
 shaded,14,Có đổ bóng
-black_pants,0,Quần đen
+black_pants,0,Quần màu đen
 glowing,0,Phát sáng
 multiple_views,0,Nhiều góc nhìn
 neckerchief,0,Khăn quàng cổ
@@ -413,6 +420,7 @@ soles,0,Lòng bàn chân
 hoodie,0,Áo hoodie
 hair_intakes,0,Lọn tóc cuộn vào trong
 blue_skirt,0,Chân váy xanh dương
+clothing_cutout,0,Lỗ cắt trên quần áo
 :o,0,Biểu cảm :O
 holding_object,7,Cầm vật
 orgasm,0,Cực khoái
@@ -421,7 +429,7 @@ arms_up,0,Giơ tay lên
 veiny_penis,0,Dương vật nổi gân
 detailed_background,7,Nền chi tiết
 feathered_wings,0,Cánh lông vũ
-black_hat,0,Mũ đen
+black_hat,0,Mũ màu đen
 puffy_short_sleeves,0,Tay áo ngắn phồng
 upper_teeth_only,0,Chỉ thấy răng trên
 gynomorph,7,Nhân vật nữ có cơ quan sinh dục nam
@@ -438,6 +446,7 @@ dark-skinned_female,0,Nhân vật nữ da sẫm
 thigh_strap,0,Đai đùi
 mole_under_eye,0,Nốt ruồi dưới mắt
 vaginal_fluids,7,Dịch âm đạo
+hyper,7,Phóng đại
 bulge,0,Phần phồng lên
 horse,0,Ngựa
 two_tone_body,7,Cơ thể hai màu
@@ -467,8 +476,10 @@ male_penetrating_male,7,Nam thâm nhập nam
 strapless,0,Không dây
 feet_out_of_frame,0,Bàn chân ngoài khung hình
 sleeves_past_wrists,0,Tay áo che qua cổ tay
+v,0,Tư thế chữ V
 horse_ears,0,Tai ngựa
 fake_animal_ears,0,Tai động vật giả
+pokemon_(creature),0,Pokémon (sinh vật)
 hand_on_own_hip,0,Tay chống hông
 flat_chest,0,Ngực phẳng
 stripes,7,Sọc
@@ -478,9 +489,10 @@ fur_trim,0,Viền lông
 sleeveless_shirt,0,Áo sơ mi không tay
 sleeveless_dress,0,Váy không tay
 foreskin,0,Bao quy đầu
+mythological_equine,12,Ngựa thần thoại
 book,0,Sách
 window,0,Cửa sổ
-white_socks,0,Tất trắng
+white_socks,0,Tất màu trắng
 variant_set,5,Bộ biến thể
 gradient_hair,0,Tóc chuyển sắc
 sparkle,0,Lấp lánh
@@ -529,6 +541,7 @@ chair,0,Ghế
 spikes,0,Gai
 sound_effects,0,Hiệu ứng âm thanh
 group_sex,0,Quan hệ tình dục nhóm
+:3,0,Biểu cảm :3
 bodysuit,0,Đồ liền thân
 yellow_fur,0,Lông vàng
 all_fours,0,Tư thế chống bằng bốn chi
@@ -537,18 +550,19 @@ from_behind_position,7,Tư thế từ phía sau
 ascot,0,Khăn ascot
 16:9,14,Tỷ lệ 16:9
 huge_butt,7,Mông rất lớn
-black_shorts,0,Quần short đen
+black_shorts,0,Quần short màu đen
 fruit,0,Trái cây
 covered_nipples,0,Núm vú được che
 submissive,7,Phục tùng
 dominant,7,Thống trị
 canine_penis,7,Dương vật chó
 seductive,7,Quyến rũ
+korean_commentary,5,Chú thích tiếng Hàn
 sash,0,Đai vải
 pov,0,Góc nhìn thứ nhất
 plaid_clothes,0,Quần áo kẻ caro
 4_toes,7,Bốn ngón chân
-white_jacket,0,Áo khoác trắng
+white_jacket,0,Áo khoác màu trắng
 rodent,12,Loài gặm nhấm
 covered_navel,0,Rốn được che
 uncensored,0,Không kiểm duyệt
@@ -598,6 +612,7 @@ tail_markings,7,Hoa văn trên đuôi
 clitoris,0,Âm vật
 table,0,Bàn
 blue_shirt,0,Áo xanh dương
+legs,0,Đôi chân
 profile,0,Góc nghiêng
 blue_bow,0,Nơ xanh dương
 dress_shirt,0,Áo sơ mi
@@ -615,7 +630,7 @@ big_belly,0,Bụng lớn
 aqua_hair,0,Tóc xanh ngọc
 cellphone,0,Điện thoại di động
 black_clothing,7,Trang phục đen
-white_hat,0,Mũ trắng
+white_hat,0,Mũ màu trắng
 pupils,7,Đồng tử
 head_tilt,0,Nghiêng đầu
 2019,0,Năm 2019
@@ -626,6 +641,7 @@ female_anthro,7,Nhân vật nữ nhân hóa
 open_shirt,0,Áo sơ mi mở
 clenched_teeth,0,Nghiến răng
 fire,0,Lửa
+bear,0,Gấu
 dutch_angle,0,Góc nghiêng kiểu Hà Lan
 partially_clothed,7,Mặc quần áo một phần
 3_toes,7,Ba ngón chân
@@ -655,152 +671,591 @@ swimwear,7,Đồ bơi
 two_tone_fur,7,Lông hai màu
 biceps,0,Cơ nhị đầu
 presenting_hindquarters,7,Đưa phần thân sau ra phía trước
+non-mammal_breasts,7,Ngực của loài không phải thú
+low_twintails,0,Tóc hai búi thấp
+mostly_nude,7,Khỏa thân phần lớn
 crying,0,Đang khóc
-blue_jacket,0,Áo khoác xanh dương
+faceless_male,0,Nam không có mặt
+membrane_(anatomy),7,Màng (giải phẫu)
+4_fingers,7,Bốn ngón tay
+chinese_clothes,0,Quần áo kiểu Trung Quốc
+swept_bangs,0,Tóc mái rẽ một bên
+blue_jacket,0,Áo khoác màu xanh dương
 black_background,0,Nền đen
+colored_inner_hair,0,Tóc lớp trong tô màu
+curvy_figure,7,Dáng người cong
+gem,0,Đá quý
+freckles,0,Tàn nhang
+fish,0,Cá
+machine,0,Máy móc
 3:4,14,Tỷ lệ 3:4
+caprine,12,Họ dê
+partial_commentary,5,Chú thích một phần
+overweight_male,7,Nam thừa cân
+headphones,0,Tai nghe chụp đầu
+^_^,0,Biểu cảm ^_^
+cum_in_mouth,0,Tinh dịch trong miệng
 fluffy_tail,0,Đuôi bồng bềnh
+sideboob,0,Nghiêng lộ ngực bên
 white_bow,0,Nơ trắng
+shiny_skin,0,Da bóng
+digitigrade,0,Đi bằng ngón chân
+denim,0,Vải bò
+slit_pupils,0,Đồng tử khe dọc
+beret,0,Mũ beret
 wavy_hair,0,Tóc gợn sóng
 2018,0,Năm 2018
 red_dress,0,Váy đỏ
+pussy_juice,0,Dịch âm hộ
+helmet,0,Mũ bảo hiểm
+plantigrade,7,Bàn chân áp đất
+bright_pupils,0,Đồng tử sáng
+from_front_position,7,Tư thế nhìn từ phía trước
+backsack,7,Ba lô
 crossed_arms,0,Khoanh tay
-black_socks,0,Tất đen
+black_socks,0,Tất màu đen
+black_hairband,0,Băng buộc tóc đen
+facial_mark,0,Điểm trên mặt
+witch_hat,0,Mũ phù thủy
 white_flower,0,Hoa trắng
+on_top,7,Ở phía trên
+pink_nipples,7,Núm vú hồng
 looking_up,0,Nhìn lên
 sleeping,0,Đang ngủ
+tentacles,0,Xúc tu
+frilled_dress,0,Váy nhún xếp
+playboy_bunny,0,Đồ thỏ Playboy
+moon,0,Mặt trăng
 fox_tail,0,Đuôi cáo
+rose,0,Hoa hồng
+crown,0,Vương miện
+url,14,Đường link
+nose_blush,0,Đỏ sống mũi
+beak,0,Mỏ
+breath,0,Hơi thở
+cumshot,7,Xuất tinh lên ảnh
+fox_girl,0,Cô gái cáo
+alternate_hairstyle,0,Kiểu tóc khác
+ear_ring,7,Khuyên vành tai
+nude_anthro,7,Nhân vật nhân hóa khỏa thân
+facial_tuft,7,Túm lông mặt
 from_above,0,Góc nhìn từ trên
+holding_hands,0,Nắm tay nhau
+halterneck,0,Áo quàng cổ
+hood_down,0,Hạ mũ trùm
 white_skirt,0,Chân váy trắng
 4girls,0,Bốn nhân vật nữ
 surprised,0,Ngạc nhiên
 ocean,0,Đại dương
+bed_sheet,0,Ga trải giường
+bob_cut,0,Tóc bob
+glowing_eyes,0,Mắt phát sáng
+age_difference,0,Chênh lệch tuổi tác
+membranous_wings,7,Cánh màng
+cum_in_pussy,0,Tinh dịch trong âm hộ
 eating,0,Đang ăn
+arm_support,0,Đỡ người bằng tay
+smaller_male,7,Nam nhỏ hơn
 2017,0,Năm 2017
+demon_horns,0,Sừng quỷ
+beard,0,Râu quai nón
+smartphone,0,Điện thoại thông minh
+larger_male,7,Nam to hơn
+white_pupils,0,Đồng tử trắng
+mature_female,0,Nữ trưởng thành
 t-shirt,0,Áo phông
+pony,12,Ngựa pony
+testicles,0,Tinh hoàn
+overweight_anthro,7,Nhân vật nhân hóa thừa cân
+penis_in_ass,7,Dương vật trong hậu môn
 stockings,7,Bít tất dài
+elf,0,Tiên
+eye_contact,0,Giao tiếp bằng mắt
 angry,0,Tức giận
+white_bikini,0,Bikini màu trắng
 horse_tail,0,Đuôi ngựa
+humanoid_hands,7,Bàn tay dạng người
+crossover,0,Giao thoa tác phẩm
+suit,0,Bộ vest
+bedroom_eyes,7,Ánh mắt gợi tình
 squatting,0,Đang ngồi xổm
+after_sex,0,Sau khi quan hệ
+thigh_boots,0,Bốt đùi
+huge_balls,7,Tinh hoàn khổng lồ
+generation_4_pokemon,12,Pokémon thế hệ 4
+garter_straps,0,Dây giữ bít tất
 2026,0,Năm 2026
+shirt_lift,0,Tốc áo
+black_sclera,0,Củng mạc đen
+trembling,0,Run rẩy
+glans,0,Quy đầu
+flying_sweatdrops,0,Giọt mồ hôi văng
+black_nails,0,Móng tay đen
+male_anthro,7,Nhân vật nam nhân hóa
+dark-skinned_male,0,Nam da sẫm
+plaid_skirt,0,Chân váy kẻ caro
+cheek_tuft,7,Túm lông má
+demon_girl,0,Cô gái quỷ
+lipstick,0,Son môi
+unicorn,0,Kỳ lân
+groping,0,Sờ soạng
 2016,0,Năm 2016
 female/female,7,Nữ và nữ
+electronics,7,Đồ điện tử
 short_dress,0,Váy ngắn
+cleavage_cutout,0,Lỗ cắt khoe khe ngực
+paid_reward_available,5,Có phần thưởng trả phí
+dildo,0,Dương vật giả
+spots,0,Đốm
+drill_hair,0,Tóc xoắn
+bottle,0,Cái chai
 depth_of_field,0,Độ sâu trường ảnh
+bandages,0,Băng gạc
+floral_print,0,Họa tiết hoa
+goggles,0,Kính bảo hộ
+blush_lines,7,Vệt đỏ mặt
+eyewear_on_head,0,Kính đội trên đầu
+on_bottom,7,Ở phía dưới
+antenna_hair,0,Tóc anten
+white_clothing,7,Trang phục màu trắng
+1other,0,Một nhân vật khác
+cardigan,0,Áo cardigan
+container,7,Vật chứa
+umbrella,0,Cái ô
+high_ponytail,0,Tóc đuôi ngựa cao
+faceless_character,7,Nhân vật không mặt
+crossed_legs,0,Bắt chéo chân
+oral_penetration,7,Thâm nhập bằng miệng
+underboob,0,Ngực lộ phía dưới
+standing_on_one_leg,0,Đứng một chân
 traditional_media,5,Chất liệu truyền thống
+no_bra,0,Không mặc áo ngực
+handjob,0,Thủ dâm bằng tay
+female_pubic_hair,0,Lông mu nữ
+whiskers,0,Râu mép
+cameltoe,0,Lộ khe quần lót
+no_shoes,0,Không đi giày
+white_apron,0,Tạp dề màu trắng
+red_necktie,0,Cà vạt đỏ
+body_hair,0,Lông cơ thể
 arms_behind_back,0,Hai tay ra sau lưng
+side-tie_bikini_bottom,0,Quần bikini buộc bên
+sisters,0,Chị em gái
+rope,0,Dây thừng
+child,0,Trẻ em
 red_shirt,0,Áo đỏ
 pink_bow,0,Nơ hồng
+frilled_sleeves,0,Tay áo nhún xếp
+bestiality,0,Quan hệ với động vật
+copyright_request,5,Yêu cầu bản quyền
 holding_phone,0,Cầm điện thoại
+holding_cup,0,Cầm cốc
+mammal_humanoid,12,Động vật có vú dạng người
 forest,0,Rừng
+outline,0,Đường viền
+forced,0,Bị ép buộc
+restrained,0,Bị giữ chặt
+military_uniform,0,Đồng phục quân đội
+hand_on_butt,7,Tay đặt lên mông
+heart-shaped_pupils,0,Đồng tử hình tim
+back,0,Lưng
+stuffed_toy,0,Thú nhồi bông
+parody,0,Tranh chế
 sunlight,0,Ánh nắng
+dipstick_tail,7,Đuôi cụt
+building,0,Tòa nhà
 from_below,0,Góc nhìn từ dưới
+magical_girl,0,Thiếu nữ phép thuật
 4:3,14,Tỷ lệ 4:3
+x_hair_ornament,0,Phụ kiện tóc chữ X
 holding_gun,0,Cầm súng
 cat,0,Mèo
+finger_claws,0,Móng vuốt ở ngón tay
+cowgirl_position,0,Tư thế cưỡi ngựa
+lingerie,0,Đồ lót nữ gợi cảm
+4koma,0,Truyện tranh 4 khung
+ass_visible_through_thighs,0,Lộ mông qua kẽ đùi
+frilled_skirt,0,Chân váy nhún xếp
+facial_piercing,7,Khuyên mặt
+true_fox,12,Cáo thật
 wolf_ears,0,Tai sói
+animated_gif,5,GIF động
+first_person_view,7,Góc nhìn thứ nhất
+own_hands_together,0,Chắp hai tay trước mặt
+undressing,0,Đang cởi quần áo
+hyper_genitalia,7,Bộ phận sinh dục phóng đại
+armwear,7,Đồ che cánh tay
+human_on_anthro,7,Người với nhân vật nhân hóa
+red_bowtie,0,Nơ cổ đỏ
+full-length_portrait,14,Ảnh toàn thân
+no_panties,0,Không mặc quần lót
+threesome,0,Quan hệ ba người
+md5_mismatch,5,MD5 không khớp
 yellow_background,0,Nền vàng
+cross,0,Thập tự
+tiger,0,Hổ
+snout,0,Mõm
+deer,0,Nai
+backpack,0,Ba lô
+black_leotard,0,Leotard đen
+underwear_only,0,Chỉ mặc đồ lót
+pointing,0,Chỉ tay
+military,0,Quân đội
+alien,0,Người ngoài hành tinh
 grey_shirt,0,Áo xám
+hair_accessory,7,Phụ kiện tóc
+straddling,0,Ngồi dạng chân qua
 red_flower,0,Hoa đỏ
+arthropod,0,Động vật chân khớp
+skeb_commission,5,Tranh đặt trên Skeb
+transformation,0,Biến hình
 red_background,0,Nền đỏ
+translucent,0,Bán trong suốt
+towel,0,Khăn tắm
 lowres,5,Độ phân giải thấp
 blue_ribbon,0,Ruy băng xanh dương
+leg_up,0,Giơ chân
+cutie_mark,0,Cutie mark
+gesture,7,Cử chỉ tay
 sneakers,0,Giày thể thao
+two-piece_swimsuit,7,Đồ bơi hai mảnh
+vore,0,Nuốt chửng
+murid,12,Họ chuột
+thigh_gap,0,Kẽ đùi
+wariza,0,Ngồi kiểu wariza
 pink_nose,0,Mũi hồng
+animal_print,0,Họa tiết da thú
+quadruped,7,Bốn chân
+leash,0,Dây dắt
+murine,12,Thuộc họ chuột
+doggystyle,0,Tư thế doggy
+double-parted_bangs,0,Tóc mái rẽ ngôi giữa
+light_smile,0,Mỉm cười nhẹ
+curtains,0,Rèm cửa
+scrunchie,0,Dây buộc tóc vải
 purple_fur,0,Lông tím
+mouth_hold,0,Cầm bằng miệng
+crossed_bangs,0,Tóc mái chéo
+black_necktie,0,Cà vạt đen
+fingering,0,Kích thích bằng ngón tay
+clothes_pull,0,Kéo quần áo
+black_belt,0,Thắt lưng đen
+non-mammal_nipples,7,Núm vú của loài không phải thú
+scar_on_face,0,Sẹo trên mặt
+rape,0,Cưỡng dâm
+knife,0,Con dao
+legs_up,0,Giơ hai chân
+obi,0,Đai obi
+spiked_hair,0,Tóc có gai
+mob_cap,0,Mũ trùm đầu
+cum_on_face,7,Tinh dịch trên mặt
+sex_from_behind,0,Quan hệ từ phía sau
+6+girls,0,Sáu nhân vật nữ trở lên
 japanese_text,14,Chữ tiếng Nhật
+cloudy_sky,0,Bầu trời nhiều mây
+nude_female,7,Nữ khỏa thân
 wavy_mouth,0,Miệng gợn sóng
 red_fur,0,Lông đỏ
+candy,0,Kẹo
+third-party_source,5,Nguồn bên thứ ba
+outside_border,0,Ngoài viền ảnh
 3boys,0,Ba nhân vật nam
 straight_hair,0,Tóc thẳng
 close-up,0,Cận cảnh
+antlers,0,Gạc
 messy_hair,0,Tóc rối
+generation_3_pokemon,12,Pokémon thế hệ 3
+christmas,0,Giáng sinh
+holidays,7,Ngày lễ
+cover,0,Ảnh bìa
+muscular_female,0,Nữ cơ bắp
+shoulder_armor,0,Giáp vai
 eyes_visible_through_hair,0,Mắt lộ qua tóc
+thong,0,Quần lót dây
+hair_tubes,0,Ống tóc
+eyepatch,0,Miếng che mắt
+armband,0,Băng tay
+facing_viewer,0,Đối diện người xem
 pink_fur,0,Lông hồng
+abdominal_bulge,7,Bụng phình
+second-party_source,5,Nguồn bên thứ hai
+skirt_lift,0,Tốc váy
+crossdressing,0,Trang phục chéo giới
+suspenders,0,Dây treo quần
+veil,0,Màn che mặt
+strapless_leotard,0,Leotard không quai
+submissive_male,7,Nam phục tùng
 long_tail,7,Đuôi dài
 pink_dress,0,Váy hồng
-black_coat,0,Áo khoác đen
+juliet_sleeves,0,Tay áo phồng kiểu Juliet
+black_coat,0,Áo khoác màu đen
+alpha_channel,14,Kênh alpha
+nude_male,7,Nam khỏa thân
+clothed_anthro,7,Nhân vật nhân hóa mặc đồ
 white_shoes,0,Giày màu trắng
+areola_slip,0,Trượt hở quầng vú
+floppy_ears,0,Tai cụp
+voluptuous,7,Nóng bỏng
+tight_clothing,7,Quần áo bó
+topless_female,0,Nữ ngực trần
 purple_background,0,Nền tím
+yellow_sclera,0,Củng mạc vàng
 couple,0,Cặp đôi
+big_muscles,7,Cơ bắp lớn
+dot_nose,0,Mũi chấm
+bug,0,Bọ
+cloak,0,Áo choàng
+foot_focus,0,Tập trung vào bàn chân
+head_wings,0,Cánh trên đầu
+nature,0,Thiên nhiên
+sound,5,Âm thanh
+monster,0,Quái vật
+blazer,0,Áo blazer
+snake,0,Rắn
 2015,0,Năm 2015
+puffy_long_sleeves,0,Tay dài phồng
+hyper_penis,7,Dương vật phóng đại
+box,0,Cái hộp
+tassel,0,Tua rua
+bandaid,0,Băng cá nhân
 long_ears,7,Tai dài
-red_jacket,0,Áo khoác đỏ
+>_<,0,Biểu cảm >_<
+red_jacket,0,Áo khoác màu đỏ
 white_skin,0,Da màu trắng
+tiara,0,Vương miện nhỏ
+hand_on_breast,7,Tay đặt lên ngực
+generation_2_pokemon,12,Pokémon thế hệ 2
+staff,0,Gậy trường
+kiss,0,Hôn
 pink_flower,0,Hoa hồng
+generation_6_pokemon,12,Pokémon thế hệ 6
+clothing_aside,0,Kéo quần áo sang bên
 brown_shoes,0,Giày màu nâu
-red_hat,0,Mũ đỏ
+robe,0,Áo choàng dài
+cum_on_penis,0,Tinh dịch trên dương vật
+grabbing_another's_breast,0,Bóp ngực người khác
+outstretched_arm,0,Duỗi cánh tay
+black_bra,0,Áo ngực màu đen
+blue_clothing,7,Trang phục màu xanh dương
+stuffed_animal,0,Thú nhồi bông
+;d,0,Biểu cảm ;d
+mustelid,12,Họ chồn
+side_view,7,Nhìn từ bên
+red_hat,0,Mũ màu đỏ
+restraints,0,Dụng cụ trói
+brooch,0,Trâm cài
+polearm,0,Vũ khí cán dài
+gag,0,Nhét miệng
+red_nails,0,Móng tay đỏ
+scan,5,Ảnh scan
+young_male,7,Nam trẻ
+kissing,7,Đang hôn
+larger_female,0,Nữ to hơn
+outstretched_arms,0,Duỗi hai cánh tay
+fishnets,0,Đồ lót lưới
+bat_wings,0,Cánh dơi
+red_clothing,7,Trang phục màu đỏ
+aged_down,0,Trẻ hóa
 short_tail,0,Đuôi ngắn
+perineum,0,Tầng sinh môn
+single_hair_bun,0,Một búi tóc
+official_alternate_hairstyle,0,Kiểu tóc thay thế chính thức
 green_background,0,Nền xanh lá
 on_stomach,0,Nằm sấp
+white_sailor_collar,0,Cổ thủy thủ trắng
+girl_on_top,0,Nữ ở phía trên
+cum_on_breasts,0,Tinh dịch trên ngực
+smirk,0,Cười mỉa
+torn_clothing,7,Quần áo rách
 female_focus,7,Tập trung vào nhân vật nữ
+fully_clothed,7,Mặc kín
+blue_sailor_collar,0,Cổ thủy thủ xanh dương
 white_pantyhose,0,Quần tất trắng
 dog_ears,0,Tai chó
+neck_tuft,0,Túm lông cổ
+melee_weapon,7,Vũ khí cận chiến
+extra_ears,0,Tai phụ
 white_ribbon,0,Ruy băng trắng
+hand_on_own_chest,0,Tay đặt lên ngực mình
+pokemorph,7,Nhân vật dạng Pokémon
+baseball_cap,0,Mũ lưỡi trai
+demon_tail,0,Đuôi quỷ
+hooded_jacket,0,Áo khoác có mũ
+bovine,12,Họ bò
+onomatopoeia,7,Từ tượng thanh
 green_skirt,0,Chân váy xanh lá
+crossgender,7,Xuyên giới tính
+prehistoric_species,12,Loài tiền sử
+thought_bubble,0,Bong bóng suy nghĩ
+athletic,7,Dáng thể thao
+lifting_own_clothes,0,Tự tốc quần áo
+breasts_out,0,Ngực lộ ra
+musical_note,0,Nốt nhạc
+clothed_female,7,Nữ mặc đồ
+clenched_hand,0,Nắm tay
+hat_bow,0,Nơ trên mũ
+alcohol,0,Đồ uống có cồn
+overweight_female,7,Nữ thừa cân
 snow,0,Tuyết
 rabbit_tail,0,Đuôi thỏ
+katana,0,Kiếm katana
+knee_boots,0,Bốt đầu gối
+mixed-language_commentary,5,Chú thích nhiều ngôn ngữ
+short_twintails,0,Tóc hai búi ngắn
+hat_ribbon,0,Ruy băng trên mũ
 white_sleeves,0,Tay áo trắng
-blue_hat,0,Mũ xanh dương
+beverage,7,Đồ uống
+topless_male,0,Nam ngực trần
+side_braid,0,Bím tóc bên
+goat,0,Dê
+cum_drip,7,Tinh dịch nhỏ giọt
+star_(sky),0,Ngôi sao
+traditional_media_(artwork),14,Chất liệu truyền thống
+on_front,7,Ở phía trước
+flaccid,0,Không cương
+lion,0,Sư tử
+blue_hat,0,Mũ màu xanh dương
+profanity,0,Lời thô tục
+smoke,0,Khói
+pink_areola,7,Quầng vú hồng
+wing_collar,0,Còng cổ có cánh
 bedroom,0,Phòng ngủ
+loafers,0,Giày lười
 blue_skin,0,Da màu xanh dương
+polka_dot,0,Họa tiết chấm bi
+nose_piercing,0,Khuyên mũi
+hindpaw,7,Bàn chân sau
+humanoid_pointy_ears,7,Tai nhọn dạng người
+smaller_female,7,Nữ nhỏ hơn
+two_tone_hair,7,Tóc hai tông màu
+butterfly,0,Bươm bướm
 grey_skirt,0,Chân váy xám
+character_request,5,Yêu cầu nhân vật
+single_thighhigh,0,Một tất cao đùi
+pegasus,0,Ngựa Pegasus
+chibi_only,0,Chỉ có chibi
+low_ponytail,0,Tóc đuôi ngựa thấp
+blue_necktie,0,Cà vạt xanh dương
+maid_apron,0,Tạp dề hầu gái
+revision,5,Bản chỉnh sửa
 purple_dress,0,Váy tím
+bouncing_breasts,0,Ngực nảy
+knees_up,0,Co gối
+generation_5_pokemon,12,Pokémon thế hệ 5
+shaded_face,0,Mặt có đổ bóng
 pale_skin,0,Da nhạt
+hood_up,0,Kéo mũ trùm
 pink_shirt,0,Áo hồng
+microphone,0,Micro
+countershade_torso,7,Đổ bóng ngược thân trên
+disembodied_penis,0,Dương vật rời
+ribbon_trim,0,Viền ruy băng
+heart_eyes,7,Mắt hình trái tim
+anger_vein,0,Gân tức giận
 open_coat,0,Áo khoác mở
+black_and_white,14,Đen trắng
+toenails,0,Móng chân
+instrument,0,Nhạc cụ
+cropped_jacket,0,Áo khoác lửng
+wristband,0,Băng cổ tay
+condom,0,Bao cao su
+light_particles,0,Hạt sáng
+on_ground,0,Trên mặt đất
+striped_body,7,Cơ thể kẻ sọc
+shark,0,Cá mập
+monster_girl,0,Quái vật nữ
+3d_animation,14,Hoạt hình 3D
+bridal_gauntlets,0,Găng tay cô dâu
+nails,7,Móng tay
+blue_nails,0,Móng tay xanh dương
+spoken_heart,0,Trái tim trong bong bóng
+gloves_(marking),7,Hoa văn găng tay
+corset,0,Áo corset
+red_neckerchief,0,Khăn quàng cổ đỏ
+partially_submerged,0,Ngâm một phần
+pink_nails,0,Móng tay hồng
+pink_penis,7,Dương vật hồng
 multicolored_tail,0,Đuôi nhiều màu
 hand_on_hip,7,Tay chống hông
+smiling_at_viewer,7,Cười nhìn người xem
 brown_boots,0,Bốt màu nâu
+holding_book,0,Cầm sách
+mole_under_mouth,0,Nốt ruồi dưới môi
+sleeves_past_fingers,0,Tay áo quá ngón tay
+highleg_leotard,0,Leotard cắt cao
+glistening_body,7,Cơ thể bóng nhẫy
+presenting_vulva,7,Hướng âm hộ ra trước
 walking,0,Đang đi bộ
+formal_clothes,0,Quần áo trang trọng
+round_eyewear,0,Kính tròn
+black_vest,0,Áo ghi-lê màu đen
 2014,0,Năm 2014
 scenery,0,Phong cảnh
+school_swimsuit,0,Đồ bơi học đường
 black_wings,0,Cánh đen
 white_eyes,0,Mắt trắng
 dragon_horns,0,Sừng rồng
-blue_shorts,0,Quần short xanh dương
-white_pants,0,Quần trắng
+blue_shorts,0,Quần short màu xanh dương
+white_pants,0,Quần màu trắng
 white_wings,0,Cánh trắng
 multicolored_eyes,0,Mắt nhiều màu
+armpit_hair,0,Lông nách
 5girls,0,5 nhân vật nữ
-blue_pants,0,Quần xanh dương
+blue_pants,0,Quần màu xanh dương
 brown_background,0,Nền nâu
 red_shoes,0,Giày màu đỏ
 yellow_bow,0,Nơ vàng
-white_coat,0,Áo khoác trắng
+white_coat,0,Áo khoác màu trắng
 cherry_blossoms,0,Hoa anh đào
 pink_panties,0,Quần lót hồng
 huge_thighs,7,Đùi khổng lồ
+cropped_legs,0,Chân lửng
 red_gloves,0,Găng tay đỏ
 multicolored_ears,0,Tai nhiều màu
+striped_thighhighs,0,Tất cao đùi kẻ sọc
 4:5,14,Tỷ lệ 4:5
 yellow_shirt,0,Áo vàng
 wind,0,Gió
 green_skin,0,Da màu xanh lá
 pink_skirt,0,Chân váy hồng
+black_bowtie,0,Nơ cổ đen
 green_shirt,0,Áo xanh lá
 brown_gloves,0,Găng tay nâu
+winter_uniform,0,Đồng phục mùa đông
 starry_sky,0,Bầu trời đầy sao
 purple_shirt,0,Áo tím
 blue_flower,0,Hoa xanh dương
 purple_bow,0,Nơ tím
+demon_wings,0,Cánh quỷ
 black_horns,0,Sừng đen
+big_areola,7,Quầng vú to
+black_penis,0,Dương vật đen
 green_bow,0,Nơ xanh lá
-green_jacket,0,Áo khoác xanh lá
-grey_jacket,0,Áo khoác xám
+frilled_apron,0,Tạp dề nhún xếp
+green_jacket,0,Áo khoác màu xanh lá
+grey_jacket,0,Áo khoác màu xám
 pink_ribbon,0,Ruy băng hồng
 smug,0,Vẻ mặt tự mãn
 city,0,Thành phố
-brown_jacket,0,Áo khoác nâu
+animal_vulva,7,Âm hộ động vật
+brown_jacket,0,Áo khoác màu nâu
+black_sailor_collar,0,Cổ áo thủy thủ màu đen
 white_boots,0,Bốt màu trắng
+micro_bikini,0,Bikini rất nhỏ
+puffy_anus,7,Hậu môn phồng
+blue_bikini,0,Bikini màu xanh dương
 black_tail,0,Đuôi đen
 smoking,0,Đang hút thuốc
 wolf_tail,0,Đuôi sói
 black_sleeves,0,Tay áo đen
 pink_tongue,0,Lưỡi hồng
+spiked_collar,0,Cổ áo có gai
 wink,7,Nháy mắt
 green_dress,0,Váy xanh lá
+wet_clothes,0,Quần áo ướt
+striped_fur,0,Lông kẻ sọc
 curly_hair,0,Tóc xoăn
+denim_shorts,0,Quần short jean
 green_fur,0,Lông xanh lá
 running,0,Đang chạy
 2:3,14,Tỷ lệ 2:3
@@ -808,900 +1263,3992 @@ brown_pantyhose,0,Quần tất nâu
 purple_skirt,0,Chân váy tím
 crouching,7,Đang cúi người
 2013,0,Năm 2013
+white_kimono,0,Kimono trắng
+black_collar,0,Cổ áo màu đen
+open_clothing,7,Trang phục mở
+black_bodysuit,0,Đồ liền thân đen
+angel_wings,0,Cánh thiên thần
+chest_hair,0,Tóc ngực
 white_tail,0,Đuôi trắng
-white_shorts,0,Quần short trắng
+striped_tail,0,Đuôi kẻ sọc
+white_shorts,0,Quần short màu trắng
+long_fingernails,0,Móng tay dài
 anime_coloring,0,Tô màu anime
+large_pectorals,0,Cơ ngực lớn
+arm_tattoo,0,Hình xăm cánh tay
 sunset,0,Hoàng hôn
 long_skirt,0,Chân váy dài
+green_clothing,7,Trang phục màu xanh lá
 big_ears,7,Tai to
 yellow_flower,0,Hoa vàng
+striped_shirt,0,Áo sơ mi kẻ sọc
 nervous,0,Lo lắng
+hair_over_eyes,0,Tóc che mắt
 orange_background,0,Nền cam
+striped_panties,0,Quần lót kẻ sọc
+pink_lips,0,Môi hồng
+pink_clothing,7,Trang phục màu hồng
 purple_flower,0,Hoa tím
+blue_bowtie,0,Nơ cổ xanh dương
+red_scarf,0,Khăn quàng đỏ
 waving,0,Đang vẫy tay
+frilled_bikini,0,Bikini nhún xếp
 mountain,0,Núi
 long_tongue,0,Lưỡi dài
 long_dress,0,Váy dài
 brown_skirt,0,Chân váy nâu
 drinking,0,Đang uống
+summer_uniform,0,Đồng phục mùa hè
+shoulder_bag,0,Túi vai
+brown_belt,0,Thắt lưng nâu
+huge_belly,7,Bụng khổng lồ
 thick_tail,0,Đuôi dày
 dog_tail,0,Đuôi chó
 dragon_tail,0,Đuôi rồng
 yellow_ribbon,0,Ruy băng vàng
-grey_pants,0,Quần xám
-brown_hat,0,Mũ nâu
+grey_pants,0,Quần màu xám
+red_bikini,0,Bikini màu đỏ
+sailor_dress,0,Váy thủy thủ
+brown_hat,0,Mũ màu nâu
 rain,0,Mưa
 big_tail,7,Đuôi to
 backlighting,0,Ánh sáng ngược
+thick_penis,7,Dương vật dày
+white_bra,0,Áo ngực màu trắng
+red_sclera,0,Củng mạc đỏ
+white_leotard,0,Leotard trắng
 grey_skin,0,Da màu xám
+striped_bow,0,Nơ kẻ sọc
+red_cape,0,Áo choàng màu đỏ
 animal_hands,0,Bàn tay động vật
 4boys,0,Bốn nhân vật nam
-pink_jacket,0,Áo khoác hồng
+pink_jacket,0,Áo khoác màu hồng
+denim_clothing,7,Trang phục jean
+latex_clothing,7,Trang phục latex
+large_penis,0,Dương vật lớn
 light_body,7,Cơ thể nhạt
+small_waist,7,Eo nhỏ
+cropped_shirt,0,Áo sơ mi lửng
 dancing,0,Đang nhảy múa
-green_hat,0,Mũ xanh lá
+green_hat,0,Mũ màu xanh lá
+torn_pantyhose,0,Quần tất rách
+purple_nails,0,Móng tay tím
 dark_body,7,Cơ thể sẫm
+red_lips,0,Môi đỏ
 5:4,14,Tỷ lệ 5:4
 brown_tail,0,Đuôi nâu
 holding_flower,0,Cầm hoa
+back_bow,0,Nơ lưng
 snowing,0,Trời đang có tuyết
 blue_gloves,0,Găng tay xanh dương
+blue_penis,0,Dương vật xanh dương
+school_bag,0,Túi học đường
 red_skin,0,Da màu đỏ
+purple_clothing,7,Trang phục màu tím
 dog,0,Chó
+white_balls,7,Tinh hoàn trắng
 bangs,7,Tóc mái
 long_pointy_ears,0,Tai dài nhọn
 serious,0,Nghiêm túc
+navel_piercing,0,Khuyên rốn
+short_eyebrows,0,Lông mày ngắn
 angel,0,Thiên thần
+white_sweater,0,Áo len màu trắng
 blue_tail,0,Đuôi xanh dương
+black_eyebrows,7,Lông mày đen
 9:16,14,Tỷ lệ 9:16
 2012,0,Năm 2012
+hair_tie,0,Cà vạt tóc
 brown_dress,0,Váy nâu
-yellow_jacket,0,Áo khoác vàng
-brown_pants,0,Quần nâu
+black_cape,0,Áo choàng màu đen
+yellow_jacket,0,Áo khoác màu vàng
+brown_pants,0,Quần màu nâu
+blue_kimono,0,Kimono xanh dương
 brown_shirt,0,Áo nâu
 jumping,0,Đang nhảy
 purple_skin,0,Da màu tím
+striped_clothing,7,Trang phục kẻ sọc
+long_eyelashes,0,Lông mi dài
+print_bikini,0,Bikini họa tiết
 multicolored_skin,0,Da nhiều màu
+mini_hat,0,Mũ siêu ngắn
 very_short_hair,0,Tóc rất ngắn
+sailor_shirt,0,Áo sơ mi thủy thủ
+fur_collar,0,Cổ áo lông
 pout,0,Chu môi
+small_penis,0,Dương vật nhỏ
+black_sweater,0,Áo len màu đen
+frilled_shirt,0,Áo sơ mi nhún xếp
 braided_hair,7,Tóc tết
+red_vest,0,Áo ghi-lê màu đỏ
+bubble_butt,7,Mông bọt khí
 3:2,14,Tỷ lệ 3:2
 green_ribbon,0,Ruy băng xanh lá
 purple_ribbon,0,Ruy băng tím
+huge_ass,0,Mông khổng lồ
 blue_shoes,0,Giày màu xanh dương
 light_skin,7,Da nhạt
 mouse_ears,0,Tai chuột
 blue_panties,0,Quần lót xanh dương
 brown_nose,7,Mũi nâu
+huge_hips,7,Hông khổng lồ
+red_penis,0,Dương vật đỏ
+striped_bikini,0,Bikini kẻ sọc
+body_fur,0,Lông cơ thể
+sweaty_butt,7,Mông đầm mồ hôi
 black_skin,0,Da màu đen
+spiked_bracelet,0,Vòng tay có gai
 looking_away,7,Nhìn sang chỗ khác
+animal_hood,0,Mũ trùm động vật
+white_scarf,0,Khăn quàng trắng
 brown_thighhighs,0,Tất cao đùi nâu
+print_kimono,0,Kimono họa tiết
+pink_vulva,7,Âm hộ hồng
 sad,0,Buồn
 pink_skin,0,Da màu hồng
+black_hoodie,0,Áo hoodie đen
+insect_wings,0,Cánh côn trùng
 grey_dress,0,Váy xám
-purple_jacket,0,Áo khoác tím
+purple_jacket,0,Áo khoác màu tím
+pleated_dress,0,Váy xếp ly
+military_hat,0,Mũ quân đội
+fish_tail,0,Đuôi cá
+grey_clothing,7,Trang phục màu xám
+blue_leotard,0,Leotard xanh dương
+pink_bikini,0,Bikini màu hồng
+black_kimono,0,Kimono đen
+frilled_bow,0,Nơ nhún xếp
+print_shirt,0,Áo sơ mi họa tiết
+big_pecs,7,Cơ ngực to
 pixel_art,0,Tranh pixel
-pink_hat,0,Mũ hồng
+pink_hat,0,Mũ màu hồng
 long_legs,0,Chân dài
+black_lips,0,Môi đen
 classroom,0,Lớp học
 cityscape,0,Cảnh thành phố
 5:6,14,Tỷ lệ 5:6
 purple_gloves,0,Găng tay tím
+white_cape,0,Áo choàng màu trắng
 blue_tongue,0,Lưỡi xanh dương
 grey_tail,0,Đuôi xám
+blue_vest,0,Áo ghi-lê màu xanh dương
 3d,0,Hình ảnh 3D
+tail_anus,0,Hậu môn đuôi
+blue_cape,0,Áo choàng màu xanh dương
 purple_thighhighs,0,Tất cao đùi tím
+halloween_costume,0,Trang phục Halloween
+brown_clothing,7,Trang phục màu nâu
+pink_bra,0,Áo ngực màu hồng
+open_cardigan,0,Áo cardigan mở
+yellow_clothing,7,Trang phục màu vàng
 black_ears,0,Tai đen
 orange_bow,0,Nơ cam
 multicolored_jacket,0,Áo khoác nhiều màu
+half_gloves,0,Găng tay một nửa
 yellow_dress,0,Váy vàng
 red_boots,0,Bốt màu đỏ
+muscular_arms,0,Cánh tay cơ bắp
+pink_bowtie,0,Nơ cổ hồng
 red_thighhighs,0,Tất cao đùi đỏ
+checkered_clothes,0,Quần áo kẻ ca-rô
+cow_ears,0,Tai bò
+torn_pants,0,Quần rách
+red_kimono,0,Kimono đỏ
+shoulder_tattoo,0,Hình xăm vai
+shark_tail,0,Đuôi cá mập
+pink_anus,7,Hậu môn hồng
+black_legwear,7,Đồ che chân màu đen
 2011,0,Năm 2011
-purple_hat,0,Mũ tím
+purple_hat,0,Mũ màu tím
+white_belt,0,Thắt lưng trắng
 red_horns,0,Sừng đỏ
-brown_coat,0,Áo khoác nâu
+winter_clothes,0,Quần áo mùa đông
+white_collar,0,Cổ áo màu trắng
+long_penis,7,Dương vật dài
+red_pupils,0,Đồng tử đỏ
+brown_coat,0,Áo khoác màu nâu
+mini_crown,0,Vương miện siêu ngắn
 yellow_tail,0,Đuôi vàng
-red_coat,0,Áo khoác đỏ
+red_coat,0,Áo khoác màu đỏ
 pink_shoes,0,Giày màu hồng
 pink_tail,0,Đuôi hồng
-red_pants,0,Quần đỏ
+red_pants,0,Quần màu đỏ
+white_hoodie,0,Áo hoodie trắng
+lip_piercing,0,Khuyên môi
+open_hand,0,Bàn tay mở
+wet_clothing,7,Trang phục ướt
 blue_thighhighs,0,Tất cao đùi xanh dương
+chest_tattoo,0,Hình xăm ngực
+black_underwear,7,Đồ lót màu đen
+tight_clothes,0,Quần áo ôm sát
+striped_necktie,0,Cà vạt kẻ sọc
+white_underwear,7,Đồ lót màu trắng
+cow_horns,0,Sừng bò
 tiger_ears,0,Tai hổ
-red_shorts,0,Quần short đỏ
+green_nails,0,Móng tay xanh lá
+red_collar,0,Cổ áo màu đỏ
+torn_thighhighs,0,Tất cao đùi rách
+red_shorts,0,Quần short màu đỏ
+ear_bow,0,Nơ tai
 animal_nose,0,Mũi động vật
+ankle_boots,0,Bốt cổ chân
+thick_lips,0,Môi dày
+penis_piercing,0,Khuyên dương vật
+white_bowtie,0,Nơ cổ trắng
+purple_bikini,0,Bikini màu tím
+gold_jewelry,0,Trang sức màu vàng kim
 blue_nose,0,Mũi xanh dương
+green_necktie,0,Cà vạt xanh lá
 mouse_tail,0,Đuôi chuột
+purple_bowtie,0,Nơ cổ tím
 orange_shirt,0,Áo cam
 purple_tail,0,Đuôi tím
 blue_boots,0,Bốt màu xanh dương
-blue_coat,0,Áo khoác xanh dương
-grey_shorts,0,Quần short xám
-brown_shorts,0,Quần short nâu
+blue_scarf,0,Khăn quàng xanh dương
+yellow_necktie,0,Cà vạt vàng
+black_balls,7,Tinh hoàn đen
+blue_coat,0,Áo khoác màu xanh dương
+wet_shirt,0,Áo sơ mi ướt
+grey_shorts,0,Quần short màu xám
+yellow_bikini,0,Bikini màu vàng
+paw_gloves,0,Găng tay chân thú
+animal_ear_piercing,0,Khuyên tai động vật
+wet_hair,0,Tóc ướt
+muscular_thighs,7,Đùi cơ bắp
+brown_shorts,0,Quần short màu nâu
 orange_tail,0,Đuôi cam
 red_panties,0,Quần lót đỏ
 brown_ears,7,Tai nâu
-green_pants,0,Quần xanh lá
+red_leotard,0,Leotard đỏ
+green_pants,0,Quần màu xanh lá
+pink_kimono,0,Kimono hồng
 laughing,0,Đang cười
+animal_costume,0,Trang phục động vật
 bird_wings,0,Cánh chim
+long_neck,0,Cổ dài
+black_suit,0,Bộ đồ màu đen
+sailor_hat,0,Mũ thủy thủ
+huge_areola,7,Quầng vú khổng lồ
 big_eyes,7,Mắt to
 brown_skin,7,Da màu nâu
+brown_cardigan,0,Áo cardigan nâu
+torn_shirt,0,Áo sơ mi rách
+purple_kimono,0,Kimono tím
 red_nose,0,Mũi đỏ
+grey_sweater,0,Áo len màu xám
+striped_dress,0,Váy kẻ sọc
+multicolored_clothing,7,Trang phục nhiều màu
 yellow_skin,0,Da màu vàng
+brown_sweater,0,Áo len màu nâu
+white_sclera,7,Củng mạc trắng
+ears_back,0,Lưng tai
+green_bikini,0,Bikini màu xanh lá
+christmas_clothing,7,Trang phục Giáng sinh
 5boys,0,5 nhân vật nam
+blue_hoodie,0,Áo hoodie xanh dương
+big_anus,7,Hậu môn to
 purple_panties,0,Quần lót tím
+sweaty_breasts,0,Ngực đầm mồ hôi
+purple_penis,0,Dương vật tím
+blue_sweater,0,Áo len màu xanh dương
 white_ears,7,Tai trắng
+blue_sclera,0,Củng mạc xanh dương
+maid_uniform,7,Đồng phục hầu gái
 raccoon_ears,0,Tai gấu mèo
 yellow_skirt,0,Chân váy vàng
+leg_tattoo,0,Hình xăm chân
 2010,0,Năm 2010
-green_shorts,0,Quần short xanh lá
+open_kimono,0,Kimono mở
+green_shorts,0,Quần short màu xanh lá
 pink_gloves,0,Găng tay hồng
+face_piercing,0,Khuyên mặt
+penis_jewelry,7,Trang sức dương vật
 6:5,14,Tỷ lệ 6:5
 round_teeth,0,Răng tròn
+gold_bikini,0,Bikini màu vàng kim
+green_vest,0,Áo ghi-lê màu xanh lá
 animal_hat,0,Mũ động vật
+spiked_tail,0,Đuôi có gai
+striped_background,0,Nền kẻ sọc
 round_glasses,7,Kính tròn
+white_bodysuit,0,Đồ liền thân trắng
 pink_thighhighs,0,Tất cao đùi hồng
+black_areola,7,Quầng vú đen
+tail_bow,0,Nơ đuôi
+arm_hair,0,Lông tay
+yellow_bowtie,0,Nơ cổ vàng
+blue_bra,0,Áo ngực màu xanh dương
+latex_legwear,0,Đồ che chân latex
+orange_clothing,7,Trang phục màu cam
 kitchen,0,Nhà bếp
+striped_bowtie,0,Nơ cổ kẻ sọc
+micro_shorts,0,Quần short rất nhỏ
+pink_sweater,0,Áo len màu hồng
 grey_gloves,0,Găng tay xám
 yellow_gloves,0,Găng tay vàng
+animal_collar,0,Cổ áo động vật
 big_hair,0,Tóc to
-grey_hat,0,Mũ xám
+black_scarf,0,Khăn quàng đen
+grey_hat,0,Mũ màu xám
 very_dark_skin,0,Da rất sẫm
+red_sweater,0,Áo len màu đỏ
+brown_areola,7,Quầng vú nâu
+blue_areola,7,Quầng vú xanh dương
 red_tail,0,Đuôi đỏ
+short_kimono,0,Kimono ngắn
+white_veil,0,Màn che mặt trắng
+cow_print_bikini,0,Bikini họa tiết bò
+leg_ribbon,0,Ruy băng chân
 16:10,14,Tỷ lệ 16:10
+white_horn,7,Sừng trắng
+striped_socks,0,Tất kẻ sọc
 blue_wings,0,Cánh xanh dương
+open_vest,0,Áo ghi-lê mở
 hands_on_hips,7,Hai tay chống hông
+green_bowtie,0,Nơ cổ xanh lá
 red_tongue,0,Lưỡi đỏ
+leather_jacket,0,Áo khoác da
+black_horn,7,Sừng đen
 blue_ears,7,Tai xanh dương
+brown_vest,0,Áo ghi-lê màu nâu
 dark_background,0,Nền sẫm
+striped_legwear,7,Đồ che chân kẻ sọc
 multicolored_dress,0,Váy nhiều màu
 blue_sleeves,0,Tay áo xanh dương
 grey_thighhighs,0,Tất cao đùi xám
 lineart,0,Nét vẽ
+christmas_headwear,7,Phụ kiện đầu Giáng sinh
+goat_horns,0,Sừng dê
 multicolored_gloves,0,Găng tay nhiều màu
+yellow_nails,0,Móng tay vàng
+print_thighhighs,0,Tất cao đùi họa tiết
 bear_ears,0,Tai gấu
+wet_body,7,Cơ thể ướt
 green_gloves,0,Găng tay xanh lá
 green_tail,0,Đuôi xanh lá
 tiger_tail,0,Đuôi hổ
 street,0,Đường phố
+sweaty_legs,7,Chân đầm mồ hôi
+black_bag,0,Túi đen
+narrow_waist,0,Eo hẹp
+purple_necktie,0,Cà vạt tím
+green_penis,0,Dương vật xanh lá
 evening,0,Buổi tối
 raccoon_tail,0,Đuôi gấu mèo
+pink_cardigan,0,Áo cardigan hồng
 red_wings,0,Cánh đỏ
-blue_socks,0,Tất xanh dương
+red_bodysuit,0,Đồ liền thân đỏ
+yellow_sweater,0,Áo len màu vàng
+gold_bracelet,0,Vòng tay vàng kim
+blue_socks,0,Tất màu xanh dương
+print_dress,0,Váy họa tiết
 orange_skirt,0,Chân váy cam
+gold_earrings,0,Khuyên tai vàng kim
+checkered_background,0,Nền kẻ ca-rô
+glowing_eye,0,Mắt phát sáng
+tail_ribbon,0,Ruy băng đuôi
+puffy_areola,7,Quầng vú phồng
+green_kimono,0,Kimono xanh lá
+purple_lips,0,Môi tím
+latex_gloves,0,Găng tay latex
+open_collar,0,Cổ áo mở
+white_penis,7,Dương vật trắng
 lion_ears,0,Tai sư tử
+blue_vulva,7,Âm hộ xanh dương
+blue_bodysuit,0,Đồ liền thân xanh dương
 orange_flower,0,Hoa cam
+black_cloak,0,Áo choàng màu đen
+white_belly,7,Bụng trắng
 black_flower,0,Hoa đen
+metal_collar,0,Cổ áo kim loại
+short_necktie,0,Cà vạt ngắn
+pink_underwear,7,Đồ lót màu hồng
+huge_pecs,7,Cơ ngực khổng lồ
 medium_dress,0,Váy vừa
 gold_necklace,0,Vòng cổ vàng kim
 purple_shoes,0,Giày màu tím
 grey_pantyhose,0,Quần tất xám
-orange_jacket,0,Áo khoác cam
+pink_pupils,0,Đồng tử hồng
+white_necktie,0,Cà vạt trắng
+orange_jacket,0,Áo khoác màu cam
 dragon_wings,0,Cánh rồng
+neck_tattoo,0,Hình xăm cổ
+grey_vest,0,Áo ghi-lê màu xám
+plaid_bow,0,Nơ kẻ caro
+sweaty_balls,7,Tinh hoàn đầm mồ hôi
 landscape,0,Phong cảnh
 pink_boots,0,Bốt màu hồng
+grey_hoodie,0,Áo hoodie xám
+brown_penis,7,Dương vật nâu
+frilled_collar,0,Cổ áo nhún xếp
+black_vulva,7,Âm hộ đen
 fluffy_hair,0,Tóc bồng bềnh
-yellow_hat,0,Mũ vàng
-grey_coat,0,Áo khoác xám
+plaid_shirt,0,Áo sơ mi kẻ caro
+frilled_thighhighs,0,Tất cao đùi nhún xếp
+green_sweater,0,Áo len màu xanh lá
+yellow_hat,0,Mũ màu vàng
+ear_ribbon,0,Ruy băng tai
+grey_coat,0,Áo khoác màu xám
+multicolored_nails,0,Móng tay nhiều màu
+brown_bag,0,Túi nâu
 multicolored_wings,0,Cánh nhiều màu
+print_panties,0,Quần lót họa tiết
+striped_pantyhose,0,Quần tất kẻ sọc
 2009,0,Năm 2009
+sheep_horns,0,Sừng cừu
 open_pants,0,Quần mở
 orange_dress,0,Váy cam
 orange_skin,0,Da màu cam
 red_sleeves,0,Tay áo đỏ
+brown_balls,7,Tinh hoàn nâu
 green_panties,0,Quần lót xanh lá
+arm_belt,0,Thắt lưng cánh tay
+green_sclera,0,Củng mạc xanh lá
+red_bra,0,Áo ngực màu đỏ
 grey_ears,7,Tai xám
+blue_pupils,0,Đồng tử xanh dương
+tight_pants,0,Quần ôm sát
+pink_necktie,0,Cà vạt hồng
+grey_balls,7,Tinh hoàn xám
 grey_shoes,0,Giày màu xám
+military_jacket,0,Áo khoác quân đội
+print_gloves,0,Găng tay họa tiết
+arm_ribbon,0,Ruy băng cánh tay
+sweaty_thighs,7,Đùi đầm mồ hôi
+blue_balls,7,Tinh hoàn xanh dương
+red_underwear,7,Đồ lót màu đỏ
+red_headband,0,Băng đô đỏ
 purple_wings,0,Cánh tím
+white_vest,0,Áo ghi-lê màu trắng
+black_armor,0,Giáp đen
 thin_thighs,0,Đùi mỏng
 brown_bow,0,Nơ nâu
 purple_tongue,0,Lưỡi tím
 medium_skirt,0,Chân váy vừa
+multicolored_bodysuit,0,Đồ liền thân nhiều màu
+purple_areola,7,Quầng vú tím
+red_belt,0,Thắt lưng đỏ
 long_coat,0,Áo khoác dài
 purple_pantyhose,0,Quần tất tím
 fluffy_ears,7,Tai bồng bềnh
 tired,7,Mệt mỏi
-pink_shorts,0,Quần short hồng
+thigh_belt,0,Thắt lưng đùi
+pink_shorts,0,Quần short màu hồng
+leather_clothing,7,Trang phục da
+yellow_pupils,0,Đồng tử vàng
+thick_eyelashes,0,Lông mi dày
 open_hands,0,Bàn tay mở
 5:3,14,Tỷ lệ 5:3
+open_hoodie,0,Áo hoodie mở
+bunny_costume,7,Trang phục thỏ
 big_feet,7,Bàn chân to
+leg_hair,0,Lông chân
 5:8,14,Tỷ lệ 5:8
-purple_pants,0,Quần tím
+purple_bra,0,Áo ngực màu tím
+frilled_hat,0,Mũ nhún xếp
+purple_pants,0,Quần màu tím
+frilled_bra,0,Áo ngực nhún xếp
 green_shoes,0,Giày màu xanh lá
-grey_socks,0,Tất xám
+print_skirt,0,Chân váy họa tiết
+multicolored_bikini,0,Bikini nhiều màu
+red_cloak,0,Áo choàng màu đỏ
+cow_tail,0,Đuôi bò
+plaid_vest,0,Áo ghi-lê kẻ caro
+striped_jacket,0,Áo khoác kẻ sọc
+grey_socks,0,Tất màu xám
+pink_scarf,0,Khăn quàng hồng
 yellow_shoes,0,Giày màu vàng
+purple_leotard,0,Leotard tím
+half-closed_eye,0,Mắt một nửa khép
+blue_belt,0,Thắt lưng xanh dương
+blue_lips,0,Môi xanh dương
+yellow_beak,7,Mỏ vàng
+torn_dress,0,Váy rách
 large_bow,0,Nơ lớn
-yellow_shorts,0,Quần short vàng
+striped_skirt,0,Chân váy kẻ sọc
+frilled_panties,0,Quần lót nhún xếp
+sweaty_body,7,Cơ thể đầm mồ hôi
+yellow_cardigan,0,Áo cardigan vàng
+ankle_socks,0,Tất cổ chân
+grey_sailor_collar,0,Cổ áo thủy thủ màu xám
+yellow_shorts,0,Quần short màu vàng
+grey_cardigan,0,Áo cardigan xám
 purple_sleeves,0,Tay áo tím
+green_cape,0,Áo choàng màu xanh lá
 moonlight,0,Ánh trăng
 orange_sky,0,Bầu trời cam
 white_horns,0,Sừng trắng
+open_beak,7,Mỏ mở
+white_headband,0,Băng đô trắng
+black_veil,0,Màn che mặt đen
 bird_ears,0,Tai chim
 thin_legs,7,Chân mỏng
+multicolored_penis,0,Dương vật nhiều màu
+cow_print_thighhighs,0,Tất cao đùi họa tiết bò
+purple_vest,0,Áo ghi-lê màu tím
+latex_bodysuit,0,Đồ liền thân latex
+green_sailor_collar,0,Cổ áo thủy thủ màu xanh lá
+yellow_scarf,0,Khăn quàng vàng
+orange_bikini,0,Bikini màu cam
 grey_boots,0,Bốt màu xám
+plaid_scarf,0,Khăn quàng kẻ caro
 2008,0,Năm 2008
-red_socks,0,Tất đỏ
+snake_hood,0,Mũ trùm rắn
+red_socks,0,Tất màu đỏ
+blue_underwear,7,Đồ lót màu xanh dương
+white_eyebrows,7,Lông mày trắng
 small_tail,0,Đuôi nhỏ
-purple_coat,0,Áo khoác tím
+blue_anus,0,Hậu môn xanh dương
+purple_coat,0,Áo khoác màu tím
+plaid_dress,0,Váy kẻ caro
+navel_hair,0,Tóc rốn
+wet_panties,0,Quần lót ướt
+frilled_gloves,0,Găng tay nhún xếp
+tail_jewelry,7,Trang sức đuôi
+winter_coat,0,Áo khoác mùa đông
+breast_tattoo,0,Hình xăm ngực
+brown_eyebrows,7,Lông mày nâu
+old_school_swimsuit,0,Đồ bơi học đường cũ
 pink_ears,7,Tai hồng
+red_sailor_collar,0,Cổ áo thủy thủ màu đỏ
+robot_ears,0,Tai người máy
 white_breasts,7,Ngực trắng
-green_coat,0,Áo khoác xanh lá
+green_coat,0,Áo khoác màu xanh lá
+stomach_tattoo,0,Hình xăm bụng
+horn_ribbon,0,Ruy băng sừng
+grey_penis,7,Dương vật xám
 animal_feet,0,Bàn chân động vật
+pirate_hat,0,Mũ cướp biển
+white_eyelashes,0,Lông mi trắng
+green_scarf,0,Khăn quàng xanh lá
 yellow_ears,7,Tai vàng
 thick_arms,0,Cánh tay dày
+striped_scarf,0,Khăn quàng kẻ sọc
+white_legwear,7,Đồ che chân màu trắng
 2:1,14,Tỷ lệ 2:1
-purple_shorts,0,Quần short tím
+mini_wings,0,Cánh siêu ngắn
+yellow_penis,0,Dương vật vàng
+purple_shorts,0,Quần short màu tím
+purple_cape,0,Áo choàng màu tím
 purple_nose,7,Mũi tím
+thigh_socks,7,Tất đùi
 bird_tail,0,Đuôi chim
+print_clothing,7,Trang phục họa tiết
+fluffy_chest,7,Ngực bồng bềnh
+glowing_penis,0,Dương vật phát sáng
+pink_leotard,0,Leotard hồng
+horn_jewelry,7,Trang sức sừng
+orange_nails,0,Móng tay cam
+fur_hat,0,Mũ lông
+print_pantyhose,0,Quần tất họa tiết
+white_cloak,0,Áo choàng màu trắng
 orange_ears,7,Tai cam
 3:5,14,Tỷ lệ 3:5
 2007,0,Năm 2007
 green_tongue,0,Lưỡi xanh lá
-orange_hat,0,Mũ cam
+green_areola,7,Quầng vú xanh lá
+bubble_skirt,0,Chân váy bọt khí
+cropped_shoulders,0,Vai lửng
+head_back,0,Lưng đầu
+chest_belt,0,Thắt lưng ngực
+orange_hat,0,Mũ màu cam
 brown_horns,0,Sừng nâu
+black_headband,0,Băng đô đen
 pointy_hair,0,Tóc nhọn
+orange_necktie,0,Cà vạt cam
+pink_hoodie,0,Áo hoodie hồng
 pink_sleeves,0,Tay áo hồng
+blue_collar,0,Cổ áo màu xanh dương
 multicolored_shirt,0,Áo sơ mi nhiều màu
+red_hoodie,0,Áo hoodie đỏ
 grey_panties,0,Quần lót xám
+brown_scarf,0,Khăn quàng nâu
 purple_boots,0,Bốt màu tím
+frilled_socks,0,Tất nhún xếp
+green_hoodie,0,Áo hoodie xanh lá
+blue_horn,7,Sừng xanh dương
+striped_ribbon,0,Ruy băng kẻ sọc
 orange_gloves,0,Găng tay cam
-pink_socks,0,Tất hồng
+pink_socks,0,Tất màu hồng
 red_pantyhose,0,Quần tất đỏ
+black_cardigan,0,Áo cardigan đen
 orange_ribbon,0,Ruy băng cam
 yellow_panties,0,Quần lót vàng
+pink_bag,0,Túi hồng
 blue_pantyhose,0,Quần tất xanh dương
+torn_skirt,0,Chân váy rách
+black_headwear,7,Phụ kiện đầu đen
+black_anus,7,Hậu môn đen
 green_sleeves,0,Tay áo xanh lá
+orange_bowtie,0,Nơ cổ cam
+red_armor,0,Giáp đỏ
 multicolored_skirt,0,Chân váy nhiều màu
+cat_lingerie,0,Đồ lót nữ mèo
+muscular_legs,0,Chân cơ bắp
 deer_ears,0,Tai nai
+butterfly_wings,0,Cánh bươm bướm
 large_tail,0,Đuôi lớn
 grey_sky,0,Bầu trời xám
 green_thighhighs,0,Tất cao đùi xanh lá
 lion_tail,0,Đuôi sư tử
+wrist_ribbon,0,Ruy băng cổ tay
+striped_pants,0,Quần kẻ sọc
+cow_print_gloves,0,Găng tay họa tiết bò
+blue_cardigan,0,Áo cardigan xanh dương
+snake_tail,0,Đuôi rắn
+cat_paws,0,Bàn chân thú mèo
+black_armwear,7,Đồ che tay màu đen
 pointy_nose,0,Mũi nhọn
 large_hat,0,Mũ lớn
-orange_shorts,0,Quần short cam
+yellow_kimono,0,Kimono vàng
+torn_shorts,0,Quần short rách
+white_nails,0,Móng tay trắng
+pink_collar,0,Cổ áo màu hồng
+orange_shorts,0,Quần short màu cam
+paper_bag,0,Túi giấy
+black_beak,7,Mỏ đen
+purple_sailor_collar,0,Cổ áo thủy thủ màu tím
+vulva_piercing,7,Khuyên âm hộ
+cat_hood,0,Mũ trùm mèo
+frilled_kimono,0,Kimono nhún xếp
+lace_panties,0,Quần lót ren
 multicolored_shoes,0,Giày nhiều màu
+red_bag,0,Túi đỏ
 knee_highs,7,Tất cao đến gối
-pink_pants,0,Quần hồng
+white_suit,0,Bộ đồ màu trắng
+pink_pants,0,Quần màu hồng
+purple_scarf,0,Khăn quàng tím
+plaid_bowtie,0,Nơ cổ kẻ caro
+latex_stockings,7,Bít tất latex
+nose_horn,0,Sừng mũi
+latex_armwear,7,Đồ che tay latex
 yellow_horns,0,Sừng vàng
 multicolored_horns,0,Sừng nhiều màu
 yellow_boots,0,Bốt màu vàng
+back_wings,7,Cánh lưng
+pink_apron,0,Tạp dề màu hồng
+pink_sclera,0,Củng mạc hồng
 green_boots,0,Bốt màu xanh lá
+red_horn,7,Sừng đỏ
+yellow_balls,7,Tinh hoàn vàng
+sheep_ears,0,Tai cừu
+grey_areola,7,Quầng vú xám
 round_ears,7,Tai tròn
+hair_horns,0,Sừng tóc
 big_hands,7,Bàn tay to
+black_apron,0,Tạp dề màu đen
 small_horns,0,Sừng nhỏ
+purple_sweater,0,Áo len màu tím
+animal_ear_headwear,0,Phụ kiện đầu tai động vật
 purple_sky,0,Bầu trời tím
-black_stockings,7,Bít tất đen
+orange_sclera,0,Củng mạc cam
+black_stockings,7,Bít tất màu đen
 grey_nose,7,Mũi xám
+squirrel_tail,0,Đuôi sóc
 dusk,0,Chạng vạng
 black_hands,0,Bàn tay đen
+cropped_hoodie,0,Áo hoodie lửng
+white_cardigan,0,Áo cardigan trắng
+back_tattoo,0,Hình xăm lưng
+maid_bikini,0,Bikini hầu gái
 1:2,14,Tỷ lệ 1:2
+yellow_horn,7,Sừng vàng
+sweaty_feet,0,Bàn chân đầm mồ hôi
+yellow_belt,0,Thắt lưng vàng
+blue_bag,0,Túi xanh dương
+wet_fur,0,Lông ướt
+bat_ears,0,Tai dơi
 sunrise,0,Bình minh
+striped_sleeves,0,Tay áo kẻ sọc
 light_fur,7,Lông nhạt
 brown_ribbon,0,Ruy băng nâu
+purple_bodysuit,0,Đồ liền thân tím
 yellow_wings,0,Cánh vàng
+green_leotard,0,Leotard xanh lá
 very_long_tail,0,Đuôi rất dài
+torn_bodysuit,0,Đồ liền thân rách
+torn_sleeves,0,Tay áo rách
+blue_apron,0,Tạp dề màu xanh dương
+goat_ears,0,Tai dê
+striped_underwear,0,Đồ lót kẻ sọc
+sparkle_background,0,Nền ánh lấp lánh
 blue_horns,0,Sừng xanh dương
+small_balls,7,Tinh hoàn nhỏ
+sweaty_face,7,Khuôn mặt đầm mồ hôi
+red_headwear,7,Phụ kiện đầu đỏ
 white_face,7,Khuôn mặt trắng
+checkered_skirt,0,Chân váy kẻ ca-rô
 grey_bow,0,Nơ xám
 dark_fur,7,Lông sẫm
+huge_anus,7,Hậu môn khổng lồ
+green_lips,0,Môi xanh lá
+green_bra,0,Áo ngực màu xanh lá
+plaid_necktie,0,Cà vạt kẻ caro
+green_balls,7,Tinh hoàn xanh lá
+pink_belt,0,Thắt lưng hồng
+checkered_scarf,0,Khăn quàng kẻ ca-rô
+white_bag,0,Túi trắng
 cat_hat,0,Mũ mèo
+purple_sclera,0,Củng mạc tím
+yellow_hoodie,0,Áo hoodie vàng
+grey_horn,7,Sừng xám
+dirty_face,0,Khuôn mặt bẩn
+blue_armor,0,Giáp xanh dương
 pink_wings,0,Cánh hồng
+yellow_vest,0,Áo ghi-lê màu vàng
 2006,0,Năm 2006
+squirrel_ears,0,Tai sóc
 open_shorts,0,Quần short mở
+ghost_tail,0,Đuôi ma
+denim_skirt,0,Chân váy jean
+belly_hair,7,Tóc bụng
 black_tongue,0,Lưỡi đen
 dark_hair,7,Tóc sẫm
 yellow_teeth,0,Răng vàng
+red_tattoo,0,Hình xăm đỏ
+big_clitoris,7,Âm vật to
+chubby_cheeks,7,Má mũm mĩm
+torn_legwear,7,Đồ che chân rách
+brown_cape,0,Áo choàng màu nâu
+purple_balls,7,Tinh hoàn tím
+torn_cape,0,Áo choàng rách
+gold_armor,0,Giáp vàng kim
+red_areola,7,Quầng vú đỏ
 purple_ears,0,Tai tím
+lace_bra,0,Áo ngực ren
+striped_sweater,0,Áo len kẻ sọc
+tail_piercing,0,Khuyên đuôi
+black_swimwear,7,Đồ bơi màu đen
 red_hands,0,Bàn tay đỏ
-yellow_coat,0,Áo khoác vàng
+purple_vulva,7,Âm hộ tím
+yellow_coat,0,Áo khoác màu vàng
 orange_shoes,0,Giày màu cam
+paw_shoes,0,Giày chân thú
+white_armor,0,Giáp trắng
+orange_penis,0,Dương vật cam
+brown_sailor_collar,0,Cổ áo thủy thủ màu nâu
 confused,0,Bối rối
+small_pupils,7,Đồng tử nhỏ
+purple_hoodie,0,Áo hoodie tím
 grey_sleeves,0,Tay áo xám
-orange_pants,0,Quần cam
-brown_socks,0,Tất nâu
+black_lipstick,7,Son môi đen
+orange_pants,0,Quần màu cam
+brown_socks,0,Tất màu nâu
+grey_kimono,0,Kimono xám
 grey_horns,0,Sừng xám
 thin_tail,7,Đuôi mỏng
 red_sky,0,Bầu trời đỏ
+fur_coat,0,Áo khoác lông
 open_dress,0,Váy mở
+green_apron,0,Tạp dề màu xanh lá
+striped_horns,0,Sừng kẻ sọc
 huge_tail,7,Đuôi khổng lồ
 long_shirt,0,Áo sơ mi dài
-pink_coat,0,Áo khoác hồng
-yellow_pants,0,Quần vàng
+red_lipstick,7,Son môi đỏ
+pink_coat,0,Áo khoác màu hồng
+yellow_pants,0,Quần màu vàng
 purple_horns,0,Sừng tím
-green_socks,0,Tất xanh lá
+green_socks,0,Tất màu xanh lá
+spiked_penis,0,Dương vật có gai
+purple_underwear,7,Đồ lót màu tím
 grey_wings,0,Cánh xám
+multicolored_leotard,0,Leotard nhiều màu
+ghost_hand,7,Bàn tay ma
 brown_wings,0,Cánh nâu
+thin_eyebrows,7,Lông mày mỏng
+mouth_veil,0,Màn che mặt miệng
+purple_belt,0,Thắt lưng tím
+rabbit_hood,0,Mũ trùm thỏ
+gold_crown,0,Vương miện vàng kim
+orange_kimono,0,Kimono cam
+grey_necktie,0,Cà vạt xám
+multicolored_swimsuit,0,Đồ bơi nhiều màu
+wet_underwear,7,Đồ lót ướt
+yellow_bag,0,Túi vàng
 green_nose,7,Mũi xanh lá
+cropped_vest,0,Áo ghi-lê lửng
+striped_shorts,0,Quần short kẻ sọc
+wet_swimsuit,0,Đồ bơi ướt
+grey_belt,0,Thắt lưng xám
+tight_shirt,0,Áo sơ mi ôm sát
+print_bow,0,Nơ họa tiết
+dark_penis,0,Dương vật sẫm
+dirty_clothes,0,Quần áo bẩn
 green_wings,0,Cánh xanh lá
+green_pupils,0,Đồng tử xanh lá
+dark_areola,7,Quầng vú sẫm
+hair_ears,0,Tai tóc
+rubber_boots,0,Bốt cao su
+red_hood,0,Mũ trùm màu đỏ
+white_sheath,7,Bao dương vật trắng
+black_hood,0,Mũ trùm màu đen
+big_vulva,7,Âm hộ to
 yellow_thighhighs,0,Tất cao đùi vàng
+brown_necktie,0,Cà vạt nâu
+long_nails,7,Móng tay dài
+fur_scarf,0,Khăn quàng lông
+frilled_ribbon,0,Ruy băng nhún xếp
+brown_horn,7,Sừng nâu
+glowing_body,7,Cơ thể phát sáng
+orange_scarf,0,Khăn quàng cam
+red_balls,7,Tinh hoàn đỏ
+butt_hair,7,Tóc mông
+tail_mouth,0,Miệng đuôi
+grey_scarf,0,Khăn quàng xám
+patterned_background,0,Nền có hoa văn
 bird_legs,0,Chân chim
+pirate_costume,0,Trang phục cướp biển
+striped_arms,7,Cánh tay kẻ sọc
+horn_bow,0,Nơ sừng
+sweaty_armpits,0,Nách đầm mồ hôi
+pink_vest,0,Áo ghi-lê màu hồng
+jackal_ears,0,Tai chồn sói
+dotted_background,0,Nền chấm tròn
 red_ears,7,Tai đỏ
 big_nose,7,Mũi to
+blue_headband,0,Băng đô xanh dương
+pink_bodysuit,0,Đồ liền thân hồng
+black_jewelry,7,Trang sức màu đen
 multicolored_thighhighs,0,Tất cao đùi nhiều màu
+narrow_hips,0,Hông hẹp
+grey_bodysuit,0,Đồ liền thân xám
+head_horn,7,Sừng đầu
+plaid_pants,0,Quần kẻ caro
+blue_cloak,0,Áo choàng màu xanh dương
+green_underwear,7,Đồ lót màu xanh lá
+striped_legs,7,Chân kẻ sọc
 black_necklace,7,Vòng cổ đen
+striped_bra,0,Áo ngực kẻ sọc
+cropped_sweater,0,Áo len lửng
+open-toe_boots,0,Bốt ngón chân mở
+hand_tattoo,0,Hình xăm bàn tay
 11:8,14,Tỷ lệ 11:8
 pink_pantyhose,0,Quần tất hồng
+dirty_feet,0,Bàn chân bẩn
+ankle_ribbon,0,Ruy băng cổ chân
+open_belt,0,Thắt lưng mở
+orange_bodysuit,0,Đồ liền thân cam
+blue_headwear,7,Phụ kiện đầu xanh dương
+purple_horn,7,Sừng tím
+plaid_jacket,0,Áo khoác kẻ caro
+brown_kimono,0,Kimono nâu
+tight_shorts,7,Quần short ôm sát
 green_ears,7,Tai xanh lá
-purple_socks,0,Tất tím
+animal_bag,0,Túi động vật
+purple_socks,0,Tất màu tím
+purple_pupils,0,Đồng tử tím
 multicolored_coat,0,Áo khoác nhiều màu
+arm_armor,0,Giáp cánh tay
+green_headwear,7,Phụ kiện đầu xanh lá
 white_mouth,0,Miệng trắng
+very_long_fingernails,0,Móng tay rất dài
+green_vulva,7,Âm hộ xanh lá
+cat_ear_panties,0,Quần lót tai mèo
+chest_bow,0,Nơ ngực
+horse_penis,0,Dương vật ngựa
+blue_helmet,0,Mũ bảo hiểm màu xanh dương
+sailor_bikini,0,Bikini thủy thủ
+white_hood,0,Mũ trùm màu trắng
+dark_anus,0,Hậu môn sẫm
 2005,0,Năm 2005
-yellow_socks,0,Tất vàng
+leg_armor,0,Giáp chân
+puffy_shorts,0,Quần short phồng
+plaid_background,0,Nền kẻ caro
+plaid_clothing,7,Trang phục kẻ caro
+neck_fur,0,Lông cổ
+black_tiara,0,Vương miện nhỏ đen
+black_helmet,0,Mũ bảo hiểm màu đen
+yellow_socks,0,Tất màu vàng
+orange_areola,7,Quầng vú cam
+school_hat,0,Mũ học đường
+blue_swimwear,7,Đồ bơi màu xanh dương
+tight_dress,0,Váy ôm sát
+key_necklace,0,Vòng cổ chìa khóa
+orange_sweater,0,Áo len màu cam
+orange_hoodie,0,Áo hoodie cam
+yellow_cape,0,Áo choàng màu vàng
+purple_anus,0,Hậu môn tím
+red_swimwear,7,Đồ bơi màu đỏ
+chest_fur,0,Lông ngực
+red_helmet,0,Mũ bảo hiểm màu đỏ
+leather_gloves,0,Găng tay da
+pink_horn,7,Sừng hồng
+plaid_hat,0,Mũ kẻ caro
+neck_flower,0,Hoa cổ
+large_testicles,0,Tinh hoàn lớn
 orange_thighhighs,0,Tất cao đùi cam
+purple_collar,0,Cổ áo màu tím
+plaid_bikini,0,Bikini kẻ caro
+grey_bra,0,Áo ngực màu xám
+leg_belt,0,Thắt lưng chân
 yellow_sleeves,0,Tay áo vàng
+striped_headwear,0,Phụ kiện đầu kẻ sọc
+print_bowtie,0,Nơ cổ họa tiết
+frilled_shorts,0,Quần short nhún xếp
+ghost_costume,0,Trang phục ma
+black_elbow_gloves,7,Găng tay khuỷu tay màu đen
+brown_cloak,0,Áo choàng màu nâu
+wrist_bow,0,Nơ cổ tay
+pink_sailor_collar,0,Cổ áo thủy thủ màu hồng
+curly_eyebrows,0,Lông mày xoăn
+thigh_ribbon,0,Ruy băng đùi
 green_flower,0,Hoa xanh lá
+brown_apron,0,Tạp dề màu nâu
+striped_gloves,0,Găng tay kẻ sọc
+red_apron,0,Tạp dề màu đỏ
+shoulder_belt,0,Thắt lưng vai
+striped_stockings,7,Bít tất kẻ sọc
+green_bodysuit,0,Đồ liền thân xanh lá
 long_nose,0,Mũi dài
+puffy_pants,0,Quần phồng
+frilled_headwear,0,Phụ kiện đầu nhún xếp
 multicolored_bow,0,Nơ nhiều màu
+yellow_bra,0,Áo ngực màu vàng
 small_nose,7,Mũi nhỏ
+blue_eyebrows,7,Lông mày xanh dương
+grey_nails,0,Móng tay xám
+animal_ear_hood,0,Mũ trùm tai động vật
+sweaty_penis,7,Dương vật đầm mồ hôi
+leather_boots,0,Bốt da
+pink_clitoris,7,Âm vật hồng
 yellow_tongue,0,Lưỡi vàng
+open_bra,0,Áo ngực mở
+pink_cape,0,Áo choàng màu hồng
 orange_nose,7,Mũi cam
+pink_lipstick,7,Son môi hồng
+red_eyebrows,7,Lông mày đỏ
+brown_bowtie,0,Nơ cổ nâu
+black_eyewear,7,Kính đen
 multicolored_boots,0,Bốt nhiều màu
+leather_belt,0,Thắt lưng da
+muscular_top,7,Áo cơ bắp
 spiky_hair,7,Tóc dựng
+striped_kimono,0,Kimono kẻ sọc
+torn_leotard,0,Leotard rách
+yellow_areola,7,Quầng vú vàng
+green_bag,0,Túi xanh lá
 pink_horns,0,Sừng hồng
+green_cloak,0,Áo choàng màu xanh lá
+tail_clothing,7,Trang phục đuôi
+striped_armwear,7,Đồ che tay kẻ sọc
+pink_balls,7,Tinh hoàn hồng
+snake_hair,0,Tóc rắn
+red_cheeks,7,Má đỏ
+glowing_hair,0,Tóc phát sáng
+orange_balls,7,Tinh hoàn cam
+yellow_apron,0,Tạp dề màu vàng
+print_jacket,0,Áo khoác họa tiết
+body_armor,0,Giáp cơ thể
+orange_vest,0,Áo ghi-lê màu cam
 black_legs,7,Chân đen
 grey_ribbon,0,Ruy băng xám
+red_legwear,7,Đồ che chân màu đỏ
+denim_jacket,0,Áo khoác jean
+checkered_kimono,0,Kimono kẻ ca-rô
+black_thong,0,Quần lót dây đen
 yellow_sky,0,Bầu trời vàng
+green_headband,0,Băng đô xanh lá
+purple_lipstick,7,Son môi tím
+orange_beak,7,Mỏ cam
+red_vulva,7,Âm hộ đỏ
+green_belt,0,Thắt lưng xanh lá
+yellow_bodysuit,0,Đồ liền thân vàng
+frilled_sailor_collar,0,Cổ áo thủy thủ nhún xếp
 2004,0,Năm 2004
+brown_hoodie,0,Áo hoodie nâu
+leather_pants,0,Quần da
+frilled_leotard,0,Leotard nhún xếp
 pink_sky,0,Bầu trời hồng
 multicolored_hat,0,Mũ nhiều màu
+purple_legwear,7,Đồ che chân màu tím
+purple_veil,0,Màn che mặt tím
 open_skirt,0,Chân váy mở
+grey_beak,7,Mỏ xám
 white_hands,0,Bàn tay trắng
+patterned_hair,0,Tóc có hoa văn
+open-chest_sweater,0,Áo len ngực mở
+print_bra,0,Áo ngực họa tiết
+big_sheath,7,Bao dương vật to
+shark_hood,0,Mũ trùm cá mập
 7:4,14,Tỷ lệ 7:4
+latex_elbow_gloves,7,Găng tay khuỷu tay latex
+checkered_necktie,0,Cà vạt kẻ ca-rô
+knee_socks,7,Tất đầu gối
+grey_sclera,0,Củng mạc xám
+multicolored_vulva,7,Âm hộ nhiều màu
 yellow_nose,7,Mũi vàng
+small_horn,7,Sừng nhỏ
+grey_bikini,0,Bikini màu xám
 straight_legs,7,Chân thẳng
+blue_veil,0,Màn che mặt xanh dương
+white_headwear,7,Phụ kiện đầu trắng
+latex_boots,0,Bốt latex
+panda_ears,0,Tai gấu trúc
 multicolored_face,7,Khuôn mặt nhiều màu
+metal_skin,0,Da kim loại
+micro_panties,0,Quần lót rất nhỏ
 small_wings,7,Cánh nhỏ
+striped_hair,0,Tóc kẻ sọc
 orange_wings,0,Cánh cam
+orange_belt,0,Thắt lưng cam
+brown_collar,0,Cổ áo màu nâu
+fur_cape,0,Áo choàng lông
+blue_legwear,7,Đồ che chân màu xanh dương
 blue_mouth,7,Miệng xanh dương
+leather_armor,0,Giáp da
+blue_hood,0,Mũ trùm màu xanh dương
+thick_neck,0,Cổ dày
 large_nose,0,Mũi lớn
 brown_sleeves,0,Tay áo nâu
+grey_eyebrows,7,Lông mày xám
+glowing_tattoo,0,Hình xăm phát sáng
+multicolored_legwear,7,Đồ che chân nhiều màu
+orange_pupils,0,Đồng tử cam
+lace_gloves,0,Găng tay ren
+blue_suit,0,Bộ đồ màu xanh dương
+brown_nails,0,Móng tay nâu
+yellow_leotard,0,Leotard vàng
+gold_collar,0,Cổ áo màu vàng kim
+pink_legwear,7,Đồ che chân màu hồng
+huge_testicles,0,Tinh hoàn khổng lồ
 orange_pantyhose,0,Quần tất cam
 big_tongue,7,Lưỡi to
+brown_vulva,7,Âm hộ nâu
+brown_bikini,0,Bikini màu nâu
 orange_boots,0,Bốt màu cam
 black_sky,0,Bầu trời đen
+witch_costume,7,Trang phục phù thủy
+textured_background,7,Nền có kết cấu
+cotton_tail,7,Đuôi cotton
+red_anus,7,Hậu môn đỏ
+sweaty_clothes,0,Quần áo đầm mồ hôi
 large_hands,0,Bàn tay lớn
+green_collar,0,Cổ áo màu xanh lá
+red_cardigan,0,Áo cardigan đỏ
+purple_cardigan,0,Áo cardigan tím
+green_anus,0,Hậu môn xanh lá
 2003,0,Năm 2003
 white_nose,7,Mũi trắng
+animal_print_bikini,7,Bikini họa tiết động vật
+glowing_vulva,7,Âm hộ phát sáng
+print_underwear,7,Đồ lót họa tiết
 green_pantyhose,0,Quần tất xanh lá
+long_snout,7,Mõm dài
+torn_gloves,0,Găng tay rách
+belly_tattoo,7,Hình xăm bụng
+torn_panties,0,Quần lót rách
 long_socks,7,Tất dài
+frilled_jacket,0,Áo khoác nhún xếp
 black_breasts,7,Ngực đen
 black_glasses,7,Kính đen
+white_armwear,7,Đồ che tay màu trắng
 pointy_breasts,0,Ngực nhọn
+torn_scarf,0,Khăn quàng rách
+glowing_horn,7,Sừng phát sáng
+torn_jacket,0,Áo khoác rách
+orange_horn,7,Sừng cam
 orange_sleeves,0,Tay áo cam
+grey_suit,0,Bộ đồ màu xám
+grey_cape,0,Áo choàng màu xám
+white_helmet,0,Mũ bảo hiểm màu trắng
 huge_bow,0,Nơ khổng lồ
 black_mouth,0,Miệng đen
 orange_panties,0,Quần lót cam
+brown_headwear,7,Phụ kiện đầu nâu
+spiked_ear_piercing,0,Khuyên tai có gai
+gold_tiara,0,Vương miện nhỏ vàng kim
 orange_tongue,0,Lưỡi cam
+key_earrings,0,Khuyên tai chìa khóa
+glowing_mouth,0,Miệng phát sáng
 black_feet,0,Bàn chân đen
-orange_socks,0,Tất cam
+orange_socks,0,Tất màu cam
 large_ears,0,Tai lớn
 black_arms,7,Cánh tay đen
+grey_leotard,0,Leotard xám
+white_vulva,7,Âm hộ trắng
+red_suit,0,Bộ đồ màu đỏ
+open-toe_shoes,0,Giày ngón chân mở
 dark_nose,7,Mũi sẫm
 animal_tail,7,Đuôi động vật
+butt_tattoo,7,Hình xăm mông
 brown_hands,0,Bàn tay nâu
+yellow_underwear,7,Đồ lót màu vàng
+white_butt,7,Mông trắng
+animal_ear_legwear,0,Đồ che chân tai động vật
+multicolored_kimono,0,Kimono nhiều màu
+multicolored_horn,7,Sừng nhiều màu
+orange_sailor_collar,0,Cổ áo thủy thủ màu cam
+blue_lipstick,7,Son môi xanh dương
+orange_jumpsuit,0,Áo liền quần cam
+yellow_vulva,7,Âm hộ vàng
+puffy_cheeks,0,Má phồng
+glowing_tongue,0,Lưỡi phát sáng
+sweaty_belly,7,Bụng đầm mồ hôi
 green_horns,0,Sừng xanh lá
 white_feet,7,Bàn chân trắng
-white_stockings,7,Bít tất trắng
+green_horn,7,Sừng xanh lá
+paw_print_background,0,Nền họa tiết chân thú
+print_hoodie,0,Áo hoodie họa tiết
+horn_piercing,0,Khuyên sừng
+torn_stockings,7,Bít tất rách
+sweaty_anus,7,Hậu môn đầm mồ hôi
+sweaty_arms,7,Cánh tay đầm mồ hôi
+mouth_piercing,0,Khuyên miệng
+brown_anus,7,Hậu môn nâu
+green_cardigan,0,Áo cardigan xanh lá
+yellow_headband,0,Băng đô vàng
+pink_swimwear,7,Đồ bơi màu hồng
+brown_lips,0,Môi nâu
+white_stockings,7,Bít tất màu trắng
+print_headwear,0,Phụ kiện đầu họa tiết
+purple_armwear,7,Đồ che tay màu tím
+short_jumpsuit,0,Áo liền quần ngắn
+orange_headband,0,Băng đô cam
+green_swimwear,7,Đồ bơi màu xanh lá
+green_armor,0,Giáp xanh lá
+shark_costume,0,Trang phục cá mập
+pleated_shorts,0,Quần short xếp ly
+brown_leotard,0,Leotard nâu
 2002,0,Năm 2002
 brown_panties,0,Quần lót nâu
+hyena_ears,0,Tai linh cẩu
 light_hair,7,Tóc nhạt
+big_cheeks,7,Má to
+black_fingernails,7,Móng tay đen
+yellow_cloak,0,Áo choàng màu vàng
 long_body,0,Cơ thể dài
+open_bodysuit,0,Đồ liền thân mở
+red_eyewear,7,Kính đỏ
+gold_piercing,0,Khuyên vàng kim
 long_ribbon,0,Ruy băng dài
+grey_underwear,7,Đồ lót màu xám
+cat_costume,0,Trang phục mèo
+yellow_swimwear,7,Đồ bơi màu vàng
+purple_swimwear,7,Đồ bơi màu tím
+latex_body,7,Cơ thể latex
+purple_headwear,7,Phụ kiện đầu tím
+grey_armor,0,Giáp xám
+chin_piercing,0,Khuyên cằm
+latex_leotard,0,Leotard latex
+grey_bowtie,0,Nơ cổ xám
 white_sky,0,Bầu trời trắng
 brown_face,7,Khuôn mặt nâu
+grey_cloak,0,Áo choàng màu xám
+orange_cape,0,Áo choàng màu cam
 blue_hands,0,Bàn tay xanh dương
+cropped_arms,0,Cánh tay lửng
 wavy_eyes,0,Mắt gợn sóng
+pink_headband,0,Băng đô hồng
+blue_jumpsuit,0,Áo liền quần xanh dương
+multicolored_underwear,7,Đồ lót nhiều màu
+purple_cloak,0,Áo choàng màu tím
+long_horn,7,Sừng dài
+fur_jacket,0,Áo khoác lông
 white_arms,7,Cánh tay trắng
+sweaty_armpit,7,Nách đầm mồ hôi
 multicolored_socks,0,Tất nhiều màu
+wet_penis,7,Dương vật ướt
+white_swimwear,7,Đồ bơi màu trắng
 white_legs,7,Chân trắng
+glowing_wings,0,Cánh phát sáng
+striped_hoodie,0,Áo hoodie kẻ sọc
 4:7,14,Tỷ lệ 4:7
+grey_vulva,7,Âm hộ xám
+purple_armor,0,Giáp tím
+multicolored_hoodie,0,Áo hoodie nhiều màu
 grey_flower,0,Hoa xám
 sunny,7,Trời nắng
 multicolored_flower,0,Hoa nhiều màu
+striped_horn,7,Sừng kẻ sọc
+huge_eyebrows,0,Lông mày khổng lồ
+horn_flower,0,Hoa sừng
+spiked_jacket,0,Áo khoác có gai
 dragon_ears,0,Tai rồng
 yellow_pantyhose,0,Quần tất vàng
 blue_breasts,7,Ngực xanh dương
 deer_tail,0,Đuôi nai
+striped_vest,0,Áo ghi-lê kẻ sọc
+torn_socks,0,Tất rách
+gold_anklet,0,Vòng chân vàng kim
+brown_sclera,0,Củng mạc nâu
+half-skirt,0,Chân váy một nửa
+dirty_clothing,7,Trang phục bẩn
 bear_tail,0,Đuôi gấu
 white_fingers,7,Ngón tay trắng
+nipple_jewelry,0,Trang sức núm vú
+cat_ear_legwear,0,Đồ che chân tai mèo
+fluffy_balls,7,Tinh hoàn bồng bềnh
+back-print_panties,0,Quần lót họa tiết lưng
+big_pupils,7,Đồng tử to
 long_horns,0,Sừng dài
+print_sleeves,0,Tay áo họa tiết
 long_arms,0,Cánh tay dài
+print_shorts,0,Quần short họa tiết
+short_horn,7,Sừng ngắn
+black_paws,7,Bàn chân thú đen
+pink_eyebrows,7,Lông mày hồng
+wing_brooch,0,Trâm cài cánh
+neck_bow,7,Nơ cổ
+blood_bag,0,Túi máu
 gold_shoes,0,Giày màu vàng kim
+wolf_costume,0,Trang phục sói
+striped_skin,0,Da kẻ sọc
+legs_back,0,Lưng chân
+checkered_shirt,0,Áo sơ mi kẻ ca-rô
+print_necktie,0,Cà vạt họa tiết
+new_school_swimsuit,0,Đồ bơi học đường mới
+otter_tail,0,Đuôi rái cá
+multicolored_scarf,0,Khăn quàng nhiều màu
 brown_legs,7,Chân nâu
+black_sheath,7,Bao dương vật đen
 brown_feet,7,Bàn chân nâu
+wet_dress,0,Váy ướt
+short_snout,7,Mõm ngắn
+white_chest,7,Ngực trắng
 grey_face,7,Khuôn mặt xám
+spiked_anklet,0,Vòng chân có gai
+dark_sclera,7,Củng mạc sẫm
+huge_pectorals,0,Cơ ngực khổng lồ
 brown_arms,7,Cánh tay nâu
+multicolored_cape,0,Áo choàng nhiều màu
 pink_mouth,7,Miệng hồng
+snake_earrings,0,Khuyên tai rắn
+purple_eyebrows,7,Lông mày tím
 black_face,7,Khuôn mặt đen
 2001,0,Năm 2001
+ankle_bow,0,Nơ cổ chân
+furry_tail,7,Đuôi nhiều lông
+dog_penis,0,Dương vật chó
+big_horn,7,Sừng to
+yellow_anus,7,Hậu môn vàng
+cat_bag,0,Túi mèo
+striped_coat,0,Áo khoác kẻ sọc
+long_eyebrows,0,Lông mày dài
+grey_helmet,0,Mũ bảo hiểm màu xám
+brown_pupils,0,Đồng tử nâu
 blue_face,7,Khuôn mặt xanh dương
 silver_skin,0,Da màu bạc
+spiked_belt,0,Thắt lưng có gai
+multicolored_necktie,0,Cà vạt nhiều màu
+torn_underwear,0,Đồ lót rách
+gold_belt,0,Thắt lưng vàng kim
+penis_ribbon,0,Ruy băng dương vật
+yellow_lips,0,Môi vàng
+torn_coat,0,Áo khoác rách
+green_legwear,7,Đồ che chân màu xanh lá
+striped_face,7,Khuôn mặt kẻ sọc
+shoulder_hair,0,Tóc vai
 blue_arms,7,Cánh tay xanh dương
 photorealistic,0,Phong cách ảnh chân thực
+brown_bra,0,Áo ngực màu nâu
+bear_costume,0,Trang phục gấu
+grey_bag,0,Túi xám
+smooth_skin,7,Da trơn
 dawn,0,Rạng đông
+striped_ears,7,Tai kẻ sọc
+rubber_gloves,0,Găng tay cao su
+tight_underwear,7,Đồ lót ôm sát
+grey_apron,0,Tạp dề màu xám
+plaid_panties,0,Quần lót kẻ caro
+orange_eyebrows,7,Lông mày cam
+pink_paws,7,Bàn chân thú hồng
+owl_ears,0,Tai cú mèo
+orange_underwear,7,Đồ lót màu cam
+glowing_horns,0,Sừng phát sáng
 green_hands,0,Bàn tay xanh lá
+yellow_belly,7,Bụng vàng
+torn_cloak,0,Áo choàng rách
+goat_tail,0,Đuôi dê
+green_eyebrows,7,Lông mày xanh lá
+fur_cloak,0,Áo choàng lông
+striped_hat,0,Mũ kẻ sọc
+huge_sheath,7,Bao dương vật khổng lồ
+wing_piercing,0,Khuyên cánh
+green_helmet,0,Mũ bảo hiểm màu xanh lá
+print_sweater,0,Áo len họa tiết
+pink_headwear,7,Phụ kiện đầu hồng
 huge_feet,7,Bàn chân khổng lồ
+fluffy_clothes,0,Quần áo bồng bềnh
+chest_eye,0,Mắt ngực
 huge_ears,0,Tai khổng lồ
+spiked_armor,0,Giáp có gai
 blue_legs,7,Chân xanh dương
+grey_legwear,7,Đồ che chân màu xám
+wrist_flower,0,Hoa cổ tay
 short_fur,7,Lông ngắn
 rabbit_hat,0,Mũ thỏ
+purple_hood,0,Mũ trùm màu tím
+christmas_sweater,0,Áo len Giáng sinh
+cheek_piercing,0,Khuyên gò má
+black_jumpsuit,0,Áo liền quần đen
 red_glasses,7,Kính đỏ
+orange_vulva,7,Âm hộ cam
 orange_face,7,Khuôn mặt cam
+wrist_belt,0,Thắt lưng cổ tay
+torn_wings,0,Cánh rách
 grey_tongue,0,Lưỡi xám
+orange_leotard,0,Leotard cam
 long_fingers,0,Ngón tay dài
+animal_helmet,0,Mũ bảo hiểm động vật
+fur_boots,0,Bốt lông
 9:14,14,Tỷ lệ 9:14
+pig_nose,0,Mũi lợn
 very_long_tongue,0,Lưỡi rất dài
 small_ears,7,Tai nhỏ
-orange_coat,0,Áo khoác cam
+small_butt,7,Mông nhỏ
+rice_hat,0,Mũ cơm
+penis_clothing,7,Trang phục dương vật
+white_jumpsuit,0,Áo liền quần trắng
+lace_sleeves,0,Tay áo ren
+brown_sheath,7,Bao dương vật nâu
+wool_hair,7,Tóc len
+orange_coat,0,Áo khoác màu cam
+long_scarf,0,Khăn quàng dài
+grey_belly,7,Bụng xám
+green_jumpsuit,0,Áo liền quần xanh lá
 short_ears,7,Tai ngắn
+red_crown,0,Vương miện đỏ
+purple_bag,0,Túi tím
+straight_arm,7,Cánh tay thẳng
+yellow_collar,0,Cổ áo màu vàng
+white_elbow_gloves,7,Găng tay khuỷu tay màu trắng
+plaid_ribbon,0,Ruy băng kẻ caro
 pointy_shoes,0,Giày nhọn
 white_toes,7,Ngón chân trắng
+checkered_bow,0,Nơ kẻ ca-rô
 big_wings,7,Cánh to
+yellow_headwear,7,Phụ kiện đầu vàng
+pig_ears,0,Tai lợn
+red_panda_ears,0,Tai gấu trúc đỏ
 brown_breasts,7,Ngực nâu
+smooth_horn,7,Sừng trơn
+rabbit_costume,0,Trang phục thỏ
 orange_horns,0,Sừng cam
+butterfly_tattoo,0,Hình xăm bươm bướm
 brown_flower,0,Hoa nâu
+fluffy_paws,7,Bàn chân thú bồng bềnh
+latex_thighhighs,0,Tất cao đùi latex
+orange_apron,0,Tạp dề màu cam
 2000,0,Năm 2000
+grey_sheath,7,Bao dương vật xám
+torn_swimsuit,0,Đồ bơi rách
+fish_tank,0,Áo ba lỗ cá
+striped_penis,7,Dương vật kẻ sọc
 grey_breasts,7,Ngực xám
+white_paws,7,Bàn chân thú trắng
 red_feet,0,Bàn chân đỏ
+glowing_flower,0,Hoa phát sáng
+straight_leg,7,Chân thẳng
+yellow_armor,0,Giáp vàng
+checkered_dress,0,Váy kẻ ca-rô
 dark_cloud,0,Mây sẫm
+striped_thigh_socks,7,Tất đùi kẻ sọc
 green_arms,7,Cánh tay xanh lá
 yellow_breasts,7,Ngực vàng
+back_ribbon,0,Ruy băng lưng
 yellow_face,7,Khuôn mặt vàng
+yellow_sailor_collar,0,Cổ áo thủy thủ màu vàng
+brown_paws,7,Bàn chân thú nâu
 green_sky,0,Bầu trời xanh lá
+money_bag,0,Túi tiền
+striped_swimwear,7,Đồ bơi kẻ sọc
+grey_pupils,0,Đồng tử xám
+checkered_clothing,7,Trang phục kẻ ca-rô
+cow_costume,0,Trang phục bò
+butterfly_brooch,0,Trâm cài bươm bướm
+butterfly_earrings,0,Khuyên tai bươm bướm
+black_bracelet,7,Vòng tay đen
+shadowed_eyes,7,Mắt có bóng
+red_armwear,7,Đồ che tay màu đỏ
+latex_underwear,0,Đồ lót latex
+green_hood,0,Mũ trùm màu xanh lá
 14:9,14,Tỷ lệ 14:9
+ass_tattoo,0,Hình xăm mông
+print_pants,0,Quần họa tiết
+orange_bra,0,Áo ngực màu cam
+grey_headwear,7,Phụ kiện đầu xám
 green_face,7,Khuôn mặt xanh lá
+glowing_hand,0,Bàn tay phát sáng
 purple_mouth,0,Miệng tím
 red_face,7,Khuôn mặt đỏ
+otter_ears,0,Tai rái cá
 light_face,7,Khuôn mặt nhạt
+grey_anus,7,Hậu môn xám
 long_mouth,0,Miệng dài
 yellow_hands,0,Bàn tay vàng
+satin_panties,0,Quần lót sa tanh
+green_eyewear,7,Kính xanh lá
 large_horns,0,Sừng lớn
+pink_cheeks,7,Má hồng
+print_hat,0,Mũ họa tiết
+black_butt,7,Mông đen
 yellow_feet,7,Bàn chân vàng
 blue_feet,7,Bàn chân xanh dương
+brown_suit,0,Bộ đồ màu nâu
+thigh_tattoo,7,Hình xăm đùi
+ear_flower,0,Hoa tai
+gold_bra,0,Áo ngực màu vàng kim
 multicolored_shorts,0,Quần short nhiều màu
+white_anus,7,Hậu môn trắng
+glowing_anus,0,Hậu môn phát sáng
+purple_apron,0,Tạp dề màu tím
 grey_hands,7,Bàn tay xám
 red_mouth,7,Miệng đỏ
+blue_paws,7,Bàn chân thú xanh dương
+multicolored_bowtie,0,Nơ cổ nhiều màu
 animal_legs,0,Chân động vật
 grey_legs,7,Chân xám
+hair_wings,0,Cánh tóc
+bear_hood,0,Mũ trùm gấu
+head_flower,7,Hoa đầu
+big_iris,7,Mống mắt to
+blue_belly,7,Bụng xanh dương
+purple_headband,0,Băng đô tím
+print_apron,0,Tạp dề họa tiết
+micro_bra,0,Áo ngực rất nhỏ
+spiked_boots,0,Bốt có gai
 multicolored_ribbon,0,Ruy băng nhiều màu
+plaid_shorts,0,Quần short kẻ caro
 light_ears,7,Tai nhạt
 small_feet,7,Bàn chân nhỏ
 silver_dress,0,Váy bạc
+bat_nose,7,Mũi dơi
 purple_breasts,7,Ngực tím
+clock_eyes,0,Mắt đồng hồ
+red_thong,0,Quần lót dây đỏ
 green_legs,7,Chân xanh lá
 pink_breasts,7,Ngực hồng
 orange_legs,7,Chân cam
+black_belly,7,Bụng đen
 big_teeth,7,Răng to
+long_toenails,0,Móng chân dài
+navel_pendant,7,Mặt dây chuyền rốn
+grey_lips,0,Môi xám
+thick_chest_hair,0,Tóc ngực dày
 pink_hands,7,Bàn tay hồng
+grey_collar,0,Cổ áo màu xám
 grey_arms,7,Cánh tay xám
 1999,0,Năm 1999
+sheep_tail,0,Đuôi cừu
 pink_feet,7,Bàn chân hồng
+multicolored_armor,0,Giáp nhiều màu
+fur_bikini,0,Bikini lông
 animal_skin,7,Da động vật
+dark_eyebrows,7,Lông mày sẫm
+spiked_gloves,0,Găng tay có gai
+dark_pupils,7,Đồng tử sẫm
+green_suit,0,Bộ đồ màu xanh lá
+glowing_tail,0,Đuôi phát sáng
+furry_balls,7,Tinh hoàn nhiều lông
 pointy_boots,0,Bốt nhọn
+dark_clothing,7,Trang phục sẫm
+dirty_socks,7,Tất bẩn
+coin_purse,0,Túi cầm tay đồng xu
+plaid_sleeves,0,Tay áo kẻ caro
 fluffy_fur,7,Lông bồng bềnh
+blue_butt,7,Mông xanh dương
 light_tail,7,Đuôi nhạt
+latex_thigh_boots,0,Bốt đùi latex
+wet_face,0,Khuôn mặt ướt
 dark_eyes,7,Mắt sẫm
-pink_stockings,7,Bít tất hồng
+thigh_bow,0,Nơ đùi
+purple_suit,0,Bộ đồ màu tím
+pink_stockings,7,Bít tất màu hồng
 yellow_legs,7,Chân vàng
 purple_hands,0,Bàn tay tím
+panda_hood,0,Mũ trùm gấu trúc
 silver_necklace,0,Vòng cổ bạc
+dragon_tattoo,0,Hình xăm rồng
 round_body,7,Cơ thể tròn
+military_cap,7,Mũ lưỡi trai quân đội
 1998,0,Năm 1998
+plaid_bra,0,Áo ngực kẻ caro
+snake_tattoo,0,Hình xăm rắn
+brown_legwear,7,Đồ che chân màu nâu
 big_glasses,7,Kính to
 green_glasses,7,Kính xanh lá
+butt_wings,7,Cánh mông
 dark_ears,7,Tai sẫm
+brown_bodysuit,0,Đồ liền thân nâu
+belly_mouth,7,Miệng bụng
+glowing_fur,7,Lông phát sáng
+checkered_ribbon,0,Ruy băng kẻ ca-rô
 very_long_ears,0,Tai rất dài
 multicolored_pants,0,Quần nhiều màu
 green_breasts,7,Ngực xanh lá
+wing_ears,0,Tai cánh
 black_fingers,7,Ngón tay đen
 1:3,14,Tỷ lệ 1:3
+pink_crown,0,Vương miện hồng
+torn_hat,0,Mũ rách
+glowing_nose,7,Mũi phát sáng
+open_jumpsuit,0,Áo liền quần mở
+black_crown,0,Vương miện đen
+hyena_tail,0,Đuôi linh cẩu
+finger_tattoo,0,Hình xăm ngón tay
+gold_buckle,0,Khóa vàng kim
 green_mouth,7,Miệng xanh lá
+pink_armwear,7,Đồ che tay màu hồng
+overweight_top,7,Áo thừa cân
+blue_armwear,7,Đồ che tay màu xanh dương
+red_panda_tail,0,Đuôi gấu trúc đỏ
+spiked_headband,0,Băng đô có gai
+wet_skirt,0,Chân váy ướt
+micro_thighs,7,Đùi rất nhỏ
+multicolored_beak,7,Mỏ nhiều màu
+spiked_helmet,0,Mũ bảo hiểm có gai
+tail_penis,7,Dương vật đuôi
 multicolored_panties,0,Quần lót nhiều màu
+gold_nails,0,Móng tay vàng kim
+black_thigh_boots,7,Bốt đùi màu đen
+orange_lips,0,Môi cam
+print_scarf,0,Khăn quàng họa tiết
+paper_background,0,Nền giấy
+thick_arm_hair,0,Tóc cánh tay dày
+lace_thighhighs,0,Tất cao đùi ren
+multicolored_armwear,7,Đồ che tay nhiều màu
+shark_teeth,7,Răng cá mập
 yellow_arms,7,Cánh tay vàng
+puffy_chest,0,Ngực phồng
 huge_horns,0,Sừng khổng lồ
-red_stockings,7,Bít tất đỏ
+sweaty_chest,7,Ngực đầm mồ hôi
+orange_anus,7,Hậu môn cam
+red_stockings,7,Bít tất màu đỏ
+print_socks,0,Tất họa tiết
 round_eyes,7,Mắt tròn
+huge_cheeks,7,Má khổng lồ
+food_costume,0,Trang phục thức ăn
+partially_open_shirt,0,Áo sơ mi một phần mở
+pink_eyewear,7,Kính hồng
+hair_belt,0,Thắt lưng tóc
+big_chest,7,Ngực to
+penis_tongue,7,Lưỡi dương vật
+latex_dress,0,Váy latex
 orange_arms,7,Cánh tay cam
 grey_feet,7,Bàn chân xám
+yellow_jumpsuit,0,Áo liền quần vàng
+black_thigh_socks,7,Tất đùi màu đen
+print_swimsuit,0,Đồ bơi họa tiết
 short_legs,7,Chân ngắn
+grey_butt,7,Mông xám
+red_veil,0,Màn che mặt đỏ
+silver_earrings,0,Khuyên tai bạc
+pleated_sleeves,0,Tay áo xếp ly
+print_bodysuit,0,Đồ liền thân họa tiết
 pink_face,7,Khuôn mặt hồng
+sailor_uniform,7,Đồng phục thủy thủ
+eye_tattoo,0,Hình xăm mắt
 orange_feet,7,Bàn chân cam
+black_lingerie,7,Đồ lót nữ đen
+lace_background,0,Nền ren
 gold_boots,0,Bốt màu vàng kim
+goat_horn,7,Sừng dê
+latex_pants,0,Quần latex
 light_breasts,7,Ngực nhạt
+white_areola,7,Quầng vú trắng
+orange_goggles,0,Kính bảo hộ cam
+thick_navel_hair,0,Tóc rốn dày
 straight_arms,7,Cánh tay thẳng
+mini_witch_hat,0,Mũ phù thủy siêu ngắn
+partially_open_jacket,0,Áo khoác một phần mở
+bear_print_panties,0,Quần lót họa tiết gấu
+frilled_vest,0,Áo ghi-lê nhún xếp
+food_hair,7,Tóc thức ăn
+print_leotard,0,Leotard họa tiết
+green_lipstick,7,Son môi xanh lá
+plaid_apron,0,Tạp dề kẻ caro
+animal_ear_helmet,0,Mũ bảo hiểm tai động vật
+hair_mouth,7,Miệng tóc
+striped_back,7,Lưng kẻ sọc
+magic_arm,0,Cánh tay phép thuật
+micro_legs,7,Chân rất nhỏ
+pink_helmet,0,Mũ bảo hiểm màu hồng
+torn_shoes,0,Giày rách
+military_clothing,7,Trang phục quân đội
+yellow_helmet,0,Mũ bảo hiểm màu vàng
+silver_bracelet,0,Vòng tay bạc
+red_jumpsuit,0,Áo liền quần đỏ
+pink_tattoo,0,Hình xăm hồng
 round_nose,0,Mũi tròn
+sweaty_vulva,7,Âm hộ đầm mồ hôi
 red_arms,7,Cánh tay đỏ
 braided_tail,0,Đuôi tết
+blue_eyewear,7,Kính xanh dương
+sweaty_clothing,7,Trang phục đầm mồ hôi
+torn_sweater,0,Áo len rách
+torn_bikini,0,Bikini rách
+orange_collar,0,Cổ áo màu cam
+brown_butt,7,Mông nâu
 multicolored_pantyhose,0,Quần tất nhiều màu
+golden_arms,0,Cánh tay màu vàng
 blue_fingers,7,Ngón tay xanh dương
+pink_fingernails,7,Móng tay hồng
+lace_collar,0,Cổ áo ren
+print_ribbon,0,Ruy băng họa tiết
+striped_belt,0,Thắt lưng kẻ sọc
+bear_bag,0,Túi gấu
+pink_thong,0,Quần lót dây hồng
+tail_belt,0,Thắt lưng đuôi
+orange_headwear,7,Phụ kiện đầu cam
+red_fingernails,7,Móng tay đỏ
+back_hair,0,Lông lưng
+pink_beak,7,Mỏ hồng
+light_penis,7,Dương vật nhạt
+bubble_background,0,Nền bọt khí
+long_hoodie,0,Áo hoodie dài
+hand_hair,0,Lông tay
+latex_panties,0,Quần lót latex
+red_goggles,0,Kính bảo hộ đỏ
+patterned_legwear,0,Đồ che chân có hoa văn
+ferret_ears,0,Tai chồn bạc
 dark_tail,7,Đuôi sẫm
+blue_fingernails,7,Móng tay xanh dương
+metal_wings,0,Cánh kim loại
+ankle_wings,0,Cánh cổ chân
+multicolored_sweater,0,Áo len nhiều màu
+pink_hood,0,Mũ trùm màu hồng
 gold_gloves,0,Găng tay vàng kim
+orange_swimwear,7,Đồ bơi màu cam
+torn_kimono,0,Kimono rách
 1997,0,Năm 1997
+silver_jewelry,0,Trang sức màu bạc
 gold_dress,0,Váy vàng kim
+yellow_hood,0,Mũ trùm màu vàng
 multicolored_sky,0,Bầu trời nhiều màu
+whale_hat,0,Mũ cá voi
 purple_face,7,Khuôn mặt tím
+lace_pantyhose,0,Quần tất ren
+print_boots,0,Bốt họa tiết
+orange_cardigan,0,Áo cardigan cam
+brown_helmet,0,Mũ bảo hiểm màu nâu
 long_toes,0,Ngón chân dài
+yellow_butt,7,Mông vàng
+yellow_cheeks,7,Má vàng
+white_thigh_socks,7,Tất đùi màu trắng
+glowing_areola,7,Quầng vú phát sáng
 3:1,14,Tỷ lệ 3:1
+pleated_shirt,0,Áo sơ mi xếp ly
 white_tongue,0,Lưỡi trắng
 wide_face,0,Khuôn mặt rộng
+checkered_legwear,0,Đồ che chân kẻ ca-rô
+blue_sheath,7,Bao dương vật xanh dương
+sheep_costume,0,Trang phục cừu
+brown_belly,7,Bụng nâu
+winter_clothing,7,Trang phục mùa đông
+multicolored_butt,7,Mông nhiều màu
+penis_bow,0,Nơ dương vật
+red_butt,7,Mông đỏ
+striped_neck,7,Cổ kẻ sọc
+blue_beak,7,Mỏ xanh dương
+frilled_coat,0,Áo khoác nhún xếp
+gold_headwear,0,Phụ kiện đầu vàng kim
+print_swimwear,7,Đồ bơi họa tiết
+pink_armor,0,Giáp hồng
+cheek_tattoo,0,Hình xăm gò má
 red_legs,7,Chân đỏ
+brown_headband,0,Băng đô nâu
 brown_fingers,7,Ngón tay nâu
 orange_hands,7,Bàn tay cam
+tiger_costume,0,Trang phục hổ
+jackal_tail,0,Đuôi chồn sói
+plaid_socks,0,Tất kẻ caro
+nipple_mouth,7,Miệng núm vú
+military_coat,0,Áo khoác quân đội
+foot_pussy,0,Âm hộ bàn chân
+ass_hair,0,Tóc mông
 green_feet,7,Bàn chân xanh lá
+angel_wing_uniform,0,Đồng phục cánh thiên thần
 black_teeth,0,Răng đen
+glowing_pupils,0,Đồng tử phát sáng
+yellow_eyewear,7,Kính vàng
+yellow_legwear,7,Đồ che chân màu vàng
 wavy_tail,7,Đuôi gợn sóng
+metal_gloves,0,Găng tay kim loại
 long_fur,7,Lông dài
+brown_hood,0,Mũ trùm màu nâu
 big_arms,7,Cánh tay to
+formal_clothing,7,Trang phục trang trọng
+black_tattoo,7,Hình xăm đen
+wolf_paws,0,Bàn chân thú sói
 pink_glasses,7,Kính hồng
-purple_stockings,7,Bít tất tím
+torn_bra,0,Áo ngực rách
+dog_costume,0,Trang phục chó
+plaid_coat,0,Áo khoác kẻ caro
+huge_lips,7,Môi khổng lồ
+brown_armor,0,Giáp nâu
+multicolored_thigh_socks,7,Tất đùi nhiều màu
+orange_bag,0,Túi cam
+spiked_clothing,7,Trang phục có gai
+grey_hood,0,Mũ trùm màu xám
+striped_leotard,0,Leotard kẻ sọc
+white_lips,0,Môi trắng
+huge_clitoris,0,Âm vật khổng lồ
+latex_skin,7,Da latex
+gold_leotard,0,Leotard vàng kim
+sailor_cap,7,Mũ lưỡi trai thủy thủ
+body_jewelry,0,Trang sức cơ thể
+silver_bikini,0,Bikini màu bạc
+blue_clitoris,7,Âm vật xanh dương
+pink_belly,7,Bụng hồng
+purple_stockings,7,Bít tất màu tím
+golden_clothing,7,Trang phục màu vàng
 gold_skin,0,Da màu vàng kim
 red_breasts,7,Ngực đỏ
+explosion_background,0,Nền vụ nổ
+black_toenails,7,Móng chân đen
+white_neck,7,Cổ trắng
 gold_horns,0,Sừng vàng kim
-blue_stockings,7,Bít tất xanh dương
+plaid_sailor_collar,0,Cổ áo thủy thủ kẻ caro
+blue_stockings,7,Bít tất màu xanh dương
+butterfly_print_kimono,0,Kimono họa tiết bươm bướm
 small_eyes,7,Mắt nhỏ
+purple_helmet,0,Mũ bảo hiểm màu tím
+glowing_hands,0,Bàn tay phát sáng
+head_tail,0,Đuôi đầu
+green_butt,7,Mông xanh lá
 light_nose,7,Mũi nhạt
+leather_skirt,0,Chân váy da
+red_jewelry,7,Trang sức màu đỏ
+purple_eyewear,7,Kính tím
+multicolored_swimwear,7,Đồ bơi nhiều màu
+butterfly_necklace,0,Vòng cổ bươm bướm
+light_areola,7,Quầng vú nhạt
 open_wings,7,Cánh mở
+blue_tattoo,0,Hình xăm xanh dương
+ankle_flower,0,Hoa cổ chân
+fur_clothing,7,Trang phục lông
 blue_teeth,0,Răng xanh dương
 white_clouds,7,Mây trắng
+wet_skin,7,Da ướt
+brown_beak,7,Mỏ nâu
+fur_sleeves,0,Tay áo lông
+cow_print_armwear,7,Đồ che tay họa tiết bò
+leather_collar,0,Cổ áo da
+multicolored_headwear,7,Phụ kiện đầu nhiều màu
 messy_fur,7,Lông rối
+brown_underwear,7,Đồ lót màu nâu
+bat_tail,0,Đuôi dơi
 pale_body,7,Cơ thể nhạt
 huge_wings,7,Cánh khổng lồ
+large_clitoris,0,Âm vật lớn
 gold_body,7,Cơ thể vàng kim
+light_clothing,7,Trang phục nhạt
+blue_crown,0,Vương miện xanh dương
 big_hat,7,Mũ to
 thick_tongue,7,Lưỡi dày
+thin_penis,7,Dương vật mỏng
+orange_legwear,7,Đồ che chân màu cam
 gold_thighhighs,0,Tất cao đùi vàng kim
+arm_bow,0,Nơ cánh tay
+thick_leg_hair,0,Tóc chân dày
+open_bag,0,Túi mở
 multicolored_sleeves,0,Tay áo nhiều màu
+print_cape,0,Áo choàng họa tiết
+head_tattoo,0,Hình xăm đầu
+leather_vest,0,Áo ghi-lê da
 large_ribbon,0,Ruy băng lớn
+closed_toe_shoes,7,Giày ngón chân khép
+dog_paws,0,Bàn chân thú chó
 black_toes,7,Ngón chân đen
+thigh_sheath,0,Bao dương vật đùi
 pink_legs,7,Chân hồng
+tiger_paws,0,Bàn chân thú hổ
+purple_fingernails,7,Móng tay tím
+spiked_shoes,0,Giày có gai
+grey_veil,0,Màn che mặt xám
+fruit_background,0,Nền trái cây
+red_beak,7,Mỏ đỏ
 pale_fur,7,Lông nhạt
+yellow_sheath,7,Bao dương vật vàng
+latex_hood,7,Mũ trùm latex
+red_belly,7,Bụng đỏ
+light_balls,7,Tinh hoàn nhạt
+purple_belly,7,Bụng tím
+hair_hand,7,Bàn tay tóc
+cow_print_sleeves,0,Tay áo họa tiết bò
+glowing_belly,7,Bụng phát sáng
 1996,0,Năm 1996
 green_fingers,7,Ngón tay xanh lá
 orange_breasts,7,Ngực cam
+red_armpit_hair,0,Tóc nách màu đỏ
 grey_fingers,7,Ngón tay xám
+white_beak,7,Mỏ trắng
+wet_pantyhose,0,Quần tất ướt
+orange_butt,7,Mông cam
+cow_horn,7,Sừng bò
+open_cloak,0,Áo choàng mở
+dark_balls,7,Tinh hoàn sẫm
+knee_armor,0,Giáp đầu gối
 multicolored_stockings,7,Bít tất nhiều màu
+cropped_ears,7,Tai lửng
+metal_penis,7,Dương vật kim loại
+torn_vest,0,Áo ghi-lê rách
+bird_costume,0,Trang phục chim
 red_necklace,7,Vòng cổ đỏ
+striped_suit,0,Bộ đồ kẻ sọc
 blue_glasses,7,Kính xanh dương
+pig_tail,0,Đuôi lợn
+lace_stockings,7,Bít tất ren
+spiked_wings,0,Cánh có gai
+checkered_hat,0,Mũ kẻ ca-rô
+dragon_costume,0,Trang phục rồng
+multicolored_bra,0,Áo ngực nhiều màu
+tail_bag,7,Túi đuôi
+blue_thong,7,Quần lót dây xanh dương
 big_legs,7,Chân to
 huge_hands,7,Bàn tay khổng lồ
 round_tail,7,Đuôi tròn
+light_belly,7,Bụng nhạt
+sweaty_back,7,Lưng đầm mồ hôi
+print_coat,0,Áo khoác họa tiết
+silver_tiara,0,Vương miện nhỏ bạc
+belly_piercing,7,Khuyên bụng
+metal_bikini,0,Bikini kim loại
 purple_legs,7,Chân tím
+tail_tattoo,7,Hình xăm đuôi
+bee_costume,0,Trang phục ong
 light_eyes,7,Mắt nhạt
+chest_ribbon,0,Ruy băng ngực
+metal_belt,0,Thắt lưng kim loại
+wolf_hood,0,Mũ trùm sói
+wing_cape,0,Áo choàng cánh
+gold_helmet,0,Mũ bảo hiểm màu vàng kim
+checkered_vest,0,Áo ghi-lê kẻ ca-rô
+tail_hand,7,Bàn tay đuôi
+purple_elbow_gloves,7,Găng tay khuỷu tay màu tím
+long_beak,7,Mỏ dài
 brown_toes,7,Ngón chân nâu
 brown_tongue,7,Lưỡi nâu
 purple_arms,7,Cánh tay tím
+pink_cloak,0,Áo choàng màu hồng
+dog_hood,0,Mũ trùm chó
 fox_hat,0,Mũ cáo
+cat_print_panties,0,Quần lót họa tiết mèo
+striped_apron,0,Tạp dề kẻ sọc
 light_hands,7,Bàn tay nhạt
 purple_feet,7,Bàn chân tím
+tight_top,0,Áo ôm sát
+denim_vest,0,Áo ghi-lê jean
+wet_thighhighs,0,Tất cao đùi ướt
+pink_jumpsuit,0,Áo liền quần hồng
+frilled_boots,0,Bốt nhún xếp
+head_bow,7,Nơ đầu
 gold_teeth,0,Răng vàng kim
+penis_tattoo,0,Hình xăm dương vật
+torn_ribbon,0,Ruy băng rách
+blue_ear_piercing,7,Khuyên tai xanh dương
+silver_crown,0,Vương miện bạc
+grey_eyewear,7,Kính xám
+checkered_sleeves,0,Tay áo kẻ ca-rô
 multicolored_legs,7,Chân nhiều màu
+bear_paws,0,Bàn chân thú gấu
+pink_jewelry,7,Trang sức màu hồng
+panda_costume,0,Trang phục gấu trúc
 multicolored_arms,7,Cánh tay nhiều màu
+small_testicles,0,Tinh hoàn nhỏ
+round_collar,0,Cổ áo tròn
+tail_flower,0,Hoa đuôi
+stomach_hair,0,Lông bụng
+glowing_ears,0,Tai phát sáng
+ferret_tail,0,Đuôi chồn bạc
+checkered_bowtie,0,Nơ cổ kẻ ca-rô
+latex_skirt,0,Chân váy latex
+glowing_skin,0,Da phát sáng
+green_belly,7,Bụng xanh lá
+red_sneakers,7,Giày thể thao đỏ
+print_vest,0,Áo ghi-lê họa tiết
 bear_hat,0,Mũ gấu
 multicolored_tongue,7,Lưỡi nhiều màu
+arm_scarf,0,Khăn quàng cánh tay
 fluffy_body,7,Cơ thể bồng bềnh
+red_elbow_gloves,7,Găng tay khuỷu tay màu đỏ
 pink_arms,7,Cánh tay hồng
+pink_butt,7,Mông hồng
+hair_tattoo,0,Hình xăm tóc
+yellow_lipstick,7,Son môi vàng
+checkered_bikini,0,Bikini kẻ ca-rô
+demon_costume,0,Trang phục quỷ
 very_big_eyes,0,Mắt rất to
+striped_headband,0,Băng đô kẻ sọc
+orange_armor,0,Giáp cam
+spider_tattoo,0,Hình xăm nhện
+water_tank,0,Áo ba lỗ nước
+fluffy_butt,7,Mông bồng bềnh
+plaid_collar,0,Cổ áo kẻ caro
+torn_ear,7,Tai rách
+open-back_swimsuit,7,Đồ bơi lưng mở
 pink_necklace,7,Vòng cổ hồng
 blue_toes,7,Ngón chân xanh dương
+glowing_balls,7,Tinh hoàn phát sáng
 1995,0,Năm 1995
 brown_sky,0,Bầu trời nâu
+frog_costume,0,Trang phục ếch
+latex_bra,0,Áo ngực latex
+multicolored_cloak,0,Áo choàng nhiều màu
+purple_thong,0,Quần lót dây tím
+torn_boots,0,Bốt rách
+wrist_tattoo,0,Hình xăm cổ tay
 gold_ribbon,0,Ruy băng vàng kim
+green_fingernails,7,Móng tay xanh lá
+purple_butt,7,Mông tím
+dragon_horn,7,Sừng rồng
+casual_clothing,7,Trang phục thường ngày
+military_pants,7,Quần quân đội
 wide_mouth,0,Miệng rộng
+grey_jumpsuit,0,Áo liền quần xám
+gold_tattoo,0,Hình xăm vàng kim
+magic_hands,7,Bàn tay phép thuật
 yellow_mouth,7,Miệng vàng
+muscular_butt,7,Mông cơ bắp
+paper_hat,0,Mũ giấy
+frog_hat,0,Mũ ếch
+yellow_crown,0,Vương miện vàng
+big_navel,7,Rốn to
+tail_hair,7,Tóc đuôi
 thin_arms,7,Cánh tay mỏng
+rabbit_earrings,0,Khuyên tai thỏ
+wet_pants,0,Quần ướt
+latex_bikini,0,Bikini latex
+latex_headwear,7,Phụ kiện đầu latex
 light_arms,7,Cánh tay nhạt
+leather_suit,0,Bộ đồ da
 silver_body,7,Cơ thể bạc
 purple_glasses,7,Kính tím
+hand_mouth,0,Miệng bàn tay
+blue_jewelry,7,Trang sức màu xanh dương
+striped_bodysuit,0,Đồ liền thân kẻ sọc
+fire_flower,0,Hoa lửa
+glowing_clothes,0,Quần áo phát sáng
+cow_hood,0,Mũ trùm bò
+clock_hands,0,Bàn tay đồng hồ
+white_snout,7,Mõm trắng
+checkered_jacket,0,Áo khoác kẻ ca-rô
+fur_bracelet,0,Vòng tay lông
+body_tattoo,7,Hình xăm cơ thể
 small_hands,0,Bàn tay nhỏ
+stomach_mouth,0,Miệng bụng
+rabbit_ear_headwear,0,Phụ kiện đầu tai thỏ
+red_hair_tie,7,Cà vạt tóc đỏ
+green_armwear,7,Đồ che tay màu xanh lá
+grey_chest,7,Ngực xám
+white_sneakers,7,Giày thể thao trắng
+devil_costume,7,Trang phục quỷ
+wet_butt,7,Mông ướt
+hand_feet,7,Bàn chân bàn tay
+white_tiara,0,Vương miện nhỏ trắng
+pink_veil,0,Màn che mặt hồng
 green_teeth,0,Răng xanh lá
+wet_shorts,0,Quần short ướt
+tail_bracelet,7,Vòng tay đuôi
+cropped_arm,0,Cánh tay lửng
+raccoon_tail_hair,7,Tóc đuôi gấu mèo
+grey_armwear,7,Đồ che tay màu xám
+leather_legwear,7,Đồ che chân da
+wet_tongue,7,Lưỡi ướt
+frog_hood,0,Mũ trùm ếch
+pink_suit,0,Bộ đồ màu hồng
+bee_wings,0,Cánh ong
 dark_face,7,Khuôn mặt sẫm
+wavy_horn,7,Sừng gợn sóng
+silver_armor,0,Giáp bạc
 pink_fingers,7,Ngón tay hồng
+white_thong,7,Quần lót dây trắng
+rabbit_print_panties,0,Quần lót họa tiết thỏ
+open_toe_heels,7,Giày cao gót ngón chân mở
+glowing_arm,0,Cánh tay phát sáng
+metal_bracelet,0,Vòng tay kim loại
+dark_horn,7,Sừng sẫm
+print_headband,0,Băng đô họa tiết
+blue_cheeks,7,Má xanh dương
+multicolored_jewelry,7,Trang sức nhiều màu
+tight_belly,7,Bụng ôm sát
+purple_paws,7,Bàn chân thú tím
+wavy_eyebrows,0,Lông mày gợn sóng
+orange_eyewear,7,Kính cam
+neck_piercing,0,Khuyên cổ
 light_legs,7,Chân nhạt
+maid_leotard,0,Leotard hầu gái
+ghost_hands,0,Bàn tay ma
+leather_headwear,7,Phụ kiện đầu da
+robot_arm,7,Cánh tay người máy
+black_neck,7,Cổ đen
+puffy_dress,0,Váy phồng
 silver_shoes,0,Giày màu bạc
+green_paws,7,Bàn chân thú xanh lá
+red_lingerie,7,Đồ lót nữ đỏ
+fox_costume,0,Trang phục cáo
+fire_background,7,Nền lửa
 orange_fingers,7,Ngón tay cam
+leather_hat,7,Mũ da
+leather_shorts,0,Quần short da
+cow_print_elbow_gloves,7,Găng tay khuỷu tay họa tiết bò
+wet_tail,0,Đuôi ướt
 red_fingers,7,Ngón tay đỏ
+gold_penis,7,Dương vật vàng kim
+gold_headband,0,Băng đô vàng kim
+latex_shirt,0,Áo sơ mi latex
 red_teeth,0,Răng đỏ
+pink_toenails,7,Móng chân hồng
+dirty_hands,0,Bàn tay bẩn
+brown_chest,7,Ngực nâu
+panda_tail,0,Đuôi gấu trúc
+satin_bra,0,Áo ngực sa tanh
+gold_ear_piercing,7,Khuyên tai vàng kim
+puffy_coat,0,Áo khoác phồng
 rabbit_background,0,Nền thỏ
+sweaty_skin,7,Da đầm mồ hôi
+pink_thigh_socks,7,Tất đùi màu hồng
+sword_fingers,0,Ngón tay kiếm
+yellow_suit,0,Bộ đồ màu vàng
 light_fingers,7,Ngón tay nhạt
+black_sneakers,7,Giày thể thao đen
+grey_paws,7,Bàn chân thú xám
+metal_hair,0,Tóc kim loại
+light_chest,7,Ngực nhạt
+white_crown,0,Vương miện trắng
+grey_neck,7,Cổ xám
 small_mouth,7,Miệng nhỏ
 gold_panties,0,Quần lót vàng kim
+cow_hat,0,Mũ bò
+fur_gloves,0,Găng tay lông
+multicolored_elbow_gloves,7,Găng tay khuỷu tay nhiều màu
+thick_sheath,7,Bao dương vật dày
+fruit_earrings,0,Khuyên tai trái cây
+tiger_print_bikini,0,Bikini họa tiết hổ
+lace_dress,0,Váy ren
+beer_belly,7,Bụng bia
+pleated_pants,0,Quần xếp ly
+wet_anus,7,Hậu môn ướt
+wet_breasts,7,Ngực ướt
+green_neck,7,Cổ xanh lá
 blue_necklace,7,Vòng cổ xanh dương
 1994,0,Năm 1994
+orange_cloak,0,Áo choàng màu cam
+blue_pussy,0,Âm hộ xanh dương
+straight_horn,7,Sừng thẳng
+dirty_underwear,7,Đồ lót bẩn
+red_clitoris,7,Âm vật đỏ
+brown_eyewear,7,Kính nâu
+black_chest,7,Ngực đen
+striped_cardigan,0,Áo cardigan kẻ sọc
 7:3,14,Tỷ lệ 7:3
+brown_neck,7,Cổ nâu
 dark_hands,7,Bàn tay sẫm
+latex_lingerie,7,Đồ lót nữ latex
+snow_boots,0,Bốt tuyết
+pink_elbow_gloves,7,Găng tay khuỷu tay màu hồng
+lace_shirt,0,Áo sơ mi ren
+fish_tattoo,0,Hình xăm cá
+leg_bow,0,Nơ chân
+orange_hood,0,Mũ trùm màu cam
+black_piercing,7,Khuyên đen
+glowing_earrings,0,Khuyên tai phát sáng
+dark_lips,7,Môi sẫm
 huge_tongue,7,Lưỡi khổng lồ
+puffy_hair,0,Tóc phồng
+grey_headband,0,Băng đô xám
 bird_hat,0,Mũ chim
+light_butt,7,Mông nhạt
 wide_tongue,7,Lưỡi rộng
+green_veil,0,Màn che mặt xanh lá
 fluffy_breasts,7,Ngực bồng bềnh
+rabbit_bag,0,Túi thỏ
+leg_piercing,0,Khuyên chân
 grey_glasses,7,Kính xám
+thigh_stockings,7,Bít tất đùi
+large_earrings,0,Khuyên tai lớn
+tail_vulva,7,Âm hộ đuôi
+glowing_clothing,7,Trang phục phát sáng
+blue_chest,7,Ngực xanh dương
+light_horn,7,Sừng nhạt
+chest_piercing,0,Khuyên ngực
 yellow_glasses,7,Kính vàng
+yellow_armwear,7,Đồ che tay màu vàng
 bright_eyes,7,Mắt sáng
 pale_eyes,7,Mắt nhạt
+yellow_paws,7,Bàn chân thú vàng
+frilled_necktie,0,Cà vạt nhún xếp
+thigh_armor,0,Giáp đùi
+orange_belly,7,Bụng cam
+torn_bow,0,Nơ rách
+bubble_helmet,7,Mũ bảo hiểm bọt khí
+ankle_belt,0,Thắt lưng cổ chân
+maid_hat,7,Mũ hầu gái
+latex_shorts,0,Quần short latex
+white_armpit_hair,0,Tóc nách màu trắng
 yellow_fingers,7,Ngón tay vàng
 light_tongue,7,Lưỡi nhạt
+paw_socks,0,Tất chân thú
 small_glasses,7,Kính nhỏ
+light_neck,7,Cổ nhạt
+white_fingernails,7,Móng tay trắng
+cat_earrings,0,Khuyên tai mèo
+military_helmet,7,Mũ bảo hiểm quân đội
+frilled_bracelet,0,Vòng tay nhún xếp
 multicolored_breasts,7,Ngực nhiều màu
+frog_headband,0,Băng đô ếch
+pink_hair_bow,7,Nơ tóc hồng
+torn_hoodie,0,Áo hoodie rách
+bloody_wings,0,Cánh vấy máu
+satin_bikini,0,Bikini sa tanh
+yellow_chest,7,Ngực vàng
+fur_skirt,0,Chân váy lông
 round_breasts,7,Ngực tròn
-grey_stockings,7,Bít tất xám
+cheek_horn,7,Sừng gò má
+grey_stockings,7,Bít tất màu xám
+torn_necktie,0,Cà vạt rách
+cat_paw,0,Bàn chân thú mèo
+blue_elbow_gloves,7,Găng tay khuỷu tay màu xanh dương
+green_chest,7,Ngực xanh lá
+sweaty_tail,7,Đuôi đầm mồ hôi
 1993,0,Năm 1993
+spiked_horns,0,Sừng có gai
+brown_armwear,7,Đồ che tay màu nâu
+blue_neck,7,Cổ xanh dương
+white_eyewear,7,Kính trắng
+tiger_hood,0,Mũ trùm hổ
 orange_mouth,7,Miệng cam
-green_stockings,7,Bít tất xanh lá
+light_eyebrows,7,Lông mày nhạt
+white_jewelry,7,Trang sức màu trắng
+frilled_pants,0,Quần nhún xếp
+tail_collar,7,Cổ áo đuôi
+white_lingerie,7,Đồ lót nữ trắng
+torn_skin,0,Da rách
+striped_elbow_gloves,7,Găng tay khuỷu tay kẻ sọc
+pink_top,0,Áo màu hồng
+fur_hair,7,Tóc lông
+fluffy_legwear,0,Đồ che chân bồng bềnh
+green_stockings,7,Bít tất màu xanh lá
+bat_tattoo,0,Hình xăm dơi
+green_thong,7,Quần lót dây xanh lá
+cow_print_legwear,7,Đồ che chân họa tiết bò
+multicolored_vest,0,Áo ghi-lê nhiều màu
+tail_armor,0,Giáp đuôi
+glowing_armor,0,Giáp phát sáng
 animal_background,0,Nền động vật
 bright_background,0,Nền sáng
+orange_helmet,0,Mũ bảo hiểm màu cam
+pink_lingerie,7,Đồ lót nữ hồng
+hand_bikini,7,Bikini bàn tay
+furry_ears,7,Tai nhiều lông
 light_feet,7,Bàn chân nhạt
+fur_hood,0,Mũ trùm lông
+metal_bra,0,Áo ngực kim loại
+hair_jewelry,0,Trang sức tóc
+red_toenails,7,Móng chân đỏ
 animal_arms,7,Cánh tay động vật
+white_tattoo,7,Hình xăm trắng
 white_necklace,7,Vòng cổ trắng
+hair_scarf,0,Khăn quàng tóc
+panda_hat,0,Mũ gấu trúc
 1930,14,Năm 1930
 messy_tail,7,Đuôi rối
+blue_eyelashes,7,Lông mi xanh dương
+skeleton_costume,0,Trang phục bộ xương
 large_wings,7,Cánh lớn
 long_boots,7,Bốt dài
 grey_toes,7,Ngón chân xám
+red_hair_bow,7,Nơ tóc đỏ
+blue_toenails,7,Móng chân xanh dương
+small_clothing,7,Trang phục nhỏ
+leg_wings,0,Cánh chân
+light_pussy,7,Âm hộ nhạt
+orange_cheeks,7,Má cam
+checkered_thighhighs,0,Tất cao đùi kẻ ca-rô
+red_paws,7,Bàn chân thú đỏ
+orange_sheath,7,Bao dương vật cam
+silver_belt,0,Thắt lưng bạc
+leather_underwear,7,Đồ lót da
+print_shoes,0,Giày họa tiết
 purple_fingers,7,Ngón tay tím
+striped_shoulders,7,Vai kẻ sọc
+frilled_anklet,0,Vòng chân nhún xếp
+frilled_cape,0,Áo choàng nhún xếp
 thick_fur,7,Lông dày
+orange_neck,7,Cổ cam
+hand_eye,0,Mắt bàn tay
+eye_makeup,7,Trang điểm mắt
+paw_sleeves,0,Tay áo chân thú
+tight_skirt,7,Chân váy ôm sát
+big_collar,7,Cổ áo to
+purple_clitoris,7,Âm vật tím
+striped_collar,0,Cổ áo kẻ sọc
+gold_bowtie,0,Nơ cổ vàng kim
+tight_swimwear,7,Đồ bơi ôm sát
+thick_clitoris,7,Âm vật dày
+small_areola,7,Quầng vú nhỏ
+striped_cape,0,Áo choàng kẻ sọc
 gold_bow,0,Nơ vàng kim
+small_eyebrows,7,Lông mày nhỏ
+face_veil,7,Màn che mặt mặt
 wide_nose,0,Mũi rộng
+blue_tiara,0,Vương miện nhỏ xanh dương
 orange_toes,7,Ngón chân cam
 big_toes,7,Ngón chân to
+glowing_jewelry,0,Trang sức phát sáng
 fluffy_arms,7,Cánh tay bồng bềnh
+multicolored_collar,0,Cổ áo nhiều màu
+lion_costume,0,Trang phục sư tử
+multicolored_belly,7,Bụng nhiều màu
+print_bag,0,Túi họa tiết
+squid_hat,0,Mũ mực
+tight_balls,7,Tinh hoàn ôm sát
+smooth_anus,7,Hậu môn trơn
+magic_penis,7,Dương vật phép thuật
+small_vulva,7,Âm hộ nhỏ
 pink_toes,7,Ngón chân hồng
+sweaty_pecs,7,Cơ ngực đầm mồ hôi
+purple_beak,7,Mỏ tím
+spiked_cape,0,Áo choàng có gai
+winter_gloves,0,Găng tay mùa đông
+green_jewelry,7,Trang sức màu xanh lá
+arrow_tattoo,0,Hình xăm mũi tên
+tight_panties,7,Quần lót ôm sát
+cow_print_leotard,0,Leotard họa tiết bò
+yellow_goggles,7,Kính bảo hộ vàng
+yellow_bracelet,7,Vòng tay vàng
+penis_sheath,0,Bao dương vật dương vật
+patterned_fur,7,Lông có hoa văn
+small_top,7,Áo nhỏ
+checkered_pants,0,Quần kẻ ca-rô
+thick_leg,7,Chân dày
 long_feet,7,Bàn chân dài
+checkered_apron,0,Tạp dề kẻ ca-rô
+golden_wings,0,Cánh màu vàng
+raccoon_hood,0,Mũ trùm gấu mèo
+toe_socks,0,Tất ngón chân
+penis_mouth,7,Miệng dương vật
+nose_beak,7,Mỏ mũi
+lace_socks,0,Tất ren
+yellow_thong,7,Quần lót dây vàng
+dirty_anus,7,Hậu môn bẩn
+frilled_bowtie,0,Nơ cổ nhún xếp
 dark_feet,7,Bàn chân sẫm
+orange_paws,7,Bàn chân thú cam
+leather_bikini,0,Bikini da
+wet_jacket,0,Áo khoác ướt
+multicolored_bracelet,7,Vòng tay nhiều màu
 fluffy_legs,7,Chân bồng bềnh
+brown_jumpsuit,0,Áo liền quần nâu
 red_toes,7,Ngón chân đỏ
+silver_nails,0,Móng tay bạc
+white_body_hair,7,Tóc cơ thể màu trắng
+head_arms,0,Cánh tay đầu
+cow_print_panties,0,Quần lót họa tiết bò
+blue_armpit_hair,0,Tóc nách màu xanh dương
+head_hands,7,Bàn tay đầu
+glowing_teeth,0,Răng phát sáng
+purple_sheath,7,Bao dương vật tím
+goat_legs,0,Chân dê
+orange_armwear,7,Đồ che tay màu cam
 dark_legs,7,Chân sẫm
+white_cheeks,7,Má trắng
+rabbit_ear_legwear,0,Đồ che chân tai thỏ
+purple_jewelry,7,Trang sức màu tím
+red_cap,7,Mũ lưỡi trai màu đỏ
+half-jacket,0,Áo khoác một nửa
+wet_bikini,0,Bikini ướt
 grey_teeth,7,Răng xám
+fluffy_shoulders,7,Vai bồng bềnh
 large_tongue,7,Lưỡi lớn
+golden_lipstick,7,Son môi màu vàng
 6:13,14,Tỷ lệ 6:13
+torn_hair_ribbon,0,Ruy băng tóc rách
+tight_bikini,7,Bikini ôm sát
+black_snout,7,Mõm đen
+wool_clothing,7,Trang phục len
+blue_thigh_socks,7,Tất đùi màu xanh dương
 pointy_hat,7,Mũ nhọn
+fish_hat,0,Mũ cá
+multicolored_suit,0,Bộ đồ nhiều màu
+gold_swimwear,7,Đồ bơi màu vàng kim
+foot_tattoo,0,Hình xăm bàn chân
+grey_crown,0,Vương miện xám
+cat_ear_headband,7,Băng đô tai mèo
+open_anus,7,Hậu môn mở
+big_beak,7,Mỏ to
+green_snout,7,Mõm xanh lá
+gold_cape,0,Áo choàng màu vàng kim
+black_clitoris,7,Âm vật đen
+black_makeup,7,Trang điểm đen
+fox_hood,0,Mũ trùm cáo
+striped_tongue,7,Lưỡi kẻ sọc
+chest_mouth,0,Miệng ngực
 orange_glasses,7,Kính cam
+sweaty_paws,7,Bàn chân thú đầm mồ hôi
+checkered_collar,0,Cổ áo kẻ ca-rô
+breast_piercing,0,Khuyên ngực
+white_thigh_boots,7,Bốt đùi màu trắng
+tight_suit,7,Bộ đồ ôm sát
+cow_print_bra,0,Áo ngực họa tiết bò
+big_snout,7,Mõm to
 short_arms,7,Cánh tay ngắn
 dark_arms,7,Cánh tay sẫm
+christmas_dress,7,Váy Giáng sinh
+metal_armor,7,Giáp kim loại
 white_thighs,7,Đùi trắng
+satin_dress,0,Váy sa tanh
+raccoon_penis,7,Dương vật gấu mèo
+chin_horn,7,Sừng cằm
 big_bow,7,Nơ to
+green_beak,7,Mỏ xanh lá
+multicolored_neck,7,Cổ nhiều màu
+blue_sneakers,7,Giày thể thao xanh dương
+purple_jumpsuit,0,Áo liền quần tím
+white_back,7,Lưng trắng
+blue_bracelet,7,Vòng tay xanh dương
+grey_piercing,7,Khuyên xám
+large_forehead,0,Trán lớn
+green_clitoris,7,Âm vật xanh lá
+pink_eyelashes,7,Lông mi hồng
+furry_legs,7,Chân nhiều lông
+brown_snout,7,Mõm nâu
+belly_fur,7,Lông bụng
+wing_tattoo,0,Hình xăm cánh
+leg_fur,0,Lông chân
+large_belt,0,Thắt lưng lớn
+metal_arm,7,Cánh tay kim loại
 purple_necklace,7,Vòng cổ tím
+silver_bodysuit,0,Đồ liền thân bạc
+head_jewelry,7,Trang sức đầu
+paw_tattoo,0,Hình xăm chân thú
+bat_earrings,0,Khuyên tai dơi
+denim_dress,0,Váy jean
 spiky_fur,7,Lông dựng
+purple_cheeks,7,Má tím
+purple_eyelashes,7,Lông mi tím
+torn_apron,0,Tạp dề rách
+big_ear,7,Tai to
+spiked_hat,0,Mũ có gai
+black_striped_fur,7,Lông kẻ sọc đen
+purple_makeup,7,Trang điểm tím
 human_skin,7,Da người
+checkered_sweater,0,Áo len kẻ ca-rô
 light_wings,7,Cánh nhạt
 green_toes,7,Ngón chân xanh lá
 medium_tail,7,Đuôi vừa
 big_fingers,7,Ngón tay to
+plaid_kimono,0,Kimono kẻ caro
 multicolored_feet,7,Bàn chân nhiều màu
+multicolored_eyewear,7,Kính nhiều màu
+multicolored_belt,0,Thắt lưng nhiều màu
 long_pants,7,Quần dài
+nipple_hair,0,Tóc núm vú
+round_bag,0,Túi tròn
+orange_suit,0,Bộ đồ màu cam
 multicolored_hands,7,Bàn tay nhiều màu
+sword_earrings,0,Khuyên tai kiếm
+tea_bag,7,Túi trà
+cat_helmet,0,Mũ bảo hiểm mèo
+red_bracelet,7,Vòng tay đỏ
+yellow_jewelry,7,Trang sức màu vàng
 dark_breasts,7,Ngực sẫm
 huge_hair,7,Tóc khổng lồ
+striped_wings,7,Cánh kẻ sọc
 orange_teeth,0,Răng cam
-brown_stockings,7,Bít tất nâu
+red_thigh_socks,7,Tất đùi màu đỏ
+spiked_balls,7,Tinh hoàn có gai
+long_necktie,0,Cà vạt dài
+red_chest,7,Ngực đỏ
+orange_snout,7,Mõm cam
+brown_stockings,7,Bít tất màu nâu
+silver_piercing,7,Khuyên bạc
+cropped_cardigan,0,Áo cardigan lửng
+striped_butt,7,Mông kẻ sọc
 human_ears,7,Tai người
+latex_thong,7,Quần lót dây latex
+paper_crown,0,Vương miện giấy
+small_iris,7,Mống mắt nhỏ
+red_sheath,7,Bao dương vật đỏ
+yellow_fingernails,7,Móng tay vàng
+silhouette_background,7,Nền bóng
+blue_cap,7,Mũ lưỡi trai màu xanh dương
+black_hand,7,Bàn tay đen
+winter_hat,7,Mũ mùa đông
+black_armpit_hair,7,Tóc nách màu đen
+grey_swimwear,7,Đồ bơi màu xám
+fur_sweater,0,Áo len lông
+nipple_sleeves,0,Tay áo núm vú
+butterfly_background,0,Nền bươm bướm
+red_neck,7,Cổ đỏ
+pink_bracelet,7,Vòng tay hồng
+arm_stockings,7,Bít tất cánh tay
+blue_backpack,7,Ba lô xanh dương
+foot_hands,7,Bàn tay bàn chân
 silver_gloves,0,Găng tay bạc
+dark_legwear,7,Đồ che chân sẫm
+checkered_panties,0,Quần lót kẻ ca-rô
+golden_body,7,Cơ thể màu vàng
+leather_leotard,0,Leotard da
+fish_costume,0,Trang phục cá
+tight_anus,7,Hậu môn ôm sát
+large_paws,7,Bàn chân thú lớn
+glowing_breasts,7,Ngực phát sáng
+bat_brooch,0,Trâm cài dơi
+frilled_penis,7,Dương vật nhún xếp
+furry_penis,7,Dương vật nhiều lông
+green_sheath,7,Bao dương vật xanh lá
+fluffy_penis,7,Dương vật bồng bềnh
+brown_eye,7,Mắt nâu
+gold_lips,0,Môi vàng kim
+black_ear_piercing,7,Khuyên tai đen
+wet_socks,0,Tất ướt
+green_arm,0,Cánh tay xanh lá
+sparkle_earrings,0,Khuyên tai ánh lấp lánh
+wrist_wings,0,Cánh cổ tay
 cat_feet,0,Bàn chân mèo
 1990,0,Năm 1990
+brown_armpit_hair,7,Tóc nách màu nâu
 braided_fur,7,Lông tết
+grey_fingernails,7,Móng tay xám
+orange_tattoo,7,Hình xăm cam
+arm_fur,7,Lông cánh tay
+red_eyelashes,7,Lông mi đỏ
+open_leotard,0,Leotard mở
+frilled_sweater,0,Áo len nhún xếp
+open-back_leotard,7,Leotard lưng mở
+brown_fingernails,7,Móng tay nâu
+hand_bra,7,Áo ngực bàn tay
+leg_bracelet,7,Vòng tay chân
+navel_tattoo,7,Hình xăm rốn
+furry_arms,7,Cánh tay nhiều lông
+cow_print_jacket,0,Áo khoác họa tiết bò
+muscular_chest,7,Ngực cơ bắp
+horse_costume,0,Trang phục ngựa
+blue_makeup,7,Trang điểm xanh dương
+hand_wings,0,Cánh bàn tay
 dark_fingers,7,Ngón tay sẫm
+multicolored_thong,7,Quần lót dây nhiều màu
+arm_piercing,0,Khuyên cánh tay
+ear_jewelry,7,Trang sức tai
 multicolored_nose,7,Mũi nhiều màu
+snake_head_tail,0,Đuôi đầu rắn
+angel_costume,7,Trang phục thiên thần
+glowing_muzzle,0,Mõm phát sáng
+leather_dress,0,Váy da
 dark_shirt,7,Áo sơ mi sẫm
+wet_balls,7,Tinh hoàn ướt
+spiked_shirt,0,Áo sơ mi có gai
+green_hair_tie,7,Cà vạt tóc xanh lá
+black_hair_tie,7,Cà vạt tóc đen
+purple_chest,7,Ngực tím
+purple_armpit_hair,0,Tóc nách màu tím
 tiger_panties,0,Quần lót hổ
+purple_toenails,7,Móng chân tím
+fluffy_hips,7,Hông bồng bềnh
+wet_feet,7,Bàn chân ướt
 green_necklace,7,Vòng cổ xanh lá
+pink_snout,7,Mõm hồng
+frilled_veil,0,Màn che mặt nhún xếp
+frilled_cloak,0,Áo choàng nhún xếp
+open_suit,7,Bộ đồ mở
 yellow_toes,7,Ngón chân vàng
+pink_sheath,7,Bao dương vật hồng
 gold_flower,0,Hoa vàng kim
+green_bracelet,7,Vòng tay xanh lá
 purple_toes,7,Ngón chân tím
+green_toenails,7,Móng chân xanh lá
+multicolored_balls,7,Tinh hoàn nhiều màu
+latex_top,0,Áo latex
 huge_arms,7,Cánh tay khổng lồ
+long_belt,0,Thắt lưng dài
+glowing_nails,0,Móng tay phát sáng
+medium_penis,7,Dương vật vừa
+yellow_piercing,7,Khuyên vàng
 gold_glasses,7,Kính vàng kim
+horn_sheath,7,Bao dương vật sừng
+striped_thighs,7,Đùi kẻ sọc
+maid_collar,7,Cổ áo hầu gái
 dog_hat,0,Mũ chó
 fluffy_thighs,7,Đùi bồng bềnh
+print_collar,0,Cổ áo họa tiết
+print_legwear,7,Đồ che chân họa tiết
+green_tattoo,0,Hình xăm xanh lá
+purple_pussy,0,Âm hộ tím
+ankle_tattoo,0,Hình xăm cổ chân
+gold_pendant,0,Mặt dây chuyền vàng kim
 dark_wings,7,Cánh sẫm
+wet_legs,7,Chân ướt
+finger_ribbon,0,Ruy băng ngón tay
 long_teeth,7,Răng dài
 white_glasses,7,Kính trắng
-gold_jacket,0,Áo khoác vàng kim
+sweaty_socks,7,Tất đầm mồ hôi
+ghost_earrings,0,Khuyên tai ma
+pig_snout,0,Mõm lợn
+grey_back,7,Lưng xám
+checkered_cape,0,Áo choàng kẻ ca-rô
+stone_skirt,0,Chân váy đá
+gold_jacket,0,Áo khoác màu vàng kim
+eye_piercing,0,Khuyên mắt
 yellow_necklace,7,Vòng cổ vàng
+multicolored_helmet,0,Mũ bảo hiểm nhiều màu
+neck_collar,7,Cổ áo cổ
+multicolored_sclera,0,Củng mạc nhiều màu
+muscular_arm,7,Cánh tay cơ bắp
+short_cape,0,Áo choàng ngắn
+robot_penis,7,Dương vật người máy
+arms_back,7,Lưng cánh tay
+purple_tattoo,0,Hình xăm tím
+breast_bow,7,Nơ ngực
+red_snout,7,Mõm đỏ
+belly_eye,7,Mắt bụng
+glowing_chest,0,Ngực phát sáng
+plaid_thighhighs,0,Tất cao đùi kẻ caro
+arm_jewelry,7,Trang sức cánh tay
+nipple_tattoo,7,Hình xăm núm vú
+wing_earrings,0,Khuyên tai cánh
 large_feet,0,Bàn chân lớn
 1991,0,Năm 1991
+leather_coat,0,Áo khoác da
+metal_teeth,7,Răng kim loại
+smoke_cloud,7,Mây khói
+purple_thigh_socks,7,Tất đùi màu tím
+torn_wing,7,Cánh rách
+green_backpack,7,Ba lô xanh lá
+glowing_face,7,Khuôn mặt phát sáng
 multicolored_necklace,7,Vòng cổ nhiều màu
+plaid_pantyhose,0,Quần tất kẻ caro
+purple_ear_piercing,7,Khuyên tai tím
+long_muzzle,7,Mõm dài
 small_body,7,Cơ thể nhỏ
+summer_hat,7,Mũ mùa hè
+green_piercing,7,Khuyên xanh lá
 fluffy_hands,0,Bàn tay bồng bềnh
+blue_uniform,7,Đồng phục màu xanh dương
+striped_balls,7,Tinh hoàn kẻ sọc
+fur_bra,0,Áo ngực lông
+steam_clouds,7,Mây hơi nước
 light_shirt,7,Áo sơ mi nhạt
+glowing_paws,7,Bàn chân thú phát sáng
+yellow_veil,0,Màn che mặt vàng
+sailor_jacket,0,Áo khoác thủy thủ
+torn_armwear,7,Đồ che tay rách
 wolf_hat,0,Mũ sói
+bald_tail,7,Đuôi trọc
+orange_lipstick,7,Son môi cam
+brown_swimwear,7,Đồ bơi màu nâu
+horse_anus,0,Hậu môn ngựa
+metal_tail,7,Đuôi kim loại
+multicolored_apron,0,Tạp dề nhiều màu
+paw_print_panties,0,Quần lót họa tiết chân thú
+black_spiked_collar,7,Cổ áo có gai màu đen
+sheep_hood,0,Mũ trùm cừu
+cat_ear_bikini,0,Bikini tai mèo
+skin_sheath,7,Bao dương vật da
+penis_arm,7,Cánh tay dương vật
+body_bag,0,Túi cơ thể
 dark_tongue,7,Lưỡi sẫm
+black_cap,7,Mũ lưỡi trai màu đen
+ear_fur,7,Lông tai
+mouse_costume,0,Trang phục chuột
+messy_clothing,7,Trang phục rối
+spider_legs,7,Chân nhện
+egg_belly,7,Bụng trứng
+black_nose_horn,7,Sừng mũi đen
+dark_nails,7,Móng tay sẫm
+leather_bag,0,Túi da
+blue_hair_tie,7,Cà vạt tóc xanh dương
+cow_print_lingerie,7,Đồ lót nữ họa tiết bò
+dark_butt,7,Mông sẫm
+torn_body,7,Cơ thể rách
+sweaty_fur,7,Lông đầm mồ hôi
+meat_armor,0,Giáp thịt
+sweaty_hips,7,Hông đầm mồ hôi
+frilled_underwear,0,Đồ lót nhún xếp
+fur_tattoo,7,Hình xăm lông
+purple_crown,0,Vương miện tím
 cat_stockings,7,Bít tất mèo
+chest_armor,7,Giáp ngực
+orange_chest,7,Ngực cam
+black_chest_hair,7,Tóc ngực màu đen
+multicolored_headband,0,Băng đô nhiều màu
+tight_bra,7,Áo ngực ôm sát
+wide_snout,7,Mõm rộng
+lantern_earrings,0,Khuyên tai đèn lồng
+dark_underwear,7,Đồ lót sẫm
+robot_arms,7,Cánh tay người máy
 1985,0,Năm 1985
+hand_tail,0,Đuôi bàn tay
+checkered_shorts,0,Quần short kẻ ca-rô
+small_anus,7,Hậu môn nhỏ
+long_finger,0,Ngón tay dài
+frilled_hood,0,Mũ trùm nhún xếp
+glowing_hat,0,Mũ phát sáng
+blue_piercing,7,Khuyên xanh dương
+blue_hair_bow,7,Nơ tóc xanh dương
 wavy_background,0,Nền gợn sóng
+ninja_suit,7,Bộ đồ ninja
+spiked_legwear,0,Đồ che chân có gai
+huge_horn,7,Sừng khổng lồ
+denim_bikini,0,Bikini jean
+bird_hood,0,Mũ trùm chim
+face_panties,7,Quần lót mặt
+print_hood,0,Mũ trùm họa tiết
 1989,0,Năm 1989
+yellow_neck,7,Cổ vàng
+skin_tight_suit,7,Bộ đồ da ôm sát
+plaid_underwear,7,Đồ lót kẻ caro
+penis_face,0,Khuôn mặt dương vật
+object_belt,0,Thắt lưng vật thể
+partial_bodysuit,0,Đồ liền thân một phần
+purple_lingerie,7,Đồ lót nữ tím
+silver_collar,0,Cổ áo màu bạc
+small_sheath,7,Bao dương vật nhỏ
+blue_goggles,7,Kính bảo hộ xanh dương
+grey_snout,7,Mõm xám
+brown_eyelashes,7,Lông mi nâu
+print_cloak,0,Áo choàng họa tiết
+fur_shirt,0,Áo sơ mi lông
+fur_dress,0,Váy lông
 large_shoes,0,Giày lớn
+animal_clitoris,7,Âm vật động vật
+brown_backpack,7,Ba lô nâu
+wooden_horn,7,Sừng bằng gỗ
+wet_bra,0,Áo ngực ướt
+black_goggles,7,Kính bảo hộ đen
 cat_nose,7,Mũi mèo
 huge_eyes,7,Mắt khổng lồ
 silver_boots,0,Bốt màu bạc
+clock_necklace,0,Vòng cổ đồng hồ
+long_clitoris,7,Âm vật dài
+red_back,7,Lưng đỏ
+insect_legs,7,Chân côn trùng
+tail_fur,7,Lông đuôi
 brown_glasses,7,Kính nâu
+grey_goggles,7,Kính bảo hộ xám
+pink_hair_tie,7,Cà vạt tóc hồng
+black_backpack,7,Ba lô đen
+short_penis,7,Dương vật ngắn
 cat_necklace,0,Vòng cổ mèo
 fluffy_wings,7,Cánh bồng bềnh
+green_elbow_gloves,7,Găng tay khuỷu tay màu xanh lá
+brown_tattoo,7,Hình xăm nâu
+tight_pussy,7,Âm hộ ôm sát
+blue_back,7,Lưng xanh dương
 light_toes,7,Ngón chân nhạt
+rabbit_brooch,0,Trâm cài thỏ
+print_background,0,Nền họa tiết
+torn_veil,0,Màn che mặt rách
+elbow_fur,7,Lông khuỷu tay
+deer_costume,0,Trang phục nai
+frilled_bodysuit,0,Đồ liền thân nhún xếp
+gold_nipple_piercing,7,Khuyên núm vú vàng kim
+brown_back,7,Lưng nâu
+glowing_necklace,0,Vòng cổ phát sáng
+ruffled_bikini,7,Bikini xếp tầng
+green_eyelashes,7,Lông mi xanh lá
+sweaty_underwear,7,Đồ lót đầm mồ hôi
+chubby_face,7,Khuôn mặt mũm mĩm
+brown_clitoris,7,Âm vật nâu
+light_armor,7,Giáp nhạt
+red_backpack,7,Ba lô đỏ
+denim_shirt,0,Áo sơ mi jean
+shadowed_face,7,Khuôn mặt có bóng
+tiger_tattoo,0,Hình xăm hổ
+metal_boots,7,Bốt kim loại
+open_nipple_bra,7,Áo ngực núm vú mở
+ear_tattoo,7,Hình xăm tai
+grey_jewelry,7,Trang sức màu xám
+card_hand,7,Bàn tay thẻ
+snake_costume,0,Trang phục rắn
+leather_stockings,7,Bít tất da
+wing_armor,0,Giáp cánh
+octopus_tattoo,0,Hình xăm bạch tuộc
+chocolate_clothes,0,Quần áo sô-cô-la
+bat_necklace,0,Vòng cổ dơi
+very_long_penis,7,Dương vật rất dài
+latex_socks,7,Tất latex
+plaid_headwear,7,Phụ kiện đầu kẻ caro
+pointy_chin,0,Cằm nhọn
+tight_legwear,7,Đồ che chân ôm sát
+glowing_glasses,0,Kính phát sáng
+brown_bracelet,0,Vòng tay nâu
+green_pussy,0,Âm hộ xanh lá
+dark_collar,7,Cổ áo sẫm
+big_eye,7,Mắt to
+water_dress,0,Váy nước
+animal_pussy,0,Âm hộ động vật
+light_anus,7,Hậu môn nhạt
+gold_areola,7,Quầng vú vàng kim
+multicolored_anus,7,Hậu môn nhiều màu
+white_nose_horn,7,Sừng mũi trắng
+yellow_clitoris,7,Âm vật vàng
+thin_neck,7,Cổ mỏng
 grey_mouth,7,Miệng xám
+fish_earrings,0,Khuyên tai cá
+magic_collar,7,Cổ áo phép thuật
+tail_pussy,0,Âm hộ đuôi
+torn_jumpsuit,0,Áo liền quần rách
+foot_hair,0,Lông chân
+dark_belly,7,Bụng sẫm
+wet_arms,7,Cánh tay ướt
+plaid_sweater,0,Áo len kẻ caro
+cow_print_apron,0,Tạp dề họa tiết bò
 dark_clouds,7,Mây sẫm
+ear_hands,7,Bàn tay tai
 small_arms,7,Cánh tay nhỏ
+small_beak,7,Mỏ nhỏ
+christmas_lingerie,7,Đồ lót nữ Giáng sinh
+latex_collar,7,Cổ áo latex
+torn_belt,0,Thắt lưng rách
+sweaty_shirt,7,Áo sơ mi đầm mồ hôi
+checkered_belt,0,Thắt lưng kẻ ca-rô
+elbow_sleeves,7,Tay áo khuỷu tay
+rabbit_tattoo,0,Hình xăm thỏ
+satin_underwear,0,Đồ lót sa tanh
+nipple_tie,7,Cà vạt núm vú
 wide_feet,7,Bàn chân rộng
+gold_thong,0,Quần lót dây vàng kim
+leather_armwear,7,Đồ che tay da
+light_underwear,7,Đồ lót nhạt
+checkered_socks,0,Tất kẻ ca-rô
+brown_chest_hair,7,Tóc ngực màu nâu
 1992,0,Năm 1992
+back_fur,7,Lông lưng
+pig_costume,0,Trang phục lợn
+pink_sneakers,7,Giày thể thao hồng
+fur_thighhighs,0,Tất cao đùi lông
+green_crown,0,Vương miện xanh lá
+small_bikini,7,Bikini nhỏ
 narrow_legs,7,Chân hẹp
-yellow_stockings,7,Bít tất vàng
+fire_eyes,7,Mắt lửa
+purple_neck,7,Cổ tím
+back_piercing,0,Khuyên lưng
+checkered_shoes,0,Giày kẻ ca-rô
+cropped_kimono,0,Kimono lửng
+metal_jaw,0,Hàm kim loại
+pink_chest,7,Ngực hồng
+light_pupils,7,Đồng tử nhạt
+fur_anklet,0,Vòng chân lông
+brown_goggles,7,Kính bảo hộ nâu
+white_knee_socks,7,Tất đầu gối màu trắng
+multicolored_paws,7,Bàn chân thú nhiều màu
+spiked_sleeves,0,Tay áo có gai
+red_throat,7,Cổ họng đỏ
+head_fur,7,Lông đầu
+yellow_stockings,7,Bít tất màu vàng
+glowing_collar,7,Cổ áo phát sáng
+huge_navel,7,Rốn khổng lồ
+glowing_bodysuit,0,Đồ liền thân phát sáng
+penis_leg,7,Chân dương vật
 big_shoes,7,Giày to
 dark_gloves,7,Găng tay sẫm
+ripped_underwear,7,Đồ lót xé rách
+pale_eye,0,Mắt nhạt
+blue_snout,7,Mõm xanh dương
+wet_kimono,0,Kimono ướt
+dark_paws,7,Bàn chân thú sẫm
+green_armpit_hair,0,Tóc nách màu xanh lá
+tail_eye,7,Mắt đuôi
+spiked_arm,0,Cánh tay có gai
+small_snout,7,Mõm nhỏ
+glowing_bracelet,0,Vòng tay phát sáng
+long_veil,0,Màn che mặt dài
 long_face,0,Khuôn mặt dài
 mouse_hat,0,Mũ chuột
-orange_stockings,7,Bít tất cam
+fluffy_clothing,7,Trang phục bồng bềnh
+orange_stockings,7,Bít tất màu cam
+mini_eyewear,0,Kính siêu ngắn
+torn_hood,0,Mũ trùm rách
+thick_ass_hair,0,Tóc mông dày
+duck_penis,7,Dương vật vịt
+chest_horn,7,Sừng ngực
+sweaty_neck,7,Cổ đầm mồ hôi
 long_breasts,7,Ngực dài
+orange_thong,7,Quần lót dây cam
+mini_tiara,0,Vương miện nhỏ siêu ngắn
+spiked_bra,0,Áo ngực có gai
+frog_print_panties,0,Quần lót họa tiết ếch
+latex_uniform,7,Đồng phục latex
+small_chest,7,Ngực nhỏ
+red_panda_costume,0,Trang phục gấu trúc đỏ
+glowing_feet,0,Bàn chân phát sáng
+neck_armor,0,Giáp cổ
+penis_horn,7,Sừng dương vật
+blue_lingerie,7,Đồ lót nữ xanh dương
+black_back,7,Lưng đen
+long_sheath,7,Bao dương vật dài
+horn_cap,7,Mũ lưỡi trai sừng
 gold_background,0,Nền vàng kim
+light_legwear,7,Đồ che chân nhạt
 pink_teeth,7,Răng hồng
+torn_swimwear,7,Đồ bơi rách
+fish_skeleton_earrings,0,Khuyên tai bộ xương cá
+dark_tattoo,7,Hình xăm sẫm
+spiked_necklace,0,Vòng cổ có gai
+ruffled_underwear,7,Đồ lót xếp tầng
+fur_vest,0,Áo ghi-lê lông
+eye_brooch,0,Trâm cài mắt
+penis_collar,0,Cổ áo dương vật
+puffy_jacket,7,Áo khoác phồng
+finger_piercing,0,Khuyên ngón tay
+golden_pussy,7,Âm hộ màu vàng
+cat_penis,0,Dương vật mèo
+ruffled_panties,7,Quần lót xếp tầng
+fish_background,0,Nền cá
+medium_butt,7,Mông vừa
+spiked_piercing,7,Khuyên có gai
+dark_headwear,7,Phụ kiện đầu sẫm
+magic_clothing,7,Trang phục phép thuật
+paw_underwear,7,Đồ lót chân thú
+multicolored_eyebrows,7,Lông mày nhiều màu
+plaid_belt,0,Thắt lưng kẻ caro
+white_bracelet,7,Vòng tay trắng
+red_piercing,7,Khuyên đỏ
+lace_ribbon,0,Ruy băng ren
+dark_beak,7,Mỏ sẫm
+pig_penis,0,Dương vật lợn
+thick_horn,7,Sừng dày
+medium_tank,0,Áo ba lỗ vừa
+purple_hair_tie,7,Cà vạt tóc tím
+purple_bracelet,7,Vòng tay tím
 gold_nose,7,Mũi vàng kim
+grey_bracelet,7,Vòng tay xám
+raccoon_costume,0,Trang phục gấu mèo
 big_mouth,0,Miệng to
 short_fingers,7,Ngón tay ngắn
+black_uniform,7,Đồng phục màu đen
+partial_fur,7,Lông một phần
+spiked_headwear,7,Phụ kiện đầu có gai
 1974,14,Năm 1974
+torn_bowtie,0,Nơ cổ rách
+fire_body,0,Cơ thể lửa
+ear_wings,0,Cánh tai
+wide-leg_pants,0,Quần chân rộng
+dark_chest,7,Ngực sẫm
+wooden_body,7,Cơ thể bằng gỗ
+dirty_fur,7,Lông bẩn
+fruit_hat,0,Mũ trái cây
 grey_necklace,7,Vòng cổ xám
+leather_shirt,0,Áo sơ mi da
+cow_suit,7,Bộ đồ bò
+wing_ribbon,0,Ruy băng cánh
+pink_armpit_hair,7,Tóc nách màu hồng
+pink_piercing,7,Khuyên hồng
 grey_cloud,7,Mây xám
+cat_bra,0,Áo ngực mèo
+black_knee_socks,7,Tất đầu gối màu đen
+mini_hair_bow,0,Nơ tóc siêu ngắn
+satin_clothes,0,Quần áo sa tanh
+nipple_ribbon,0,Ruy băng núm vú
+shoulder_bow,0,Nơ vai
 white_cloud,7,Mây trắng
+very_long_cape,0,Áo choàng rất dài
+pink_body_hair,7,Tóc cơ thể màu hồng
+silver_leotard,0,Leotard bạc
 closed_hands,7,Bàn tay khép
 fluffy_feet,7,Bàn chân bồng bềnh
+paw_panties,7,Quần lót chân thú
+yellow_elbow_gloves,7,Găng tay khuỷu tay màu vàng
+white_uniform,7,Đồng phục màu trắng
+leather_bra,0,Áo ngực da
+smooth_balls,7,Tinh hoàn trơn
 black_white_body,7,Cơ thể đen trắng
+black_knee_boots,7,Bốt đầu gối màu đen
+angel_leotard,0,Leotard thiên thần
+cat_eye_glasses,7,Kính mắt mèo
+white_chest_hair,7,Tóc ngực màu trắng
+metal_tongue,7,Lưỡi kim loại
+orange_clitoris,7,Âm vật cam
+torn_bag,0,Túi rách
+green_sneakers,7,Giày thể thao xanh lá
+white_toenails,7,Móng chân trắng
+open_palm,7,Lòng bàn tay mở
+multicolored_chest,7,Ngực nhiều màu
+wing_horns,7,Sừng cánh
 1988,0,Năm 1988
+checkered_bra,0,Áo ngực kẻ ca-rô
+cat_brooch,0,Trâm cài mèo
+snake_mouth,0,Miệng rắn
 tiger_hat,0,Mũ hổ
+fluffy_sheath,7,Bao dương vật bồng bềnh
+pink_backpack,7,Ba lô hồng
+lace_skirt,0,Chân váy ren
+purple_piercing,7,Khuyên tím
+torn_arm,7,Cánh tay rách
+horse_pussy,0,Âm hộ ngựa
+wrist_jewelry,7,Trang sức cổ tay
+dark_neck,7,Cổ sẫm
+thick_collar,7,Cổ áo dày
+card_pendant,0,Mặt dây chuyền thẻ
+sweaty_shoulders,7,Vai đầm mồ hôi
+stomach_piercing,0,Khuyên bụng
+bat_background,0,Nền dơi
 purple_teeth,7,Răng tím
+bomb_collar,0,Cổ áo bom
+sheep_hat,0,Mũ cừu
+black_leather_jacket,7,Áo khoác da màu đen
+yellow_tattoo,7,Hình xăm vàng
+mouse_hood,0,Mũ trùm chuột
+book_skirt,0,Chân váy sách
+multicolored_tiara,0,Vương miện nhỏ nhiều màu
+smooth_penis,7,Dương vật trơn
+plaid_bag,0,Túi kẻ caro
 dragon_hat,0,Mũ rồng
+pointy_beak,7,Mỏ nhọn
+striped_breasts,7,Ngực kẻ sọc
+striped_nails,0,Móng tay kẻ sọc
 animal_shoes,0,Giày động vật
+glowing_background,7,Nền phát sáng
+thick_back_hair,0,Tóc lưng dày
+duck_hood,0,Mũ trùm vịt
+light_back,7,Lưng nhạt
+multicolored_sneakers,7,Giày thể thao nhiều màu
+open_back_dress,7,Váy lưng mở
+orange_back,7,Lưng cam
+brown_jewelry,7,Trang sức màu nâu
+glowing_throat,7,Cổ họng phát sáng
+dark_eyelashes,7,Lông mi sẫm
 wide_tail,7,Đuôi rộng
+short_apron,0,Tạp dề ngắn
+striped_jumpsuit,0,Áo liền quần kẻ sọc
+grey_ear_piercing,7,Khuyên tai xám
+checkered_gloves,0,Găng tay kẻ ca-rô
+green_cheeks,7,Má xanh lá
+dirty_legwear,0,Đồ che chân bẩn
+head_hair,7,Tóc đầu
+wing_fingers,7,Ngón tay cánh
+open_toe_shoes,7,Giày ngón chân mở
+milk_tank,7,Áo ba lỗ sữa
+wet_thighs,7,Đùi ướt
+grey_clitoris,7,Âm vật xám
+striped_chest,7,Ngực kẻ sọc
+red_thigh_boots,7,Bốt đùi màu đỏ
+silver_legwear,0,Đồ che chân màu bạc
+green_goggles,7,Kính bảo hộ xanh lá
+face_underwear,7,Đồ lót mặt
 pink_cloud,7,Mây hồng
+leg_back,7,Lưng chân
+fluffy_ear,7,Tai bồng bềnh
+water_background,7,Nền nước
+multicolored_sailor_collar,0,Cổ áo thủy thủ nhiều màu
+arrow_earrings,0,Khuyên tai mũi tên
+rabbit_paws,0,Bàn chân thú thỏ
+leather_panties,0,Quần lót da
+light_swimwear,7,Đồ bơi nhạt
+neck_vulva,7,Âm hộ cổ
+green_thigh_socks,7,Tất đùi màu xanh lá
 dark_dress,7,Váy sẫm
+frilled_scarf,0,Khăn quàng nhún xếp
+duck_costume,0,Trang phục vịt
+large_head_wings,0,Cánh đầu lớn
+small_paws,7,Bàn chân thú nhỏ
+spiked_tongue,7,Lưỡi có gai
 dark_shoes,7,Giày sẫm
+shoulder_cape,7,Áo choàng vai
+frilled_cardigan,0,Áo cardigan nhún xếp
+print_belt,0,Thắt lưng họa tiết
+animal_scarf,0,Khăn quàng động vật
+big_forehead,7,Trán to
 dark_toes,7,Ngón chân sẫm
+penis_hat,7,Mũ dương vật
+animal_earrings,0,Khuyên tai động vật
+orange_elbow_gloves,7,Găng tay khuỷu tay màu cam
+spiked_hood,0,Mũ trùm có gai
 gold_tongue,7,Lưỡi vàng kim
+glowing_legs,0,Chân phát sáng
+fluffy_collar,0,Cổ áo bồng bềnh
+grey_lipstick,7,Son môi xám
+dark_fingernails,7,Móng tay sẫm
 small_shirt,7,Áo sơ mi nhỏ
+shoulder_necklace,0,Vòng cổ vai
+cotton_panties,0,Quần lót cotton
+wing_jewelry,7,Trang sức cánh
 1987,0,Năm 1987
+magic_hat,7,Mũ phép thuật
+bat_costume,0,Trang phục dơi
 brown_necklace,7,Vòng cổ nâu
+card_background,0,Nền thẻ
+brown_veil,0,Màn che mặt nâu
+yellow_sneakers,7,Giày thể thao vàng
+anus_mouth,7,Miệng hậu môn
+open_underwear,7,Đồ lót mở
+multicolored_tattoo,7,Hình xăm nhiều màu
+paper_flower,0,Hoa giấy
+dry_suit,0,Bộ đồ khô
+long_vulva,7,Âm hộ dài
+pink_neck,7,Cổ hồng
+black_hair_bow,7,Nơ tóc đen
+breast_armor,7,Giáp ngực
+tight_sweater,7,Áo len ôm sát
+dragon_hood,0,Mũ trùm rồng
+tail_wings,7,Cánh đuôi
+cat_pendant,0,Mặt dây chuyền mèo
 thick_feet,7,Bàn chân dày
+wool_headwear,7,Phụ kiện đầu len
+lace_underwear,7,Đồ lót ren
+wet_leotard,0,Leotard ướt
+tight_thong,7,Quần lót dây ôm sát
+brown_body_hair,7,Tóc cơ thể màu nâu
+lace_veil,0,Màn che mặt ren
+orange_fingernails,7,Móng tay cam
+black_anklet,7,Vòng chân đen
+wing_eyes,7,Mắt cánh
+striped_hood,0,Mũ trùm kẻ sọc
 light_gloves,7,Găng tay nhạt
+blue_striped_panties,7,Quần lót kẻ sọc màu xanh dương
 1983,0,Năm 1983
+leather_helmet,7,Mũ bảo hiểm da
+wool_hat,7,Mũ len
+white_lipstick,7,Son môi trắng
 long_stockings,7,Bít tất dài
+green_cap,7,Mũ lưỡi trai màu xanh lá
+green_back,7,Lưng xanh lá
+checkered_coat,0,Áo khoác kẻ ca-rô
+green_makeup,7,Trang điểm xanh lá
+wide_waist,7,Eo rộng
+green_uniform,7,Đồng phục màu xanh lá
+demon_eyes,7,Mắt quỷ
+animal_ear_headband,0,Băng đô tai động vật
+light_sheath,7,Bao dương vật nhạt
+black_top,7,Áo màu đen
+large_arm,0,Cánh tay lớn
+robot_legs,7,Chân người máy
+hand_glasses,0,Kính bàn tay
+gold_hair_tie,0,Cà vạt tóc vàng kim
 small_hat,7,Mũ nhỏ
+torn_headwear,7,Phụ kiện đầu rách
+yellow_hair_tie,7,Cà vạt tóc vàng
+frilled_bag,0,Túi nhún xếp
 rabbit_bow,0,Nơ thỏ
+light_paws,7,Bàn chân thú nhạt
+grey_elbow_gloves,7,Găng tay khuỷu tay màu xám
+leather_bracelet,7,Vòng tay da
+wolf_brooch,0,Trâm cài sói
+fluffy_eyebrows,7,Lông mày bồng bềnh
+glowing_clitoris,7,Âm vật phát sáng
+winter_jacket,7,Áo khoác mùa đông
 cat_panties,7,Quần lót mèo
+butt_mouth,7,Miệng mông
+ruffled_collar,7,Cổ áo xếp tầng
 silver_tail,7,Đuôi bạc
+spiked_body,7,Cơ thể có gai
+torn_suit,7,Bộ đồ rách
+red_makeup,7,Trang điểm đỏ
+metal_legs,7,Chân kim loại
+red_chest_hair,7,Tóc ngực màu đỏ
+chin-chin,0,Cằm cằm
+metal_balls,7,Tinh hoàn kim loại
+tight_swimsuit,7,Đồ bơi ôm sát
+striped_knee_socks,7,Tất đầu gối kẻ sọc
+big_chin,7,Cằm to
+dark_eyewear,7,Kính sẫm
+candy_bag,7,Túi kẹo
+spiked_arms,7,Cánh tay có gai
+light_headwear,7,Phụ kiện đầu nhạt
+checkered_bracelet,0,Vòng tay kẻ ca-rô
+striped_cheeks,7,Má kẻ sọc
 fluffy_face,7,Khuôn mặt bồng bềnh
+arm_eye,0,Mắt cánh tay
+paw_print_underwear,7,Đồ lót họa tiết chân thú
+multicolored_lips,0,Môi nhiều màu
+lace_bow,0,Nơ ren
+sweaty_hands,7,Bàn tay đầm mồ hôi
+dirty_body,7,Cơ thể bẩn
+print_armwear,7,Đồ che tay họa tiết
+metal_helmet,7,Mũ bảo hiểm kim loại
+grey_armpit_hair,0,Tóc nách màu xám
+dark_armwear,7,Đồ che tay sẫm
+brown_lipstick,7,Son môi nâu
 raccoon_hat,0,Mũ gấu mèo
+furry_body,7,Cơ thể nhiều lông
 rabbit_feet,7,Bàn chân thỏ
+gold_underwear,7,Đồ lót màu vàng kim
+white_piercing,7,Khuyên trắng
+frilled_hoodie,0,Áo hoodie nhún xếp
+gold_armwear,7,Đồ che tay màu vàng kim
+squirrel_costume,0,Trang phục sóc
+latex_sleeves,0,Tay áo latex
+metal_hand,7,Bàn tay kim loại
+lion_hood,0,Mũ trùm sư tử
 brown_mouth,7,Miệng nâu
+tail_ovipositor,7,Cơ quan đẻ trứng đuôi
+red_pendant,0,Mặt dây chuyền đỏ
+lace_lingerie,7,Đồ lót nữ ren
+cat_tattoo,0,Hình xăm mèo
+blue_anklet,0,Vòng chân xanh dương
 horse_legs,0,Chân ngựa
+dark_armor,7,Giáp sẫm
+light_lips,7,Môi nhạt
+leather_lingerie,7,Đồ lót nữ da
+short_beak,7,Mỏ ngắn
+tail_legs,0,Chân đuôi
 large_glasses,7,Kính lớn
+gold_heels,7,Giày cao gót vàng kim
+magic_hand,7,Bàn tay phép thuật
 1986,0,Năm 1986
+partially_open_mouth,7,Miệng một phần mở
+chest_vulva,7,Âm hộ ngực
+chubby_penis,7,Dương vật mũm mĩm
 dark_socks,7,Tất sẫm
+red_body_hair,7,Tóc cơ thể màu đỏ
+summer_dress,7,Váy mùa hè
+wet_fingers,7,Ngón tay ướt
+spiked_thighhighs,0,Tất cao đùi có gai
+beer_hat,0,Mũ bia
+blue_pendant,0,Mặt dây chuyền xanh dương
 pointy_fingers,7,Ngón tay nhọn
+orange_veil,0,Màn che mặt cam
+fur_hair_tie,0,Cà vạt tóc lông
 straight_tail,7,Đuôi thẳng
+red_tiara,0,Vương miện nhỏ đỏ
+head_penis,7,Dương vật đầu
+wet_belly,7,Bụng ướt
+checkered_pantyhose,0,Quần tất kẻ ca-rô
 small_teeth,7,Răng nhỏ
+snake_eyes,7,Mắt rắn
+tiger_print_thighhighs,0,Tất cao đùi họa tiết hổ
+spider_tank,0,Áo ba lỗ nhện
+cat_testicles,0,Tinh hoàn mèo
 large_teeth,7,Răng lớn
+green_ear_piercing,7,Khuyên tai xanh lá
+sailor_leotard,0,Leotard thủy thủ
+grey_thong,7,Quần lót dây xám
+multicolored_jumpsuit,0,Áo liền quần nhiều màu
 blue_thighs,7,Đùi xanh dương
+butterfly_hat,0,Mũ bươm bướm
+bird_tattoo,0,Hình xăm chim
+pointy_penis,7,Dương vật nhọn
+neck_hair,7,Tóc cổ
+penis_earrings,0,Khuyên tai dương vật
 black_thighs,7,Đùi đen
+plaid_hoodie,0,Áo hoodie kẻ caro
 dark_boots,7,Bốt sẫm
+magic_eye,7,Mắt phép thuật
 orange_clouds,7,Mây cam
 gold_tail,0,Đuôi vàng kim
 pointy_feet,7,Bàn chân nhọn
+penis_fingers,7,Ngón tay dương vật
+wool_gloves,7,Găng tay len
+print_veil,0,Màn che mặt họa tiết
+leather_apron,0,Tạp dề da
+plaid_gloves,0,Găng tay kẻ caro
 cat_gloves,7,Găng tay mèo
 1910,14,Năm 1910
+black_body_hair,7,Tóc cơ thể màu đen
+huge_vulva,7,Âm hộ khổng lồ
+yellow_hair_bow,7,Nơ tóc vàng
+purple_witch_hat,7,Mũ phù thủy màu tím
+light_armwear,7,Đồ che tay nhạt
+wet_hat,0,Mũ ướt
+half-coat,0,Áo khoác một nửa
 1978,14,Năm 1978
+fish_hood,0,Mũ trùm cá
+food_bag,7,Túi thức ăn
 gold_wings,7,Cánh vàng kim
+horse_earrings,0,Khuyên tai ngựa
+yellow_backpack,7,Ba lô vàng
+shoulder_ribbon,0,Ruy băng vai
 dark_stockings,7,Bít tất sẫm
+lace_bikini,0,Bikini ren
+ripped_sleeves,7,Tay áo xé rách
+head_mouth,7,Miệng đầu
+ruffled_fur,7,Lông xếp tầng
 thick_fingers,7,Ngón tay dày
 light_mouth,7,Miệng nhạt
+plaid_hood,0,Mũ trùm kẻ caro
+spiked_dress,0,Váy có gai
+purple_back,7,Lưng tím
+latex_jacket,0,Áo khoác latex
+blue_hand,7,Bàn tay xanh dương
+dark_belt,7,Thắt lưng sẫm
+sweaty_ears,7,Tai đầm mồ hôi
+multicolored_pupils,7,Đồng tử nhiều màu
+fur_socks,0,Tất lông
+blue_thigh_boots,7,Bốt đùi màu xanh dương
+narrow_beak,7,Mỏ hẹp
+metal_horn,7,Sừng kim loại
+ear_hair,7,Tóc tai
+paw_pendant,0,Mặt dây chuyền chân thú
+purple_hair_bow,7,Nơ tóc tím
+military_vest,7,Áo ghi-lê quân đội
+chubby_legs,7,Chân mũm mĩm
+tail_stomach,7,Bụng đuôi
+torn_face,7,Khuôn mặt rách
+yellow_toenails,7,Móng chân vàng
+huge_eyelashes,7,Lông mi khổng lồ
+striped_belly,7,Bụng kẻ sọc
+glowing_crown,0,Vương miện phát sáng
+glowing_finger,0,Ngón tay phát sáng
+octopus_earrings,0,Khuyên tai bạch tuộc
+checkered_cloak,0,Áo choàng kẻ ca-rô
+sword_necklace,0,Vòng cổ kiếm
 multicolored_glasses,7,Kính nhiều màu
+gold_makeup,7,Trang điểm vàng kim
+demon_hood,0,Mũ trùm quỷ
+snake_arms,7,Cánh tay rắn
+orange_jewelry,7,Trang sức màu cam
 grey_thighs,7,Đùi xám
+huge_nails,7,Móng tay khổng lồ
 human_hair,7,Tóc người
+leg_jewelry,7,Trang sức chân
+denim_apron,0,Tạp dề jean
 animal_panties,7,Quần lót động vật
+silk_clothing,7,Trang phục lụa
 rabbit_panties,7,Quần lót thỏ
+christmas_legwear,7,Đồ che chân Giáng sinh
+nipple_armor,7,Giáp núm vú
+rabbit_ear_hat,0,Mũ tai thỏ
+latex_costume,7,Trang phục latex
+shark_hat,0,Mũ cá mập
+goat_costume,0,Trang phục dê
+blue_spine,0,Cột sống xanh dương
+glowing_pussy,0,Âm hộ phát sáng
+snake_penis,0,Dương vật rắn
+open-butt_dress,7,Váy mông mở
+wet_swimwear,7,Đồ bơi ướt
+half-sleeves,0,Tay áo một nửa
+neck_jewelry,7,Trang sức cổ
+shark_bag,0,Túi cá mập
+stone_body,7,Cơ thể đá
+braided_scarf,0,Khăn quàng tết
+open_sweater,7,Áo len mở
+striped_arm,7,Cánh tay kẻ sọc
+rabbit_underwear,7,Đồ lót thỏ
+multicolored_bag,0,Túi nhiều màu
+paw_earrings,0,Khuyên tai chân thú
+water_body,7,Cơ thể nước
+white_hair_tie,7,Cà vạt tóc trắng
+pink_striped_panties,7,Quần lót kẻ sọc màu hồng
+arm_socks,7,Tất cánh tay
+yellow_tiara,0,Vương miện nhỏ vàng
+purple_thigh_boots,7,Bốt đùi màu tím
+purple_sneakers,7,Giày thể thao tím
+koala_ears,0,Tai koala
+yellow_pendant,7,Mặt dây chuyền vàng
+muscular_wings,7,Cánh cơ bắp
+blue_body_hair,7,Tóc cơ thể màu xanh dương
+cow_horns_crown,7,Vương miện sừng bò
 multicolored_teeth,0,Răng nhiều màu
+egg_earrings,0,Khuyên tai trứng
+yellow_ear_piercing,7,Khuyên tai vàng
+grey_thigh_socks,7,Tất đùi màu xám
+back_horn,7,Sừng lưng
+frilled_pantyhose,0,Quần tất nhún xếp
+smooth_tail,7,Đuôi trơn
+black_striped_body,7,Cơ thể kẻ sọc đen
+paw_flower,7,Hoa chân thú
 dark_skirt,7,Chân váy sẫm
+brown_thong,7,Quần lót dây nâu
+dirty_shirt,7,Áo sơ mi bẩn
+red_anklet,7,Vòng chân đỏ
+narrow_shoulders,7,Vai hẹp
+puffy_collar,0,Cổ áo phồng
+cheek_horns,7,Sừng gò má
+gold_eyewear,7,Kính vàng kim
+blood_wings,0,Cánh máu
 open_hat,0,Mũ mở
+open_top,7,Áo mở
+yellow_snout,7,Mõm vàng
+purple_snout,7,Mõm tím
+very_long_veil,0,Màn che mặt rất dài
+torn_headband,0,Băng đô rách
+wide_chest,7,Ngực rộng
+glowing_piercing,7,Khuyên phát sáng
+grey_sneakers,7,Giày thể thao xám
+dark_back,7,Lưng sẫm
 big_shirt,7,Áo sơ mi to
+dirty_arm,0,Cánh tay bẩn
+dirty_paws,7,Bàn chân thú bẩn
+brown_thigh_boots,7,Bốt đùi màu nâu
+brown_nose_horn,7,Sừng mũi nâu
+long_belly,7,Bụng dài
 red_clouds,7,Mây đỏ
 light_socks,7,Tất nhạt
+wet_ass,7,Mông ướt
+half-leotard,0,Leotard một nửa
 small_face,0,Khuôn mặt nhỏ
+cow_print_stockings,7,Bít tất họa tiết bò
+glowing_arms,7,Cánh tay phát sáng
 silver_skirt,0,Chân váy bạc
+sweaty_panties,7,Quần lót đầm mồ hôi
+sweaty_sheath,7,Bao dương vật đầm mồ hôi
+wide_belt,0,Thắt lưng rộng
 orange_necklace,7,Vòng cổ cam
+fluffy_belly,7,Bụng bồng bềnh
+patterned_skin,0,Da có hoa văn
+mouth_eye,7,Mắt miệng
+tail_butt,7,Mông đuôi
+pink_anklet,0,Vòng chân hồng
+silver_clothing,7,Trang phục màu bạc
 pointy_tongue,7,Lưỡi nhọn
+blue_chest_hair,7,Tóc ngực màu xanh dương
+arrow_tail,7,Đuôi mũi tên
+multicolored_knee_socks,7,Tất đầu gối nhiều màu
+cow_print_bowtie,0,Nơ cổ họa tiết bò
+dark_vulva,7,Âm hộ sẫm
+plaid_cape,0,Áo choàng kẻ caro
+plaid_cardigan,0,Áo cardigan kẻ caro
+penis_hair,7,Tóc dương vật
+spiked_hair_tie,7,Cà vạt tóc có gai
 purple_clouds,7,Mây tím
+ankle_jewelry,7,Trang sức cổ chân
 dark_panties,7,Quần lót sẫm
+black_cheeks,7,Má đen
+glowing_eyebrows,7,Lông mày phát sáng
+glowing_lips,7,Môi phát sáng
+dirty_shoes,7,Giày bẩn
+pink_thigh_boots,7,Bốt đùi màu hồng
+wet_nose,7,Mũi ướt
+ear_mouth,7,Miệng tai
+neck_belt,7,Thắt lưng cổ
+fire_belt,7,Thắt lưng lửa
+letter_earrings,0,Khuyên tai bức thư
 1973,14,Năm 1973
 1975,14,Năm 1975
 1984,14,Năm 1984
+narrow_pupils,7,Đồng tử hẹp
+torn_leg,7,Chân rách
+cropped_coat,0,Áo khoác lửng
+deer_hood,0,Mũ trùm nai
+green_lingerie,7,Đồ lót nữ xanh lá
+dark_swimwear,7,Đồ bơi sẫm
+purple_tiara,0,Vương miện nhỏ tím
+mini_bowtie,0,Nơ cổ siêu ngắn
+checkered_swimsuit,0,Đồ bơi kẻ ca-rô
+grey_backpack,7,Ba lô xám
+striped_hands,7,Bàn tay kẻ sọc
 large_hair,7,Tóc lớn
+foot_sole,7,Lòng bàn chân bàn chân
+white_hand,7,Bàn tay trắng
+half-shirt,0,Áo sơ mi một nửa
+large_bag,0,Túi lớn
+pleated_kimono,0,Kimono xếp ly
+robot_eyes,7,Mắt người máy
+dark_lipstick,7,Son môi sẫm
+spiked_fur,7,Lông có gai
 deer_nose,7,Mũi nai
+clock_face,0,Khuôn mặt đồng hồ
+white_ear_piercing,7,Khuyên tai trắng
+animal_print_clothing,7,Trang phục họa tiết động vật
+fruit_costume,0,Trang phục trái cây
+orange_bracelet,7,Vòng tay cam
+huge_bowtie,0,Nơ cổ khổng lồ
+brown_cheeks,7,Má nâu
+brown_elbow_gloves,7,Găng tay khuỷu tay màu nâu
+pink_purse,0,Túi cầm tay hồng
+fur_shorts,0,Quần short lông
+grey_tiara,0,Vương miện nhỏ xám
+crab_leg,0,Chân cua
+dirty_penis,7,Dương vật bẩn
+panda_earrings,0,Khuyên tai gấu trúc
+yellow_back,7,Lưng vàng
 1908,14,Năm 1908
+pig_tattoo,0,Hình xăm lợn
+tight_leotard,7,Leotard ôm sát
+fur_panties,0,Quần lót lông
+yellow_thigh_socks,7,Tất đùi màu vàng
+checkered_bag,0,Túi kẻ ca-rô
+food_clothing,7,Trang phục thức ăn
+bat_panties,0,Quần lót dơi
+wet_apron,0,Tạp dề ướt
+coffee_bag,0,Túi cà phê
+spiked_tiara,0,Vương miện nhỏ có gai
+cat_underwear,7,Đồ lót mèo
+purple_backpack,7,Ba lô tím
+print_thong,7,Quần lót dây họa tiết
+wing_flower,0,Hoa cánh
+cropped_hair,0,Tóc lửng
+green_hair_bow,7,Nơ tóc xanh lá
+leather_bodysuit,0,Đồ liền thân da
 huge_mouth,7,Miệng khổng lồ
+wet_chest,7,Ngực ướt
 1980,14,Năm 1980
+grey_toenails,7,Móng chân xám
+white_clitoris,7,Âm vật trắng
+patterned_eyes,0,Mắt có hoa văn
+print_cardigan,0,Áo cardigan họa tiết
+lion_paw,0,Bàn chân thú sư tử
+bear_earrings,0,Khuyên tai gấu
 silver_horns,0,Sừng bạc
+torn_costume,7,Trang phục rách
+yellow_pussy,0,Âm hộ vàng
+fish_pendant,0,Mặt dây chuyền cá
+glowing_red_eyes,7,Mắt phát sáng đỏ
+checkered_buckle,0,Khóa kẻ ca-rô
+gold_fingernails,7,Móng tay vàng kim
+christmas_underwear,7,Đồ lót Giáng sinh
+leather_thong,7,Quần lót dây da
+christmas_background,7,Nền Giáng sinh
+dark_sheath,7,Bao dương vật sẫm
+orange_sneakers,7,Giày thể thao cam
+green_costume,7,Trang phục xanh lá
 human_teeth,7,Răng người
+open_swimsuit,0,Đồ bơi mở
+open_toe_stockings,7,Bít tất ngón chân mở
+orange_armpit_hair,0,Tóc nách màu cam
+sweaty_toes,7,Ngón chân đầm mồ hôi
+water_wings,7,Cánh nước
 gold_skirt,0,Chân váy vàng kim
+gold_legwear,7,Đồ che chân màu vàng kim
+multicolored_goggles,7,Kính bảo hộ nhiều màu
 multicolored_toes,7,Ngón chân nhiều màu
+glowing_dress,0,Váy phát sáng
 brown_teeth,7,Răng nâu
+striped_cloak,0,Áo choàng kẻ sọc
+shark_penis,7,Dương vật cá mập
+furry_pussy,7,Âm hộ nhiều lông
 black-hair,7,Tóc màu đen
+blue_top,7,Áo màu xanh dương
+wet_gloves,0,Găng tay ướt
+wet_hands,7,Bàn tay ướt
+purple_goggles,7,Kính bảo hộ tím
 animal_hair,0,Tóc động vật
 green_blue_eyes,7,Mắt xanh lá xanh dương
+anus_piercing,0,Khuyên hậu môn
 1977,14,Năm 1977
+lace_leotard,0,Leotard ren
+glowing_butt,7,Mông phát sáng
+crab_hood,0,Mũ trùm cua
+dark_elbow_gloves,7,Găng tay khuỷu tay sẫm
 small_tongue,7,Lưỡi nhỏ
+cropped_tail,0,Đuôi lửng
+nipple_bow,7,Nơ núm vú
+spiked_clothes,0,Quần áo có gai
+striped_thong,7,Quần lót dây kẻ sọc
+panda_bag,0,Túi gấu trúc
+wet_suit,0,Bộ đồ ướt
+grey_eyelashes,7,Lông mi xám
+open_chest,7,Ngực mở
+grey_nose_horn,7,Sừng mũi xám
+drink_bag,0,Túi đồ uống
+orange_eyelashes,7,Lông mi cam
+messy_stomach,7,Bụng rối
+puffy_vulva,7,Âm hộ phồng
 tiger_skin,0,Da hổ
+nose_jewelry,7,Trang sức mũi
+print_elbow_gloves,7,Găng tay khuỷu tay họa tiết
+ear_tie,7,Cà vạt tai
+bird_brooch,0,Trâm cài chim
+coin_belt,7,Thắt lưng đồng xu
 dragon_background,0,Nền rồng
+fur_hoodie,0,Áo hoodie lông
+skeleton_hands,0,Bàn tay bộ xương
 huge_toes,7,Ngón chân khổng lồ
 huge_nose,7,Mũi khổng lồ
 dark_pants,7,Quần sẫm
+panda_panties,0,Quần lót gấu trúc
+torn_armor,7,Giáp rách
 bear_necklace,0,Vòng cổ gấu
+striped_beak,7,Mỏ kẻ sọc
+ear_armor,0,Giáp tai
 thick_socks,7,Tất dày
+thigh_jewelry,7,Trang sức đùi
+muscular_pecs,7,Cơ ngực cơ bắp
 yellow_thighs,7,Đùi vàng
+candy_earrings,0,Khuyên tai kẹo
+sweaty_armpit_hair,7,Tóc nách đầm mồ hôi
+leather_shoes,7,Giày da
+white_knee_boots,7,Bốt đầu gối màu trắng
+silver_ear_piercing,7,Khuyên tai bạc
+black_spiked_bracelet,7,Vòng tay có gai đen
+paper_hair,7,Tóc giấy
+breast_mouth,7,Miệng ngực
+bomb_suit,0,Bộ đồ bom
+mouth_anus,7,Hậu môn miệng
+bunny_ear_hat,7,Mũ tai thỏ
+meat_hair,0,Tóc thịt
+print_armor,0,Giáp họa tiết
+ghost_tongue,7,Lưỡi ma
+magic_wings,7,Cánh phép thuật
+robot_hand,7,Bàn tay người máy
+textured_clothing,7,Trang phục có kết cấu
+cow_stockings,7,Bít tất bò
+gold_balls,7,Tinh hoàn vàng kim
 dark_mouth,7,Miệng sẫm
+butt_bow,7,Nơ mông
+ninja_toes,0,Ngón chân ninja
+yellow_nose_horn,7,Sừng mũi vàng
 large_legs,7,Chân lớn
+grey_tattoo,7,Hình xăm xám
+multicolored_cardigan,0,Áo cardigan nhiều màu
+fruit_brooch,0,Trâm cài trái cây
+brown_striped_fur,7,Lông kẻ sọc nâu
 brown_thighs,7,Đùi nâu
+bird_earrings,0,Khuyên tai chim
+sailor_suit,7,Bộ đồ thủy thủ
+otter_costume,0,Trang phục rái cá
+navel_jewelry,7,Trang sức rốn
+silver_penis,7,Dương vật bạc
+print_eyewear,0,Kính họa tiết
+furry_chest,7,Ngực nhiều lông
+bear_paw,0,Bàn chân thú gấu
+yellow_clothes,7,Quần áo màu vàng
+leg_stockings,7,Bít tất chân
+red_ear_piercing,7,Khuyên tai đỏ
+dragon_paws,7,Bàn chân thú rồng
+frilled_shoes,0,Giày nhún xếp
 pink_thighs,7,Đùi hồng
+wide_back,0,Lưng rộng
+pink_goggles,7,Kính bảo hộ hồng
 thin_tongue,7,Lưỡi mỏng
+white_goggles,7,Kính bảo hộ trắng
+mini_bag,0,Túi siêu ngắn
+glass_heels,0,Giày cao gót thủy tinh
+breast_eyes,7,Mắt ngực
+crab_costume,0,Trang phục cua
 1907,14,Năm 1907
+penis_nose,7,Mũi dương vật
+bunny_hood,7,Mũ trùm thỏ
+multicolored_thigh_boots,7,Bốt đùi nhiều màu
+multicolored_heels,7,Giày cao gót nhiều màu
+cow_print_dress,0,Váy họa tiết bò
+horse_hood,0,Mũ trùm ngựa
+toe_shoes,7,Giày ngón chân
+pleated_cape,0,Áo choàng xếp ly
+metal_hood,7,Mũ trùm kim loại
+fish_bag,0,Túi cá
 animal_body,7,Cơ thể động vật
 thick_hair,7,Tóc dày
+white_paw,7,Bàn chân thú trắng
+ruffled_skirt,7,Chân váy xếp tầng
+white_striped_fur,7,Lông kẻ sọc trắng
 wide_open_eyes,7,Mắt rộng mở
+print_sailor_collar,0,Cổ áo thủy thủ họa tiết
+chin_balls,7,Tinh hoàn cằm
 1959,14,Năm 1959
+magic_necklace,7,Vòng cổ phép thuật
+formal_dress,7,Váy trang trọng
+frog_tongue,0,Lưỡi ếch
 light_pants,7,Quần nhạt
+owl_hat,0,Mũ cú mèo
+spiked_shoulders,7,Vai có gai
+large_sheath,7,Bao dương vật lớn
+latex_pantyhose,0,Quần tất latex
+wooden_arm,0,Cánh tay bằng gỗ
+duck_tail,0,Đuôi vịt
+ninja_costume,7,Trang phục ninja
+half_thong,7,Quần lót dây một nửa
+lace_bodysuit,0,Đồ liền thân ren
+fluffy_pussy,7,Âm hộ bồng bềnh
+spiked_skirt,0,Chân váy có gai
+christmas_armwear,7,Đồ che tay Giáng sinh
+arrow_background,0,Nền mũi tên
+pleated_collar,0,Cổ áo xếp ly
 1920,14,Năm 1920
+owl_costume,0,Trang phục cú mèo
+light_beak,7,Mỏ nhạt
 light_panties,7,Quần lót nhạt
+plaid_suit,0,Bộ đồ kẻ caro
+skin_tight_clothes,7,Quần áo da ôm sát
 short_coat,0,Áo khoác ngắn
+wide_collar,7,Cổ áo rộng
+brown_hair_tie,7,Cà vạt tóc nâu
+cat_ear_helmet,7,Mũ bảo hiểm tai mèo
+bat_bra,0,Áo ngực dơi
+skeleton_clothing,7,Trang phục bộ xương
+robot_costume,0,Trang phục người máy
+penis_costume,7,Trang phục dương vật
+penis_eye,7,Mắt dương vật
+food_bikini,7,Bikini thức ăn
+ripped_socks,7,Tất xé rách
+smoke_hair,7,Tóc khói
 fluffy_jacket,7,Áo khoác bồng bềnh
+tail_pants,7,Quần đuôi
+partially_open_dress,0,Váy một phần mở
+ear_eyes,7,Mắt tai
+pink_throat,7,Cổ họng hồng
+arm_back,7,Lưng cánh tay
+tight_coat,7,Áo khoác ôm sát
+rabbit_helmet,0,Mũ bảo hiểm thỏ
+rabbit_print_underwear,7,Đồ lót họa tiết thỏ
 black_clouds,7,Mây đen
+christmas_gloves,7,Găng tay Giáng sinh
 huge_legs,7,Chân khổng lồ
+red_costume,7,Trang phục đỏ
+yellow_anklet,7,Vòng chân vàng
+leather_muzzle,7,Mõm da
+bunny_ears_headband,7,Băng đô tai thỏ
+orange_piercing,7,Khuyên cam
 multicolored_clouds,0,Mây nhiều màu
+latex_fur,7,Lông latex
+large_collar,0,Cổ áo lớn
+orange_pendant,7,Mặt dây chuyền cam
+striped_feet,7,Bàn chân kẻ sọc
+glowing_hood,7,Mũ trùm phát sáng
+metal_clothing,7,Trang phục kim loại
+paw_boots,7,Bốt chân thú
+butterfly_bow,0,Nơ bươm bướm
+butterfly_bowtie,0,Nơ cổ bươm bướm
 silver_wings,0,Cánh bạc
+wet_sweater,0,Áo len ướt
 1982,14,Năm 1982
 1967,14,Năm 1967
+snow_balls,7,Tinh hoàn tuyết
+dog_print_panties,0,Quần lót họa tiết chó
+neck_wings,0,Cánh cổ
+neck_mouth,7,Miệng cổ
+print_helmet,0,Mũ bảo hiểm họa tiết
+pig_hood,0,Mũ trùm lợn
+tight_sheath,7,Bao dương vật ôm sát
+print_jumpsuit,0,Áo liền quần họa tiết
+thin_arm,7,Cánh tay mỏng
+cake_costume,7,Trang phục bánh ngọt
+head_veil,7,Màn che mặt đầu
+skin-tight_suit,7,Bộ đồ da ôm sát
 blue_clouds,7,Mây xanh dương
 1938,14,Năm 1938
+red_panda_hood,0,Mũ trùm gấu trúc màu đỏ
+spiked_neck,7,Cổ có gai
 gold_sleeves,0,Tay áo vàng kim
-gold_hat,0,Mũ vàng kim
+gold_hat,0,Mũ màu vàng kim
+butterfly_dress,0,Váy bươm bướm
+coin_bag,7,Túi đồng xu
+penis_toes,7,Ngón chân dương vật
+leather_elbow_gloves,7,Găng tay khuỷu tay da
+robot_leg,7,Chân người máy
+robot_suit,7,Bộ đồ người máy
+striped_shoes,0,Giày kẻ sọc
+multicolored_snout,7,Mõm nhiều màu
+short_clothing,7,Trang phục ngắn
+formal_suit,7,Bộ đồ trang trọng
+cow_print_socks,0,Tất họa tiết bò
+cow_clothing,7,Trang phục bò
+shoulder_horn,7,Sừng vai
+snake_bracelet,0,Vòng tay rắn
+whale_earrings,0,Khuyên tai cá voi
+anus_tattoo,7,Hình xăm hậu môn
 1909,14,Năm 1909
+tail_scarf,7,Khăn quàng đuôi
+partially_open_hoodie,0,Áo hoodie một phần mở
+black_purse,7,Túi cầm tay đen
+nose_hair,0,Tóc mũi
+long_hand,0,Bàn tay dài
+back_pussy,7,Âm hộ lưng
+lace_headwear,0,Phụ kiện đầu ren
+spiked_hands,7,Bàn tay có gai
+puffy_sheath,7,Bao dương vật phồng
+striped_boots,7,Bốt kẻ sọc
+ear_vulva,7,Âm hộ tai
+neck_scarf,7,Khăn quàng cổ
 1916,14,Năm 1916
+christmas_bikini,7,Bikini Giáng sinh
+whale_costume,0,Trang phục cá voi
+fox_ear,7,Tai cáo
+pink_hair_ribbon,7,Ruy băng tóc hồng
+wing_cap,0,Mũ lưỡi trai cánh
+green_nose_piercing,7,Khuyên mũi xanh lá
+short_suit,0,Bộ đồ ngắn
 cat_background,0,Nền mèo
+head_vulva,7,Âm hộ đầu
+tight_socks,7,Tất ôm sát
 long_hat,7,Mũ dài
+open_toe_socks,7,Tất ngón chân mở
+textured_gloves,7,Găng tay có kết cấu
+silver_heels,7,Giày cao gót bạc
+silver_lips,0,Môi bạc
+hair_horn,7,Sừng tóc
+dog_pussy,0,Âm hộ chó
+green_nose_jewelry,7,Trang sức mũi màu xanh lá
+penis_ears,7,Tai dương vật
+penis_neck,0,Cổ dương vật
 fluffy_coat,7,Áo khoác bồng bềnh
+micro_balls,7,Tinh hoàn rất nhỏ
 bear_panties,7,Quần lót gấu
+golden_flower,7,Hoa màu vàng
+rabbit_ear_panties,0,Quần lót tai thỏ
+foot_jewelry,0,Trang sức bàn chân
+glowing_fingers,7,Ngón tay phát sáng
+glowing_sclera,7,Củng mạc phát sáng
+pink_back,7,Lưng hồng
+pink_chest_hair,7,Tóc ngực màu hồng
+sweaty_areola,7,Quầng vú đầm mồ hôi
+sweaty_hair,7,Tóc đầm mồ hôi
+spiked_pants,0,Quần có gai
+ghost_dick,7,Dương vật ma
+plaid_leotard,0,Leotard kẻ caro
 big_sleeves,7,Tay áo to
+neck_eye,7,Mắt cổ
+multicolored_areola,7,Quầng vú nhiều màu
+fruit_clothing,7,Trang phục trái cây
+fruit_bikini,7,Bikini trái cây
+bird_penis,7,Dương vật chim
+fur_armor,7,Giáp lông
+multicolored_eyelashes,7,Lông mi nhiều màu
 spiky_ears,7,Tai dựng
+spiked_armwear,7,Đồ che tay có gai
+glowing_eyelashes,7,Lông mi phát sáng
+water_sleeves,0,Tay áo nước
+green_leg,7,Chân xanh lá
+grey_hair_tie,7,Cà vạt tóc xám
+grey_uniform,7,Đồng phục màu xám
+plaid_cloak,0,Áo choàng kẻ caro
+wet_lips,7,Môi ướt
+maid_lingerie,7,Đồ lót nữ hầu gái
+pink_navel,7,Rốn hồng
+pink_ear_piercing,7,Khuyên tai hồng
+small_hips,7,Hông nhỏ
+checkered_leotard,0,Leotard kẻ ca-rô
 rabbit_necklace,0,Vòng cổ thỏ
 long_wings,7,Cánh dài
 red_thighs,7,Đùi đỏ
+torn_cardigan,0,Áo cardigan rách
+pale_penis,7,Dương vật nhạt
+horn_belt,0,Thắt lưng sừng
+cat_print_underwear,7,Đồ lót họa tiết mèo
+koala_costume,0,Trang phục koala
+brown_toenails,7,Móng chân nâu
 multicolored_fingers,7,Ngón tay nhiều màu
+dirty_panties,7,Quần lót bẩn
 short_body,7,Cơ thể ngắn
+lace_legwear,7,Đồ che chân ren
+chubby_tail,7,Đuôi mũm mĩm
+elbow_hair,7,Tóc khuỷu tay
+ruffled_bra,7,Áo ngực xếp tầng
+denim_boots,0,Bốt jean
+orange_crown,0,Vương miện cam
+glass_eye,0,Mắt thủy tinh
+skeleton_hand,7,Bàn tay bộ xương
+purple_hand,7,Bàn tay tím
+tail_tongue,7,Lưỡi đuôi
+candy_hair,7,Tóc kẹo
+messy_underwear,7,Đồ lót rối
 thin_body,7,Cơ thể mỏng
+blue_navel,7,Rốn xanh dương
+green_anklet,7,Vòng chân xanh lá
+green_hand,7,Bàn tay xanh lá
+grey_cheeks,7,Má xám
 braided_ribbon,7,Ruy băng tết
-gold_stockings,7,Bít tất vàng kim
+bloody_apron,0,Tạp dề vấy máu
+magic_horn,7,Sừng phép thuật
+finger_bow,0,Nơ ngón tay
+ripped_wings,7,Cánh xé rách
+half_crown,0,Vương miện một nửa
+octopus_costume,0,Trang phục bạch tuộc
+checkered_hoodie,0,Áo hoodie kẻ ca-rô
+blue_knee_boots,7,Bốt đầu gối màu xanh dương
+nipple_eyes,7,Mắt núm vú
+butt_hat,7,Mũ mông
+ninja_buckle,0,Khóa ninja
+fluffy_ass,7,Mông bồng bềnh
+gold_stockings,7,Bít tất màu vàng kim
+ear_hat,7,Mũ tai
 light_shoes,7,Giày nhạt
+cow_lingerie,7,Đồ lót nữ bò
+cow_print_boots,0,Bốt họa tiết bò
+spider_costume,0,Trang phục nhện
+spiked_crown,0,Vương miện có gai
+leg_bag,7,Túi chân
+red_top,7,Áo màu đỏ
+big_neck,7,Cổ to
+big_nails,7,Móng tay to
+red_purse,7,Túi cầm tay đỏ
 1912,14,Năm 1912
+frilled_hair_tie,0,Cà vạt tóc nhún xếp
+striped_hips,7,Hông kẻ sọc
 pink_clouds,7,Mây hồng
+silver_anklet,0,Vòng chân bạc
+orange_hair_tie,7,Cà vạt tóc cam
+muscular_tail,7,Đuôi cơ bắp
+print_horns,0,Sừng họa tiết
+white_cap,7,Mũ lưỡi trai màu trắng
+white_hair_bow,7,Nơ tóc trắng
+white_navel,7,Rốn trắng
+tight_thigh_socks,7,Tất đùi ôm sát
+wide_pupils,7,Đồng tử rộng
+envelope_earrings,0,Khuyên tai phong bì
+winter_boots,7,Bốt mùa đông
+horn_tattoo,7,Hình xăm sừng
+wooden_leg,7,Chân bằng gỗ
+dark_cloak,7,Áo choàng sẫm
+squid_costume,0,Trang phục mực
+bee_tail,0,Đuôi ong
+red_uniform,7,Đồng phục màu đỏ
+black_striped_tail,7,Đuôi kẻ sọc đen
+shoulder_eye,7,Mắt vai
 gold_ears,7,Tai vàng kim
+head_dress,7,Váy đầu
+golden_nails,7,Móng tay màu vàng
+yellow_thigh_boots,7,Bốt đùi màu vàng
+spiked_chest,7,Ngực có gai
+half-beak,7,Mỏ một nửa
+fish_necklace,0,Vòng cổ cá
+grey_striped_fur,7,Lông kẻ sọc xám
+silver_eyebrows,7,Lông mày bạc
+grey_body_hair,7,Tóc cơ thể màu xám
+military_gloves,7,Găng tay quân đội
+fur_bag,0,Túi lông
+leg_socks,7,Tất chân
+clock_pendant,0,Mặt dây chuyền đồng hồ
+pink_stomach,7,Bụng hồng
+demon_penis,7,Dương vật quỷ
+satin_thong,0,Quần lót dây sa tanh
+pink_uniform,7,Đồng phục màu hồng
+light_jewelry,7,Trang sức nhạt
+tight_armwear,7,Đồ che tay ôm sát
+multicolored_armpit_hair,7,Tóc nách nhiều màu
+blue_nose_horn,7,Sừng mũi xanh dương
+blue_paw,7,Bàn chân thú xanh dương
 bear_background,0,Nền gấu
 gold_shirt,0,Áo vàng kim
+thigh_thighs,7,Đùi đùi
+head_bag,7,Túi đầu
 animal_gloves,7,Găng tay động vật
+animal_ear_underwear,0,Đồ lót tai động vật
+shoulder_fur,7,Lông vai
+foot_flower,7,Hoa bàn chân
+black_bat_costume,0,Trang phục dơi đen
+checkered_headband,0,Băng đô kẻ ca-rô
 1918,14,Năm 1918
 big_pants,7,Quần to
 cat_tongue,7,Lưỡi mèo
+snake_hands,7,Bàn tay rắn
+magic_shoes,7,Giày phép thuật
+plaid_boots,0,Bốt kẻ caro
+duck_hat,0,Mũ vịt
 big_dress,7,Váy to
+belly_bow,7,Nơ bụng
 1902,14,Năm 1902
 horse_hat,0,Mũ ngựa
+belly_vulva,7,Âm hộ bụng
+shoulder_piercing,7,Khuyên vai
+gold_bodysuit,0,Đồ liền thân vàng kim
+winter_cap,7,Mũ lưỡi trai mùa đông
 long_necklace,0,Vòng cổ dài
+yellow_cap,7,Mũ lưỡi trai màu vàng
+blue_costume,7,Trang phục xanh dương
+print_stockings,7,Bít tất họa tiết
+light_thong,7,Quần lót dây nhạt
+light_nails,7,Móng tay nhạt
+water_skirt,0,Chân váy nước
+cow_print_shirt,0,Áo sơ mi họa tiết bò
+insect_tail,7,Đuôi côn trùng
+robot_wings,7,Cánh người máy
 purple_cloud,7,Mây tím
+grey_hand,7,Bàn tay xám
+penis_tail,0,Đuôi dương vật
+large_chest,7,Ngực lớn
 silver_ribbon,0,Ruy băng bạc
+torn_collar,0,Cổ áo rách
+brown_iris,7,Mống mắt nâu
+leather_swimwear,7,Đồ bơi da
+orange_backpack,7,Ba lô cam
+light_helmet,7,Mũ bảo hiểm nhạt
+white_anklet,7,Vòng chân trắng
+white_costume,7,Trang phục trắng
+long_apron,0,Tạp dề dài
 pale_hair,7,Tóc nhạt
+horse_armor,7,Giáp ngựa
+checkered_fur,7,Lông kẻ ca-rô
+bunny_headband,7,Băng đô thỏ
+paw_pussy,7,Âm hộ chân thú
+short_top,7,Áo ngắn
+hand_vulva,7,Âm hộ bàn tay
+butt_bra,7,Áo ngực mông
+green_thigh_boots,7,Bốt đùi màu xanh lá
+new_piercing,7,Khuyên mới
+cow_print_underwear,7,Đồ lót họa tiết bò
+gold_navel_piercing,7,Khuyên rốn vàng kim
+gold_sclera,7,Củng mạc vàng kim
+cookie_costume,7,Trang phục bánh quy
+plaid_shoes,0,Giày kẻ caro
+black_costume,7,Trang phục đen
 1904,14,Năm 1904
 1905,14,Năm 1905
+multicolored_anklet,7,Vòng chân nhiều màu
+multicolored_lingerie,7,Đồ lót nữ nhiều màu
+striped_leg,7,Chân kẻ sọc
+pink_tiara,0,Vương miện nhỏ hồng
+sailor_kimono,0,Kimono thủy thủ
+cake_dress,0,Váy bánh ngọt
 straight_face,7,Khuôn mặt thẳng
+muscular_thigh,7,Đùi cơ bắp
 narrow_arms,7,Cánh tay hẹp
 1900,14,Năm 1900
 1979,14,Năm 1979
+sweaty_bra,7,Áo ngực đầm mồ hôi
+sweaty_navel,7,Rốn đầm mồ hôi
+green_nose_horn,7,Sừng mũi xanh lá
+casual_clothes,7,Quần áo thường ngày
+red_nose_horn,7,Sừng mũi đỏ
+checkered_nails,0,Móng tay kẻ ca-rô
+checkered_bodysuit,0,Đồ liền thân kẻ ca-rô
+animal_print_swimwear,7,Đồ bơi họa tiết động vật
+thin_scarf,0,Khăn quàng mỏng
 silver_face,7,Khuôn mặt bạc
 long_jacket,7,Áo khoác dài
 silver_tongue,7,Lưỡi bạc
+rabbit_ear_stockings,7,Bít tất tai thỏ
 large_sleeves,7,Tay áo lớn
+light_elbow_gloves,7,Găng tay khuỷu tay nhạt
+open_vagina,7,Âm đạo mở
+purple_cropped_jacket,7,Áo khoác lửng màu tím
+orange_toenails,7,Móng chân cam
+purple_nose_horn,7,Sừng mũi tím
+sexy_underwear,7,Đồ lót gợi cảm
+purple_top,7,Áo màu tím
+denim_underwear,7,Đồ lót jean
+orange_thigh_socks,7,Tất đùi màu cam
+pig_hat,0,Mũ lợn
+striped_glasses,0,Kính kẻ sọc
+white_throat,7,Cổ họng trắng
+bat_lingerie,0,Đồ lót nữ dơi
+candy_bracelet,7,Vòng tay kẹo
+bear_brooch,0,Trâm cài gấu
+ruffled_swimsuit,7,Đồ bơi xếp tầng
+brown_hand,7,Bàn tay nâu
+thin_beak,7,Mỏ mỏng
+torn_thong,7,Quần lót dây rách
+arm_mouth,7,Miệng cánh tay
+chubby_arms,7,Cánh tay mũm mĩm
+animal_print_armwear,7,Đồ che tay họa tiết động vật
+christmas_panties,7,Quần lót Giáng sinh
+spiked_ears,7,Tai có gai
+cow_print_hoodie,0,Áo hoodie họa tiết bò
+penis_necklace,7,Vòng cổ dương vật
+cow_print_thong,7,Quần lót dây họa tiết bò
+egg_costume,0,Trang phục trứng
+eye_background,0,Nền mắt
+tail_breasts,7,Ngực đuôi
+snow_penis,7,Dương vật tuyết
+hair_bikini,0,Bikini tóc
+hair_chest,7,Ngực tóc
+hand_piercing,0,Khuyên bàn tay
+yellow_costume,7,Trang phục vàng
+blue_knee_socks,7,Tất đầu gối màu xanh dương
+satin_lingerie,0,Đồ lót nữ sa tanh
+red_knee_boots,7,Bốt đầu gối màu đỏ
+ripped_suit,7,Bộ đồ xé rách
+magic_gloves,7,Găng tay phép thuật
+dirty_pants,7,Quần bẩn
+grey_thigh_boots,7,Bốt đùi màu xám
+grey_anklet,7,Vòng chân xám
+robot_eye,7,Mắt người máy
+penis_scarf,7,Khăn quàng dương vật
+pointy_fingernails,7,Móng tay nhọn
+print_thigh_socks,7,Tất đùi họa tiết
+dark_jewelry,7,Trang sức sẫm
+spiked_vest,7,Áo ghi-lê có gai
+dark_vest,7,Áo ghi-lê sẫm
+checkered_swimwear,7,Đồ bơi kẻ ca-rô
+checkered_headwear,7,Phụ kiện đầu kẻ ca-rô
+wooden_armor,7,Giáp bằng gỗ
+horn_eyes,7,Mắt sừng
+horse_collar,7,Cổ áo ngựa
+silk_dress,7,Váy lụa
+glowing_cheeks,7,Má phát sáng
 huge_hat,7,Mũ khổng lồ
+plaid_swimwear,7,Đồ bơi kẻ caro
+rubber_bodysuit,7,Đồ liền thân cao su
+ghost_arms,7,Cánh tay ma
+lace_clothing,7,Trang phục ren
 1911,14,Năm 1911
 1901,14,Năm 1901
+tiger_print_panties,0,Quần lót họa tiết hổ
+white_purse,7,Túi cầm tay trắng
+white_backpack,7,Ba lô trắng
+large_chin,0,Cằm lớn
+multicolored_backpack,7,Ba lô nhiều màu
 light_stockings,7,Bít tất nhạt
 light_skirt,7,Chân váy nhạt
 light_boots,7,Bốt nhạt
+light_cape,7,Áo choàng nhạt
 light_dress,7,Váy nhạt
+striped_armor,7,Giáp kẻ sọc
+wet_hand,7,Bàn tay ướt
+muscular_ass,7,Mông cơ bắp
+open_belly,7,Bụng mở
+open_nipple_clothing,7,Trang phục núm vú mở
+breast_hair,7,Tóc ngực
+fur_pants,0,Quần lông
+water_temple,0,Thái dương nước
