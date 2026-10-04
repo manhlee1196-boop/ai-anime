@@ -3,6 +3,7 @@ import contextlib
 import csv
 import hashlib
 import io
+import re
 from pathlib import Path
 import tempfile
 import unittest
@@ -472,6 +473,74 @@ class VietnameseGlossaryTests(unittest.TestCase):
     def test_adjective_modifiers_are_all_declared_in_words(self):
         missing = studio._TAG_VI_ADJECTIVE_MODIFIERS - set(studio._TAG_VI_WORDS)
         self.assertEqual(missing, set())
+
+    # --- Đợt 3: ưu tiên thẻ chi tiết nhân vật (ngoại hình, trang phục, biểu cảm) ---
+    def test_character_detail_families_are_translated(self):
+        for tag, expected in (
+            ("holding_sword", "Cầm kiếm"),
+            ("holding_bottle", "Cầm cái chai"),
+            ("wearing_hat", "Đội mũ"),
+            ("wearing_dress", "Mặc váy liền"),
+            ("wearing_boots", "Đi ủng"),
+            ("wearing_glasses", "Đeo kính mắt"),
+            ("adjusting_glasses", "Đang chỉnh kính mắt"),
+            ("no_gloves", "Không có găng tay"),
+            ("bandaid_on_face", "Băng cá nhân trên khuôn mặt"),
+            ("flower_in_hair", "Hoa trong tóc"),
+            ("bikini_under_clothes", "Đồ bơi bikini bên dưới quần áo"),
+            ("hat_with_ribbon", "Mũ kèm ruy băng"),
+            ("hairless", "Không có tóc"),
+            ("gym_uniform", "Đồng phục thể dục"),
+            ("monotone_hair", "Tóc một tông"),
+            ("police_hat", "Mũ cảnh sát"),
+            ("hair_beads", "Chuỗi hạt cài tóc"),
+        ):
+            self.assertEqual(studio.vietnamese_tag_label(tag, "0"), expected, tag)
+
+    def test_state_suffixes_read_as_vietnamese_postmodifers(self):
+        # "<x>_less"/"tied_"/"untied_" phải cho cụm đúng ngữ pháp tiếng Việt, không dịch máy.
+        self.assertEqual(studio.vietnamese_tag_label("tied_shirt", "0"), "Áo sơ mi được buộc")
+        self.assertEqual(studio.vietnamese_tag_label("unbuttoned_shirt", "0"), "Áo sơ mi mở khuy")
+        self.assertEqual(studio.vietnamese_tag_label("untied_panties", "0"), "Quần lót cởi dây")
+        self.assertEqual(studio.vietnamese_tag_label("tied_to_chair", "0"), "Trói vào ghế")
+        self.assertEqual(studio.vietnamese_tag_label("holding_with_tail", "0"), "Giữ bằng đuôi")
+        # Không có nhãn nào bắt đầu bằng phân từ trần trụi.
+        for name, label in studio.TAG_VI_LABELS.items():
+            self.assertFalse(label.startswith(("được buộc ", "cởi dây ")), name)
+
+    def test_detail_rules_never_guess_unknown_pieces(self):
+        self.assertEqual(studio.vietnamese_tag_label("no_zzz_unknown", "0"), "Chưa có bản dịch")
+        self.assertEqual(studio.vietnamese_tag_label("holding_zzz_unknown", "0"), "Chưa có bản dịch")
+        self.assertEqual(studio.vietnamese_tag_label("zzz_on_face", "0"), "Chưa có bản dịch")
+        # Đuôi "-less" chỉ hợp lệ với bộ phận/danh từ đã biết, không phải tính từ tiếng Anh.
+        for word in ("fearless", "restless", "countless", "wireless", "relentless", "seamless"):
+            self.assertFalse(studio._is_translated_tag_label(studio.vietnamese_tag_label(word, "0"), "0"), word)
+        self.assertEqual(studio.vietnamese_tag_label("shirtless", "0"), "Không có áo sơ mi")
+
+    def test_function_words_stay_out_of_the_noun_vocabulary(self):
+        # Nếu giới từ/đại từ lọt vào WORDS hoặc HEADS sẽ sinh cụm kiểu "X trên Y" vô nghĩa.
+        for token in ("on", "in", "under", "over", "with", "no", "without", "holding", "wearing"):
+            self.assertNotIn(token, studio._TAG_VI_WORDS, token)
+            self.assertNotIn(token, studio._TAG_VI_COMPOSITE_HEADS, token)
+        # "less" chỉ được dùng làm danh từ phủ định ở cuối cụm, không phải từ bổ nghĩa tùy ý.
+        self.assertNotIn("less", studio._TAG_VI_WORDS)
+        self.assertEqual(studio._TAG_VI_COMPOSITE_HEADS["less"], "Không có")
+
+    def test_character_detail_coverage_is_prioritized(self):
+        rows = studio.load_csv_tags()
+        themes = [(name, re.compile(pattern)) for name, pattern in studio.TAG_THEMES.items()]
+        detail = {"Ngoại hình", "Trang phục & phụ kiện", "Biểu cảm & tư thế"}
+        for top_n, minimum in ((1000, 0.95), (3000, 0.85), (5000, 0.72)):
+            hit = total = 0
+            for row in rows[:top_n]:
+                name, category = row[0], row[1]
+                if category in {"1", "8"}:
+                    continue
+                if not any(theme in detail for theme, pattern in themes if pattern.search(name)):
+                    continue
+                total += 1
+                hit += studio._is_translated_tag_label(row[5], category)
+            self.assertGreater(hit / total, minimum, f"top-{top_n}: {hit}/{total}")
 
     def test_vocabulary_values_are_usable_single_phrases(self):
         for name, vocab in (

@@ -65,7 +65,7 @@ Bạn có thể tự kiểm tra SHA-256 trong Colab: `sha256sum /content/wai_mod
 - **🧭 Quy trình chuẩn · khung prompt + negative tối ưu (ô 7).** Ba nút hỗ trợ, tất cả **chỉ ghi vào nội dung hiển thị** để bạn sửa: **Sắp xếp prompt theo thứ tự chuẩn** (chất lượng → chủ thể → ngoại hình → trang phục → tư thế → bố cục → bối cảnh → ánh sáng → phong cách → `absurdres`, bỏ thẻ trùng, thêm thẻ neo của khung đã chọn), **Nạp negative đã chọn** (8 bộ: chuẩn nhà phát hành WAI v17, Illustrious chuẩn, tay/chân, giữ chất 2D, chân dung, phong cảnh, an toàn nội dung, inpaint; ghi đè hoặc nối thêm) và **🩺 Kiểm tra prompt & thông số** (ước lượng token so với khối 75 token của SDXL, thẻ chất lượng thừa/trùng/vừa dương vừa âm, cú pháp Pony, trọng số > 1.2, negative quá dài, steps/CFG/kích thước/hires ngoài khuyến nghị). Nhóm **💅 Chi tiết mắt & móng** trong tab **✨ Chi tiết** chỉ thêm các thẻ mô tả (màu mắt, kiểu/màu móng) vào hai ô đang hiển thị. Quy trình đầy đủ: [`docs/QUY_TRINH_TAO_ANH.md`](docs/QUY_TRINH_TAO_ANH.md).
 - **Tự sửa mặt/tay (auto-detailer, tùy chọn).** Ô 2 **cài thêm `ultralytics==8.4.170`** (chỉ cảnh báo nếu thất bại, các chế độ khác vẫn chạy). Khi bật mục **Tự sửa mặt/tay** trong tab **⚙️ Thông số**, Studio tải weight YOLOv8 (`face_yolov8n.pt`, `hand_yolov8n.pt`) từ `Bingsu/adetailer` @ `c310c216` vào **`/content/wai_detailer_cache`**, **kiểm SHA-256 đầy đủ** (khớp metadata HF đã đối chiếu) rồi phát hiện mặt/bàn tay và inpaint lại đúng vùng đó với strength/ngưỡng/số vùng bạn chọn. Weight sai hash bị xóa và không nạp; cần mạng ở lần bật đầu tiên. Tính năng này chỉ là gợi ý chỉnh sửa, **không đảm bảo** hết lỗi ngón/mặt.
 
-Kiểm tra cấu trúc notebook và hành vi tải/hash/nạp LoRA bằng mock CPU: `python -m unittest discover -s tests -v` (hiện **104 test: 76 đạt, 28 bỏ qua** — phần lớn do thiếu `torch`/`diffusers` và notebook legacy không còn trong checkout; UI Gradio 6.15.2 và Pillow đã được cài nên các test dựng giao diện và tuyến sự kiện thật chạy được). `colab/studio.py` là bản mã nguồn tương ứng của ô 7 và `python scripts/build_colab_studio.py` tái tạo **chính xác** notebook từ nó — sửa giao diện ở `colab/studio.py` rồi chạy lại script. Việc tải thực tế checkpoint/LoRA/weight YOLOv8, khả năng chạy với GPU Colab và chất lượng ảnh/tay-chân-mắt **chưa thể xác nhận** trong môi trường kiểm thử CPU này.
+Kiểm tra cấu trúc notebook và hành vi tải/hash/nạp LoRA bằng mock CPU: `python -m unittest discover -s tests -v` (hiện **109 test: 81 đạt, 28 bỏ qua** — phần lớn do thiếu `torch`/`diffusers` và notebook legacy không còn trong checkout; UI Gradio 6.15.2 và Pillow đã được cài nên các test dựng giao diện và tuyến sự kiện thật chạy được). `colab/studio.py` là bản mã nguồn tương ứng của ô 7 và `python scripts/build_colab_studio.py` tái tạo **chính xác** notebook từ nó — sửa giao diện ở `colab/studio.py` rồi chạy lại script. Việc tải thực tế checkpoint/LoRA/weight YOLOv8, khả năng chạy với GPU Colab và chất lượng ảnh/tay-chân-mắt **chưa thể xác nhận** trong môi trường kiểm thử CPU này.
 
 ---
 
@@ -227,8 +227,10 @@ Các nút dùng ảnh mới nhất tự mở đúng chế độ sau khi nạp �
 Kho thẻ Gradio hiển thị nhãn tiếng Việt trước tên gốc, ví dụ **Tóc dài — long_hair**,
 **Mắt xanh dương — blue_eyes**. Có thể tìm bằng nhãn Việt có dấu/không dấu, tag hoặc
 bí danh tiếng Anh; nhiều cụm trong một prompt được tìm riêng trên toàn bộ catalog.
-CSV có cột chú giải Việt ở vị trí thứ năm. Từ điển gồm **1.972 mục** cùng quy tắc ghép
-(họa tiết, chất liệu, bộ phận, 294 danh từ chính) phủ **9.210 thẻ**, ưu tiên thẻ phổ biến;
+CSV có cột chú giải Việt ở vị trí thứ năm. Từ điển gồm **2.111 mục** cùng quy tắc ghép
+(301 danh từ chính × 490 bổ ngữ × 36 màu) và ba quy tắc cụm — `wearing_/holding_/no_`,
+`<A>_<giới từ>_<B>`, hậu tố `-less` — phủ **12.991 thẻ**, ưu tiên chi tiết nhân vật
+(tóc, mắt, mặt, tai/đuôi, trang phục, biểu cảm);
 đây **không phải bản dịch máy đầy đủ cho 349.714 thẻ**. Tên
 họa sĩ/nhân vật/tác phẩm được giữ nguyên kèm nhãn loại; mục chưa dịch được ghi rõ.
 Khi thêm kết quả, prompt nhận đúng tên thẻ tiếng Anh gốc — nhãn Việt không gửi vào model.
@@ -245,16 +247,20 @@ theo đúng định dạng mà Semi-Auto Tag Complete của Character Select SAA
 
 - Mỗi dòng là `tag,category,translation`, **không có dòng tiêu đề**, UTF-8 không BOM, xuống dòng LF,
   mỗi thẻ xuất hiện đúng một lần theo thứ tự phổ biến giảm dần của CSV nguồn.
-- Từ điển gồm **1.972 mục dịch cố định** + bộ ghép **294 danh từ chính × 426 bổ ngữ × 36 màu**;
-  mỗi mục danh từ mới mở khóa cả họ thẻ nên độ phủ tăng nhanh hơn số từ phải viết tay.
+- Từ điển gồm **2.111 mục dịch cố định** + bộ ghép **301 danh từ chính × 490 bổ ngữ × 36 màu**
+  và ba quy tắc cụm: `wearing_hat` → **Đội mũ** (động từ chọn theo loại món đồ: Đội/Mặc/Đeo/Thắt/Đi/Mang),
+  `holding_sword` → **Cầm kiếm**, `no_gloves` → **Không có găng tay**, `bandaid_on_face` →
+  **Băng cá nhân trên khuôn mặt**, `hat_with_ribbon` → **Mũ kèm ruy băng**, `hairless` → **Không có tóc**.
+  Mỗi mục danh từ mới mở khóa cả họ thẻ nên độ phủ tăng nhanh hơn số từ phải viết tay.
 - Trường dịch **không chứa dấu phẩy**: bộ nạp JavaScript của SAA cắt dòng bằng `line.split(',', 3)`
   nên phần sau trường thứ ba bị bỏ; script tự đổi `,` thành `;`, bỏ nháy và làm phẳng xuống dòng.
 - Chỉ thẻ **có bản dịch thật** được ghi. Mục chưa dịch (`Chưa có bản dịch`), từ loại thuần
   (`Tác phẩm`, `Nhân vật`, `Họa sĩ`) và tên họa sĩ (nhóm 1 và 8 — SAA bỏ qua khi nạp file dịch)
   bị loại, nên tệp không chứa dòng vô nghĩa. Tên riêng được giữ nguyên theo chủ trương của repo.
-- Hiện tại: **9.189/349.714 thẻ** (324 KB), phủ **96,8%** trong 500 thẻ phổ biến nhất, **96,6%**
-  trong 1.000 thẻ đầu, **90,2%** trong 2.000 và **49,2%** trong 5.000 thẻ đầu — vẫn không phải
-  bản dịch máy cho toàn bộ catalog.
+- Hiện tại: **12.969/349.714 thẻ** (484 KB), phủ **96,8%** trong 500 thẻ phổ biến nhất, **96,6%**
+  trong 1.000, **90,9%** trong 2.000 và **53,9%** trong 5.000 thẻ đầu. Vì ưu tiên hiện tại là **chi tiết
+  nhân vật**, nhóm thẻ ngoại hình/trang phục/biểu cảm đạt **99,6%** trong 1.000 thẻ đầu, **91,6%**
+  trong 3.000 và **80,5%** trong 5.000 (theo lượt dùng trong CSV: 93,8–96,4%) — vẫn không phải bản dịch máy cho toàn bộ catalog.
 - Từ điển trong mã **luôn thắng** cột chú giải cũ của CSV (`_prefer_vietnamese_label`), nên thêm
   bản dịch vào `colab/studio.py` là Studio và file dịch nhận ngay — không phải tạo lại CSV 13,7 MB
   hay đổi `TAG_CSV_SHA256`.
