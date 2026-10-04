@@ -526,11 +526,32 @@ class VietnameseGlossaryTests(unittest.TestCase):
         self.assertNotIn("less", studio._TAG_VI_WORDS)
         self.assertEqual(studio._TAG_VI_COMPOSITE_HEADS["less"], "Không có")
 
+    def test_pose_and_only_rules_read_as_vietnamese(self):
+        # Tiếng Việt đặt động từ trước nên "<x>_only" và "<bộ phận>_<hướng>" cần mẫu riêng.
+        self.assertEqual(studio.vietnamese_tag_label("hat_only", "0"), "Chỉ đội mũ")
+        self.assertEqual(studio.vietnamese_tag_label("gloves_only", "0"), "Chỉ đeo găng tay")
+        self.assertEqual(studio.vietnamese_tag_label("choker_only", "0"), "Chỉ đeo vòng cổ choker")
+        self.assertEqual(studio.vietnamese_tag_label("skirt_down", "0"), "Kéo chân váy xuống")
+        self.assertEqual(studio.vietnamese_tag_label("tail_up", "0"), "Đuôi dựng lên")
+        self.assertEqual(studio.vietnamese_tag_label("ears_down", "0"), "Tai cụp xuống")
+        self.assertEqual(studio.vietnamese_tag_label("eyebrows_hidden", "0"), "Lông mày được che")
+        self.assertEqual(studio.vietnamese_tag_label("shirt_tucked", "0"), "Áo sơ mi giắt vào trong")
+        # Động từ nhìn/chỉ: liên từ "at" của tiếng Anh phải bị lược, không dịch thành "tại".
+        self.assertEqual(studio.vietnamese_tag_label("looking_at_phone", "0"), "Nhìn điện thoại")
+        self.assertEqual(studio.vietnamese_tag_label("leaning_against_wall", "0"), "Tựa vào bức tường")
+        self.assertEqual(studio.vietnamese_tag_label("pointing_at_gun", "0"), "Chỉ vào súng")
+
+    def test_rule_only_words_do_not_leak_into_noun_vocabulary(self):
+        # Các từ này chỉ hợp lệ trong quy tắc cụm; vào WORDS/HEADS sẽ sinh "X dưới Y" vô nghĩa.
+        for token in ("down", "up", "aside", "away", "only", "forward", "sideways", "out"):
+            self.assertNotIn(token, studio._TAG_VI_WORDS, token)
+            self.assertNotIn(token, studio._TAG_VI_COMPOSITE_HEADS, token)
+
     def test_character_detail_coverage_is_prioritized(self):
         rows = studio.load_csv_tags()
         themes = [(name, re.compile(pattern)) for name, pattern in studio.TAG_THEMES.items()]
         detail = {"Ngoại hình", "Trang phục & phụ kiện", "Biểu cảm & tư thế"}
-        for top_n, minimum in ((1000, 0.95), (3000, 0.85), (5000, 0.72)):
+        for top_n, minimum in ((1000, 0.95), (3000, 0.95), (5000, 0.90), (10000, 0.72)):
             hit = total = 0
             for row in rows[:top_n]:
                 name, category = row[0], row[1]

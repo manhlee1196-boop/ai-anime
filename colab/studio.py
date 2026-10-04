@@ -3389,6 +3389,102 @@ _TAG_VI_WORDS.update({
     "monkey": "khỉ", "dolphin": "cá heo", "seal": "hải cẩu", "walrus": "hải mã",
     "penguin": "cánh cụt", "rat": "chuột cống", "camel": "lạc đà", "gym": "thể dục",
     "sport": "thể thao", "naval": "hải quân", "army": "lục quân", "circle": "hình tròn",
+    "ahoge": "tóc ahoge",
+    "argyle": "kẻ quả thoi",
+    "curled": "uốn xoăn",
+    "detached": "tách rời",
+    "diagonal": "chéo",
+    "earclip": "kẹp tai",
+    "facepaint": "vẽ mặt",
+    "furrow": "nếp hằn",
+    "hairy": "nhiều lông",
+    "intake": "lọn tóc",
+    "lidded": "hở mí",
+    "lolita": "lolita",
+    "median": "giữa",
+    "nun": "nữ tu",
+    "oversized": "quá khổ",
+    "showgirl": "gợi cảm",
+    "skinny": "gầy gò",
+    "skinsuit": "bộ đồ ôm sát",
+    "sparkling": "lấp lánh",
+    "stirrup": "đai giữ",
+    "sundress": "váy dạo nắng",
+    "tailcoat": "áo đuôi cá",
+    "taut": "căng chặt",
+    "turtleneck": "cổ lọ",
+    "uneven": "không đều",
+    "wagging": "vẫy",
+    "leaf": "chiếc lá", "skull": "đầu lâu", "bone": "xương", "tassel": "chuỗi tua",
+    "crescent": "hình lưỡi liềm", "hourglass": "đồng hồ cát", "moon": "mặt trăng",
+    "star": "ngôi sao", "cloud": "đám mây", "flame": "ngọn lửa", "bell": "chuông",
+    "ribbon": "ruy băng", "bow": "nơ", "paw": "chân thú",
+    "claw": "móng vuốt", "fang": "nanh", "whisker": "râu mép", "scales": "vảy",
+    "shell": "vỏ", "hoof": "móng guốc", "beak": "mỏ",
+    "antler": "gạc hươu", "fangs": "nanh", "gemstone": "đá quý", "chain": "dây xích",
+    "whiskers": "râu mép",
+    "padlock": "ổ khóa", "key": "chìa khóa", "locket": "mặt dây chuyền ảnh",
+    "brooch": "trâm cài", "tiara": "vương miện nhỏ", "circlet": "vòng đội đầu",
+    "armored": "bọc giáp",
+    "backless": "hở lưng",
+    "flipped": "lật sang bên",
+    "halter": "dạng yếm",
+    "notched": "chẻ",
+    "quilted": "bông chần",
+    "ribbed": "sống dọc",
+    "toeless": "hở ngón chân",
+    "triangle": "hình tam giác",
+    "winged": "có cánh",
+    "aisle": "lối đi",
+    "bench": "ghế dài",
+    "bicycle": "xe đạp",
+    "blanket": "chăn",
+    "branch": "cành cây",
+    "broccoli": "bông cải xanh",
+    "cage": "lồng",
+    "camera": "máy ảnh",
+    "car": "ô tô",
+    "carpet": "thảm trải sàn",
+    "carrot": "cà rốt",
+    "cave": "hang động",
+    "cliff": "vách đá",
+    "cockpit": "buồng lái",
+    "counter": "quầy",
+    "creature": "sinh vật",
+    "curtain": "rèm",
+    "diaper": "tã lót",
+    "floor": "sàn nhà",
+    "genitalia": "bộ phận sinh dục",
+    "ground": "mặt đất",
+    "hammock": "võng",
+    "ladder": "cái thang",
+    "lake": "hồ",
+    "lap": "đùi",
+    "mattress": "đệm nằm",
+    "motorcycle": "xe máy",
+    "note": "nốt nhạc",
+    "people": "những người",
+    "person": "người",
+    "pillow": "gối ôm",
+    "plant": "cây cảnh",
+    "podium": "bục",
+    "pond": "ao",
+    "railing": "lan can",
+    "river": "sông",
+    "sea": "biển",
+    "slide": "cầu trượt",
+    "stage": "sân khấu",
+    "stairs": "cầu thang",
+    "stool": "ghế đẩu",
+    "surface": "bề mặt",
+    "swing": "xích đu",
+    "tent": "lều",
+    "throne": "ngai vàng",
+    "toilet": "bồn cầu",
+    "trampoline": "tấm bạt nhún",
+    "truck": "xe tải",
+    "tv": "ti vi",
+    "wall": "bức tường",
     "bomber": "bomber",
     "cargo": "túi hộp",
     "cross": "chữ thập",
@@ -3428,6 +3524,9 @@ _TAG_VI_ADJECTIVE_MODIFIERS = frozenset({
     "younger", "larger", "smaller", "taller",
     "monotone", "solid", "spiral", "creepy", "dull", "sharp", "bushy", "prick", "lop",
     "circle", "sleepy", "tired", "teary", "upturned", "downcast", "spade", "cross",
+    "armored", "winged", "notched", "toeless", "flipped", "backless", "halter",
+    "triangle", "ribbed", "quilted",
+    "skinny", "hairy", "sparkling", "taut", "curled", "detached", "oversized", "uneven", "lidded", "diagonal", "argyle", "turtleneck", "wagging",
 })
 # Danh từ bổ nghĩa (vật liệu, loài, bộ phận, đồ vật) đứng ngay sau danh từ chính và
 # ngược thứ tự so với tiếng Anh: rabbit_ear_hat → "Mũ tai thỏ".
@@ -3557,7 +3656,74 @@ _TAG_VI_COLOR_MARKER_HEADS = frozenset({
 _TAG_VI_COMPOSITE_HEADS.update({
     "less": "Không có", "symbol": "Biểu tượng", "logo": "Logo", "text": "Chữ",
     "theme": "Chủ đề", "outline": "Đường viền", "jewel": "Đá quý",
+
+    "blush": "Má hồng",
+    "dimples": "Lúm đồng tiền",
+    "eyeliner": "Kẻ mắt",
+    "eyeshadow": "Phấn mắt",
+    "freckles": "Tàn nhang",
+    "handwear": "Đồ che tay",
+    "highlighter": "Phấn bắt sáng",
+    "makeup": "Trang điểm",
+    "mascara": "Mascara",
+    "moles": "Nốt ruồi",
+    "note": "Nốt nhạc",
 })
+
+_TAG_VI_COMPOSITE_HEADS.update({
+    # Đợt 4: danh từ hình khối hay đứng cuối cụm chi tiết.
+    "heart": "Trái tim", "star": "Ngôi sao", "moon": "Mặt trăng", "cloud": "Đám mây",
+    "flame": "Ngọn lửa", "drop": "Giọt", "leaf": "Lá", "bone": "Xương", "feather": "Lông vũ",
+    "bell": "Chuông", "ribbon": "Ruy băng", "bow": "Nơ", "skull": "Đầu lâu", "anchor": "Cái neo", "snowflake": "Bông tuyết",
+    "spiral": "Đường xoáy", "hourglass": "Đồng hồ cát", "clock": "Đồng hồ",
+    "accessories": "Phụ kiện",
+    "accessory": "Phụ kiện",
+    "ahoge": "Tóc ahoge",
+    "armpits": "Nách",
+    "bands": "Dải",
+    "bellies": "Bụng",
+    "belts": "Thắt lưng",
+    "bows": "Nơ",
+    "buttocks": "Mông",
+    "calves": "Bắp chân",
+    "caps": "Mũ",
+    "censor": "Kiểm duyệt",
+    "claws": "Móng vuốt",
+    "curls": "Lọn tóc xoăn",
+    "dresses": "Váy liền",
+    "elbows": "Khuỷu tay",
+    "eyeball": "Nhãn cầu",
+    "eyeballs": "Nhãn cầu",
+    "fangs": "Nanh",
+    "feathers": "Lông vũ",
+    "fingers": "Ngón tay",
+    "hair_tubes": "Lọn tóc ống",
+    "hairband": "Băng đô",
+    "hairbands": "Băng đô",
+    "hats": "Mũ",
+    "headdress": "Đồ đội đầu",
+    "headdresses": "Đồ đội đầu",
+    "hooves": "Vó",
+    "horns": "Sừng",
+    "knees": "Đầu gối",
+    "navels": "Rốn",
+    "nostrils": "Lỗ mũi",
+    "pasties": "Miếng che ngực",
+    "ribbons": "Ruy băng",
+    "shirts": "Áo sơ mi",
+    "skirts": "Chân váy",
+    "soles": "Bàn chân",
+    "spear": "Ngọn giáo",
+    "spears": "Ngọn giáo",
+    "straps": "Dây đeo",
+    "tails": "Đuôi",
+    "ties": "Cà vạt",
+    "toes": "Ngón chân",
+    "tresses": "Lọn tóc",
+    "tubes": "Ống",
+    "whiskers": "Râu mèo",
+})
+
 
 _TAG_VI_NAME_CATEGORIES = frozenset({"1", "3", "4", "8", "9", "10", "11", "15"})
 _TAG_VI_CATEGORY_FALLBACKS = {
@@ -3919,6 +4085,117 @@ TAG_VI_LABELS.update({
 })
 
 TAG_VI_LABELS.update({
+    # Đợt 4 – thẻ chi tiết hot còn sót (danh từ ghép, số nhiều, trạng thái).
+    "hakama_skirt": "Váy hakama",
+    "one_eye_obstructed": "Một mắt bị che",
+    "stud_earrings": "Khuyên tai dạng nụ",
+    "furred_dragon": "Rồng có lông",
+    "tracen_school_uniform": "Đồng phục trường Tracen",
+    "spear": "Ngọn giáo",
+    "pseudo_hair": "Tóc kết từ vật khác",
+    "teddy_bear": "Gấu bông",
+    "under-rim_eyewear": "Kính gọng dưới",
+    "hat_flower": "Hoa cài mũ",
+    "sitting_on_another": "Ngồi lên người khác",
+    "east_asian_clothing": "Trang phục Đông Á",
+    "off-shoulder_shirt": "Áo trễ vai",
+    "against_surface": "Tựa vào bề mặt",
+    "eyebrows_hidden_by_hair": "Lông mày bị tóc che",
+    "retracted_foreskin": "Da quy đầu kéo ngược",
+    "unretracted_foreskin": "Da quy đầu chưa kéo",
+    "wide_eyed": "Mở to mắt",
+    "wide-eyed": "Mở to mắt",
+    "eyebrow_piercing": "Xuyên lông mày",
+    "looking_aside": "Nhìn sang bên",
+    "looking_afar": "Nhìn xa xăm",
+    "wedding_dress": "Váy cưới",
+    "horned_humanoid": "Nhân vật có sừng",
+    "hand_on_another's_face": "Tay chạm mặt người khác",
+    "split-color_hair": "Tóc chia màu",
+    "full-face_blush": "Đỏ cả mặt",
+    "absurdly_long_hair": "Tóc dài phi lý",
+    "food-themed_hair_ornament": "Phụ kiện tóc hình đồ ăn",
+    "tail_feathers": "Lông vũ ở đuôi",
+    "claw_pose": "Tư thế vuốt",
+    "heart_censor": "Kiểm duyệt hình trái tim",
+    "eye_patch": "Miếng che mắt",
+    "curled_horns": "Sừng xoắn",
+    "facesitting": "Ngồi lên mặt",
+    "tress_ribbon": "Ruy băng buộc lọn tóc",
+    "tail_accessory": "Phụ kiện đuôi",
+    "eyeball": "Nhãn cầu",
+    "parallel_hairclips": "Kẹp tóc song song",
+    "fairy_wings": "Cánh tiên",
+    "invisible_chair": "Ghế vô hình",
+    "bikini_armor": "Giáp bikini",
+    "sundress": "Váy dạo nắng",
+    "hairy": "Có nhiều lông",
+    "skinny": "Gầy gò",
+    "eye_mask": "Mặt nạ che mắt",
+    "frilled_hair_tubes": "Ống tóc nhún",
+    "taut_clothes": "Quần áo căng chặt",
+    "evil_smile": "Nụ cười gian ác",
+    "faceless_female": "Nữ không mặt",
+    "polar_bear": "Gấu Bắc Cực",
+    "sparkling_eyes": "Mắt lấp lánh",
+    "face-to-face": "Đối mặt nhau",
+    "hat_feather": "Lông vũ cài mũ",
+    "averting_eyes": "Nhìn lảng đi",
+    "see-through_shirt": "Áo sơ mi xuyên thấu",
+    "alternate_eye_color": "Màu mắt khác",
+    "clothing_pull": "Kéo quần áo",
+    "stirrup_legwear": "Tất có đai bàn chân",
+    "bikini_skirt": "Chân váy bikini",
+    "teeth_showing": "Để lộ răng",
+    "deep_skin": "Da sẫm màu",
+    "two_tails": "Hai cái đuôi",
+    "2_tails": "Hai cái đuôi",
+    "nervous_smile": "Nụ cười lo lắng",
+    "uneven_legwear": "Đồ chân không đều",
+    "backwards_hat": "Đội mũ ngược",
+    "heart_ahoge": "Tóc ahoge hình trái tim",
+    "oversized_clothes": "Quần áo quá khổ",
+    "alternate_hair": "Kiểu tóc khác",
+    "alternate_hair_color": "Màu tóc khác",
+    "ice_wings": "Cánh băng",
+    "diagonal-striped_clothes": "Quần áo kẻ sọc chéo",
+    "simple_eyes": "Mắt vẽ đơn giản",
+    "multiple_hair_bows": "Nhiều nơ buộc tóc",
+    "lolita_hairband": "Băng đô lolita",
+    "eye_scar": "Sẹo ở mắt",
+    "one-eyed": "Một mắt",
+    "swallowing": "Đang nuốt",
+    "nun_headdress": "Khăn trùm nữ tu",
+    "holding_another's_hair": "Nắm tóc người khác",
+    "dress_bow": "Nơ trên váy",
+    "detached_wings": "Cánh tách rời",
+    "argyle_clothes": "Quần áo kẻ quả thoi",
+    "clothes_grab": "Nắm quần áo",
+    "lidded_eyes": "Mở hé mí",
+    "animal_ear_headphones": "Tai nghe thú",
+    "braided_hair_rings": "Vòng buộc tóc tết",
+    "showgirl_skirt": "Chân váy showgirl",
+    "median_furrow": "Đường rãnh giữa bụng",
+    "furrification": "Hoá thú",
+    "earphones": "Tai nghe nhét tai",
+    "turtleneck_shirt": "Áo sơ mi cổ lọ",
+    "curved_horn": "Sừng cong",
+    "unusual_tail": "Đuôi khác thường",
+    "mini_top_hat": "Mũ chóp cao nhỏ",
+    "crescent_hat_ornament": "Trang trí mũ hình lưỡi liềm",
+    "heart_pasties": "Miếng che ngực hình tim",
+    "tail_wagging": "Đuôi vẫy",
+    "hakama_short_skirt": "Chân váy hakama ngắn",
+    "multiple_poses": "Nhiều tư thế",
+    "wingless_dragon": "Rồng không cánh",
+    "hasu_no_sora_school_uniform": "Đồng phục trường Hasu no Sora",
+    "crossdressing_(mtf)": "Giả gái (MTF)",
+    "dildo_sitting": "Ngồi trên dương vật giả",
+    "glowing_genitalia": "Bộ phận phát sáng",
+    "worm's-eye_view": "Góc nhìn từ dưới lên",
+})
+
+TAG_VI_LABELS.update({
     # Đợt 3 – chi tiết nhân vật: mặt, tóc, mắt, tai/đuôi/sừng, trang phục.
     "tied_up": "Bị trói",
     "tied_down": "Bị trói giữ",
@@ -4214,12 +4491,73 @@ _TAG_VI_ACTION_PREFIXES = {
     "brandishing": "Đang giơ", "licking": "Đang liếm", "biting": "Đang cắn",
     "kicking": "Đang đá", "poking": "Đang chỉ vào", "tying": "Đang buộc",
     "untying": "Đang cởi dây",
+    # Họ "nhìn/chỉ" + tư thế: tiếng Việt bỏ qua liên từ "at/to" nên có "|" để lược nó.
+    "looking": "Nhìn|at", "staring": "Nhìn chằm chằm|at", "glaring": "Nhìn giận dữ|at",
+    "glancing": "Liếc nhìn|at", "pointing": "Chỉ vào|at", "smiling": "Cười|at",
+    "facing": "Hướng về phía|at,to", "peeking": "Nhòm|through,into,at",
+    "sitting": "Ngồi|on,in,at", "lying": "Nằm|on,in", "standing": "Đứng|on,in,at",
+    "kneeling": "Quỳ|on,in", "crouching": "Ngồi xổm|on", "perched": "Đậu trên|on",
+    "leaning": "Tựa vào|on,against", "resting": "Nghỉ trên|on", "balancing": "Giữ thăng bằng trên|on",
+    "stepping": "Bước|on,over", "tripping": "Vấp phải|on", "floating": "Lơ lửng trên|in,on",
+    "riding": "Cưỡi|on", "touching": "Chạm|", "grabbing": "Nắm|",
+    "hugging": "Ôm|", "cuddling": "Ôm ấp|", "kissing": "Hôn|", "nuzzling": "Dụi vào|",
+    "sniffing": "Ngửi|", "smelling": "Ngửi|", "tasting": "Nếm|", "swallowing": "Nuốt|",
+    "slapping": "Đang tát", "spanking": "Đét|", "hitting": "Đánh|", "patting": "Vỗ|",
+    "strangling": "Bóp cổ|", "choking": "Nghẹt cổ|", "reaching": "Với tay tới|",
+    "swinging": "Đung đưa|",
 }
 # Trạng thái đã rồi: đặt SAU danh từ theo tiếng Việt ("<áo> được buộc").
 _TAG_VI_PAST_STATES = {
     "tied": "được buộc", "untied": "cởi dây", "unbuttoned": "mở khuy",
     "unzipped": "kéo khóa", "unlaced": "cởi dây buộc", "unfastened": "mở",
+    "hidden": "được che", "concealed": "được che", "revealed": "lộ ra",
+    "rolled": "cuộn lên", "folded": "gấp lại", "tucked": "giắt vào trong",
+    "untucked": "bỏ giắt", "lifted": "nâng lên", "lowered": "hạ xuống",
+    "pulled": "kéo", "pushed": "đẩy", "tilted": "nghiêng", "turned": "quay đi",
+    "grabbed": "bị nắm", "held": "được cầm", "dropped": "rơi xuống",
+    "loosened": "nới lỏng", "tightened": "thắt chặt", "bitten": "bị cắn",
+    "torn": "bị rách", "cut": "bị cắt", "flipped": "lật sang bên",
 }
+# Hướng chuyển động "<danh từ>_<hướng>". Tiếng Việt đặt động từ trước nên cần mẫu riêng
+# cho từng lớp: trang phục / chi tay chân / đuôi-cánh-tai / còn lại.
+_TAG_VI_DIRECTION_GARMENT = {
+    "down": "Kéo {} xuống", "up": "Kéo {} lên", "aside": "Kéo {} sang bên",
+    "off": "Cởi {}", "on": "Mặc {}", "open": "Mở {}",
+}
+_TAG_VI_DIRECTION_LIMB = {
+    "up": "Giơ {} lên", "down": "Hạ {} xuống", "out": "Dạng {} ra",
+    "forward": "Đưa {} về phía trước", "back": "Đưa {} ra sau",
+}
+_TAG_VI_DIRECTION_BODY = {
+    "up": "{} dựng lên", "down": "{} cụp xuống", "upright": "{} dựng đứng",
+    "flat": "{} ép phẳng", "back": "{} ép về sau",
+}
+_TAG_VI_DIRECTION_PLAIN = {
+    "down": "{} hướng xuống", "up": "{} hướng lên", "aside": "{} lệch bên",
+    "away": "{} quay ra xa", "forward": "{} hướng tới trước", "back": "{} ngả về sau",
+    "sideways": "{} nghiêng bên", "open": "{} mở", "closed": "{} khép lại",
+    "through": "{} xuyên qua", "out": "{} thò ra",
+}
+_TAG_VI_GARMENT_TOKENS = frozenset((
+    "shirt dress skirt pants shorts underwear topwear bottomwear panties thighhighs kneehighs "
+    "socks stockings gloves mittens jacket coat hoodie sweater vest uniform swimsuit swimwear "
+    "bikini apron cloak cape legwear armwear footwear headwear headgear eyewear hat cap helmet "
+    "shoes boots sandals slippers necklace scarf tie necktie bowtie belt veil mask glasses goggles "
+    "choker earring earrings jewelry leotard bodysuit corset bra armor armor_set"
+).split())
+_TAG_VI_LIMB_TOKENS = frozenset("arm arms hand hands leg legs foot feet finger fingers toe toes".split())
+_TAG_VI_BODY_TOKENS = frozenset("tail ear ears wing wings antenna antlers fin fins horn horns".split())
+_TAG_VI_ONLY_WEAR = _TAG_VI_GARMENT_TOKENS | frozenset(
+    "hat cap glasses goggles mask blindfold collar tie belt choker necklace".split())
+def _fill_direction(template, label):
+    """Điền nhãn vào mẫu hướng; mẫu bắt đầu bằng {} thì giữ chữ hoa vì danh từ đứng đầu cụm."""
+    if template.startswith("{}"):
+        return template.format(label)
+    return template.format(_lower_first(label))
+
+
+_ALL_DIRECTIONS = (frozenset(_TAG_VI_DIRECTION_GARMENT) | frozenset(_TAG_VI_DIRECTION_LIMB)
+                   | frozenset(_TAG_VI_DIRECTION_BODY) | frozenset(_TAG_VI_DIRECTION_PLAIN))
 # "wearing" cần đúng động từ tiếng Việt theo loại món đồ; để trống nghĩa là "Mặc".
 _TAG_VI_WEAR_VERBS = {
     "hat": "Đội", "cap": "Đội", "helmet": "Đội", "beret": "Đội", "beanie": "Đội",
@@ -4245,6 +4583,10 @@ def _lower_first(label):
     return (label[:1].lower() + label[1:]) if label else label
 
 
+def _upper_first(label):
+    return (label[:1].upper() + label[1:]) if label else label
+
+
 def _vietnamese_fragment_label(fragment, category, depth=0):
     """Dịch một mảnh tên thẻ: từ điển → hậu tố phủ định → giới từ → động từ → quy tắc ghép."""
     if not fragment:
@@ -4259,6 +4601,9 @@ def _vietnamese_fragment_label(fragment, category, depth=0):
         color = _TAG_VI_COLORS.get(fragment)
         if color:
             return "màu " + color
+        word = _TAG_VI_WORDS.get(fragment)
+        if word:
+            return _upper_first(word)
         for suffix, prefix_vi in _TAG_VI_NEGATIVE_SUFFIXES.items():
             if fragment.endswith(suffix) and len(fragment) > len(suffix) + 2:
                 stem = fragment[: -len(suffix)]
@@ -4269,6 +4614,37 @@ def _vietnamese_fragment_label(fragment, category, depth=0):
     if depth >= 3:
         return None
     tokens = fragment.split("_")
+    # "<món đồ>_only" → "Chỉ mặc/Có <món đồ>"
+    if len(tokens) > 1 and tokens[-1] == "only":
+        inner_label = _vietnamese_fragment_label("_".join(tokens[:-1]), category, depth + 1)
+        if inner_label:
+            if tokens[-2] in _TAG_VI_ONLY_WEAR:
+                wear = _TAG_VI_WEAR_VERBS.get(tokens[-2], "mặc").lower()
+                return f"Chỉ {wear} {_lower_first(inner_label)}"
+            return f"Chỉ có {_lower_first(inner_label)}"
+    # "<bộ phận|món đồ>_<hướng>" → "Kéo váy xuống", "Tai cụp xuống", ...
+    if len(tokens) > 1 and tokens[-1] in _ALL_DIRECTIONS:
+        stem_label = _vietnamese_fragment_label("_".join(tokens[:-1]), category, depth + 1)
+        if stem_label:
+            direction = tokens[-1]
+            if direction == "on" and tokens[-2] in _TAG_VI_GARMENT_TOKENS:
+                wear = _TAG_VI_WEAR_VERBS.get(tokens[-2], "mặc").lower()
+                return f"Đang {wear} {_lower_first(stem_label)}"
+            for tokenset, table in (
+                (_TAG_VI_GARMENT_TOKENS, _TAG_VI_DIRECTION_GARMENT),
+                (_TAG_VI_LIMB_TOKENS, _TAG_VI_DIRECTION_LIMB),
+                (_TAG_VI_BODY_TOKENS, _TAG_VI_DIRECTION_BODY),
+            ):
+                if tokens[-2] in tokenset and direction in table:
+                    return _fill_direction(table[direction], stem_label)
+            if direction in _TAG_VI_DIRECTION_PLAIN:
+                return _fill_direction(_TAG_VI_DIRECTION_PLAIN[direction], stem_label)
+    # "<danh từ>_<phân từ>" (trạng thái đứng sau): sleeves_rolled → "Tay áo cuộn lên"
+    if (len(tokens) > 1 and tokens[-1] in _TAG_VI_PAST_STATES
+            and tokens[0] not in _TAG_VI_PAST_STATES):
+        stem_label = _vietnamese_fragment_label("_".join(tokens[:-1]), category, depth + 1)
+        if stem_label:
+            return f"{stem_label} {_TAG_VI_PAST_STATES[tokens[-1]]}"
     for index, token in enumerate(tokens):
         if index == 0 or index == len(tokens) - 1:
             continue
@@ -4290,10 +4666,15 @@ def _vietnamese_fragment_label(fragment, category, depth=0):
         rest = _vietnamese_fragment_label("_".join(tokens[1:]), category, depth + 1)
         if rest:
             return f"{rest} {state}"
-    verb = _TAG_VI_ACTION_PREFIXES.get(tokens[0])
-    if verb is not None:
-        rest = "_".join(tokens[1:])
-        rest_label = _vietnamese_fragment_label(rest, category, depth + 1)
+    entry = _TAG_VI_ACTION_PREFIXES.get(tokens[0])
+    if entry is not None:
+        verb, _, links = entry.partition("|")
+        skipped = 0
+        if links:
+            droppable = set(links.split(","))
+            while skipped + 1 < len(tokens) - 1 and tokens[skipped + 1] in droppable:
+                skipped += 1
+        rest_label = _vietnamese_fragment_label("_".join(tokens[skipped + 1:]), category, depth + 1)
         if rest_label:
             if not verb:
                 verb = _TAG_VI_WEAR_VERBS.get(tokens[-1], "Mặc")
