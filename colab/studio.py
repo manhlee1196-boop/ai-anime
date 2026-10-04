@@ -5420,6 +5420,19 @@ def apply_csv_tags(positive, negative, selected, destination):
 
 
 PROMPT_TAG_SUGGESTION_LIMIT = 16
+# Danh sách gợi ý là dropdown Gradio, giới hạn để không nghẽn DOM trên điện thoại;
+# tab Kho thẻ mới là nơi xem toàn bộ kết quả (lọc nhóm/chủ đề + phân trang).
+PROMPT_TAG_SUGGESTION_CHOICES = (16, 32, 64, 150)
+
+
+def _prompt_tag_suggestion_limit(value):
+    """Ép giới hạn gợi ý về một trong các mức hợp lệ (mặc định 16)."""
+    try:
+        limit = int(float(value))
+    except (TypeError, ValueError):
+        return PROMPT_TAG_SUGGESTION_LIMIT
+    return min(max(limit, 1), PROMPT_TAG_SUGGESTION_CHOICES[-1])
+
 PROMPT_TAG_SUGGESTION_MIN_CHARS = 2
 PROMPT_TAG_SUGGESTION_CACHE_LIMIT = 128
 PROMPT_TAG_WEIGHT_STEP = 0.1
@@ -5619,6 +5632,7 @@ def get_keyword_tag_suggestions(
     prompt_text, rows=None, limit=PROMPT_TAG_SUGGESTION_LIMIT
 ):
     """Search the preloaded CSV and return English tags with Danbooru/e621 marks."""
+    limit = _prompt_tag_suggestion_limit(limit)
     fragment = prompt_tag_fragment(prompt_text)
     mode, query = _prompt_tag_search_mode(fragment)
     normalized = normalize_csv_tag(query)
@@ -5637,7 +5651,10 @@ def get_keyword_tag_suggestions(
             return [], f"CSV chưa tìm thấy tag họa sĩ cho `{fragment}`."
         return [], f"CSV chưa tìm thấy tag cho `{fragment}`; thử từ khóa tiếng Việt hoặc English khác."
     shown = len(choices)
-    more = f" trong {total:,} kết quả" if total > shown else ""
+    more = (
+        f" trong {total:,} kết quả (tăng **Số gợi ý** để xem tiếp)"
+        if total > shown else ""
+    )
     if mode == "artist":
         detail = "`@` chỉ lọc họa sĩ Danbooru/e621; dấu `@` không được chèn vào prompt WAI."
     elif mode == "suffix":
@@ -5734,12 +5751,12 @@ def adjust_prompt_tag_weight_ui(prompt_text, direction):
     return updated, message, gr.update(choices=[], value=None)
 
 
-def update_keyword_tag_suggestions(prompt_text):
+def update_keyword_tag_suggestions(prompt_text, limit=PROMPT_TAG_SUGGESTION_LIMIT):
     """Gradio adapter for live suggestions from the preloaded CSV catalog."""
     import gradio as gr
 
     try:
-        choices, message = get_keyword_tag_suggestions(prompt_text)
+        choices, message = get_keyword_tag_suggestions(prompt_text, limit=limit)
         return gr.update(choices=choices, value=None), message
     except Exception as exc:
         return gr.update(choices=[], value=None), (
@@ -5755,11 +5772,14 @@ def apply_keyword_tag_suggestion(prompt_text, selected, rows=None):
         return text, "Chọn một tag tiếng Anh trong danh sách."
 
     try:
-        choices, _ = get_keyword_tag_suggestions(text, rows=rows)
+        rows = load_csv_tags() if rows is None else rows
+        # Đối chiếu với TOÀN BỘ kết quả (đã cache), không chỉ top-N đang hiển thị,
+        # nên người dùng chọn gợi ý thứ 40 khi giới hạn là 16 vẫn hợp lệ.
+        found, _total = _prompt_tag_suggestion_results(rows, prompt_tag_fragment(text))
     except Exception as exc:
         return text, f"Không đọc được CSV kho gợi ý ({type(exc).__name__}); hãy thử lại."
-    allowed = {value for _, value in choices}
-    if selected not in allowed:
+    allowed = {row[0] for row in found}
+    if normalize_csv_tag(selected) not in {normalize_csv_tag(tag) for tag in allowed}:
         return text, "Lựa chọn không còn trong CSV; hãy gõ lại từ khóa để làm mới."
 
     fragment = prompt_tag_fragment(text)
@@ -6028,11 +6048,20 @@ def build_app(runtime):
                         "+0,1", size="sm", scale=0, min_width=58, variant="secondary",
                         elem_id="prompt-weight-up",
                     )
+                    keyword_tag_limit = gr.Dropdown(
+                        choices=list(PROMPT_TAG_SUGGESTION_CHOICES),
+                        value=PROMPT_TAG_SUGGESTION_LIMIT,
+                        label="Số gợi ý",
+                        scale=0,
+                        min_width=104,
+                        elem_id="prompt-tag-limit",
+                    )
                 keyword_tag_status = gr.Markdown(
                     f"{tag_catalog_status} Gõ từ khóa cuối như `mắt`/`eyes`; dùng `*đuôi`, "
                     "`*giữa*` để tìm tag theo hậu tố/nội dung, hoặc `@họa sĩ` để lọc nhóm "
                     "Artist. Danh mục: `[G/A/©/C/M]` Danbooru · `<G/A/©/C/S/M/L>` e621. "
-                    "Chọn gợi ý để thay cụm cuối; Ctrl+↑/↓ hoặc nút ± chỉnh tag ở con trỏ/đoạn chọn.",
+                    "Chọn gợi ý để thay cụm cuối; Ctrl+↑/↓ hoặc nút ± chỉnh tag ở con trỏ/đoạn chọn. "
+                    "Chỉ hiện N gợi ý hot nhất (chọn N ở ô **Số gợi ý**); xem toàn bộ kết quả ở tab **🏷️ Kho thẻ**.",
                     elem_classes="studio-hint",
                 )
                 negative = gr.Textbox(
@@ -6622,12 +6651,20 @@ def build_app(runtime):
         # chọn một tag xác thực từ kết quả sẽ thay thế từ khóa ngay.
         prompt.input(
             fn=update_keyword_tag_suggestions,
-            inputs=prompt,
+            inputs=[prompt, keyword_tag_limit],
             outputs=[keyword_tag_suggestion, keyword_tag_status],
             api_visibility="private",
             queue=False,
             show_progress="minimal",
             trigger_mode="always_last",
+        )
+        keyword_tag_limit.change(
+            fn=update_keyword_tag_suggestions,
+            inputs=[prompt, keyword_tag_limit],
+            outputs=[keyword_tag_suggestion, keyword_tag_status],
+            api_visibility="private",
+            queue=False,
+            show_progress="minimal",
         )
         keyword_tag_suggestion.input(
             fn=apply_keyword_tag_suggestion_ui,

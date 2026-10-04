@@ -1375,11 +1375,31 @@ class RuntimeValidationTests(unittest.TestCase):
             and "thêm tag đã chọn" in c["props"].get("value", "").casefold()
             for c in config["components"]
         ))
+        suggestion_limit = next(
+            c for c in config["components"]
+            if c["props"].get("elem_id") == "prompt-tag-limit"
+        )
+        self.assertEqual(suggestion_limit["type"], "dropdown")
+        self.assertEqual(suggestion_limit["props"]["label"], "Số gợi ý")
+        self.assertEqual(
+            [choice[1] for choice in suggestion_limit["props"]["choices"]],
+            list(studio.PROMPT_TAG_SUGGESTION_CHOICES),
+        )
+        self.assertEqual(suggestion_limit["props"]["value"], studio.PROMPT_TAG_SUGGESTION_LIMIT)
+        limit_change_event = next(
+            d for d in config["dependencies"]
+            if (suggestion_limit["id"], "change") in d["targets"]
+        )
+        self.assertEqual(
+            limit_change_event["outputs"], [inline_suggestions["id"], inline_status["id"]]
+        )
         live_suggestion_event = next(
             d for d in config["dependencies"]
             if (prompt_field["id"], "input") in d["targets"]
         )
-        self.assertEqual(live_suggestion_event["inputs"], [prompt_field["id"]])
+        self.assertEqual(
+            live_suggestion_event["inputs"], [prompt_field["id"], suggestion_limit["id"]]
+        )
         self.assertEqual(
             live_suggestion_event["outputs"], [inline_suggestions["id"], inline_status["id"]]
         )
@@ -1429,7 +1449,7 @@ class RuntimeValidationTests(unittest.TestCase):
         )
         # Gồm 2 sự kiện gợi ý tag inline, 2 chỉnh trọng số, 2 kho thẻ,
         # 3 chuyển tab ảnh và một listener Ctrl+↑/↓.
-        self.assertEqual(len(config["dependencies"]), 29)
+        self.assertEqual(len(config["dependencies"]), 30)
         self.assertEqual(prompt_field["props"].get("elem_id"), "studio-prompt")
         for elem_id, target in (
             ("prompt-weight-down", "click"),
@@ -1621,13 +1641,14 @@ class RuntimeValidationTests(unittest.TestCase):
 
             with patch.object(studio, "load_csv_tags", return_value=rows):
                 suggested, note = await run(
-                    event_index(prompt_box["id"], "input"), ["1girl, mắt"]
+                    event_index(prompt_box["id"], "input"), ["1girl, mắt", 16]
                 )
             self.assertEqual(suggested["__type__"], "update")
             values = [value for _, value in suggested["choices"]]
             self.assertIn("blue_eyes", values)
             self.assertTrue(all(label.startswith(("[G]", "<")) for label, _ in suggested["choices"]))
             self.assertIn("tag từ CSV", note)
+            self.assertEqual(len(suggested["choices"]), 16)
 
             with patch.object(studio, "load_csv_tags", return_value=rows):
                 prompt, applied_note, cleared = await run(
@@ -1636,6 +1657,23 @@ class RuntimeValidationTests(unittest.TestCase):
             self.assertEqual(prompt, "1girl, blue_eyes")
             self.assertIn("thay `mắt`", applied_note)
             self.assertEqual(cleared["choices"], [])
+
+            # ô "Số gợi ý" nới trần danh sách mà không đổi kết quả tìm
+            with patch.object(studio, "load_csv_tags", return_value=rows):
+                wider, wider_note = await run(
+                    event_index(prompt_box["id"], "input"), ["1girl, mắt", 150]
+                )
+            self.assertGreater(len(wider["choices"]), 16)
+            self.assertIn("tăng **Số gợi ý** để xem tiếp", wider_note)
+            far_tag = wider["choices"][-1][1]
+            self.assertNotIn(far_tag, [value for _, value in suggested["choices"]])
+            # tag ngoài top-16 mặc định vẫn được chấp nhận
+            with patch.object(studio, "load_csv_tags", return_value=rows):
+                applied_far, far_note, _ = await run(
+                    event_index(dropdown["id"], "input"), ["1girl, mắt", far_tag]
+                )
+            self.assertEqual(applied_far, f"1girl, {far_tag}")
+            self.assertIn("thay `mắt`", far_note)
 
             with patch.object(studio, "load_csv_tags", return_value=rows):
                 weighted, weight_note, _ = await run(
