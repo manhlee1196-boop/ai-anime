@@ -32,8 +32,11 @@ SAMPLE_CSV = (
     "mammal,12,200,,Động vật có vú\r\n"
     "highres,5,100,,Độ phân giải cao\r\n"
     "long_hair,0,90,dup,Tóc dài\r\n"
-    'messy_tag,0,90,,"Cái, cái này"\r\n'
-    'flat_tag,0,80,,"Dòng một\nDòng hai"\r\n'
+    # Tên thẻ cố tình vô nghĩa (quux/zorb) để từ điển không tự sinh nhãn
+    # từ quy tắc ghép — khi đó bộ lọc buộc phải dùng cột chú giải của CSV,
+    # đúng cái mà hai test dưới đây kiểm tra (chuyển dấu phẩy, nối dòng).
+    'messy_quux,0,90,,"Cái, cái này"\r\n'
+    'flat_zorb,0,80,,"Dòng một\nDòng hai"\r\n'
 )
 
 
@@ -55,8 +58,8 @@ class TranslateRowsTests(unittest.TestCase):
                 ("solo", "0", "Một nhân vật"),
                 ("mammal", "12", "Động vật có vú"),
                 ("highres", "5", "Độ phân giải cao"),
-                ("messy_tag", "0", "Cái; cái này"),
-                ("flat_tag", "0", "Dòng một Dòng hai"),
+                ("messy_quux", "0", "Cái; cái này"),
+                ("flat_zorb", "0", "Dòng một Dòng hai"),
             ],
         )
 

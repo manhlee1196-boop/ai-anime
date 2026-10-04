@@ -568,7 +568,9 @@ class VietnameseGlossaryTests(unittest.TestCase):
         rows = studio.load_csv_tags()
         themes = [(name, re.compile(pattern)) for name, pattern in studio.TAG_THEMES.items()]
         detail = {"Ngoại hình", "Trang phục & phụ kiện", "Biểu cảm & tư thế"}
-        for top_n, minimum in ((1000, 0.95), (3000, 0.95), (5000, 0.92), (10000, 0.75)):
+        for top_n, minimum in (
+            (1000, 0.95), (3000, 0.95), (5000, 0.92), (10000, 0.88), (20000, 0.75)
+        ):
             hit = total = 0
             for row in rows[:top_n]:
                 name, category = row[0], row[1]
@@ -579,6 +581,41 @@ class VietnameseGlossaryTests(unittest.TestCase):
                 total += 1
                 hit += studio._is_translated_tag_label(row[5], category)
             self.assertGreater(hit / total, minimum, f"top-{top_n}: {hit}/{total}")
+
+    def test_hyphen_parenthetical_and_plural_are_resolved(self):
+        # Gạch nối chỉ là ngăn cách từ: key curate có gạch nối vẫn phải thấy.
+        self.assertEqual(studio.vietnamese_tag_label("see-through_dress", "0"), "Váy liền xuyên thấu")
+        self.assertEqual(studio.vietnamese_tag_label("cross-eyed", "0"), "Mắt lé")
+        self.assertEqual(studio.vietnamese_tag_label("t-shirt_only", "0"), "Chỉ có áo phông")
+        self.assertEqual(studio.vietnamese_tag_label("text_on_t-shirt", "0"), "Chữ trong ảnh trên áo phông")
+        # "(giải nghĩa)" ở cuối tên thẻ không được chặn bản dịch của thẻ gốc.
+        self.assertEqual(studio.vietnamese_tag_label("pearl_(gem)", "0"), "Ngọc trai")
+        self.assertEqual(studio.vietnamese_tag_label("twintails_(hairstyle)", "0"), "Tóc buộc hai bên")
+        # Số nhiều quy tắc/bất quy tắc suy ra từ số ít đã có trong từ điển.
+        self.assertEqual(studio.vietnamese_tag_label("scarves", "0"), studio.vietnamese_tag_label("scarf", "0"))
+        # Bẫy số nhiều: "shorts" là quần, không phải tính từ "short".
+        self.assertNotEqual(studio.vietnamese_tag_label("black_shorts", "0"), "Đen ngắn")
+
+    def test_quantity_and_verb_word_order(self):
+        self.assertEqual(studio.vietnamese_tag_label("three_tails", "0"), "Ba cái đuôi")
+        self.assertEqual(studio.vietnamese_tag_label("multiple_arms", "0"), "Nhiều cánh tay")
+        self.assertEqual(studio.vietnamese_tag_label("single_horn", "0"), "Một cái sừng")
+        self.assertEqual(studio.vietnamese_tag_label("extra_tails", "0"), "Thêm đuôi")
+        self.assertEqual(studio.vietnamese_tag_label("one_eye_visible", "0"), "Một con mắt nhìn thấy được")
+        # Động từ tiếng Việt đặt trước danh từ dù tiếng Anh để sau: "dress_pull".
+        self.assertEqual(studio.vietnamese_tag_label("dress_pull", "0"), "Kéo váy")
+        self.assertEqual(studio.vietnamese_tag_label("underwear_pull", "0"), "Kéo đồ lót")
+        # "of" được lược bỏ vì tiếng Việt nói "Xô sữa", không "Xô của sữa".
+        self.assertEqual(studio.vietnamese_tag_label("bucket_of_milk", "0"), "Xô sữa")
+        self.assertEqual(studio.vietnamese_tag_label("curved_horns", "0"), "Sừng cong")
+        self.assertEqual(studio.vietnamese_tag_label("tail_lick", "0"), "Liếm đuôi")
+        # Nội động từ thì ngược lại: "melting_tail" → "Đuôi đang tan chảy".
+        self.assertEqual(studio.vietnamese_tag_label("melting_tail", "0"), "Đuôi đang tan chảy")
+        self.assertEqual(studio.vietnamese_tag_label("ear_wiggle", "0"), "Tai lắc lư")
+        # Không được đảo nhầm động từleading thành vị ngữ sau danh từ.
+        self.assertEqual(studio.vietnamese_tag_label("covering_nipples", "0"), "Che núm vú")
+        self.assertEqual(studio.vietnamese_tag_label("sitting_on_box", "0"), "Đang ngồi trên cái hộp")
+        self.assertEqual(studio.vietnamese_tag_label("leaning_against_wall", "0"), "Tựa vào bức tường")
 
     def test_vocabulary_values_are_usable_single_phrases(self):
         for name, vocab in (

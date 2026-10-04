@@ -144,12 +144,17 @@ một thẻ chỉ xuất hiện trong tệp khi nó thực sự có bản dịch
 gọi) sẽ báo lỗi nếu ai đó sửa `TAG_VI_LABELS` mà quên tạo lại tệp. Nhãn mới trong từ điển luôn thắng cột chú giải đông lạnh của CSV
 (`_prefer_vietnamese_label`), và quy tắc ghép xếp danh từ bổ nghĩa theo trật tự tiếng Việt
 (`rabbit_ear_hat` → **Mũ tai thỏ**, nối màu bằng `màu` với nhóm trang phục: `black_bra` →
-**Áo ngực màu đen**). Bộ ghép có ba lớp từ vựng (2.317 mục cố định,
-476 danh từ chính, 678 bổ ngữ, 36 màu) cộng tám quy tắc cụm cho chi tiết nhân vật
+**Áo ngực màu đen**). Bộ ghép có ba lớp từ vựng (2.550 mục cố định,
+653 danh từ chính, 951 bổ ngữ, 36 màu) cộng mười hai quy tắc cụm cho chi tiết nhân vật
 (`<động từ>[ <phó từ hướng>]_<tân ngữ>`, `<A>_<giới từ>_<B>`, `<món đồ>_only`,
 `<bộ phận>_<hướng>`, `<danh từ>_<trạng thái>`, `see_through_/floating_<x>`, `<bộ phận>less`,
-danh từ chính là loài vật hay nội thất): thêm một danh từ chính mở khóa cả họ
-thẻ, nên độ phủ tăng từ 1.707 lên **18.200** thẻ mà không phải dịch máy — và tăng có chủ đích theo
+danh từ chính là loài vật hay nội thất, `<món đồ|bộ phận>_<động từ>` (Kéo váy, Liếm đuôi),
+nội động từ đứng trước (`melting_tail` → Đuôi đang tan chảy), lượng từ + loại từ
+(`three_tails` → Ba cái đuôi, `multiple_arms` → Nhiều cánh tay) và tiền xử lý tên thẻ
+(gạch nối `see-through_dress`, hậu tố `(giải nghĩa)` `pearl_(gem)`, số nhiều `curved_horns`
+qua `_vi_singular` với danh sách `_TAG_VI_PLURAL_TRAPS` để không nhầm `shorts` → `short`):
+thêm một danh từ chính mở khóa cả họ
+thẻ, nên độ phủ tăng từ 1.707 lên **24.174** thẻ mà không phải dịch máy — và tăng có chủ đích theo
 hướng ưu tiên thẻ tả nhân vật (mắt, tóc, mặt, tai/đuôi, trang phục, biểu cảm) trước bối cảnh hay metadata. Chuỗi `<x>_shaped_<head>` được ưu tiên
 thành “HEAD hình X” (`heart-shaped_pupils` → **Đồng tử hình trái tim**). Test chốt lại ba bất
 biến: không trùng khóa trong các dict từ điển, mọi tính từ trong `_TAG_VI_ADJECTIVE_MODIFIERS`
@@ -168,4 +173,4 @@ Phần thứ tự thẻ, khối 75 token và các thẻ Illustrious bám tốt l
 
 ## 7. Chưa được kiểm chứng
 
-Mã và tài liệu này đã qua `python -m unittest discover -s tests -v` (**112 test: 84 đạt, 28 bỏ qua, 0 thất bại**) và `scripts/build_colab_studio.py` tái tạo notebook; các test CPU bao gồm pin/download giả lập, cache/hash, kích thước, output size và nhánh OOM → CPU giả lập, cùng nạp catalog CSV, autocomplete có toán tử `*`/`@`, định dạng file dịch tiếng Việt `danbooru_e621_merged_vi_vn.csv`, trật tự từ trong nhãn ghép, tỷ lệ phủ nhóm chi tiết nhân vật và vệ sinh từ điển (2.317 mục, không dấu phẩy/không ký tự ngoại lai). Sandbox thiếu PyTorch và `diffusers` nên các test kiến trúc checkpoint và inference bị bỏ qua; Gradio 6.15.2 và Pillow đã cài nên test dựng UI và chạy sự kiện `process_api` đã chạy thật. Chưa xác nhận SHA Anime6B với file chính thức do lỗi TLS khi tải, và **chưa** chạy hires/upscale hoặc đo chất lượng ảnh, tốc độ, VRAM trên GPU Colab. Xem `VERIFICATION.md` để biết đầy đủ giới hạn.
+Mã và tài liệu này đã qua `python -m unittest discover -s tests -v` (**114 test: 86 đạt, 28 bỏ qua, 0 thất bại**) và `scripts/build_colab_studio.py` tái tạo notebook; các test CPU bao gồm pin/download giả lập, cache/hash, kích thước, output size và nhánh OOM → CPU giả lập, cùng nạp catalog CSV, autocomplete có toán tử `*`/`@`, định dạng file dịch tiếng Việt `danbooru_e621_merged_vi_vn.csv`, trật tự từ trong nhãn ghép, tỷ lệ phủ nhóm chi tiết nhân vật, trật tự lượng từ/động từ và vệ sinh từ điển (2.550 mục, không dấu phẩy/không ký tự ngoại lai). Sandbox thiếu PyTorch và `diffusers` nên các test kiến trúc checkpoint và inference bị bỏ qua; Gradio 6.15.2 và Pillow đã cài nên test dựng UI và chạy sự kiện `process_api` đã chạy thật. Chưa xác nhận SHA Anime6B với file chính thức do lỗi TLS khi tải, và **chưa** chạy hires/upscale hoặc đo chất lượng ảnh, tốc độ, VRAM trên GPU Colab. Xem `VERIFICATION.md` để biết đầy đủ giới hạn.
