@@ -130,12 +130,19 @@ Chức năng gợi ý tag dưới ô Prompt được xây theo mô hình **Semi-
 | Chuột hoặc ↑↓ + Enter/Tab chọn, Esc đóng | Dropdown Gradio: chọn bằng chuột/phiếm, Enter áp dụng, Esc đóng |
 | `ctrl+↑` / `ctrl+↓` chỉnh trọng số tag hiện tại hoặc vùng bôi đen | `demo.load` gắn `PROMPT_TAG_WEIGHT_SHORTCUT_JS` bắt `Ctrl+↑/↓` trong ô prompt và kích hoạt hai nút `+0,1` / `−0,1`; `PROMPT_TAG_WEIGHT_SELECTION_JS` đánh dấu đoạn đang chọn bằng ký tự riêng `U+E000/U+E001` trước khi Python xử lý |
 | Logic trọng số giống ComfyUI/WebUI nhưng chi tiết có thể khác | `adjust_prompt_tag_weight` bước `0,1`, kẹp trong `0,1–2,0`, `1,0` thì gỡ `(tag:1.0)`; nếu không có bôi đen thì áp dụng cho cụm cuối prompt. Dấu phẩy **trong** ngoặc không tách cụm (`_prompt_weight_boundary()` và JS cùng quét theo độ sâu ngoặc), nên `(long_hair, blue_eyes:1.1)` được coi là một nhóm và bấm lại sẽ chỉnh đúng trọng số của nhóm |
+| File dịch để tìm theo ngôn ngữ khác (`data/danbooru_e621_merged_zh_cn.csv`, bộ nạp bỏ qua nhóm 1 và 8) | `danbooru_e621_merged_vi_vn.csv` ở thư mục gốc, sinh bằng `scripts/build_vietnamese_translate_file.py` từ đúng từ điển Studio đang dùng; cùng ba trường `tag,category,translation`, không header, UTF-8 không BOM, LF, trường dịch không chứa dấu phẩy (SAA `split(',', 3)` sẽ cắt mất phần sau). Test dựng lại tệp và so byte |
 
 Điểm khác biệt có chủ đích: Studio là Gradio trên Colab, không phải Electron, nên thao tác
 bàn phím được cài bằng `js` tiền xử lý + một listener gắn lúc tải trang; khi `js` bị chặn
 hoặc trình duyệt không hỗ trợ, hai nút `±` vẫn chỉnh được cụm cuối prompt (đường đi Python
 thuần). Marker `U+E000/U+E001` chỉ tồn tại trong lần gọi đó và luôn bị loại trước khi ghi lại
 vào ô prompt, nên không bao giờ lọt vào prompt gửi model.
+
+File dịch là **lớp từ vựng, không phải dữ liệu sinh ảnh**: nhãn tiếng Việt không bao giờ được
+chèn vào prompt. Vì script và Studio cùng gọi `parse_tag_csv()` + `_is_translated_tag_label()`,
+một thẻ chỉ xuất hiện trong tệp khi nó thực sự có bản dịch trong Studio; `--check` (được test
+gọi) sẽ báo lỗi nếu ai đó sửa `TAG_VI_LABELS` mà quên tạo lại tệp. Tên họa sĩ/nhân vật/tác phẩm
+được giữ nguyên nên không có trong file dịch — SAA cũng bỏ qua đúng hai nhóm họa sĩ đó.
 
 ## 6. Nguồn
 
@@ -149,4 +156,4 @@ Phần thứ tự thẻ, khối 75 token và các thẻ Illustrious bám tốt l
 
 ## 7. Chưa được kiểm chứng
 
-Mã và tài liệu này đã qua `python -m unittest discover -s tests -v` (**79 test: 51 đạt, 28 bỏ qua, 0 thất bại**) và `scripts/build_colab_studio.py` tái tạo notebook; các test CPU bao gồm pin/download giả lập, cache/hash, kích thước, output size và nhánh OOM → CPU giả lập, cùng nạp catalog CSV, autocomplete có toán tử `*`/`@`, nhãn danh mục kiểu SAA và chỉnh trọng số tag. Sandbox thiếu PyTorch và `diffusers` nên các test kiến trúc checkpoint và inference bị bỏ qua; Gradio 6.15.2 và Pillow đã cài nên test dựng UI và chạy sự kiện `process_api` đã chạy thật. Chưa xác nhận SHA Anime6B với file chính thức do lỗi TLS khi tải, và **chưa** chạy hires/upscale hoặc đo chất lượng ảnh, tốc độ, VRAM trên GPU Colab. Xem `VERIFICATION.md` để biết đầy đủ giới hạn.
+Mã và tài liệu này đã qua `python -m unittest discover -s tests -v` (**93 test: 65 đạt, 28 bỏ qua, 0 thất bại**) và `scripts/build_colab_studio.py` tái tạo notebook; các test CPU bao gồm pin/download giả lập, cache/hash, kích thước, output size và nhánh OOM → CPU giả lập, cùng nạp catalog CSV, autocomplete có toán tử `*`/`@`, nhãn danh mục kiểu SAA, chỉnh trọng số tag và định dạng file dịch tiếng Việt `danbooru_e621_merged_vi_vn.csv`. Sandbox thiếu PyTorch và `diffusers` nên các test kiến trúc checkpoint và inference bị bỏ qua; Gradio 6.15.2 và Pillow đã cài nên test dựng UI và chạy sự kiện `process_api` đã chạy thật. Chưa xác nhận SHA Anime6B với file chính thức do lỗi TLS khi tải, và **chưa** chạy hires/upscale hoặc đo chất lượng ảnh, tốc độ, VRAM trên GPU Colab. Xem `VERIFICATION.md` để biết đầy đủ giới hạn.
