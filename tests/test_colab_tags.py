@@ -425,3 +425,62 @@ class VietnameseGlossaryTests(unittest.TestCase):
         names = {row[0] for row in rows if studio._is_translated_tag_label(row[5], row[1])}
         top = {row[0] for row in rows[:500]}
         self.assertGreater(len(top & names) / 500, 0.9)
+
+    def test_shaped_modifiers_read_naturally(self):
+        self.assertTrue(
+            studio.vietnamese_tag_label("heart-shaped_pupils", "0").startswith("Đồng tử hình"),
+            studio.vietnamese_tag_label("heart-shaped_pupils", "0"),
+        )
+        self.assertEqual(studio.vietnamese_tag_label("star-shaped_background", "0"), "Nền hình ngôi sao")
+
+    def test_vocabulary_literals_have_no_duplicate_keys(self):
+        # Key trùng trong cùng một dict literal bị Python lặng lẽ ghi đè — đã xảy ra khi
+        # bổ sung từ điển theo đợt, nên chốt lại bằng test.
+        import ast
+
+        source = (Path(__file__).resolve().parents[1] / "colab" / "studio.py").read_text(encoding="utf-8")
+        targets = {
+            "_TAG_VI_WORDS",
+            "_TAG_VI_COLORS",
+            "_TAG_VI_COMPOSITE_HEADS",
+            "TAG_VI_LABELS",
+            "TAG_VI_SEARCH_SYNONYMS",
+        }
+        tree = ast.parse(source)
+        found = 0
+        for node in tree.body:
+            if isinstance(node, ast.Assign):
+                names = [t.id for t in node.targets if isinstance(t, ast.Name)]
+                literal = node.value if isinstance(node.value, ast.Dict) else None
+            elif isinstance(node, ast.Expr) and isinstance(node.value, ast.Call):
+                call = node.value
+                func = call.func
+                names = [func.value.id] if isinstance(func, ast.Attribute) and isinstance(func.value, ast.Name) else []
+                literal = call.args[0] if call.args and isinstance(call.args[0], ast.Dict) else None
+            else:
+                continue
+            if not set(names) & targets or literal is None:
+                continue
+            found += 1
+            seen = set()
+            for key in literal.keys:
+                if isinstance(key, ast.Constant):
+                    self.assertNotIn(key.value, seen, f"trùng khóa {key.value!r} trong {names}")
+                    seen.add(key.value)
+        self.assertGreater(found, 4)
+
+    def test_adjective_modifiers_are_all_declared_in_words(self):
+        missing = studio._TAG_VI_ADJECTIVE_MODIFIERS - set(studio._TAG_VI_WORDS)
+        self.assertEqual(missing, set())
+
+    def test_vocabulary_values_are_usable_single_phrases(self):
+        for name, vocab in (
+            ("WORDS", studio._TAG_VI_WORDS),
+            ("HEADS", studio._TAG_VI_COMPOSITE_HEADS),
+            ("COLORS", studio._TAG_VI_COLORS),
+        ):
+            for key, value in vocab.items():
+                self.assertTrue(value and value == value.strip(), f"{name}:{key}")
+                self.assertNotIn(",", value, f"{name}:{key}")
+                self.assertNotIn("\n", value, f"{name}:{key}")
+                self.assertTrue(key == key.strip() and " " not in key.strip("()"), f"{name}:{key}")
