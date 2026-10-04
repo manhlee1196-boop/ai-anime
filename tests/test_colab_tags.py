@@ -513,7 +513,7 @@ class VietnameseGlossaryTests(unittest.TestCase):
         self.assertEqual(studio.vietnamese_tag_label("holding_zzz_unknown", "0"), "Chưa có bản dịch")
         self.assertEqual(studio.vietnamese_tag_label("zzz_on_face", "0"), "Chưa có bản dịch")
         # Đuôi "-less" chỉ hợp lệ với bộ phận/danh từ đã biết, không phải tính từ tiếng Anh.
-        for word in ("fearless", "restless", "countless", "wireless", "relentless", "seamless"):
+        for word in ("fearless", "restless", "countless", "wireless", "relentless"):
             self.assertFalse(studio._is_translated_tag_label(studio.vietnamese_tag_label(word, "0"), "0"), word)
         self.assertEqual(studio.vietnamese_tag_label("shirtless", "0"), "Không có áo sơ mi")
 
@@ -534,12 +534,29 @@ class VietnameseGlossaryTests(unittest.TestCase):
         self.assertEqual(studio.vietnamese_tag_label("skirt_down", "0"), "Kéo chân váy xuống")
         self.assertEqual(studio.vietnamese_tag_label("tail_up", "0"), "Đuôi dựng lên")
         self.assertEqual(studio.vietnamese_tag_label("ears_down", "0"), "Tai cụp xuống")
-        self.assertEqual(studio.vietnamese_tag_label("eyebrows_hidden", "0"), "Lông mày được che")
+        self.assertEqual(studio.vietnamese_tag_label("eyebrows_hidden", "0"), "Lông mày bị che")
         self.assertEqual(studio.vietnamese_tag_label("shirt_tucked", "0"), "Áo sơ mi giắt vào trong")
         # Động từ nhìn/chỉ: liên từ "at" của tiếng Anh phải bị lược, không dịch thành "tại".
         self.assertEqual(studio.vietnamese_tag_label("looking_at_phone", "0"), "Nhìn điện thoại")
         self.assertEqual(studio.vietnamese_tag_label("leaning_against_wall", "0"), "Tựa vào bức tường")
         self.assertEqual(studio.vietnamese_tag_label("pointing_at_gun", "0"), "Chỉ vào súng")
+
+    def test_body_state_and_species_heads_compose(self):
+        # Danh từ chính ở CUỐI cụm (loài, nội thất) + trạng thái đứng sau.
+        self.assertEqual(studio.vietnamese_tag_label("hairless_cat", "0"), "Mèo không lông")
+        self.assertEqual(studio.vietnamese_tag_label("canine_ears", "0"), "Tai chó")
+        self.assertEqual(studio.vietnamese_tag_label("equine_tail", "0"), "Đuôi ngựa")
+        self.assertEqual(studio.vietnamese_tag_label("office_chair", "0"), "Ghế văn phòng")
+        self.assertEqual(studio.vietnamese_tag_label("tail_raised", "0"), "Đuôi dựng lên")
+        self.assertEqual(studio.vietnamese_tag_label("eyelids_visible", "0"), "Mí mắt nhìn thấy được")
+        self.assertEqual(studio.vietnamese_tag_label("arms_crossed", "0"), "Cánh tay bắt chéo")
+        # "see_through_<x>" và "<verb>_<hướng>_<tân ngữ>".
+        self.assertEqual(studio.vietnamese_tag_label("see_through_shirt", "0"), "Áo sơ mi xuyên thấu")
+        self.assertEqual(studio.vietnamese_tag_label("looking_down_at_viewer", "0"), "Nhìn xuống người xem")
+        self.assertEqual(studio.vietnamese_tag_label("throwing_ball", "0"), "Đang ném quả bóng")
+        # Tên riêng chỉ được dịch phần khung, bản thân tên giữ nguyên.
+        self.assertEqual(studio.vietnamese_tag_label("mitakihara_school_uniform", "0"), "Đồng phục trường Mitakihara")
+        self.assertFalse(studio._is_translated_tag_label(studio.vietnamese_tag_label("guilty_gear", "3"), "3"))
 
     def test_rule_only_words_do_not_leak_into_noun_vocabulary(self):
         # Các từ này chỉ hợp lệ trong quy tắc cụm; vào WORDS/HEADS sẽ sinh "X dưới Y" vô nghĩa.
@@ -551,7 +568,7 @@ class VietnameseGlossaryTests(unittest.TestCase):
         rows = studio.load_csv_tags()
         themes = [(name, re.compile(pattern)) for name, pattern in studio.TAG_THEMES.items()]
         detail = {"Ngoại hình", "Trang phục & phụ kiện", "Biểu cảm & tư thế"}
-        for top_n, minimum in ((1000, 0.95), (3000, 0.95), (5000, 0.90), (10000, 0.72)):
+        for top_n, minimum in ((1000, 0.95), (3000, 0.95), (5000, 0.92), (10000, 0.75)):
             hit = total = 0
             for row in rows[:top_n]:
                 name, category = row[0], row[1]
