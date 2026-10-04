@@ -2,6 +2,8 @@
 
 Tài liệu này giải thích accordion **🧭 Quy trình chuẩn · khung prompt + negative tối ưu** và cách dùng nó cùng các tính năng khác của Studio. Mọi con số dưới đây lấy **trực tiếp từ mã** trong `colab/studio.py` (được nhúng nguyên văn vào ô 7 của `WAI_Illustrious_Studio_Colab.ipynb`).
 
+> **Semi-auto tag complete (tham khảo Character Select SAA):** khi Studio khởi động, CSV được tải/đọc và xác minh SHA-256 một lần; autocomplete dùng chung catalog đó với tab Kho thẻ. Gõ một từ khóa ở cuối Prompt như `mắt`/`eyes`, `tóc`/`hair`, `nơ`/`bow` hoặc `váy`/`dress` để tìm các tên tag tiếng Anh trong CSV; mỗi kết quả kèm nhãn danh mục kiểu SAA — `[G] [A] [©] [C] [M]` cho Danbooru, `<G> <A> <©> <C> <S> <M> <L>` cho e621. Ba kiểu truy vấn giống SAA: `chữ đầu` tìm tiền tố, `*đuôi` tìm hậu tố, `*giữa*` tìm ở giữa tên thẻ, và `@tên` chỉ lọc thẻ họa sĩ (nhóm 1 và 8) mà **không** chèn dấu `@` vào prompt WAI-Illustrious. Chọn một dòng (chuột hoặc ↑↓ + Enter/Tab) để thay cụm từ khóa cuối; Esc đóng danh sách. `Ctrl+↑`/`Ctrl+↓` — hoặc hai nút `+0,1` / `−0,1` — chỉnh trọng số tag đang bôi đen, tag ở con trỏ, hoặc cụm cuối prompt, mỗi lần `0,1` trong dải `0,1–2,0`; về `1,0` thì dấu `(tag:…)` được gỡ bỏ. Nếu không tải được catalog thì thao tác tạo ảnh vẫn hoạt động và có thể thử tải lại từ tab Kho thẻ.
+
 > **Thư viện prompt trên điện thoại:** danh sách prompt trong accordion 📚 là **danh sách chạm (radio) cuộn được** — chạm một dòng là nạp ngay, hoặc chọn dòng rồi bấm **⬇️ Nạp prompt đã chọn**.
 
 > **Nguyên tắc quan trọng:** cả ba nút trong accordion **chỉ ghi nội dung hiển thị** vào ô *Prompt gửi model*, ô *Negative gửi model* hoặc ô báo cáo. Không có thẻ nào được ghép ngầm khi bạn bấm tạo ảnh — bạn xem, sửa hoặc xóa trước khi tạo.
@@ -88,11 +90,11 @@ Dropdown **Khung prompt theo loại ảnh** dùng cho nút *Sắp xếp prompt t
 | Steps | 10–45 (mặc định 25) | **15–30** |
 | CFG | 1–12 (mặc định 6) | **5–7** |
 | Kích thước gốc | preset 512² … 1024×1344 | ≥ 1024×1024, ví dụ 1024×1344 |
-| Hires fix | `Tắt` / `1.5×` / `2×`, strength 0.2–0.7 (mặc định 0.4) | `1.5`, denoise **0.35–0.5** |
+| Hires fix | `Tắt` / `1.25×` / `1.5×` / `1.75×` / `2×`, strength 0.2–0.7 (mặc định 0.4) | `1.5`, denoise **0.35–0.5** |
 | Prompt dương | do bạn viết | mở đầu `masterpiece, best quality, amazing quality` (không nhiều hơn) |
 | Negative | do bạn viết (nút nạp nhanh) | `bad quality, worst quality, worst detail, sketch, censor` |
 
-Studio khác nhà phát hành ở hai điểm có chủ đích: sampler được ghim Euler a và bước hires dùng ảnh → ảnh với tỷ lệ 1.5×/2× thay cho upscaler R-ESRGAN 4x+ Anime6B.
+Studio ghim sampler Euler a. Hires dùng weight chính thức **RealESRGAN_x4plus_anime_6B** (release `v0.2.2.4`) với RRDBNet 6 block, chạy theo tile rồi lấy mẫu xuống tỷ lệ bạn chọn (`1.25×`/`1.5×`/`1.75×`/`2×`); lượt sau WAI img2img tinh chỉnh với cùng prompt/seed/LoRA. Cách này tránh cài `realesrgan`/BasicSR và cây dependency cũ; model chỉ tải ở lần hires/upscale đầu tiên, vào `/content/wai_upscaler_cache`. Kích thước đầu ra được làm tròn xuống bội số 8 và giới hạn ≈4,2 MP. Weight dự kiến 17.938.799 byte; SHA-256 đang ghim `f872d837d3c90ed2e05227bed711af5671a6fd1c9f7d7e91c911a61f155e99da` theo metadata mirror Hugging Face. Real-ESRGAN phát hành theo giấy phép [BSD-3-Clause](https://github.com/xinntao/Real-ESRGAN/blob/master/LICENSE). GitHub Release API không công bố digest và sandbox không tải được asset GitHub vì lỗi TLS, nên **chưa xác minh độc lập SHA này với file chính thức**. Downloader từ chối mọi file sai kích thước/hash; cần xác nhận lần tải và chất lượng inference trên Colab/GPU thật trước khi coi pipeline đã được kiểm chứng.
 
 ---
 
@@ -113,7 +115,29 @@ Studio khác nhà phát hành ở hai điểm có chủ đích: sampler được
 
 ---
 
-## 5. Nguồn
+## 5. Semi-auto tag complete · mô phỏng theo Character Select SAA
+
+Chức năng gợi ý tag dưới ô Prompt được xây theo mô hình **Semi-Auto Tag Complete** của
+[Character Select SAA](https://github.com/mirabarukaso/character_select_stand_alone_app)
+(vốn lấy danh mục từ `DraconicDragon/dbr-e621-lists-archive`, đúng file CSV mà repo này dùng).
+
+| Hành vi trong SAA | Bản dịch trong Studio (`colab/studio.py`) |
+| --- | --- |
+| Gõ vài ký tự đầu → tag khớp tiền tố | `prompt.input` → `get_keyword_tag_suggestions` tìm trong catalog CSV đã nạp lúc khởi động |
+| `*đuôi` / `*giữa*` | `*hair` chỉ trả thẻ kết thúc bằng `hair`; `*hair*` trả thẻ có `hair` ở giữa (khớp cả tên lẫn bí danh) |
+| `@` bật chế độ tìm họa sĩ, lọc nhóm 1 và 8 | `@tên` lọc đúng `category` 1 (Danbooru artist) và 8 (e621 artist); **dấu `@` không được chèn vào prompt** vì WAI-Illustrious dùng tên họa sĩ trần, khác Anima |
+| Bảng Mark/ID/Category/Group | Mỗi gợi ý có nhãn `[G] [A] [©] [C] [M]` (Danbooru) hoặc `<G> <A> <©> <C> <S> <M> <L>` (e621) từ `PROMPT_TAG_CATEGORY_MARKS` |
+| Chuột hoặc ↑↓ + Enter/Tab chọn, Esc đóng | Dropdown Gradio: chọn bằng chuột/phiếm, Enter áp dụng, Esc đóng |
+| `ctrl+↑` / `ctrl+↓` chỉnh trọng số tag hiện tại hoặc vùng bôi đen | `demo.load` gắn `PROMPT_TAG_WEIGHT_SHORTCUT_JS` bắt `Ctrl+↑/↓` trong ô prompt và kích hoạt hai nút `+0,1` / `−0,1`; `PROMPT_TAG_WEIGHT_SELECTION_JS` đánh dấu đoạn đang chọn bằng ký tự riêng `U+E000/U+E001` trước khi Python xử lý |
+| Logic trọng số giống ComfyUI/WebUI nhưng chi tiết có thể khác | `adjust_prompt_tag_weight` bước `0,1`, kẹp trong `0,1–2,0`, `1,0` thì gỡ `(tag:1.0)`; nếu không có bôi đen thì áp dụng cho cụm cuối prompt. Dấu phẩy **trong** ngoặc không tách cụm (`_prompt_weight_boundary()` và JS cùng quét theo độ sâu ngoặc), nên `(long_hair, blue_eyes:1.1)` được coi là một nhóm và bấm lại sẽ chỉnh đúng trọng số của nhóm |
+
+Điểm khác biệt có chủ đích: Studio là Gradio trên Colab, không phải Electron, nên thao tác
+bàn phím được cài bằng `js` tiền xử lý + một listener gắn lúc tải trang; khi `js` bị chặn
+hoặc trình duyệt không hỗ trợ, hai nút `±` vẫn chỉnh được cụm cuối prompt (đường đi Python
+thuần). Marker `U+E000/U+E001` chỉ tồn tại trong lần gọi đó và luôn bị loại trước khi ghi lại
+vào ô prompt, nên không bao giờ lọt vào prompt gửi model.
+
+## 6. Nguồn
 
 Các khuyến nghị ở mục 3 và bảng negative lấy từ hướng dẫn của nhà phát hành WAI-illustrious (đã đối chiếu công khai khi viết tài liệu này):
 
@@ -123,6 +147,6 @@ Các khuyến nghị ở mục 3 và bảng negative lấy từ hướng dẫn c
 
 Phần thứ tự thẻ, khối 75 token và các thẻ Illustrious bám tốt là **thực hành phổ biến của cộng đồng Illustrious** được ghi lại trong mã (`colab/studio.py`, khối *Căn cứ đã đối chiếu*), không phải tuyên bố chính thức của nhà phát hành.
 
-## 6. Chưa được kiểm chứng
+## 7. Chưa được kiểm chứng
 
-Mã và tài liệu này đã qua kiểm thử CPU (`python -m unittest discover -s tests -v` — 58 test, 1 bỏ qua vì cần PyTorch thật) và `scripts/build_colab_studio.py` tái tạo notebook **chính xác**. Tuy nhiên **chưa** chạy trên GPU Colab: chưa đo chất lượng ảnh, tốc độ, VRAM hay hiệu quả thật của auto-detailer/hires fix. Xem `VERIFICATION.md` để biết đầy đủ giới hạn.
+Mã và tài liệu này đã qua `python -m unittest discover -s tests -v` (**79 test: 51 đạt, 28 bỏ qua, 0 thất bại**) và `scripts/build_colab_studio.py` tái tạo notebook; các test CPU bao gồm pin/download giả lập, cache/hash, kích thước, output size và nhánh OOM → CPU giả lập, cùng nạp catalog CSV, autocomplete có toán tử `*`/`@`, nhãn danh mục kiểu SAA và chỉnh trọng số tag. Sandbox thiếu PyTorch và `diffusers` nên các test kiến trúc checkpoint và inference bị bỏ qua; Gradio 6.15.2 và Pillow đã cài nên test dựng UI và chạy sự kiện `process_api` đã chạy thật. Chưa xác nhận SHA Anime6B với file chính thức do lỗi TLS khi tải, và **chưa** chạy hires/upscale hoặc đo chất lượng ảnh, tốc độ, VRAM trên GPU Colab. Xem `VERIFICATION.md` để biết đầy đủ giới hạn.

@@ -11,6 +11,7 @@ import os
 import re
 import secrets
 import threading
+import unicodedata
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -25,14 +26,33 @@ SIZE_PRESETS = (
     "1024x1344",
     "1344x1024",
 )
-# Hires fix: SDXL chỉ học tốt quanh ~1 MP, nên ảnh lớn hơn được tạo theo 2 bước —
-# tạo ở kích thước gốc rồi phóng to (Lanczos) và tinh chỉnh bằng ảnh → ảnh ở
-# denoise thấp để thêm chi tiết thật thay vì chỉ làm mờ/nhòe.
+# Hires fix: SDXL tạo ảnh gốc quanh ~1 MP, rồi dùng Real-ESRGAN Anime6B x4
+# để phóng to và tinh chỉnh tiếp bằng ảnh → ảnh ở denoise thấp.
 HIRES_OFF = "Tắt"
-HIRES_SCALES = {HIRES_OFF: 1.0, "1.5×": 1.5, "2×": 2.0}
+HIRES_SCALES = {
+    HIRES_OFF: 1.0,
+    "1.25×": 1.25,
+    "1.5×": 1.5,
+    "1.75×": 1.75,
+    "2×": 2.0,
+}
 HIRES_MAX_PIXELS = 4_200_000  # ≈ 2048×2048; giới hạn để không tràn VRAM/RAM Colab
 HIRES_STRENGTH_RANGE = (0.2, 0.7)
 HIRES_DEFAULT_STRENGTH = 0.4
+REAL_ESRGAN_MODEL = {
+    "name": "RealESRGAN_x4plus_anime_6B",
+    "file": "RealESRGAN_x4plus_anime_6B.pth",
+    "url": (
+        "https://github.com/xinntao/Real-ESRGAN/releases/download/"
+        "v0.2.2.4/RealESRGAN_x4plus_anime_6B.pth"
+    ),
+    "size": 17_938_799,
+    "sha256": "f872d837d3c90ed2e05227bed711af5671a6fd1c9f7d7e91c911a61f155e99da",
+    "version": "xinntao/Real-ESRGAN@v0.2.2.4",
+}
+REAL_ESRGAN_CACHE = "/content/wai_upscaler_cache"
+REAL_ESRGAN_TILE_SIZE = 256
+REAL_ESRGAN_TILE_PAD = 16
 # Prompt mẫu viết theo THỨ TỰ CHUẨN của dân chuyên nghiệp (chất lượng → chủ thể
 # → ngoại hình → tư thế → bối cảnh → ánh sáng → phong cách → độ nét). Bạn sửa/xóa
 # tùy ý; Studio gửi đúng nội dung hai ô prompt/negative cho model.
@@ -1292,6 +1312,52 @@ def sha256_file(path):
     return digest.hexdigest()
 
 
+def ensure_realesrgan_weight(cache_dir=REAL_ESRGAN_CACHE, spec=REAL_ESRGAN_MODEL):
+    """Tải weight Anime6B vào /content, kiểm tra kích thước và SHA-256."""
+    import urllib.request
+
+    folder = Path(cache_dir)
+    cached = folder / spec["file"]
+    if cached.is_file():
+        if cached.stat().st_size != spec["size"] or sha256_file(cached) != spec["sha256"]:
+            raise RuntimeError(
+                f"Weight {spec['file']} trong {folder} sai kích thước/SHA-256. "
+                "Hãy tự xóa file đó rồi chạy lại; hệ thống không ghi đè file hỏng."
+            )
+        return cached
+
+    folder.mkdir(parents=True, exist_ok=True)
+    partial = cached.with_name(cached.name + ".partial")
+    partial.unlink(missing_ok=True)
+    received = 0
+    try:
+        with urllib.request.urlopen(spec["url"], timeout=90) as response:
+            with partial.open("wb") as output:
+                while True:
+                    chunk = response.read(1024 * 1024)
+                    if not chunk:
+                        break
+                    received += len(chunk)
+                    if received > spec["size"]:
+                        raise RuntimeError("File tải về vượt kích thước đã ghim.")
+                    output.write(chunk)
+        if received != spec["size"] or sha256_file(partial) != spec["sha256"]:
+            raise RuntimeError(
+                f"Weight {spec['file']} tải về không khớp kích thước/SHA-256 "
+                f"đã ghim ({spec['version']})."
+            )
+        os.replace(partial, cached)
+    except Exception as exc:
+        partial.unlink(missing_ok=True)
+        if isinstance(exc, RuntimeError) and "không khớp" in str(exc):
+            raise
+        raise RuntimeError(
+            f"Không tải/xác minh được Real-ESRGAN Anime6B: {exc}. "
+            "Kiểm tra mạng Colab; các chế độ tạo ảnh thường vẫn dùng được."
+        ) from exc
+    return cached
+
+
 def ensure_detailer_weight(kind, cache_dir=DETAILER_CACHE):
     """Tải weight YOLOv8 một lần rồi dùng lại; từ chối file sai hash."""
     if kind not in DETAILER_MODELS:
@@ -1881,6 +1947,85 @@ def _editor_mask(editor, uploaded_mask):
     return _normalize_source(original, binary)
 
 
+def _build_realesrgan_model(torch):
+    """Build the x4 Anime 6B RRDBNet without installing legacy ESRGAN packages.
+
+    Layer names and dimensions match the official BasicSR RRDBNet checkpoint.
+    The weight file is pinned separately and never loaded until its SHA-256 passes.
+    """
+    nn = torch.nn
+    functional = torch.nn.functional
+
+    class ResidualDenseBlock(nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.conv1 = nn.Conv2d(64, 32, 3, 1, 1)
+            self.conv2 = nn.Conv2d(96, 32, 3, 1, 1)
+            self.conv3 = nn.Conv2d(128, 32, 3, 1, 1)
+            self.conv4 = nn.Conv2d(160, 32, 3, 1, 1)
+            self.conv5 = nn.Conv2d(192, 64, 3, 1, 1)
+            self.lrelu = nn.LeakyReLU(negative_slope=0.2, inplace=True)
+
+        def forward(self, value):
+            first = self.lrelu(self.conv1(value))
+            second = self.lrelu(self.conv2(torch.cat((value, first), dim=1)))
+            third = self.lrelu(
+                self.conv3(torch.cat((value, first, second), dim=1))
+            )
+            fourth = self.lrelu(
+                self.conv4(torch.cat((value, first, second, third), dim=1))
+            )
+            fifth = self.conv5(
+                torch.cat((value, first, second, third, fourth), dim=1)
+            )
+            return fifth * 0.2 + value
+
+    class ResidualInResidualDenseBlock(nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.rdb1 = ResidualDenseBlock()
+            self.rdb2 = ResidualDenseBlock()
+            self.rdb3 = ResidualDenseBlock()
+
+        def forward(self, value):
+            output = self.rdb1(value)
+            output = self.rdb2(output)
+            output = self.rdb3(output)
+            return output * 0.2 + value
+
+    class RRDBNet(nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.conv_first = nn.Conv2d(3, 64, 3, 1, 1)
+            self.body = nn.Sequential(
+                *(ResidualInResidualDenseBlock() for _ in range(6))
+            )
+            self.conv_body = nn.Conv2d(64, 64, 3, 1, 1)
+            self.conv_up1 = nn.Conv2d(64, 64, 3, 1, 1)
+            self.conv_up2 = nn.Conv2d(64, 64, 3, 1, 1)
+            self.conv_hr = nn.Conv2d(64, 64, 3, 1, 1)
+            self.conv_last = nn.Conv2d(64, 3, 3, 1, 1)
+            self.lrelu = nn.LeakyReLU(negative_slope=0.2, inplace=True)
+
+        def forward(self, value):
+            features = self.conv_first(value)
+            body = self.conv_body(self.body(features))
+            features = features + body
+            features = self.lrelu(
+                self.conv_up1(
+                    functional.interpolate(features, scale_factor=2, mode="nearest")
+                )
+            )
+            features = self.lrelu(
+                self.conv_up2(
+                    functional.interpolate(features, scale_factor=2, mode="nearest")
+                )
+            )
+            return self.conv_last(self.lrelu(self.conv_hr(features)))
+
+    return RRDBNet()
+
+
 class StudioRuntime:
     def __init__(
         self,
@@ -1897,6 +2042,8 @@ class StudioRuntime:
         backup_dir="/content/wai_outputs",
         detailer_cache=DETAILER_CACHE,
         detailer_detector=build_detailer_detector,
+        upscaler_cache=REAL_ESRGAN_CACHE,
+        realesrgan_upscaler=None,
     ):
         if pipe is None or not Path(checkpoint).is_file():
             raise RuntimeError(
@@ -1928,6 +2075,11 @@ class StudioRuntime:
         self.backup_dir = Path(backup_dir)
         self.detailer_cache = str(detailer_cache)
         self.detailer_detector = detailer_detector
+        self.upscaler_cache = str(upscaler_cache)
+        # A test hook avoids downloads; production lazily builds the pinned x4 model.
+        self.realesrgan_upscaler = realesrgan_upscaler
+        self._realesrgan_model = None
+        self._realesrgan_device = None
         self.lock = threading.Lock()
 
     @property
@@ -2174,6 +2326,148 @@ class StudioRuntime:
             )
         return base, "auto-detailer đã sửa " + "; ".join(notes)
 
+    def _load_realesrgan_model(self):
+        """Lazily load the pinned anime upscaler, preferring CUDA with CPU fallback."""
+        if self._realesrgan_model is not None:
+            return self._realesrgan_model, self._realesrgan_device
+
+        weight = ensure_realesrgan_weight(self.upscaler_cache)
+        try:
+            try:
+                checkpoint = self.torch.load(
+                    str(weight), map_location="cpu", weights_only=True
+                )
+            except TypeError:  # PyTorch before the weights_only argument existed.
+                checkpoint = self.torch.load(str(weight), map_location="cpu")
+            model = _build_realesrgan_model(self.torch)
+            state = None
+            if isinstance(checkpoint, dict):
+                state = checkpoint.get("params_ema")
+                if state is None:
+                    state = checkpoint.get("params")
+                if state is None and "conv_first.weight" in checkpoint:
+                    state = checkpoint
+            if not isinstance(state, dict):
+                raise ValueError("Checkpoint không có state dict params_ema/params.")
+            model.load_state_dict(state, strict=True)
+            model.eval()
+        except Exception as exc:
+            raise RuntimeError(
+                "Không nạp được kiến trúc/weight Real-ESRGAN Anime6B đã xác minh."
+            ) from exc
+
+        device = "cuda" if self.torch.cuda.is_available() else "cpu"
+        if device == "cuda":
+            try:
+                model = model.to(device).half()
+            except self.torch.cuda.OutOfMemoryError:
+                self.torch.cuda.empty_cache()
+                model = model.to("cpu").float()
+                device = "cpu"
+        else:
+            model = model.to("cpu").float()
+        self._realesrgan_model = model
+        self._realesrgan_device = device
+        return model, device
+
+    def _realesrgan_x4_on_device(self, image, model, device):
+        """Run the official x4 RRDBNet in overlapping tiles; return an RGB PIL image."""
+        import numpy as np
+        from PIL import Image
+
+        rgb = np.asarray(image.convert("RGB"), dtype=np.uint8)
+        height, width = rgb.shape[:2]
+        # Real-ESRGAN's reference inference path feeds OpenCV BGR tensors.
+        bgr = np.ascontiguousarray(rgb[:, :, ::-1])
+        dtype = self.torch.float16 if device == "cuda" else self.torch.float32
+        source = self.torch.from_numpy(bgr.transpose(2, 0, 1).copy())
+        source = source.unsqueeze(0).to(device=device, dtype=dtype).div_(255.0)
+        pad = 10
+        padded = self.torch.nn.functional.pad(
+            source, (pad, pad, pad, pad), mode="reflect"
+        )
+        del source
+
+        result_bgr = np.empty((height * 4, width * 4, 3), dtype=np.uint8)
+        tile_size = REAL_ESRGAN_TILE_SIZE
+        tile_pad = REAL_ESRGAN_TILE_PAD
+        with self.torch.inference_mode():
+            for top in range(0, height, tile_size):
+                bottom = min(top + tile_size, height)
+                input_top = max(0, pad + top - tile_pad)
+                input_bottom = min(padded.shape[-2], pad + bottom + tile_pad)
+                for left in range(0, width, tile_size):
+                    right = min(left + tile_size, width)
+                    input_left = max(0, pad + left - tile_pad)
+                    input_right = min(padded.shape[-1], pad + right + tile_pad)
+                    tile = padded[..., input_top:input_bottom, input_left:input_right]
+                    tile_output = model(tile)
+                    expected_shape = (
+                        (input_bottom - input_top) * 4,
+                        (input_right - input_left) * 4,
+                    )
+                    if tuple(tile_output.shape[-2:]) != expected_shape:
+                        raise RuntimeError(
+                            "Real-ESRGAN trả về kích thước tile không phải x4."
+                        )
+                    crop_top = (pad + top - input_top) * 4
+                    crop_left = (pad + left - input_left) * 4
+                    crop_bottom = crop_top + (bottom - top) * 4
+                    crop_right = crop_left + (right - left) * 4
+                    core = tile_output[
+                        0, :, crop_top:crop_bottom, crop_left:crop_right
+                    ].detach()
+                    patch = (
+                        core.float()
+                        .clamp_(0, 1)
+                        .mul_(255)
+                        .round_()
+                        .to(device="cpu", dtype=self.torch.uint8)
+                        .permute(1, 2, 0)
+                        .numpy()
+                    )
+                    result_bgr[top * 4 : bottom * 4, left * 4 : right * 4] = patch
+
+        result_rgb = np.ascontiguousarray(result_bgr[:, :, ::-1])
+        return Image.fromarray(result_rgb, mode="RGB")
+
+    def _realesrgan_x4(self, image):
+        model, device = self._load_realesrgan_model()
+        try:
+            return self._realesrgan_x4_on_device(image, model, device)
+        except self.torch.cuda.OutOfMemoryError as exc:
+            if device != "cuda":
+                raise RuntimeError(
+                    "Không đủ bộ nhớ để chạy Real-ESRGAN Anime6B trên CPU."
+                ) from exc
+            self.torch.cuda.empty_cache()
+            self._realesrgan_model = model.to("cpu").float()
+            self._realesrgan_device = "cpu"
+            try:
+                return self._realesrgan_x4_on_device(
+                    image, self._realesrgan_model, "cpu"
+                )
+            except self.torch.cuda.OutOfMemoryError as cpu_exc:
+                raise RuntimeError(
+                    "Real-ESRGAN Anime6B hết bộ nhớ cả trên CPU; hãy dùng ảnh nhỏ hơn."
+                ) from cpu_exc
+
+    def _upscale_with_realesrgan(self, image, size):
+        """Run Anime6B x4, then downsample to the selected exact output dimensions."""
+        from PIL import Image
+
+        if self.realesrgan_upscaler is not None:
+            result = self.realesrgan_upscaler(image.convert("RGB"), size)
+        else:
+            result = self._realesrgan_x4(image).resize(
+                size, Image.Resampling.LANCZOS
+            )
+        if not isinstance(result, Image.Image) or result.size != tuple(size):
+            raise RuntimeError(
+                "Real-ESRGAN không trả về đúng kích thước đã chọn; ảnh không được lưu."
+            )
+        return result.convert("RGB")
+
     def _hires_pass(
         self,
         image,
@@ -2186,15 +2480,13 @@ class StudioRuntime:
         strength,
         choices,
     ):
-        """Upscale a finished base image, then let img2img add real detail."""
-        from PIL import Image
-
+        """Anime6B upscale followed by img2img refinement at the chosen scale."""
         # VAE tiling giữ đỉnh VRAM thấp khi giải mã ảnh > 1 MP (pipe SDXL thật có
         # hàm này; dùng chung VAE với pipeline ảnh → ảnh nên bật một lần là đủ).
         enable_tiling = getattr(self.pipe, "enable_vae_tiling", None)
         if callable(enable_tiling):
             enable_tiling()
-        upscaled = image.convert("RGB").resize(size, Image.Resampling.LANCZOS)
+        upscaled = self._upscale_with_realesrgan(image, size)
         return self._infer_with_retry(
             "image",
             upscaled,
@@ -2339,7 +2631,7 @@ class StudioRuntime:
                 source = source.resize((width, height), Image.Resampling.LANCZOS)
             strength = None
             if hires_scale == HIRES_OFF:
-                raise ValueError("Chọn hệ số phóng 1.5× hoặc 2×.")
+                raise ValueError("Chọn hệ số phóng trong danh sách từ 1.25× đến 2×.")
         else:
             raise ValueError("Chế độ tạo ảnh không được hỗ trợ.")
 
@@ -2435,6 +2727,11 @@ class StudioRuntime:
                     "hires": (
                         {
                             "scale": hires_scale,
+                            "upscaler": {
+                                "name": REAL_ESRGAN_MODEL["name"],
+                                "version": REAL_ESRGAN_MODEL["version"],
+                                "sha256": REAL_ESRGAN_MODEL["sha256"],
+                            },
                             "base_width": base_size[0],
                             "base_height": base_size[1],
                             "strength": hires_strength,
@@ -2482,6 +2779,7 @@ class StudioRuntime:
                 f" · {'phóng to' if mode == 'upscale' else 'hires fix'} "
                 f"{base_size[0]}×{base_size[1]} → "
                 f"{final_size[0]}×{final_size[1]}"
+                f" · upscaler: {REAL_ESRGAN_MODEL['name']}"
             )
             if hires[2]:
                 status += (
@@ -2606,7 +2904,7 @@ class StudioRuntime:
         eyes_weight,
         embed,
     ):
-        """Phóng to một ảnh có sẵn (Lanczos + ảnh → ảnh), không tạo lại từ đầu."""
+        """Anime6B upscale an existing image, then refine with img2img."""
         return self._generate(
             "upscale",
             source,
@@ -2674,7 +2972,10 @@ class StudioRuntime:
 
 # CSV is data only: lazily downloaded, pinned and verified; never executed.
 TAG_CSV_NAME = "danbooru_e621_merged_2026-10-01_pt20-ia-dd-ed-spc.csv"
-TAG_CSV_SHA256 = "287bb5ad86fcc56f535b9ebae8d3e696e5ff3fa5c057d6fa6884282fb083e738"
+TAG_CSV_SHA256 = "1a906f4e1148846b77482bce29b988e3fdcc9ed8240a53f0889573511690a057"
+# Backward-compatible source at TAG_CSV_URL is the verified four-column catalog.
+TAG_CSV_LEGACY_SHA256 = "287bb5ad86fcc56f535b9ebae8d3e696e5ff3fa5c057d6fa6884282fb083e738"
+TAG_CSV_MAX_BYTES = 32_000_000
 TAG_CSV_URL = (
     "https://raw.githubusercontent.com/manhlee1196-boop/ai-anime/"
     "0a0d3b87a4f7fa77da3274674c4d89649f7c3657/" + TAG_CSV_NAME
@@ -2747,36 +3048,419 @@ TAG_VI_LABELS = {
     "cleavage": "Khe ngực", "nude": "Khỏa thân", "nipples": "Núm vú",
     "genitals": "Bộ phận sinh dục", "nsfw": "Nội dung nhạy cảm",
 }
-# Only compose a translation for these exact, unambiguous color/tag patterns.
-for _color, _vi_color in {
+TAG_VI_LABELS.update({
+    # Thẻ phổ biến về số lượng, biểu cảm và tư thế.
+    "couple": "Cặp đôi", "multiple_people": "Nhiều người",
+    "female_focus": "Tập trung vào nhân vật nữ", "male_focus": "Tập trung vào nhân vật nam",
+    "solo_focus": "Tập trung vào nhân vật chính", "looking_at_another": "Nhìn người khác",
+    "looking_at_another_person": "Nhìn người khác", "looking_back": "Ngoái nhìn",
+    "looking_down": "Nhìn xuống", "looking_up": "Nhìn lên",
+    "looking_to_the_side": "Nhìn sang bên", "eyes_visible_through_hair": "Mắt lộ qua tóc",
+    "one_eye_closed": "Nhắm một mắt", "half-closed_eyes": "Mắt lim dim",
+    "narrowed_eyes": "Nheo mắt", "closed_eyelids": "Mí mắt khép",
+    "smug": "Vẻ mặt tự mãn", "frown": "Nhíu mày", "pout": "Chu môi",
+    "happy": "Vui vẻ", "sad": "Buồn", "serious": "Nghiêm túc",
+    "embarrassed": "Ngượng ngùng", "expressionless": "Không biểu cảm",
+    "nervous": "Lo lắng", "tired": "Mệt mỏi", "confused": "Bối rối",
+    "tongue_out": "Thè lưỡi", "fangs": "Răng nanh", "teeth": "Răng",
+    "kneeling": "Đang quỳ", "crouching": "Đang cúi người", "squatting": "Đang ngồi xổm",
+    "bending_over": "Cúi người về phía trước", "leaning_forward": "Nghiêng người về phía trước",
+    "on_back": "Nằm ngửa", "on_side": "Nằm nghiêng", "on_stomach": "Nằm sấp",
+    "arms_behind_back": "Hai tay ra sau lưng", "hands_on_hips": "Hai tay chống hông",
+    "hand_on_own_hip": "Tay chống hông", "waving": "Đang vẫy tay",
+    "holding": "Đang cầm", "holding_weapon": "Cầm vũ khí", "holding_sword": "Cầm kiếm",
+    "holding_gun": "Cầm súng", "holding_phone": "Cầm điện thoại",
+    "holding_flower": "Cầm hoa", "eating": "Đang ăn", "drinking": "Đang uống",
+    "smoking": "Đang hút thuốc", "dancing": "Đang nhảy múa",
+    # Trang phục, phụ kiện và ngoại hình.
+    "bikini": "Đồ bơi bikini", "swimsuit": "Đồ bơi", "one_piece_swimsuit": "Đồ bơi một mảnh",
+    "thighhighs": "Tất cao đùi", "pantyhose": "Quần tất", "stockings": "Bít tất dài",
+    "knee_highs": "Tất cao đến gối", "barefoot": "Chân trần", "high_heels": "Giày cao gót",
+    "sneakers": "Giày thể thao", "short_sleeves": "Tay áo ngắn", "long_sleeves": "Tay áo dài",
+    "sleeveless": "Không tay", "collared_shirt": "Áo sơ mi có cổ",
+    "t-shirt": "Áo phông", "hoodie": "Áo hoodie", "sweater": "Áo len",
+    "coat": "Áo khoác dài", "shorts": "Quần short", "pants": "Quần dài",
+    "hair_ornament": "Đồ trang trí tóc", "hair_ribbon": "Ruy băng cài tóc",
+    "hair_bow": "Nơ cài tóc", "hairband": "Băng đô", "hairclip": "Kẹp tóc",
+    "thick_thighs": "Đùi đầy đặn", "bare_shoulders": "Vai trần", "bare_legs": "Chân trần",
+    "bare_arms": "Cánh tay trần", "navel": "Rốn", "collarbone": "Xương quai xanh",
+    "thighs": "Đùi", "feet": "Bàn chân", "fingers": "Ngón tay", "toes": "Ngón chân",
+    "hand": "Bàn tay", "hands": "Bàn tay", "eyelashes": "Lông mi",
+    "pointy_ears": "Tai nhọn", "animal_tail": "Đuôi động vật", "dragon": "Rồng",
+    "fox": "Cáo", "wolf": "Sói", "cat": "Mèo", "dog": "Chó", "rabbit": "Thỏ",
+    "bird": "Chim", "horse": "Ngựa", "angel": "Thiên thần", "demon": "Quỷ",
+    # Bối cảnh, loại hình ảnh và metadata.
+    "black_background": "Nền đen", "blue_background": "Nền xanh dương",
+    "red_background": "Nền đỏ", "outdoors": "Ngoài trời", "indoors": "Trong nhà",
+    "bedroom": "Phòng ngủ", "classroom": "Lớp học", "kitchen": "Nhà bếp",
+    "cityscape": "Cảnh thành phố", "scenery": "Phong cảnh", "landscape": "Phong cảnh",
+    "rainy": "Trời mưa", "snowing": "Trời đang có tuyết", "sunny": "Trời nắng",
+    "day": "Ban ngày", "evening": "Buổi tối", "dusk": "Chạng vạng",
+    "dawn": "Rạng đông", "night_sky": "Bầu trời đêm", "starry_sky": "Bầu trời đầy sao",
+    "wind": "Gió", "windy": "Trời có gió", "water": "Nước", "ocean": "Đại dương",
+    "digital_media_(artwork)": "Tranh kỹ thuật số", "traditional_media": "Chất liệu truyền thống",
+    "pixel_art": "Tranh pixel", "3d": "Hình ảnh 3D", "photorealistic": "Phong cách ảnh chân thực",
+    "anime_coloring": "Tô màu anime", "speech_bubble": "Bong bóng thoại",
+    "english_text": "Chữ tiếng Anh", "japanese_text": "Chữ tiếng Nhật",
+    "no_humans": "Không có người", "no_hats": "Không có mũ",
+    "male/female": "Nam và nữ", "male/male": "Nam và nam", "female/female": "Nữ và nữ",
+    "1person": "Một người", "2people": "Hai người", "3girls": "Ba nhân vật nữ",
+    "3boys": "Ba nhân vật nam", "4girls": "Bốn nhân vật nữ", "4boys": "Bốn nhân vật nam",
+})
+TAG_VI_LABELS.update({
+    # Từ điển bổ sung cho các thẻ chung thường gặp trong toàn bộ CSV.
+    "jewelry": "Trang sức", "bodily_fluids": "Dịch cơ thể", "hair_between_eyes": "Tóc giữa hai mắt",
+    "bow": "Nơ", "sex": "Quan hệ tình dục", "tongue": "Lưỡi", "clothed": "Mặc quần áo",
+    "underwear": "Đồ lót", "balls": "Tinh hoàn", "butt": "Mông", "genital_fluids": "Dịch sinh dục",
+    "erection": "Cương cứng", "sweat": "Mồ hôi", "cum": "Tinh dịch", "vulva": "Âm hộ",
+    "shoes": "Giày", "penetration": "Thâm nhập", "panties": "Quần lót", "ahoge": "Tóc chỉa",
+    "weapon": "Vũ khí", "white_body": "Cơ thể trắng", "sidelocks": "Tóc mai", "heart": "Trái tim",
+    "anus": "Hậu môn", "horn": "Sừng", ":d": "Biểu cảm :D", "cowboy_shot": "Khung hình đầu đến đùi",
+    "penile": "Thuộc dương vật", "scalie": "Nhân vật bò sát nhân hóa", "food": "Thức ăn",
+    "hetero": "Dị tính", "claws": "Móng vuốt", "muscular": "Cơ bắp",
+    "mythological_creature": "Sinh vật thần thoại", "vaginal": "Thuộc âm đạo", "ass": "Mông",
+    "feral": "Động vật không nhân hóa", "frills": "Viền bèo", "topwear": "Trang phục thân trên",
+    "artist_name": "Tên họa sĩ", "open_clothes": "Quần áo mở", "spread_legs": "Dạng chân",
+    "parted_lips": "Môi hé", "piercing": "Khuyên xỏ", "censored": "Đã kiểm duyệt",
+    "dialogue": "Lời thoại", "necktie": "Cà vạt", "pleated_skirt": "Chân váy xếp ly",
+    "choker": "Vòng cổ choker", "humanoid_genitalia": "Bộ phận sinh dục dạng người",
+    "biped": "Đi bằng hai chân", "alternate_costume": "Trang phục thay thế",
+    "male_penetrating": "Nhân vật nam chủ động thâm nhập", "animal_genitalia": "Bộ phận sinh dục động vật",
+    "collar": "Vòng cổ", "anal": "Quan hệ qua đường hậu môn", "humanoid_penis": "Dương vật dạng người",
+    "areola": "Quầng vú", "belt": "Thắt lưng", "detached_sleeves": "Tay áo rời",
+    "markings": "Dấu vết / hoa văn", "group": "Nhóm", "bottomwear": "Trang phục thân dưới",
+    "hand_up": "Giơ tay", "muscular_male": "Nam cơ bắp", "big_butt": "Mông lớn",
+    "plant": "Thực vật", "japanese_clothes": "Trang phục Nhật Bản", "halo": "Vầng hào quang",
+    "puffy_sleeves": "Tay áo phồng", "wide_hips": "Hông rộng", "pussy": "Âm hộ",
+    "size_difference": "Chênh lệch kích thước", "cum_inside": "Xuất tinh bên trong",
+    "oral": "Quan hệ bằng miệng", "headgear": "Đồ đội đầu", "bowtie": "Nơ cổ",
+    "equid": "Họ ngựa", "midriff": "Vùng eo và bụng", "spreading": "Dạng chân",
+    "multicolored_body": "Cơ thể nhiều màu", "grin": "Cười toe toét", "heart_symbol": "Biểu tượng trái tim",
+    "hood": "Mũ trùm", "elbow_gloves": "Găng tay dài quá khuỷu", "ear_piercing": "Khuyên tai",
+    "penile_penetration": "Dương vật thâm nhập", "domestic_dog": "Chó nhà", "fang": "Răng nanh",
+    "animal_penis": "Dương vật động vật", "saliva": "Nước bọt", "eyes_closed": "Nhắm mắt",
+    "anal_penetration": "Thâm nhập hậu môn", "streaked_hair": "Tóc có lọn màu khác",
+    "twitter_username": "Tên người dùng Twitter", "ambiguous_gender": "Giới tính không rõ",
+    "sweatdrop": "Giọt mồ hôi", "blunt_bangs": "Tóc mái ngang", "fingerless_gloves": "Găng tay hở ngón",
+    "furniture": "Đồ nội thất", "stomach": "Bụng", "sword": "Kiếm", "interspecies": "Khác loài",
+    "eyewear": "Kính mắt", "sailor_collar": "Cổ áo thủy thủ", "abs": "Cơ bụng",
+    "female_penetrated": "Nhân vật nữ bị thâm nhập", "chibi": "Chibi", "belly": "Bụng",
+    "felis": "Họ mèo", "two-tone_hair": "Tóc hai màu", "mole": "Nốt ruồi",
+    "legwear": "Trang phục chân", "hair_flower": "Hoa cài tóc", "miniskirt": "Váy ngắn",
+    "serafuku": "Đồng phục thủy thủ", "border": "Đường viền", "hair_bun": "Tóc búi",
+    "outside": "Bên ngoài", "bed": "Giường", "feathers": "Lông vũ", "hair_over_one_eye": "Tóc che một mắt",
+    "ejaculation": "Xuất tinh", "bra": "Áo ngực", "paws": "Bàn chân thú", "5_fingers": "Năm ngón tay",
+    "animal_ear_fluff": "Lông viền tai động vật", "lagomorph": "Họ thỏ", "eyebrows": "Lông mày",
+    "makeup": "Trang điểm", "pawpads": "Đệm chân thú", "footwear": "Giày dép",
+    "star_(symbol)": "Ngôi sao", "male_penetrating_female": "Nam thâm nhập nữ",
+    "striped_clothes": "Quần áo sọc", "vest": "Áo gile", "bracelet": "Vòng tay",
+    "off_shoulder": "Trễ vai", "nail_polish": "Sơn móng", "digital_drawing_(artwork)": "Tranh vẽ kỹ thuật số",
+    "black_nose": "Mũi đen", "black_fur": "Lông đen", "leotard": "Đồ liền thân",
+    "grey_fur": "Lông xám", "leporid": "Họ thỏ", "multicolored_fur": "Lông nhiều màu",
+    "dated": "Có ghi ngày tháng", "cup": "Cốc", "anthro_on_anthro": "Nhân vật nhân hóa với nhau",
+    "pillow": "Gối", "looking_pleasured": "Vẻ mặt thỏa mãn", "parted_bangs": "Tóc mái rẽ",
+    "overweight": "Thừa cân", "headwear": "Đồ đội đầu", "arm_up": "Giơ tay",
+    "mosaic_censoring": "Che bằng khảm", "young": "Trẻ", "big_balls": "Tinh hoàn lớn",
+    "muscular_anthro": "Nhân vật nhân hóa cơ bắp", "male_penetrated": "Nhân vật nam bị thâm nhập",
+    "tattoo": "Hình xăm", "fellatio": "Quan hệ bằng miệng", "sharp_teeth": "Răng nhọn",
+    "completely_nude": "Hoàn toàn khỏa thân", "fingernails": "Móng tay", "facial_hair": "Râu",
+    "knot": "Nút thắt", "vein": "Mạch máu", "tan_body": "Cơ thể rám nắng", "scar": "Sẹo",
+    "clothes_lift": "Vén quần áo", "wet": "Ướt", "on_bed": "Nằm trên giường",
+    "handwear": "Găng tay", "hands_up": "Giơ hai tay", "black_choker": "Vòng cổ choker đen",
+    "glowing": "Phát sáng", "multiple_views": "Nhiều góc nhìn", "neckerchief": "Khăn quàng cổ",
+    "precum": "Dịch tiền xuất tinh", "mask": "Mặt nạ", "lips": "Môi", "pecs": "Cơ ngực",
+    "soles": "Lòng bàn chân", "bdsm": "BDSM", "holding_object": "Cầm vật",
+    "orgasm": "Cực khoái", "v-shaped_eyebrows": "Lông mày chữ V",
+    "veiny_penis": "Dương vật nổi gân", "detailed_background": "Nền chi tiết",
+    "feathered_wings": "Cánh lông vũ", "puffy_short_sleeves": "Tay áo ngắn phồng",
+    "upper_teeth_only": "Chỉ thấy răng trên", "pantherine": "Phân họ báo",
+    "aqua_eyes": "Mắt xanh ngọc", "symbol-shaped_pupils": "Đồng tử hình biểu tượng",
+    "blood": "Máu", "white_panties": "Quần lót trắng", "dark-skinned_female": "Nhân vật nữ da sẫm",
+    "thigh_strap": "Đai đùi", "mole_under_eye": "Nốt ruồi dưới mắt",
+    "vaginal_fluids": "Dịch âm đạo", "bulge": "Phần phồng lên", "two_tone_body": "Cơ thể hai màu",
+    "masturbation": "Thủ dâm", "twin_braids": "Hai bím tóc", "two_side_up": "Hai lọn tóc buộc lên hai bên",
+    "scales": "Vảy", "loli": "Nhân vật nhỏ tuổi", "accessory": "Phụ kiện", "hug": "Ôm",
+    "sex_toy": "Đồ chơi tình dục", "rear_view": "Góc nhìn từ phía sau", "gun": "Súng",
+    "licking": "Đang liếm", "bar_censor": "Thanh che", "gradient_background": "Nền chuyển sắc",
+    "strapless": "Không dây", "feet_out_of_frame": "Bàn chân ngoài khung hình",
+    "sleeves_past_wrists": "Tay áo che qua cổ tay", "fake_animal_ears": "Tai động vật giả",
+    "flat_chest": "Ngực phẳng", "stripes": "Sọc", "fur_trim": "Viền lông",
+    "sleeveless_shirt": "Áo sơ mi không tay", "sleeveless_dress": "Váy không tay",
+    "foreskin": "Bao quy đầu", "book": "Sách", "window": "Cửa sổ", "variant_set": "Bộ biến thể",
+    "gradient_hair": "Tóc chuyển sắc", "sparkle": "Lấp lánh", "horse_girl": "Cô gái ngựa",
+    "widescreen": "Màn hình rộng", "white_border": "Viền trắng", "grass": "Cỏ",
+    "motion_lines": "Vệt chuyển động", "penis_in_vagina": "Dương vật trong âm đạo",
+    "countershading": "Màu lưng và bụng tương phản", "wrist_cuffs": "Vòng cổ tay",
+    "front_view": "Góc nhìn chính diện", "see-through_clothes": "Quần áo xuyên thấu",
+    "toe_claws": "Móng vuốt ở ngón chân", "phone": "Điện thoại", "bondage": "Trói buộc",
+    "ring_piercing": "Khuyên vòng", "buttons": "Cúc áo", "bell": "Chuông", "cosplay": "Cosplay",
+    "colored_skin": "Da có màu", "neck_ribbon": "Ruy băng cổ", "heterochromia": "Mắt hai màu",
+    "maid_headdress": "Mũ hầu gái", "maid": "Hầu gái", "chair": "Ghế", "spikes": "Gai",
+    "sound_effects": "Hiệu ứng âm thanh", "group_sex": "Quan hệ tình dục nhóm",
+    "all_fours": "Tư thế chống bằng bốn chi", "femboy": "Nhân vật nam nữ tính",
+    "from_behind_position": "Tư thế từ phía sau", "ascot": "Khăn ascot", "huge_butt": "Mông rất lớn",
+    "fruit": "Trái cây", "covered_nipples": "Núm vú được che", "submissive": "Phục tùng",
+    "dominant": "Thống trị", "canine_penis": "Dương vật chó", "seductive": "Quyến rũ",
+})
+TAG_VI_LABELS.update({
+    "penis": "Dương vật", "socks": "Tất", "virtual_youtuber": "YouTuber ảo",
+    "official_alternate_costume": "Trang phục thay thế chính thức", "big_penis": "Dương vật lớn",
+    "huge_penis": "Dương vật rất lớn", "canis": "Họ chó", "mythological_scalie": "Nhân vật bò sát thần thoại",
+    "equine": "Thuộc loài ngựa", "domestic_cat": "Mèo nhà", "vaginal_penetration": "Thâm nhập qua âm đạo",
+    "bag": "Túi", "scarf": "Khăn quàng", "cape": "Áo choàng", "apron": "Tạp dề",
+    "armpits": "Nách", "crop_top": "Áo croptop", "yuri": "Tình cảm nữ-nữ",
+    "intersex": "Liên giới tính", "presenting": "Đưa ra phía trước", "bottomless": "Không mặc quần",
+    "reptile": "Loài bò sát", "bound": "Bị trói", "character_name": "Tên nhân vật",
+    "chinese_commentary": "Chú thích tiếng Trung", "anthro_penetrated": "Nhân vật nhân hóa bị thâm nhập",
+    "shaded": "Có đổ bóng", "hair_intakes": "Lọn tóc cuộn vào trong", ":o": "Biểu cảm :O",
+    "gynomorph": "Nhân vật nữ có cơ quan sinh dục nam", "3d_(artwork)": "Tranh 3D",
+    "bovid": "Họ bò", "inside": "Bên trong", "avian": "Loài chim", "male_penetrating_male": "Nam thâm nhập nam",
+    "side_ponytail": "Tóc đuôi ngựa lệch bên", "canine_genitalia": "Bộ phận sinh dục chó",
+    "fluffy": "Bồng bềnh", "anthro_penetrating": "Nhân vật nhân hóa chủ động thâm nhập",
+    "hybrid": "Sinh vật lai", "one-piece_swimsuit": "Đồ bơi một mảnh", "torn_clothes": "Quần áo rách",
+    "drooling": "Chảy nước miếng", "bodysuit": "Đồ liền thân", "sash": "Đai vải",
+    "pov": "Góc nhìn thứ nhất", "plaid_clothes": "Quần áo kẻ caro", "4_toes": "Bốn ngón chân",
+    "rodent": "Loài gặm nhấm", "covered_navel": "Rốn được che", "uncensored": "Không kiểm duyệt",
+    "dripping": "Nhỏ giọt", "young_anthro": "Nhân vật nhân hóa trẻ", "cum_in_ass": "Xuất tinh vào hậu môn",
+    "tan_fur": "Lông rám nắng", "glistening": "Lấp lánh", "trio": "Bộ ba",
+    "cum_in_vagina": "Xuất tinh vào âm đạo", "equine_genitalia": "Bộ phận sinh dục ngựa",
+    "sunglasses": "Kính râm", "floating_hair": "Tóc bay", "tank_top": "Áo ba lỗ",
+    "not_furry": "Không có lông thú", "siblings": "Anh chị em ruột", "pose": "Tư thế",
+    "sheath": "Bao kiếm", "slightly_chubby": "Hơi mũm mĩm", "robot": "Người máy",
+    "pubic_hair": "Lông mu", "turtleneck": "Áo cổ lọ", "chain": "Dây chuyền", "groin": "Háng",
+    "animal_humanoid": "Động vật dạng người", "detached_collar": "Cổ áo rời", "aquatic": "Sinh vật thủy sinh",
+    "blurry_background": "Nền mờ", "thigh_highs": "Tất cao đùi", "single_braid": "Một bím tóc",
+    "generation_1_pokemon": "Pokémon thế hệ đầu", "copyright_name": "Tên tác phẩm/bản quyền",
+    "tail_markings": "Hoa văn trên đuôi", "clitoris": "Âm vật", "table": "Bàn", "profile": "Góc nghiêng",
+    "dress_shirt": "Áo sơ mi", "open_smile": "Cười miệng mở", "raised_tail": "Đuôi dựng lên",
+    "non-web_source": "Nguồn ngoài web", "petals": "Cánh hoa", "double_bun": "Hai búi tóc",
+    "hooves": "Móng guốc", "capelet": "Áo choàng ngắn", "anthrofied": "Được nhân hóa",
+    "big_belly": "Bụng lớn", "aqua_hair": "Tóc xanh ngọc", "cellphone": "Điện thoại di động",
+    "black_clothing": "Trang phục đen", "pupils": "Đồng tử", "head_tilt": "Nghiêng đầu",
+    "bent_over": "Cúi gập người", "chest_tuft": "Chùm lông ngực", "blush_stickers": "Hình dán má hồng",
+    "female_anthro": "Nhân vật nữ nhân hóa", "clenched_teeth": "Nghiến răng", "fire": "Lửa",
+    "dutch_angle": "Góc nghiêng kiểu Hà Lan", "partially_clothed": "Mặc quần áo một phần",
+    "3_toes": "Ba ngón chân", "ring": "Nhẫn", "leaf": "Lá cây", "sandals": "Dép xăng đan",
+    "holding_food": "Cầm thức ăn", "game_asset": "Tài nguyên trò chơi", "cat_girl": "Cô gái mèo",
+    "topless": "Để ngực trần", "equine_penis": "Dương vật ngựa", "black_bikini": "Bikini đen",
+    "zettai_ryouiki": "Khoảng hở giữa tất cao đùi và váy", "skindentation": "Vết hằn trên da",
+    "highleg": "Cắt cao ở hông", "inner_ear_fluff": "Lông tơ trong tai", "eyeshadow": "Phấn mắt",
+    "pubes": "Lông mu", "colored": "Có màu", "nipple_piercing": "Khuyên núm vú",
+    "kneehighs": "Tất cao đến gối", "thick_eyebrows": "Lông mày rậm", "cum_on_body": "Tinh dịch trên cơ thể",
+    "swimwear": "Đồ bơi", "two_tone_fur": "Lông hai màu", "biceps": "Cơ nhị đầu",
+    "presenting_hindquarters": "Đưa phần thân sau ra phía trước",
+})
+# Chỉ ghép nhãn từ các từ thông dụng, rõ nghĩa và cấu trúc tag quen thuộc.
+_TAG_VI_COLORS = {
     "black": "đen", "white": "trắng", "blue": "xanh dương", "green": "xanh lá",
     "red": "đỏ", "yellow": "vàng", "orange": "cam", "pink": "hồng",
     "purple": "tím", "brown": "nâu", "grey": "xám", "gray": "xám",
     "silver": "bạc", "gold": "vàng kim",
-}.items():
-    for _part, _vi_part in {"hair": "Tóc", "eyes": "Mắt", "background": "Nền",
-                            "dress": "Váy", "shirt": "Áo", "skirt": "Chân váy"}.items():
+}
+_TAG_VI_WORDS = {
+    **_TAG_VI_COLORS,
+    "long": "dài", "short": "ngắn", "medium": "vừa", "very": "rất",
+    "small": "nhỏ", "big": "to", "large": "lớn", "huge": "khổng lồ",
+    "thick": "dày", "thin": "mỏng", "curly": "xoăn", "wavy": "gợn sóng",
+    "straight": "thẳng", "messy": "rối", "braided": "tết", "fluffy": "bồng bềnh",
+    "spiky": "dựng", "pointy": "nhọn", "round": "tròn", "wide": "rộng",
+    "narrow": "hẹp", "open": "mở", "closed": "khép", "light": "nhạt",
+    "dark": "sẫm", "bright": "sáng", "pale": "nhạt", "multicolored": "nhiều màu",
+    "animal": "động vật", "human": "người", "cat": "mèo", "dog": "chó",
+    "fox": "cáo", "wolf": "sói", "rabbit": "thỏ", "bird": "chim",
+    "horse": "ngựa", "dragon": "rồng", "mouse": "chuột", "deer": "nai",
+    "tiger": "hổ", "lion": "sư tử", "bear": "gấu", "raccoon": "gấu mèo",
+}
+_TAG_VI_COMPOSITE_HEADS = {
+    "hair": "Tóc", "eyes": "Mắt", "background": "Nền", "skin": "Da",
+    "dress": "Váy", "shirt": "Áo sơ mi", "skirt": "Chân váy", "sleeves": "Tay áo",
+    "gloves": "Găng tay", "boots": "Bốt", "shoes": "Giày", "socks": "Tất",
+    "stockings": "Bít tất", "ears": "Tai", "tail": "Đuôi", "wings": "Cánh",
+    "horns": "Sừng", "breasts": "Ngực", "hands": "Bàn tay", "feet": "Bàn chân",
+    "fingers": "Ngón tay", "toes": "Ngón chân", "arms": "Cánh tay", "legs": "Chân",
+    "thighs": "Đùi", "mouth": "Miệng", "face": "Khuôn mặt", "teeth": "Răng",
+    "tongue": "Lưỡi", "glasses": "Kính", "hat": "Mũ", "jacket": "Áo khoác",
+    "coat": "Áo khoác", "pants": "Quần", "shorts": "Quần short", "body": "Cơ thể",
+    "fur": "Lông", "panties": "Quần lót", "pantyhose": "Quần tất",
+    "thighhighs": "Tất cao đùi", "nose": "Mũi", "bow": "Nơ",
+    "ribbon": "Ruy băng", "necklace": "Vòng cổ", "flower": "Hoa", "flowers": "Hoa",
+    "sky": "Bầu trời", "cloud": "Mây", "clouds": "Mây",
+}
+_TAG_VI_NAME_CATEGORIES = frozenset({"1", "3", "4", "8", "9", "10", "11", "15"})
+_TAG_VI_CATEGORY_FALLBACKS = {
+    "1": "Họa sĩ", "3": "Tác phẩm", "4": "Nhân vật", "5": "Metadata",
+    "7": "Chưa có bản dịch", "8": "Họa sĩ", "9": "Người đóng góp",
+    "10": "Tác phẩm", "11": "Nhân vật", "12": "Loài", "14": "Metadata",
+    "15": "Lore", "0": "Chưa có bản dịch",
+}
+TAG_VI_TRANSLATION_FALLBACK = "Chưa có bản dịch"
+
+# Sinh các tổ hợp màu + danh từ quen thuộc mà không cần dịch máy từng dòng.
+for _color, _vi_color in _TAG_VI_COLORS.items():
+    for _part, _vi_part in {
+        "hair": "Tóc", "eyes": "Mắt", "background": "Nền", "dress": "Váy",
+        "shirt": "Áo", "skirt": "Chân váy", "body": "Cơ thể", "fur": "Lông",
+        "tail": "Đuôi", "gloves": "Găng tay", "panties": "Quần lót",
+        "pantyhose": "Quần tất", "thighhighs": "Tất cao đùi", "nose": "Mũi",
+    }.items():
         TAG_VI_LABELS.setdefault(f"{_color}_{_part}", f"{_vi_part} {_vi_color}")
 TAG_VI_LABELS["blonde_hair"] = "Tóc vàng"
 
 
-def csv_tag_caption(name, category):
-    """Do not invent translations for proper names or unknown vocabulary."""
+def _compose_vietnamese_tag_label(name):
+    """Translate only a known modifier sequence followed by a known tag noun."""
+    parts = re.split(r"[_-]+", name.casefold())
+    if len(parts) < 2 or len(parts) > 7 or any(not part.isalpha() for part in parts):
+        return None
+    for size in range(min(2, len(parts) - 1), 0, -1):
+        head_key = "_".join(parts[-size:])
+        head = _TAG_VI_COMPOSITE_HEADS.get(head_key)
+        modifiers = parts[:-size]
+        if not head or not modifiers or any(part not in _TAG_VI_WORDS for part in modifiers):
+            continue
+        animals = [part for part in modifiers if part in {"animal", "cat", "dog", "fox", "wolf", "rabbit", "bird", "horse", "dragon", "mouse", "deer", "tiger", "lion", "bear", "raccoon"}]
+        colors = [part for part in modifiers if part in _TAG_VI_COLORS]
+        shades = [part for part in modifiers if part in {"light", "dark", "bright", "pale"}]
+        descriptors = [part for part in modifiers if part not in animals and part not in colors and part not in shades]
+        translated = [*(_TAG_VI_WORDS[part] for part in animals), *(_TAG_VI_WORDS[part] for part in descriptors)]
+        translated_colors = [_TAG_VI_COLORS[part] for part in colors]
+        if translated_colors and shades:
+            translated_colors.extend(_TAG_VI_WORDS[part] for part in shades)
+        elif shades:
+            translated.extend(_TAG_VI_WORDS[part] for part in shades)
+        if translated_colors:
+            color_phrase = " ".join(translated_colors)
+            if head_key in {"hair", "background", "skin", "dress", "shirt", "skirt", "gloves", "boots", "shoes"}:
+                color_phrase = "màu " + color_phrase
+            translated.append(color_phrase)
+        return f"{head} {' '.join(translated)}".strip()
+    return None
+
+
+def vietnamese_tag_label(name, category):
+    """Return a Vietnamese label or a transparent category/translation fallback."""
+    fallback = _TAG_VI_CATEGORY_FALLBACKS.get(category, TAG_VI_TRANSLATION_FALLBACK)
+    # Artist, work, character, uploader and lore names are proper names: keep them.
+    if category in _TAG_VI_NAME_CATEGORIES:
+        return fallback
     translated = TAG_VI_LABELS.get(name)
     if translated:
-        return f"{translated} — {name}"
-    kind = {"1": "Họa sĩ", "8": "Họa sĩ", "3": "Tác phẩm", "10": "Tác phẩm",
-            "4": "Nhân vật", "11": "Nhân vật", "9": "Người đóng góp"}.get(category)
-    return f"{kind or 'Chưa có bản dịch'} — {name}"
+        return translated
+    if re.fullmatch(r"(?:19|20)\d{2}", name):
+        return f"Năm {name}"
+    if re.fullmatch(r"\d{1,2}:\d{1,2}", name):
+        return f"Tỷ lệ {name}"
+    count_match = re.fullmatch(r"(\d+)(girls?|boys?|people)", name)
+    if count_match:
+        number, group = count_match.groups()
+        people = "nhân vật nữ" if group.startswith("girl") else "nhân vật nam" if group.startswith("boy") else "người"
+        return f"{number} {people}"
+    translated = _compose_vietnamese_tag_label(name)
+    return translated or fallback
+
+
+def _is_translated_tag_label(label, category):
+    return bool(label and label != _TAG_VI_CATEGORY_FALLBACKS.get(category, TAG_VI_TRANSLATION_FALLBACK))
+
+
+def csv_tag_caption(name, category, vietnamese_label=None):
+    """Display a Vietnamese gloss beside the canonical English tag."""
+    label = vietnamese_label or vietnamese_tag_label(name, category)
+    return f"{label} — {name}"
 
 
 _TAG_ROWS = None
 _TAG_LOCK = threading.Lock()
+_TAG_LABEL_WORD_INDEX_ROWS = None
+_TAG_LABEL_WORD_INDEX = None
+_TAG_LABEL_INDEX_LOCK = threading.Lock()
 TAG_PAGE_SIZE = 60
+# Search-only wording helps natural Vietnamese prompt fragments find canonical tags.
+# These synonyms are never displayed or inserted into the model prompt.
+TAG_VI_SEARCH_SYNONYMS = {
+    "1girl": "girl woman female cô gái con gái nữ nhân vật nữ",
+    "2girls": "girls hai cô gái nhiều cô gái",
+    "3girls": "ba cô gái nhiều cô gái",
+    "4girls": "bốn cô gái nhiều cô gái",
+    "multiple_girls": "nhiều cô gái nhiều nhân vật nữ",
+    "1boy": "boy man male cậu bé chàng trai nam nhân vật nam",
+    "2boys": "hai cậu bé nhiều chàng trai",
+    "3boys": "ba cậu bé nhiều chàng trai",
+    "4boys": "bốn cậu bé nhiều chàng trai",
+    "multiple_boys": "nhiều cậu bé nhiều nhân vật nam",
+    "female": "female woman women phụ nữ nữ giới",
+    "male": "male man men đàn ông nam giới",
+    "long_hair": "mái tóc dài",
+    "short_hair": "mái tóc ngắn",
+    "black_hair": "mái tóc đen",
+    "pink_hair": "mái tóc hồng",
+    "blue_hair": "mái tóc xanh dương",
+    "looking_at_viewer": "nhìn vào người xem",
+}
+_TAG_QUERY_STOPWORDS = frozenset({
+    "a", "an", "and", "are", "as", "at", "be", "by", "for", "from", "in",
+    "into", "is", "of", "on", "or", "the", "to", "with", "without", "wearing",
+    "mot", "co", "nhan", "vat", "nguoi", "va", "voi", "cua", "dang", "duoc", "la",
+    "nhieu", "nhung", "cac", "cho", "tai", "trong", "tren", "duoi", "phia", "mau",
+})
+_TAG_QUERY_SINGLETONS = frozenset({
+    "girl", "girls", "boy", "boys", "woman", "women", "man", "men",
+    "female", "male", "gai", "trai", "nu", "nam",
+})
 
 
 def normalize_csv_tag(value):
-    return re.sub(r"[_\s]+", " ", value.strip().lower())
+    """Normalize English/Vietnamese spelling, accents, hyphens and underscores."""
+    value = unicodedata.normalize("NFKD", str(value or "").casefold())
+    value = "".join(char for char in value if not unicodedata.combining(char))
+    return re.sub(r"[\s_-]+", " ", value).strip()
+
+
+def _normalize_tag_text_preserving_accents(value):
+    """Normalize separators/case but keep Vietnamese marks to disambiguate captions."""
+    value = unicodedata.normalize("NFC", str(value or "").casefold())
+    return re.sub(r"[\s_-]+", " ", value).strip()
+
+
+def _tag_query_pattern(query, allow_partial_last=False, preserve_accents=False):
+    """Match whole words/phrases, optionally treating the last typed word as a prefix."""
+    normalize = (
+        _normalize_tag_text_preserving_accents if preserve_accents else normalize_csv_tag
+    )
+    words = normalize(query).split()
+    if not words:
+        return None
+    escaped = [re.escape(word) for word in words]
+    if allow_partial_last:
+        escaped[-1] += r"\w*"
+    return re.compile(r"(?<!\w)" + r"\s+".join(escaped) + r"(?!\w)")
+
+
+def _tag_field_pattern(query):
+    """Match an exact comma-delimited name/alias in the normalized search index."""
+    return re.compile(r"(?:^|,)\s*" + re.escape(query) + r"\s*(?:,|$)")
+
+
+def _caption_search_matches(rows, raw_query, pattern):
+    """Use a cached caption-word index for the shared catalog; preserve query accents."""
+    query_words = re.findall(r"\w+", _normalize_tag_text_preserving_accents(raw_query))
+    candidates = rows
+    if query_words and rows is _TAG_ROWS:
+        global _TAG_LABEL_WORD_INDEX_ROWS, _TAG_LABEL_WORD_INDEX
+        with _TAG_LABEL_INDEX_LOCK:
+            if _TAG_LABEL_WORD_INDEX_ROWS is not rows:
+                word_index = {}
+                for row in rows:
+                    label = _normalize_tag_text_preserving_accents(row[5])
+                    for word in set(re.findall(r"\w+", label)):
+                        word_index.setdefault(word, []).append(row)
+                _TAG_LABEL_WORD_INDEX = word_index
+                _TAG_LABEL_WORD_INDEX_ROWS = rows
+            candidates = _TAG_LABEL_WORD_INDEX.get(query_words[0], ())
+    return [
+        row for row in candidates
+        if pattern.search(_normalize_tag_text_preserving_accents(row[5]))
+    ]
 
 
 def parse_tag_csv(text):
@@ -2786,13 +3470,18 @@ def parse_tag_csv(text):
     patterns = [(name, re.compile(pattern)) for name, pattern in TAG_THEMES.items()]
     rows = []
     for fields in csv.reader(io.StringIO(text)):
-        if len(fields) != 4:
+        if len(fields) not in (4, 5):
             continue
-        name, category, count, aliases = fields
+        name, category, count, aliases = fields[:4]
         if not name or category not in TAG_CATEGORIES or not count.isdigit():
             continue
+        supplied_label = fields[4].strip() if len(fields) == 5 else ""
+        label = supplied_label or vietnamese_tag_label(name, category)
+        search_label = label if _is_translated_tag_label(label, category) else ""
         themes = tuple(label for label, pattern in patterns if pattern.search(name))
-        rows.append((name, category, int(count), normalize_csv_tag(name + "," + aliases + "," + TAG_VI_LABELS.get(name, "")), themes))
+        search_synonyms = TAG_VI_SEARCH_SYNONYMS.get(name, "")
+        search_index = normalize_csv_tag(",".join((name, aliases, search_label, search_synonyms)))
+        rows.append((name, category, int(count), search_index, themes, label))
     if not rows:
         raise ValueError("CSV không chứa thẻ hợp lệ.")
     return tuple(rows)
@@ -2807,18 +3496,19 @@ def load_csv_tags():
     with _TAG_LOCK:
         if _TAG_ROWS is not None:
             return _TAG_ROWS
+        accepted_hashes = {TAG_CSV_SHA256, TAG_CSV_LEGACY_SHA256}
         candidates = [Path(TAG_CSV_NAME), Path("/content") / TAG_CSV_NAME]
         data = None
         for candidate in candidates:
-            if candidate.is_file() and candidate.stat().st_size <= 12_000_000:
+            if candidate.is_file() and candidate.stat().st_size <= TAG_CSV_MAX_BYTES:
                 content = candidate.read_bytes()
-                if hashlib.sha256(content).hexdigest() == TAG_CSV_SHA256:
+                if hashlib.sha256(content).hexdigest() in accepted_hashes:
                     data = content
                     break
         if data is None:
             with urllib.request.urlopen(TAG_CSV_URL, timeout=45) as response:
-                data = response.read(12_000_001)
-            if len(data) > 12_000_000 or hashlib.sha256(data).hexdigest() != TAG_CSV_SHA256:
+                data = response.read(TAG_CSV_MAX_BYTES + 1)
+            if len(data) > TAG_CSV_MAX_BYTES or hashlib.sha256(data).hexdigest() not in accepted_hashes:
                 raise ValueError("CSV tải về không khớp SHA-256 đã xác minh.")
         rows = parse_tag_csv(data.decode("utf-8-sig"))
         if Path("/content").is_dir():
@@ -2827,13 +3517,135 @@ def load_csv_tags():
         return rows
 
 
-def search_csv_tags(rows, query="", category="", theme="", sort="Phổ biến nhất", page=1):
-    query = normalize_csv_tag(query or "")
-    found = [row for row in rows if
-             (not query or query in row[3]) and
-             (not category or row[1] == category) and
-             (not theme or (not row[4] if theme == "Chưa phân nhóm" else theme in row[4]))]
-    found.sort(key=(lambda row: row[0]) if sort == "Tên A–Z" else (lambda row: (-row[2], row[0])))
+def search_csv_tags(
+    rows, query="", category="", theme="", sort="Phổ biến nhất", page=1,
+    allow_partial_last=False,
+):
+    # Mỗi cụm cách nhau bằng dấu phẩy/chấm phẩy/xuống dòng được tìm độc lập.
+    raw_queries = [
+        part.strip() for part in re.split(r"[,;\n]+", str(query or ""))
+        if normalize_csv_tag(part)
+    ]
+    query_specs = []
+    for query_id, raw_query in enumerate(raw_queries):
+        normalized = normalize_csv_tag(raw_query)
+        query_specs.append({
+            "id": query_id,
+            "raw": raw_query,
+            "normalized": normalized,
+            "exact_field": _tag_field_pattern(normalized),
+            "phrase": _tag_query_pattern(normalized),
+            "partial": (
+                _tag_query_pattern(normalized, allow_partial_last=True)
+                if allow_partial_last else None
+            ),
+            "caption": (
+                _tag_query_pattern(raw_query, preserve_accents=True)
+                if (
+                    _normalize_tag_text_preserving_accents(raw_query) != normalized
+                    and len(normalized.split()) <= 3
+                )
+                else None
+            ),
+        })
+
+    def passes_filters(row):
+        return (
+            (not category or row[1] == category)
+            and (not theme or (not row[4] if theme == "Chưa phân nhóm" else theme in row[4]))
+        )
+
+    # Khi cụm ngắn có dấu, ưu tiên nhãn Việt khớp chính tả; tránh va chạm
+    # sau khi bỏ dấu như “đỏ”/“độ”. Những cụm câu dài dùng nhánh tìm kiếm thường.
+    caption_matches = {}
+    for spec in query_specs:
+        if spec["caption"] is None:
+            continue
+        matches = {
+            (row[0], row[1])
+            for row in _caption_search_matches(rows, spec["raw"], spec["caption"])
+            if passes_filters(row)
+        }
+        if matches:
+            caption_matches[spec["id"]] = matches
+
+    found_by_key = {}
+    match_scores = {}
+    matched_queries = set()
+    for row in rows:
+        if not passes_filters(row):
+            continue
+        key = (row[0], row[1])
+        if not query_specs:
+            found_by_key[key] = row
+            continue
+        score = 0
+        for spec in query_specs:
+            raw_caption_hits = caption_matches.get(spec["id"])
+            if raw_caption_hits is not None:
+                query_score = 4 if key in raw_caption_hits else 0
+            elif spec["exact_field"].search(row[3]):
+                query_score = 3
+            elif spec["phrase"].search(row[3]):
+                query_score = 2
+            elif spec["partial"] and spec["partial"].search(row[3]):
+                query_score = 1
+            else:
+                query_score = 0
+            if query_score:
+                matched_queries.add(spec["id"])
+                score = max(score, query_score)
+        if score:
+            found_by_key[key] = row
+            match_scores[key] = score
+
+    # Nếu cả cụm tự nhiên không khớp nguyên văn, tìm các cụm con có nghĩa riêng.
+    # Ví dụ “một cô gái tóc dài” khớp “1girl” và “long_hair”.
+    missing_queries = [
+        spec["normalized"] for spec in query_specs if spec["id"] not in matched_queries
+    ]
+    fallback_terms = []
+    for needle in missing_queries:
+        phrase_words = [
+            term for term in needle.split()
+            if term not in _TAG_QUERY_STOPWORDS or term == "co"
+        ]
+        for width in (3, 2):
+            fallback_terms.extend(
+                " ".join(phrase_words[index:index + width])
+                for index in range(len(phrase_words) - width + 1)
+            )
+        fallback_terms.extend(
+            term for term in phrase_words if term in _TAG_QUERY_SINGLETONS
+        )
+    fallback_patterns = [
+        pattern for term in dict.fromkeys(fallback_terms)
+        if (pattern := _tag_query_pattern(term)) is not None
+    ]
+    if fallback_patterns:
+        for row in rows:
+            key = (row[0], row[1])
+            if key in found_by_key or not passes_filters(row):
+                continue
+            if any(pattern.search(row[3]) for pattern in fallback_patterns):
+                found_by_key[key] = row
+                match_scores[key] = 0.5
+
+    found = list(found_by_key.values())
+    if sort == "Khớp nhất":
+        # Exact catalog entries outrank words that merely occur within another
+        # tag or alias. For a very short exact query, hide weaker prefix hits.
+        best_score = max(match_scores.values(), default=0)
+        short_query = max((len(spec["normalized"]) for spec in query_specs), default=0) <= 3
+        if best_score >= 3 and short_query:
+            found = [row for row in found if match_scores.get((row[0], row[1])) == best_score]
+        found.sort(key=lambda row: (
+            -match_scores.get((row[0], row[1]), 0), -row[2], row[0]
+        ))
+    elif sort == "Tên A–Z":
+        found.sort(key=lambda row: row[0])
+    else:
+        found.sort(key=lambda row: (-row[2], row[0]))
     pages = max(1, math.ceil(len(found) / TAG_PAGE_SIZE))
     page = min(pages, max(1, int(page or 1)))
     return found[(page - 1) * TAG_PAGE_SIZE:page * TAG_PAGE_SIZE], len(found), page, pages
@@ -2845,7 +3657,7 @@ def browse_csv_tags(query, category, theme, sort, page):
     try:
         rows = load_csv_tags()
         found, total, current, pages = search_csv_tags(rows, query, category, theme, sort, page)
-        choices = [(f"{csv_tag_caption(row[0], row[1])} · {TAG_CATEGORIES[row[1]]} · {row[2]:,} lượt", row[0]) for row in found]
+        choices = [(f"{csv_tag_caption(row[0], row[1], row[5])} · {TAG_CATEGORIES[row[1]]} · {row[2]:,} lượt", row[0]) for row in found]
         return gr.update(choices=choices, value=[]), current, (
             f"**{total:,} thẻ phù hợp / {len(rows):,} thẻ** · Trang {current}/{pages}. "
             "Chọn thẻ rồi nhấn Thêm. Đổi bộ lọc và nhấn Tìm để cập nhật; lựa chọn cũ sẽ được xóa."
@@ -2875,54 +3687,550 @@ def apply_csv_tags(positive, negative, selected, destination):
     return positive, negative, f"Đã thêm {len(additions)} thẻ vào {destination}; bỏ qua thẻ trùng. Bạn có thể sửa/xóa trực tiếp trong ô prompt."
 
 
+PROMPT_TAG_SUGGESTION_LIMIT = 16
+PROMPT_TAG_SUGGESTION_MIN_CHARS = 2
+PROMPT_TAG_SUGGESTION_CACHE_LIMIT = 128
+PROMPT_TAG_WEIGHT_STEP = 0.1
+PROMPT_TAG_WEIGHT_RANGE = (0.1, 2.0)
+PROMPT_TAG_WEIGHT_SELECTION_START = "\ue000"
+PROMPT_TAG_WEIGHT_SELECTION_END = "\ue001"
+PROMPT_TAG_WEIGHT_SELECTION_JS = r"""(promptText) => {
+    const field = document.querySelector("#studio-prompt textarea");
+    if (!field || typeof promptText !== "string") return [promptText];
+
+    // Dấu phẩy bên trong nhóm "(a, b:1.1)" không được tách cụm; cùng quy tắc với
+    // _prompt_weight_boundary() trong Python nên hai bên luôn chọn một phạm vi.
+    const separators = [];
+    let depth = 0;
+    for (let i = 0; i < promptText.length; i++) {
+        const ch = promptText[i];
+        if (ch === "(") depth += 1;
+        else if (ch === ")") depth = Math.max(0, depth - 1);
+        else if (depth === 0 && (ch === "," || ch === ";" || ch === "\n")) separators.push(i);
+    }
+    const phraseStart = (position) => {
+        let found = -1;
+        for (const index of separators) {
+            if (index < position) found = index;
+            else break;
+        }
+        return found + 1;
+    };
+    const phraseEnd = (position) => {
+        for (const index of separators) if (index >= position) return index;
+        return promptText.length;
+    };
+
+    let start;
+    let end;
+    if (field !== document.activeElement) {
+        // Bấm nút +/-: chỉnh cụm cuối prompt, nguyên cả một nhóm có dấu phẩy.
+        start = phraseStart(promptText.length);
+        end = promptText.length;
+    } else {
+        // Phím tắt: giữ đoạn đang bôi đen, nếu không thì lấy trọn tag quanh con trỏ.
+        start = field.selectionStart;
+        end = field.selectionEnd;
+        if (start === end) {
+            start = phraseStart(start);
+            end = phraseEnd(field.selectionStart);
+        }
+    }
+
+    while (start < end && /\s/.test(promptText[start])) start += 1;
+    while (end > start && /\s/.test(promptText[end - 1])) end -= 1;
+    if (start === end) return [promptText];
+
+    return [
+        promptText.slice(0, start) + "\uE000" +
+        promptText.slice(start, end) + "\uE001" +
+        promptText.slice(end)
+    ];
+}"""
+PROMPT_TAG_WEIGHT_SHORTCUT_JS = r"""() => {
+    const attachShortcut = () => {
+        const field = document.querySelector("#studio-prompt textarea");
+        if (!field || field.dataset.waiWeightShortcuts === "ready") return;
+        field.dataset.waiWeightShortcuts = "ready";
+        field.addEventListener("keydown", (event) => {
+            if (!event.ctrlKey || !["ArrowUp", "ArrowDown"].includes(event.key)) return;
+            event.preventDefault();
+            event.stopPropagation();
+            const id = event.key === "ArrowUp" ? "prompt-weight-up" : "prompt-weight-down";
+            const element = document.getElementById(id);
+            const button = element?.matches("button") ? element : element?.querySelector("button");
+            button?.click();
+        });
+    };
+
+    attachShortcut();
+    const observer = new MutationObserver(attachShortcut);
+    observer.observe(document.body, { childList: true, subtree: true });
+}"""
+PROMPT_TAG_CATEGORY_MARKS = {
+    "0": "[G]", "1": "[A]", "3": "[©]", "4": "[C]", "5": "[M]",
+    "7": "<G>", "8": "<A>", "9": "<U>", "10": "<©>",
+    "11": "<C>", "12": "<S>", "14": "<M>", "15": "<L>",
+}
+_PROMPT_TAG_SUGGESTION_CACHE = {}
+_PROMPT_TAG_SUGGESTION_LOCK = threading.Lock()
+
+
+def prompt_tag_fragment(prompt_text):
+    """Return the final comma/semicolon/newline-delimited phrase being written."""
+    if not isinstance(prompt_text, str):
+        return ""
+    return re.split(r"[,;\n]+", prompt_text)[-1].strip()
+
+
+def _prompt_tag_search_mode(fragment):
+    """Parse SAA-style wildcard and artist-filter prefixes from the final phrase."""
+    phrase = str(fragment or "").strip()
+    if phrase.startswith("@"):
+        return "artist", phrase[1:].strip()
+    if phrase.startswith("*"):
+        if len(phrase) > 1 and phrase.endswith("*"):
+            return "contains", phrase[1:-1].strip()
+        return "suffix", phrase[1:].strip()
+    return "catalog", phrase
+
+
+def prompt_tag_choice(row):
+    """Build a compact marked English option, preserving the CSV canonical value."""
+    mark = PROMPT_TAG_CATEGORY_MARKS.get(row[1], f"[{row[1]}]")
+    return f"{mark} {row[0].replace('_', ' ')}", row[0]
+
+
+def prime_prompt_tag_catalog():
+    """Download/verify and parse the suggestion CSV as the UI starts."""
+    print("⏳ Đang nạp và xác minh CSV kho gợi ý tag...")
+    try:
+        rows = load_csv_tags()
+    except Exception as exc:
+        message = (
+            f"⚠️ Chưa nạp được CSV kho gợi ý ({type(exc).__name__}); "
+            "Studio sẽ thử lại khi bạn gõ hoặc tìm trong tab Kho thẻ. "
+            "Tạo ảnh bình thường vẫn hoạt động."
+        )
+        print(message)
+        return message
+    message = f"✅ CSV kho gợi ý đã sẵn sàng: {len(rows):,} tag, đã kiểm SHA-256."
+    print(message)
+    return message
+
+
+def _prompt_tag_suggestion_results(rows, fragment):
+    """Search the verified catalog and memoize results across keystrokes."""
+    mode, query = _prompt_tag_search_mode(fragment)
+    cache_key = (
+        id(rows), mode,
+        _normalize_tag_text_preserving_accents(query), normalize_csv_tag(query),
+    )
+    with _PROMPT_TAG_SUGGESTION_LOCK:
+        cached = _PROMPT_TAG_SUGGESTION_CACHE.get(cache_key)
+        if cached is not None and cached[0] is rows:
+            return cached[1], cached[2]
+
+    normalized_query = normalize_csv_tag(query)
+    if mode in ("contains", "suffix"):
+        found = []
+        for row in rows:
+            name = normalize_csv_tag(row[0])
+            matches = normalized_query in name if mode == "contains" else name.endswith(normalized_query)
+            if normalized_query and matches:
+                found.append(row)
+        found.sort(key=lambda row: (-row[2], row[0]))
+        total = len(found)
+    elif mode == "artist":
+        # `@` is a search filter, not part of the inserted WAI-Illustrious tag.
+        pattern = _tag_query_pattern(query)
+        found = [
+            row for row in rows
+            if row[1] in {"1", "8"} and pattern and pattern.search(row[3])
+        ]
+        found.sort(key=lambda row: (-row[2], row[0]))
+        total = len(found)
+    else:
+        preserved = _normalize_tag_text_preserving_accents(query)
+        if preserved != normalized_query:
+            pattern = _tag_query_pattern(query, preserve_accents=True)
+            found = _caption_search_matches(rows, query, pattern)
+            found.sort(key=lambda row: (-row[2], row[0]))
+            total = len(found)
+        else:
+            found, total, _, _ = search_csv_tags(
+                rows, query, sort="Khớp nhất", page=1
+            )
+
+    result = (rows, tuple(found), total)
+    with _PROMPT_TAG_SUGGESTION_LOCK:
+        cached = _PROMPT_TAG_SUGGESTION_CACHE.get(cache_key)
+        if cached is not None and cached[0] is rows:
+            return cached[1], cached[2]
+        if len(_PROMPT_TAG_SUGGESTION_CACHE) >= PROMPT_TAG_SUGGESTION_CACHE_LIMIT:
+            _PROMPT_TAG_SUGGESTION_CACHE.clear()
+        _PROMPT_TAG_SUGGESTION_CACHE[cache_key] = result
+    return result[1], result[2]
+
+
+def _replace_prompt_tag_fragment(text, replacement):
+    """Replace only the last comma/semicolon/newline-delimited prompt phrase."""
+    last_separator = max(text.rfind(","), text.rfind(";"), text.rfind("\n"))
+    prefix = text[:last_separator + 1]
+    tail = text[last_separator + 1:]
+    leading = tail[:len(tail) - len(tail.lstrip())]
+    trailing = tail[len(tail.rstrip()):]
+    return prefix + leading + replacement + trailing
+
+
+def get_keyword_tag_suggestions(
+    prompt_text, rows=None, limit=PROMPT_TAG_SUGGESTION_LIMIT
+):
+    """Search the preloaded CSV and return English tags with Danbooru/e621 marks."""
+    fragment = prompt_tag_fragment(prompt_text)
+    mode, query = _prompt_tag_search_mode(fragment)
+    normalized = normalize_csv_tag(query)
+    if len(normalized) < PROMPT_TAG_SUGGESTION_MIN_CHARS:
+        if mode == "artist":
+            return [], "Gõ `@` rồi ít nhất 2 ký tự để chỉ tìm tag họa sĩ Danbooru/e621."
+        if mode in ("contains", "suffix"):
+            return [], "Dùng `*đuôi` để tìm tag kết thúc bằng cụm đó hoặc `*giữa*` để tìm bên trong tag."
+        return [], "Gõ ít nhất 2 ký tự ở cuối prompt (ví dụ `mắt` hoặc `eyes`) để tìm trong CSV."
+
+    rows = load_csv_tags() if rows is None else rows
+    found, total = _prompt_tag_suggestion_results(rows, fragment)
+    choices = [prompt_tag_choice(row) for row in found[:max(1, int(limit))]]
+    if not total:
+        if mode == "artist":
+            return [], f"CSV chưa tìm thấy tag họa sĩ cho `{fragment}`."
+        return [], f"CSV chưa tìm thấy tag cho `{fragment}`; thử từ khóa tiếng Việt hoặc English khác."
+    shown = len(choices)
+    more = f" trong {total:,} kết quả" if total > shown else ""
+    if mode == "artist":
+        detail = "`@` chỉ lọc họa sĩ Danbooru/e621; dấu `@` không được chèn vào prompt WAI."
+    elif mode == "suffix":
+        detail = "Tìm tag kết thúc bằng cụm nhập sau `*`."
+    elif mode == "contains":
+        detail = "Tìm tag có chứa cụm nằm giữa hai dấu `*`."
+    else:
+        detail = "Chọn một dòng để thay cụm từ khóa cuối prompt."
+    return choices, f"**{shown} tag từ CSV**{more} cho `{fragment}`. {detail}"
+
+
+def _prompt_weight_boundary(text):
+    """Split at the last top-level separator, keeping a `(a, b:1.1)` group whole.
+
+    Splitting only on commas would cut a weighted group in half, so separators
+    inside parentheses are ignored. The scan runs forward to stay correct even
+    when a bracket is left open while the user is still typing.
+    Returns ``(prefix, region)``.
+    """
+    depth = 0
+    split = -1
+    for index, char in enumerate(text):
+        if char == "(":
+            depth += 1
+        elif char == ")":
+            depth = max(0, depth - 1)
+        elif depth == 0 and char in ",;\n":
+            split = index
+    return text[:split + 1], text[split + 1:]
+
+
+def adjust_prompt_tag_weight(prompt_text, direction):
+    """Adjust the selected/caret tag, or the final phrase, in 0.1 increments.
+
+    The browser marks the current selection with the two private-use characters
+    ``PROMPT_TAG_WEIGHT_SELECTION_START/END`` before calling this function; those
+    markers are always stripped, including on the paths that change nothing.
+    """
+    raw = prompt_text if isinstance(prompt_text, str) else ""
+    start = raw.find(PROMPT_TAG_WEIGHT_SELECTION_START)
+    end = raw.find(PROMPT_TAG_WEIGHT_SELECTION_END, start + 1) if start >= 0 else -1
+    has_selection = start >= 0 and end > start
+    if has_selection:
+        before = raw[:start]
+        region = raw[start + 1:end]
+        after = raw[end + 1:]
+    else:
+        before = ""
+        region = ""
+        after = ""
+    # Marker-free text is what the prompt becomes when nothing can be adjusted.
+    text = (before + region + after) if has_selection else raw.replace(
+        PROMPT_TAG_WEIGHT_SELECTION_START, ""
+    ).replace(PROMPT_TAG_WEIGHT_SELECTION_END, "")
+
+    if direction not in (-1, 1):
+        return text, "Hướng chỉnh trọng số không hợp lệ."
+
+    if has_selection:
+        fragment = region.strip()
+    else:
+        before, region = _prompt_weight_boundary(text)
+        after = ""
+        fragment = region.strip()
+    if not fragment:
+        return text, "Đặt con trỏ trong một tag hoặc chọn cụm tag cần chỉnh trọng số."
+
+    # A weighted group is kept intact: "(long hair, blue_eyes:1.1)" is adjusted as
+    # a whole, the same way ComfyUI and WebUI wrap a selected fragment.
+    match = WEIGHT_RE.fullmatch(fragment)
+    tag = match.group("body") if match else fragment
+    current = float(match.group("weight")) if match else 1.0
+    low, high = PROMPT_TAG_WEIGHT_RANGE
+    updated_weight = round(min(high, max(low, current + direction * PROMPT_TAG_WEIGHT_STEP)), 1)
+    leading = region[:len(region) - len(region.lstrip())]
+    trailing = region[len(region.rstrip()):]
+    if updated_weight == current:
+        return text, (
+            f"Trọng số đã ở giới hạn {updated_weight:.1f} "
+            f"(dải cho phép {low:.1f}–{high:.1f})."
+        )
+    replacement = tag if updated_weight == 1.0 else f"({tag}:{updated_weight:.1f})"
+    updated = before + leading + replacement + trailing + after
+    verb = "tăng" if direction > 0 else "giảm"
+    scope = "đang chọn/con trỏ" if has_selection else "cuối prompt"
+    return updated, f"Đã {verb} trọng số tag {scope} lên `{updated_weight:.1f}`: `{replacement}`."
+
+
+def adjust_prompt_tag_weight_ui(prompt_text, direction):
+    """Gradio adapter for visible +/- weight controls."""
+    import gradio as gr
+
+    updated, message = adjust_prompt_tag_weight(prompt_text, direction)
+    return updated, message, gr.update(choices=[], value=None)
+
+
+def update_keyword_tag_suggestions(prompt_text):
+    """Gradio adapter for live suggestions from the preloaded CSV catalog."""
+    import gradio as gr
+
+    try:
+        choices, message = get_keyword_tag_suggestions(prompt_text)
+        return gr.update(choices=choices, value=None), message
+    except Exception as exc:
+        return gr.update(choices=[], value=None), (
+            f"Không đọc được CSV kho gợi ý ({type(exc).__name__}). Mở tab **🏷️ Kho thẻ** "
+            "để thử tải lại; bạn vẫn có thể viết prompt và tạo ảnh."
+        )
+
+
+def apply_keyword_tag_suggestion(prompt_text, selected, rows=None):
+    """Replace the final typed phrase with a selected tag from the CSV."""
+    text = prompt_text if isinstance(prompt_text, str) else ""
+    if not isinstance(selected, str) or not selected:
+        return text, "Chọn một tag tiếng Anh trong danh sách."
+
+    try:
+        choices, _ = get_keyword_tag_suggestions(text, rows=rows)
+    except Exception as exc:
+        return text, f"Không đọc được CSV kho gợi ý ({type(exc).__name__}); hãy thử lại."
+    allowed = {value for _, value in choices}
+    if selected not in allowed:
+        return text, "Lựa chọn không còn trong CSV; hãy gõ lại từ khóa để làm mới."
+
+    fragment = prompt_tag_fragment(text)
+    if normalize_csv_tag(fragment) == normalize_csv_tag(selected):
+        return text, f"`{selected}` đã là tag hiện tại."
+
+    updated = _replace_prompt_tag_fragment(text, selected)
+    return updated, f"Đã thay `{fragment}` bằng tag tiếng Anh `{selected}` từ CSV."
+
+
+def apply_keyword_tag_suggestion_ui(prompt_text, selected):
+    """Apply a selected CSV tag immediately and clear the old choices."""
+    import gradio as gr
+
+    updated, message = apply_keyword_tag_suggestion(prompt_text, selected)
+    return updated, message, gr.update(choices=[], value=None)
+
+
 def build_app(runtime):
     """Build Gradio Blocks without opening a public tunnel until launch cell runs."""
+    tag_catalog_status = prime_prompt_tag_catalog()
     import gradio as gr
     from PIL import Image
 
     css = """
-    #wai-studio {max-width: 1220px !important; margin: auto !important;}
-    #wai-studio .form {gap: 0.5rem;}
-    #wai-studio .block {border-radius: 10px;}
-    #wai-studio span[data-testid="block-label"], #wai-studio .label-text {font-size: 0.82rem;}
-    .studio-hero {display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px;
-        padding: 10px 16px; border-radius: 12px; color: #fff;
-        background: linear-gradient(118deg, #21182f, #382641 64%, #704065);
-        box-shadow: 0 6px 20px #140f2026;}
-    .studio-hero h1 {color: #fff !important; font-size: 1.12rem; font-weight: 700; margin: 0;}
-    .studio-hero p {color: #e4d2e1; font-size: 0.8rem; margin: 0;}
-    .studio-badge {font-size: 0.6rem; letter-spacing: 0.12rem; font-weight: bold; color: #f4b3dc;}
-    .studio-warn {flex-basis: 100%; font-size: 0.74rem; color: #f2d5e9;
-        border-top: 1px solid #ffffff2b; padding-top: 5px; margin-top: 2px;}
-    .studio-hint, .studio-hint p {font-size: 0.74rem !important; line-height: 1.35;
-        color: #7a7386; margin: 0 !important;}
-    .studio-hires {border: 1px solid #b9a3e0; border-radius: 10px; background: #f7f3fd;
-        padding: 6px 10px;}
-    /* Keep both tab bars on one horizontal, touch-scrollable row. */
+    #wai-studio {
+        max-width: 1480px !important;
+        margin: 0 auto !important;
+        padding: 16px clamp(10px, 2vw, 24px) 30px !important;
+        --studio-accent: #6c4be8;
+        --studio-accent-dark: #4733ad;
+        --studio-ink: #25243a;
+        --studio-muted: #77758c;
+        --studio-border: #e4e2ef;
+        --studio-surface: #ffffff;
+        --studio-surface-soft: #f8f7fc;
+    }
+    #wai-studio .form {gap: 0.65rem;}
+    #wai-studio .block {border-radius: 12px;}
+    #wai-studio span[data-testid="block-label"], #wai-studio .label-text {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: var(--studio-ink);
+    }
+    #wai-studio .row {gap: 0.7rem;}
+    .studio-hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 14px 24px;
+        position: relative;
+        overflow: hidden;
+        padding: 20px 24px;
+        margin-bottom: 14px;
+        border: 1px solid #382c68;
+        border-radius: 18px;
+        color: #fff;
+        background:
+            radial-gradient(ellipse at 85% 0%, #7f63ea 0%, transparent 38%),
+            linear-gradient(118deg, #19172a 0%, #30234f 58%, #4b2861 100%);
+        box-shadow: 0 14px 32px #29204420;
+    }
+    .studio-brand {display: flex; align-items: center; gap: 14px; min-width: 0;}
+    .studio-mark {
+        display: grid; place-items: center; flex: 0 0 48px; width: 48px; height: 48px;
+        border: 1px solid #ffffff35; border-radius: 15px; color: #fff;
+        background: linear-gradient(145deg, #a68bff, #6547d7 68%, #d660a2);
+        font-size: 1.5rem; box-shadow: 0 8px 22px #100c233d;
+    }
+    .studio-brand-copy {min-width: 0;}
+    .studio-kicker {
+        color: #d5c8ff; font-size: 0.64rem; font-weight: 800;
+        letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 3px;
+    }
+    .studio-kicker span {color: #f2bedf; margin-left: 7px;}
+    .studio-hero h1 {
+        color: #fff !important; font-size: clamp(1.25rem, 2.2vw, 1.8rem);
+        line-height: 1.15; font-weight: 750; margin: 0;
+    }
+    .studio-hero p {color: #d6d0e8; font-size: 0.82rem; margin: 5px 0 0;}
+    .studio-meta {display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px;}
+    .studio-chip {
+        display: inline-flex; align-items: center; gap: 7px; white-space: nowrap;
+        padding: 8px 11px; border: 1px solid #ffffff2c; border-radius: 999px;
+        color: #f4f0ff; background: #ffffff12; font-size: 0.72rem; font-weight: 650;
+    }
+    .studio-chip-dot {
+        width: 7px; height: 7px; border-radius: 50%; background: #7de0ad;
+        box-shadow: 0 0 0 3px #7de0ad25;
+    }
+    .studio-privacy {
+        grid-column: 1 / -1; display: flex; align-items: flex-start; gap: 9px;
+        padding-top: 11px; border-top: 1px solid #ffffff25;
+        color: #e8e3f1; font-size: 0.76rem; line-height: 1.45;
+    }
+    .studio-privacy-mark {
+        display: grid; place-items: center; flex: 0 0 18px; height: 18px;
+        border-radius: 50%; color: #241832; background: #f0c66b; font-size: 0.7rem;
+        font-weight: 900;
+    }
+    .studio-privacy strong {color: #fff;}
+    .studio-panel {
+        min-width: 0 !important; padding: clamp(12px, 1.5vw, 20px) !important;
+        border: 1px solid var(--studio-border) !important;
+        border-radius: 18px !important; background: var(--studio-surface) !important;
+        box-shadow: 0 8px 24px #2920440b;
+    }
+    .studio-layout {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
+        align-items: start; gap: 16px !important;
+    }
+    .studio-layout > .studio-panel {width: auto !important; flex: initial !important;}
+    .studio-editor-column {gap: 0.72rem !important;}
+    .studio-output-column {gap: 0.8rem !important;}
+    .studio-section-heading, .studio-section-heading p {
+        color: var(--studio-ink) !important; font-size: 1rem !important;
+        font-weight: 750 !important; line-height: 1.25; margin: 0 !important;
+    }
+    .studio-section-subtitle, .studio-section-subtitle p {
+        color: var(--studio-muted) !important; font-size: 0.76rem !important;
+        line-height: 1.45; margin: 2px 0 0 !important;
+    }
+    .studio-hint, .studio-hint p {
+        color: var(--studio-muted) !important; font-size: 0.76rem !important;
+        line-height: 1.45; margin: 0 !important;
+    }
+    #wai-studio textarea {line-height: 1.55;}
+    #wai-studio input, #wai-studio textarea {border-radius: 10px !important;}
+    #wai-studio button {
+        min-height: 40px; border-radius: 10px; font-weight: 650;
+        transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+    }
+    #wai-studio button:hover {filter: brightness(1.025);}
+    #wai-studio button:active {transform: translateY(1px);}
+    #wai-studio button:focus-visible, #wai-studio input:focus-visible,
+    #wai-studio textarea:focus-visible {
+        outline: 3px solid #8a74ef70 !important; outline-offset: 2px;
+    }
+    #wai-studio .studio-primary button {
+        min-height: 46px; font-size: 0.9rem; font-weight: 750;
+        box-shadow: 0 6px 14px #6247d522;
+    }
+    .studio-hires, .studio-detailer, .studio-look {
+        padding: 14px; border: 1px solid var(--studio-border);
+        border-radius: 14px; background: var(--studio-surface-soft);
+    }
+    /* Navigation is compact, touch-scrollable and has one consistent active state. */
     #studio-workspace-tabs > .tab-nav, #studio-mode-tabs > .tab-nav,
     #studio-workspace-tabs > [role="tablist"], #studio-mode-tabs > [role="tablist"] {
-        display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 4px;
+        display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 5px;
         scrollbar-width: thin; -webkit-overflow-scrolling: touch;
-        padding: 4px 0 8px; max-width: 100%;
+        padding: 5px 1px 9px; max-width: 100%; border-bottom: 1px solid var(--studio-border);
     }
     #studio-workspace-tabs > .tab-nav button, #studio-mode-tabs > .tab-nav button,
     #studio-workspace-tabs > [role="tablist"] button, #studio-mode-tabs > [role="tablist"] button {
-        flex: 0 0 auto; white-space: nowrap; min-height: 44px; border-radius: 9px;
+        flex: 0 0 auto; white-space: nowrap; min-height: 42px;
+        border-radius: 10px; font-weight: 650;
     }
     #studio-workspace-tabs button[role="tab"][aria-selected="true"] {
-        background: #704065; color: #fff; font-weight: 700;
+        color: var(--studio-accent-dark); background: #eeeaff; font-weight: 750;
+        box-shadow: inset 0 -2px 0 var(--studio-accent);
+    }
+    #studio-mode-tabs button[role="tab"][aria-selected="true"] {
+        color: var(--studio-accent-dark); background: #f3f0ff; font-weight: 750;
     }
     #studio-workspace-tabs, #studio-mode-tabs {min-width: 0;}
-    @media (max-width: 640px) {
-        #wai-studio {padding: 8px !important;}
-        .studio-hero {padding: 10px;}
+    .studio-gallery {
+        min-height: 380px !important;
+        border: 1px solid var(--studio-border) !important;
+        border-radius: 14px !important; background: var(--studio-surface-soft) !important;
     }
-    /* Danh sách prompt: cuộn được trong khung, mỗi dòng là một ô chạm cao. */
-    .studio-prompt-list {max-height: 44vh; overflow-y: auto; -webkit-overflow-scrolling: touch;
-        border: 1px solid #e2dced; border-radius: 10px; padding: 4px 8px; background: #fbfaff;}
-    .studio-prompt-list label {min-height: 42px; font-size: 0.86rem; line-height: 1.3;
-        display: flex; align-items: center; padding: 2px 0;}
-    .studio-primary button {min-height: 42px; font-weight: 600;}
+    /* Prompt list stays touch-scrollable and rows are easy to tap. */
+    .studio-prompt-list {
+        max-height: 44vh; overflow-y: auto; -webkit-overflow-scrolling: touch;
+        border: 1px solid var(--studio-border); border-radius: 12px;
+        padding: 5px 10px; background: var(--studio-surface-soft);
+    }
+    .studio-prompt-list label {
+        min-height: 44px; display: flex; align-items: center; padding: 3px 0;
+        font-size: 0.86rem; line-height: 1.35;
+    }
+    @media (max-width: 900px) {
+        #wai-studio {padding: 10px !important;}
+        .studio-layout {grid-template-columns: minmax(0, 1fr);}
+        .studio-hero {padding: 16px; grid-template-columns: minmax(0, 1fr);}
+        .studio-meta {justify-content: flex-start;}
+        .studio-privacy {grid-column: 1;}
+        #wai-studio .studio-panel {padding: 12px !important;}
+    }
+    @media (max-width: 520px) {
+        #wai-studio {padding: 6px !important;}
+        .studio-gallery {height: min(58vh, 390px) !important; min-height: 250px !important;}
+        .studio-hero {padding: 14px; border-radius: 14px;}
+        .studio-brand {align-items: flex-start; gap: 10px;}
+        .studio-mark {flex-basis: 40px; width: 40px; height: 40px; border-radius: 12px;}
+        .studio-meta {gap: 6px;}
+        .studio-chip {padding: 7px 9px; font-size: 0.67rem;}
+        #studio-workspace-tabs > .tab-nav button, #studio-mode-tabs > .tab-nav button,
+        #studio-workspace-tabs > [role="tablist"] button, #studio-mode-tabs > [role="tablist"] button {
+            min-height: 44px; padding-left: 11px; padding-right: 11px;
+        }
+    }
     """
     with gr.Blocks(
         title="WAI Studio · Colab GPU",
@@ -2931,17 +4239,36 @@ def build_app(runtime):
         elem_id="wai-studio",
     ) as demo:
         gr.HTML(
-            "<div class='studio-hero'>"
-            "<span class='studio-badge'>✦ WAI · COLAB GPU</span>"
-            "<h1>Biến ý tưởng thành thế giới anime</h1>"
-            "<p>WAI-illustrious v17 · LoRA tay/chân/mắt đã xác minh</p>"
-            "<span class='studio-warn'>Link tạm thời <b>không cần đăng nhập</b>: ai có "
-            "link đều dùng được GPU Colab của bạn — đừng chia sẻ, dừng runtime để thu "
-            "hồi. Ảnh lưu dưới /content.</span>"
-            "</div>"
+            "<header class='studio-hero'>"
+            "<div class='studio-brand'>"
+            "<div class='studio-mark' aria-hidden='true'>✦</div>"
+            "<div class='studio-brand-copy'>"
+            "<div class='studio-kicker'>WAI STUDIO <span>COLAB GPU</span></div>"
+            "<h1>Studio tạo ảnh anime</h1>"
+            "<p>WAI-illustrious v17 · LoRA tùy chọn được kiểm SHA-256</p>"
+            "</div></div>"
+            "<div class='studio-meta'>"
+            "<span class='studio-chip'><span class='studio-chip-dot'></span>Model đã xác minh</span>"
+            "<span class='studio-chip'>GPU Colab</span></div>"
+            "<div class='studio-privacy'>"
+            "<span class='studio-privacy-mark' aria-hidden='true'>!</span>"
+            "<span><strong>Liên kết không có đăng nhập:</strong> bất kỳ ai có link đều "
+            "có thể dùng GPU của bạn. Đừng chia sẻ; dừng runtime để thu hồi link. "
+            "Ảnh lưu trong /content và sẽ mất khi runtime kết thúc.</span>"
+            "</div></header>"
         )
-        with gr.Row(equal_height=False):
-            with gr.Column(scale=6, min_width=300):
+        with gr.Row(equal_height=False, elem_classes="studio-layout"):
+            with gr.Column(
+                scale=6,
+                min_width=340,
+                elem_classes=["studio-panel", "studio-editor-column"],
+            ):
+                gr.Markdown("### 01 · Soạn prompt", elem_classes="studio-section-heading")
+                gr.Markdown(
+                    "Mô tả chủ thể, ngoại hình, bối cảnh và phong cách; "
+                    "nội dung hai ô được gửi nguyên văn.",
+                    elem_classes="studio-section-subtitle",
+                )
                 prompt = gr.Textbox(
                     label="Prompt gửi model · tự viết phong cách của bạn",
                     value=DEFAULT_PROMPT,
@@ -2951,6 +4278,30 @@ def build_app(runtime):
                         "Mô tả nhân vật, trang phục, khung cảnh, ánh sáng và phong cách "
                         "vẽ bạn muốn (anime illustration, cel shading, watercolor...)"
                     ),
+                    elem_id="studio-prompt",
+                )
+                with gr.Row(equal_height=False):
+                    keyword_tag_suggestion = gr.Dropdown(
+                        choices=[],
+                        value=None,
+                        label="Semi-auto tag · ví dụ mắt / eyes · ↑↓ + Enter/Tab để chọn",
+                        allow_custom_value=False,
+                        scale=1,
+                    )
+                    keyword_tag_weight_down = gr.Button(
+                        "−0,1", size="sm", scale=0, min_width=58, variant="secondary",
+                        elem_id="prompt-weight-down",
+                    )
+                    keyword_tag_weight_up = gr.Button(
+                        "+0,1", size="sm", scale=0, min_width=58, variant="secondary",
+                        elem_id="prompt-weight-up",
+                    )
+                keyword_tag_status = gr.Markdown(
+                    f"{tag_catalog_status} Gõ từ khóa cuối như `mắt`/`eyes`; dùng `*đuôi`, "
+                    "`*giữa*` để tìm tag theo hậu tố/nội dung, hoặc `@họa sĩ` để lọc nhóm "
+                    "Artist. Danh mục: `[G/A/©/C/M]` Danbooru · `<G/A/©/C/S/M/L>` e621. "
+                    "Chọn gợi ý để thay cụm cuối; Ctrl+↑/↓ hoặc nút ± chỉnh tag ở con trỏ/đoạn chọn.",
+                    elem_classes="studio-hint",
                 )
                 negative = gr.Textbox(
                     label="Negative gửi model · ngón tay / ngón chân",
@@ -3042,10 +4393,12 @@ def build_app(runtime):
                                     elem_classes="studio-primary",
                                 )
                                 gr.Markdown(
-                                    "Không tạo lại ảnh: phóng to bằng Lanczos rồi tinh chỉnh "
-                                    "bằng ảnh → ảnh theo prompt hiện tại (nên mô tả đúng nội "
-                                    "dung ảnh). Kết quả tối đa ≈4,2 MP; ảnh đã lớn hơn sẽ bị "
-                                    "giảm hệ số hoặc từ chối.",
+                                    "Không tạo lại ảnh gốc: Real-ESRGAN 4x+ Anime6B phóng "
+                                    "to rồi WAI img2img tinh chỉnh theo prompt hiện tại. "
+                                    "Chọn 1.25×, 1.5×, 1.75× hoặc 2×; nếu vượt ≈4,2 MP, "
+                                    "hệ số sẽ tự giảm. Lần đầu tải weight ~18 MB; pin SHA từ "
+                                    "mirror chưa được đối chiếu độc lập với file chính thức, "
+                                    "nên sai hash là tính năng sẽ dừng.",
                                     elem_classes="studio-hint",
                                 )
                             with gr.Tab("✎ Sửa vùng ảnh", id="inpaint"):
@@ -3113,14 +4466,19 @@ def build_app(runtime):
                                 )
                     with gr.Tab("🏷️ Kho thẻ", id="tags"):
                         gr.Markdown(
-                            "Nguồn CSV 01/10/2026 · 349.714 thẻ. Nhấn **Tìm / tải kho thẻ** để nạp lần đầu (~9 MB). "
-                            "Chủ đề được nhóm tự động theo tên, có thể chồng lặp; danh mục giữ theo nguồn. "
-                            "Nhãn tiếng Việt đứng trước tên gốc; thẻ chưa dịch được ghi rõ, tên riêng giữ nguyên. "
-                            "Khi thêm vào prompt chỉ dùng tên thẻ gốc. "
+                            "Nguồn CSV 01/10/2026 · 349.714 thẻ. Nhấn **Tìm / tải kho thẻ** để nạp lần đầu (~9 MB; bản có cột nhãn ~13,7 MB). "
+                            "Tìm tiếng Việt hoặc English trên toàn bộ kho; có thể dán prompt nhiều cụm bằng dấu phẩy/xuống dòng, không cần dấu tiếng Việt. Cụm dài không khớp nguyên văn sẽ tìm theo từng từ khóa. "
+                            "Nhãn Việt đứng trước thẻ gốc; tên riêng được giữ nguyên và mục chưa dịch được ghi rõ. "
+                            "Khi thêm vào prompt chỉ dùng tên thẻ tiếng Anh gốc. "
                             "Kho có thể chứa thẻ nhạy cảm. Đây là từ khóa, không phải model hay ảnh huấn luyện.",
                             elem_classes="studio-hint",
                         )
-                        tag_query = gr.Textbox(label="Tìm tiếng Việt, tên thẻ hoặc bí danh", placeholder="tóc dài, long hair, smile…")
+                        tag_query = gr.Textbox(
+                            label="Tìm prompt tiếng Việt / English trên toàn bộ kho",
+                            placeholder="tóc dài, mắt xanh, red dress, blue eyes…",
+                            lines=2,
+                            max_lines=4,
+                        )
                         with gr.Row():
                             tag_category = gr.Dropdown(
                                 choices=[("Tất cả danh mục", "")] + [(label, key) for key, label in TAG_CATEGORIES.items()],
@@ -3138,7 +4496,7 @@ def build_app(runtime):
                         with gr.Row():
                             tag_destination = gr.Radio(choices=["Prompt", "Negative prompt"], value="Prompt", label="Thêm vào")
                             tag_add = gr.Button("Thêm thẻ đã chọn", size="sm")
-                        tag_status = gr.Markdown("Kho thẻ chưa được tải.", elem_classes="studio-hint")
+                        tag_status = gr.Markdown(tag_catalog_status, elem_classes="studio-hint")
                     with gr.Tab("📚 Thư viện", id="library"):
                         with gr.Row(equal_height=False):
                             prompt_file = gr.File(
@@ -3310,12 +4668,14 @@ def build_app(runtime):
                                     label="Hires strength (chi tiết thêm vào)",
                                 )
                             gr.Markdown(
-                                "Chọn **1.5× hoặc 2×** để ảnh ra lớn hơn kích thước đã chọn "
-                                "(tối đa ≈4,2 MP, ví dụ 1024×1024 → 2048×2048): ảnh được tạo, "
-                                "phóng to rồi tinh chỉnh để thêm chi tiết. Áp dụng cho *Văn "
-                                "bản → ảnh* và *Ảnh → ảnh* (tab *Phóng to ảnh* có cài đặt "
-                                "riêng); tốn thêm thời gian và VRAM. Strength thấp giữ bố "
-                                "cục, cao thêm chi tiết nhưng dễ đổi nét.",
+                                "Chọn **1.25×, 1.5×, 1.75× hoặc 2×** để ảnh lớn hơn "
+                                "kích thước đã chọn (tối đa ≈4,2 MP): Real-ESRGAN Anime6B "
+                                "phóng ảnh rồi img2img tinh chỉnh theo prompt. Áp dụng cho "
+                                "*Văn bản → ảnh* và *Ảnh → ảnh*; tab *Phóng to ảnh* có "
+                                "strength riêng. Lần đầu tải/xác minh weight ~18 MB; pin SHA "
+                                "theo metadata mirror chưa được đối chiếu độc lập với file "
+                                "chính thức, nên sai hash là tính năng sẽ dừng. Strength thấp "
+                                "giữ bố cục, cao thêm chi tiết nhưng dễ đổi nét.",
                                 elem_classes="studio-hint",
                             )
                         with gr.Group(elem_classes="studio-detailer"):
@@ -3419,14 +4779,24 @@ def build_app(runtime):
                     detailer_conf,
                     detailer_max,
                 ]
-            with gr.Column(scale=5, min_width=300):
+            with gr.Column(
+                scale=5,
+                min_width=320,
+                elem_classes=["studio-panel", "studio-output-column"],
+            ):
+                gr.Markdown("### 02 · Kết quả", elem_classes="studio-section-heading")
+                gr.Markdown(
+                    "Ảnh tạo xong xuất hiện tại đây. Chọn ảnh để mở lớn hoặc tải xuống.",
+                    elem_classes="studio-section-subtitle",
+                )
                 gallery = gr.Gallery(
-                    label="Kết quả · nhấn để xem lớn",
+                    label="Ảnh đầu ra · nhấn để xem lớn",
                     columns=2,
-                    height=560,
+                    height=520,
                     object_fit="contain",
                     format="png",
                     buttons=["download", "fullscreen"],
+                    elem_classes="studio-gallery",
                 )
                 status = gr.Markdown(
                     f"Ảnh đầu tiên sẽ xuất hiện tại đây. Model đã nạp trong Google Colab. "
@@ -3515,6 +4885,43 @@ def build_app(runtime):
         )
         to_inpaint_event = to_inpaint.click(
             fn=edit_last, inputs=latest, outputs=editor, api_visibility="private"
+        )
+        # Gõ một chủ đề/từ khóa ở cuối prompt để tìm tag English trong catalog CSV;
+        # chọn một tag xác thực từ kết quả sẽ thay thế từ khóa ngay.
+        prompt.input(
+            fn=update_keyword_tag_suggestions,
+            inputs=prompt,
+            outputs=[keyword_tag_suggestion, keyword_tag_status],
+            api_visibility="private",
+            queue=False,
+            show_progress="minimal",
+            trigger_mode="always_last",
+        )
+        keyword_tag_suggestion.input(
+            fn=apply_keyword_tag_suggestion_ui,
+            inputs=[prompt, keyword_tag_suggestion],
+            outputs=[prompt, keyword_tag_status, keyword_tag_suggestion],
+            api_visibility="private",
+            queue=False,
+            show_progress="hidden",
+        )
+        keyword_tag_weight_down.click(
+            fn=lambda text: adjust_prompt_tag_weight_ui(text, -1),
+            inputs=prompt,
+            outputs=[prompt, keyword_tag_status, keyword_tag_suggestion],
+            api_visibility="private",
+            queue=False,
+            show_progress="hidden",
+            js=PROMPT_TAG_WEIGHT_SELECTION_JS,
+        )
+        keyword_tag_weight_up.click(
+            fn=lambda text: adjust_prompt_tag_weight_ui(text, 1),
+            inputs=prompt,
+            outputs=[prompt, keyword_tag_status, keyword_tag_suggestion],
+            api_visibility="private",
+            queue=False,
+            show_progress="hidden",
+            js=PROMPT_TAG_WEIGHT_SELECTION_JS,
         )
         # Không còn preset: hai ô prompt/negative là đúng những gì gửi model.
         # Trigger LoRA mắt và gợi ý sửa vùng đều là nút bấm tường minh, người
@@ -3720,6 +5127,7 @@ def build_app(runtime):
                 inputs=[], outputs=[workspace_tabs, mode_tabs],
                 api_visibility="private", queue=False,
             )
+        demo.load(fn=None, js=PROMPT_TAG_WEIGHT_SHORTCUT_JS)
         demo.queue(max_size=4, default_concurrency_limit=1, api_open=False)
     # Gradio 6 applies CSS and themes at launch, not in the Blocks constructor.
     demo.studio_theme = gr.themes.Soft(

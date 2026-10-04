@@ -83,18 +83,62 @@ class FakeDerived:
         return base
 
 
+class RealESRGANDownloadTests(unittest.TestCase):
+    @unittest.skipIf(importlib.util.find_spec("torch") is None, "PyTorch needed for RRDBNet shape check")
+    def test_anime6b_rrdbnet_layer_names_match_the_pinned_checkpoint(self):
+        import torch
+
+        model = studio._build_realesrgan_model(torch)
+        weights = model.state_dict()
+        self.assertEqual(tuple(weights["conv_first.weight"].shape), (64, 3, 3, 3))
+        self.assertIn("body.0.rdb1.conv1.weight", weights)
+        self.assertIn("body.5.rdb3.conv5.weight", weights)
+        self.assertEqual(tuple(weights["conv_last.weight"].shape), (3, 64, 3, 3))
+
+    def test_weight_download_is_atomic_and_rejects_corrupt_cache_or_response(self):
+        with tempfile.TemporaryDirectory() as temp:
+            folder = Path(temp)
+            payload = b"pinned anime upscaler fixture"
+            spec = {
+                "file": "anime.pth",
+                "url": "https://example.invalid/anime.pth",
+                "size": len(payload),
+                "sha256": hashlib.sha256(payload).hexdigest(),
+                "version": "test-fixture",
+            }
+            with patch("urllib.request.urlopen", return_value=io.BytesIO(payload)) as fetch:
+                cached = studio.ensure_realesrgan_weight(folder, spec)
+            self.assertEqual(cached.read_bytes(), payload)
+            fetch.assert_called_once_with(spec["url"], timeout=90)
+            with patch("urllib.request.urlopen", side_effect=AssertionError("cache miss")):
+                self.assertEqual(studio.ensure_realesrgan_weight(folder, spec), cached)
+
+            cached.write_bytes(b"corrupt")
+            with patch("urllib.request.urlopen", side_effect=AssertionError("overwrite")):
+                with self.assertRaisesRegex(RuntimeError, "sai kích thước/SHA-256"):
+                    studio.ensure_realesrgan_weight(folder, spec)
+
+            cached.unlink()
+            with patch("urllib.request.urlopen", return_value=io.BytesIO(b"wrong")):
+                with self.assertRaisesRegex(RuntimeError, "không khớp"):
+                    studio.ensure_realesrgan_weight(folder, spec)
+            self.assertFalse(cached.exists())
+            self.assertFalse(cached.with_name(cached.name + ".partial").exists())
+
+
 class NotebookTests(unittest.TestCase):
     def test_notebook_is_self_contained_clean_and_reuses_verified_setup(self):
         n = json.loads(NOTEBOOK.read_text(encoding="utf-8"))
-        old = json.loads(BASE.read_text(encoding="utf-8"))
         self.assertEqual(
             n, build(), "Regenerate with python scripts/build_colab_studio.py"
         )
         self.assertEqual(n["nbformat"], 4)
         self.assertEqual(n["nbformat_minor"], 0)
-        self.assertEqual(len(n["cells"]), 10)
-        for index in (1, 3, 5, 6):
-            self.assertEqual(n["cells"][index]["source"], old["cells"][index]["source"])
+        self.assertEqual(len(n["cells"]), 11)
+        if BASE.is_file():
+            old = json.loads(BASE.read_text(encoding="utf-8"))
+            for index in (1, 3, 5, 6):
+                self.assertEqual(n["cells"][index]["source"], old["cells"][index]["source"])
         prepare = "".join(n["cells"][4]["source"])
         self.assertIn("WAI_STUDIO_VERSION_VERIFIED = False", prepare)
         self.assertIn("if not WAI_STUDIO_VERSION_VERIFIED:", prepare)
@@ -127,7 +171,23 @@ class NotebookTests(unittest.TestCase):
                 self.assertEqual(cell["execution_count"], None)
                 self.assertEqual(cell["outputs"], [])
         compile(ui_source, "studio-ui", "exec")
-        compile("".join(n["cells"][8]["source"]), "studio-launch", "exec")
+        launch_source = "".join(n["cells"][8]["source"])
+        self.assertIn("studio_local_url, share_url", launch_source)
+        self.assertIn("giao diện nội bộ vẫn chạy", launch_source)
+        self.assertIn("Cloudflare Quick Tunnel", launch_source)
+        compile(launch_source, "studio-launch", "exec")
+        tunnel_source = "".join(n["cells"][9]["source"])
+        self.assertEqual(
+            hashlib.sha256(tunnel_source.encode()).hexdigest(),
+            "2aa0d01a2a8974246eebf4ccf5878fc65cb79afabf8e560f6ae6aea4e545ecfc",
+        )
+        self.assertIn("trycloudflare.com", tunnel_source)
+        self.assertIn("cloudflared-linux-{architecture}", tunnel_source)
+        self.assertIn("--protocol", tunnel_source)
+        self.assertIn("cloudflare_tunnel_process", tunnel_source)
+        self.assertIn("ProxyHandler({})", tunnel_source)
+        self.assertNotIn("google.colab.kernel.proxyPort", tunnel_source)
+        compile(tunnel_source, "studio-cloudflare-tunnel", "exec")
         try:
             import nbformat
         except ImportError:
@@ -137,7 +197,8 @@ class NotebookTests(unittest.TestCase):
 
     def test_every_code_cell_collapses_into_a_compact_form(self):
         """Cả hai notebook phải gọn: mỗi ô code là một form tiêu đề + nút Run."""
-        for path in (NOTEBOOK, BASE):
+        notebooks = [NOTEBOOK, *([BASE] if BASE.is_file() else [])]
+        for path in notebooks:
             notebook = json.loads(path.read_text(encoding="utf-8"))
             code_cells = [c for c in notebook["cells"] if c["cell_type"] == "code"]
             self.assertTrue(code_cells, path.name)
@@ -529,6 +590,12 @@ class RuntimeValidationTests(unittest.TestCase):
         self.ck = self.root / "verified.safetensors"
         self.ck.touch()
         self.pipe = FakePipe()
+        self.realesrgan_calls = []
+
+        def fake_realesrgan_upscaler(image, size):
+            self.realesrgan_calls.append((image.size, tuple(size)))
+            return image.convert("RGB").resize(size, Image.Resampling.LANCZOS)
+
         self.runtime = studio.StudioRuntime(
             torch=FakeTorch,
             pipe=self.pipe,
@@ -543,6 +610,7 @@ class RuntimeValidationTests(unittest.TestCase):
             use_offload=False,
             output_dir=self.root / "output",
             backup_dir=self.root / "backup",
+            realesrgan_upscaler=fake_realesrgan_upscaler,
         )
         FakePipe.calls = []
 
@@ -700,8 +768,68 @@ class RuntimeValidationTests(unittest.TestCase):
                 FakePipe.calls[-1][1]["negative_prompt"], parameters["negative_prompt"]
             )
 
+    def test_upscaler_output_must_match_selected_dimensions(self):
+        class FakePILImage:
+            def __init__(self, size):
+                self.size = tuple(size)
+
+            def convert(self, mode):
+                self.converted_to = mode
+                return self
+
+        pil_api = types.ModuleType("PIL")
+        pil_api.Image = types.SimpleNamespace(Image=FakePILImage)
+        source = FakePILImage((512, 512))
+        expected = (640, 640)
+        with patch.dict(sys.modules, {"PIL": pil_api}):
+            self.runtime.realesrgan_upscaler = lambda image, size: FakePILImage(size)
+            result = self.runtime._upscale_with_realesrgan(source, expected)
+            self.assertEqual(result.size, expected)
+            self.assertEqual(result.converted_to, "RGB")
+            self.runtime.realesrgan_upscaler = lambda image, size: FakePILImage(
+                (512, 512)
+            )
+            with self.assertRaisesRegex(RuntimeError, "đúng kích thước"):
+                self.runtime._upscale_with_realesrgan(source, expected)
+
+    def test_realesrgan_cuda_oom_falls_back_to_cpu_and_cpu_oom_is_reported(self):
+        class FakeModel:
+            def to(self, device):
+                self.device = device
+                return self
+
+            def float(self):
+                self.is_float = True
+                return self
+
+        model = FakeModel()
+        calls = []
+        result = object()
+        self.runtime._load_realesrgan_model = lambda: (model, "cuda")
+
+        def infer(image, selected_model, device):
+            calls.append(device)
+            if device == "cuda":
+                raise FakeTorch.cuda.OutOfMemoryError("fake GPU OOM")
+            return result
+
+        self.runtime._realesrgan_x4_on_device = infer
+        self.assertIs(self.runtime._realesrgan_x4(object()), result)
+        self.assertEqual(calls, ["cuda", "cpu"])
+        self.assertEqual(self.runtime._realesrgan_device, "cpu")
+        self.assertIs(self.runtime._realesrgan_model, model)
+
+        self.runtime._load_realesrgan_model = lambda: (model, "cpu")
+        self.runtime._realesrgan_x4_on_device = lambda *args: (_ for _ in ()).throw(
+            FakeTorch.cuda.OutOfMemoryError("fake CPU OOM")
+        )
+        with self.assertRaisesRegex(RuntimeError, "CPU"):
+            self.runtime._realesrgan_x4(object())
+
     def test_hires_size_is_multiple_of_8_and_clamped_to_pixel_budget(self):
         self.assertIsNone(studio._hires_size(1024, 1024, studio.HIRES_OFF))
+        self.assertEqual(studio._hires_size(512, 512, "1.25×"), (640, 640, False))
+        self.assertEqual(studio._hires_size(512, 512, "1.75×"), (896, 896, False))
         self.assertEqual(studio._hires_size(512, 512, "2×"), (1024, 1024, False))
         self.assertEqual(studio._hires_size(832, 1216, "1.5×"), (1248, 1824, False))
         self.assertEqual(studio._hires_size(1024, 1024, "2×")[:2], (2048, 2048))
@@ -749,8 +877,31 @@ class RuntimeValidationTests(unittest.TestCase):
         self.assertEqual((metadata["width"], metadata["height"]), (1024, 1024))
         self.assertEqual(
             metadata["hires"],
-            {"scale": "2×", "base_width": 512, "base_height": 512, "strength": 0.3},
+            {
+                "scale": "2×",
+                "upscaler": {
+                    "name": studio.REAL_ESRGAN_MODEL["name"],
+                    "version": studio.REAL_ESRGAN_MODEL["version"],
+                    "sha256": studio.REAL_ESRGAN_MODEL["sha256"],
+                },
+                "base_width": 512,
+                "base_height": 512,
+                "strength": 0.3,
+            },
         )
+        self.assertEqual(
+            self.realesrgan_calls[-1], ((512, 512), (1024, 1024))
+        )
+        self.assertIn("RealESRGAN_x4plus_anime_6B", status)
+        for scale, expected in (("1.25×", (640, 640)), ("1.75×", (896, 896))):
+            FakePipe.calls = []
+            with patch.dict(sys.modules, {"diffusers": mock_diffusers}):
+                self.runtime.text_to_image(
+                    "512x512", *args, hires_scale=scale, hires_strength=0.3
+                )
+            self.assertEqual(len(FakePipe.calls), 2)
+            self.assertEqual(self.realesrgan_calls[-1], ((512, 512), expected))
+            self.assertEqual(FakePipe.calls[-1][1]["image"].size, expected)
         with self.assertRaisesRegex(ValueError, "Hires strength"):
             self.runtime.text_to_image(
                 "512x512", *args, hires_scale="2×", hires_strength=0.95
@@ -780,7 +931,23 @@ class RuntimeValidationTests(unittest.TestCase):
             self.assertEqual(metadata["operation"], "upscale")
             self.assertIsNone(metadata["strength"])
             self.assertEqual(metadata["hires"]["base_width"], 608)
+            self.assertEqual(
+                metadata["hires"]["upscaler"],
+                {
+                    "name": studio.REAL_ESRGAN_MODEL["name"],
+                    "version": studio.REAL_ESRGAN_MODEL["version"],
+                    "sha256": studio.REAL_ESRGAN_MODEL["sha256"],
+                },
+            )
+            self.assertEqual(self.realesrgan_calls[-1], ((608, 800), (1216, 1600)))
             self.assertIn("upscale", Path(paths[0]).name)
+            for scale, expected in (("1.25×", (760, 1000)), ("1.75×", (1064, 1400))):
+                FakePipe.calls = []
+                self.runtime.upscale(
+                    Image.new("RGB", (605, 803), "teal"), scale, 0.35, *args
+                )
+                self.assertEqual(self.realesrgan_calls[-1], ((608, 800), expected))
+                self.assertEqual(FakePipe.calls[0][1]["image"].size, expected)
             for source, scale, message in (
                 (None, "2×", "Tải ảnh"),
                 (Image.new("RGB", (512, 512)), studio.HIRES_OFF, "Chọn hệ số"),
@@ -1162,7 +1329,11 @@ class RuntimeValidationTests(unittest.TestCase):
         "Gradio and Pillow needed for UI construction",
     )
     def test_gradio_components_build_without_gpu_or_public_share(self):
-        demo = studio.build_app(self.runtime)
+        with patch.object(
+            studio, "prime_prompt_tag_catalog", return_value="✅ CSV kho gợi ý đã sẵn sàng."
+        ) as preload:
+            demo = studio.build_app(self.runtime)
+        preload.assert_called_once_with()
         config = demo.get_config_file()
         self.assertEqual(
             len([c for c in config["components"] if c["type"] == "imageeditor"]), 1
@@ -1188,6 +1359,44 @@ class RuntimeValidationTests(unittest.TestCase):
         self.assertEqual(prompt_field["props"]["value"], studio.DEFAULT_PROMPT)
         self.assertEqual(negative_field["props"]["value"], studio.DEFAULT_NEGATIVE)
         field_ids = {c["id"] for c in fields}
+
+        inline_suggestions = next(
+            c for c in config["components"]
+            if c["type"] == "dropdown"
+            and "Semi-auto tag" in str(c["props"].get("label"))
+        )
+        inline_status = next(
+            c for c in config["components"]
+            if c["type"] == "markdown"
+            and "`*giữa*` để tìm tag theo hậu tố/nội dung" in str(c["props"].get("value"))
+        )
+        self.assertFalse(any(
+            c["type"] == "button"
+            and "thêm tag đã chọn" in c["props"].get("value", "").casefold()
+            for c in config["components"]
+        ))
+        live_suggestion_event = next(
+            d for d in config["dependencies"]
+            if (prompt_field["id"], "input") in d["targets"]
+        )
+        self.assertEqual(live_suggestion_event["inputs"], [prompt_field["id"]])
+        self.assertEqual(
+            live_suggestion_event["outputs"], [inline_suggestions["id"], inline_status["id"]]
+        )
+        self.assertFalse(live_suggestion_event["queue"])
+        apply_suggestion_event = next(
+            d for d in config["dependencies"]
+            if (inline_suggestions["id"], "input") in d["targets"]
+        )
+        self.assertEqual(
+            apply_suggestion_event["inputs"], [prompt_field["id"], inline_suggestions["id"]]
+        )
+        self.assertEqual(
+            apply_suggestion_event["outputs"],
+            [prompt_field["id"], inline_status["id"], inline_suggestions["id"]],
+        )
+        self.assertFalse(apply_suggestion_event["queue"])
+
         eyes_button = next(
             c
             for c in config["components"]
@@ -1218,11 +1427,37 @@ class RuntimeValidationTests(unittest.TestCase):
             repair_event["inputs"][:2],
             [prompt_field["id"], negative_field["id"]],
         )
-        # 4 nút tạo ảnh + 3 nút dùng ảnh mới nhất + trigger mắt + gợi ý sửa vùng
-        # + gợi ý phong cách (look) + sắp xếp prompt + nạp negative + kiểm tra
-        # prompt + 5 sự kiện của thư viện prompt.
-        # 24 sự kiện: 19 cũ + 2 kho thẻ + 3 chuyển tab sau khi dùng ảnh.
-        self.assertEqual(len(config["dependencies"]), 24)
+        # Gồm 2 sự kiện gợi ý tag inline, 2 chỉnh trọng số, 2 kho thẻ,
+        # 3 chuyển tab ảnh và một listener Ctrl+↑/↓.
+        self.assertEqual(len(config["dependencies"]), 29)
+        self.assertEqual(prompt_field["props"].get("elem_id"), "studio-prompt")
+        for elem_id, target in (
+            ("prompt-weight-down", "click"),
+            ("prompt-weight-up", "click"),
+        ):
+            button = next(
+                c for c in config["components"] if c["props"].get("elem_id") == elem_id
+            )
+            event = next(
+                d for d in config["dependencies"]
+                if (button["id"], target) in d["targets"]
+            )
+            self.assertEqual(event["inputs"], [prompt_field["id"]])
+            self.assertEqual(
+                event["outputs"],
+                [prompt_field["id"], inline_status["id"], inline_suggestions["id"]],
+            )
+            self.assertFalse(event["queue"])
+            # JS phải được Gradio gửi xuống trình duyệt, không chỉ nằm trong Python.
+            self.assertEqual(event["js"], studio.PROMPT_TAG_WEIGHT_SELECTION_JS)
+        self.assertIn("selectionStart", studio.PROMPT_TAG_WEIGHT_SELECTION_JS)
+        self.assertIn("ArrowUp", studio.PROMPT_TAG_WEIGHT_SHORTCUT_JS)
+        self.assertIn("ArrowDown", studio.PROMPT_TAG_WEIGHT_SHORTCUT_JS)
+        load_event = next(
+            d for d in config["dependencies"]
+            if any(target[1] == "load" for target in d["targets"])
+        )
+        self.assertEqual(load_event["js"], studio.PROMPT_TAG_WEIGHT_SHORTCUT_JS)
         # Six horizontal workspace tabs plus four generation modes.
         tabs = [c for c in config["components"] if c["type"] == "tabitem"]
         self.assertEqual(
@@ -1305,6 +1540,16 @@ class RuntimeValidationTests(unittest.TestCase):
             list(studio.HIRES_SCALES),
         )
         self.assertEqual(hires_fields[0]["props"]["value"], studio.HIRES_OFF)
+        upscale_scale_field = next(
+            c
+            for c in config["components"]
+            if c["type"] == "dropdown" and c["props"].get("label") == "Hệ số phóng"
+        )
+        self.assertEqual(
+            [choice[0] for choice in upscale_scale_field["props"]["choices"]],
+            [label for label in studio.HIRES_SCALES if label != studio.HIRES_OFF],
+        )
+        self.assertEqual(upscale_scale_field["props"]["value"], "2×")
         for dep in config["dependencies"][:2]:  # text, img2img: có hires + detailer
             position = dep["inputs"].index(prompt_field["id"])
             self.assertEqual(
@@ -1327,6 +1572,79 @@ class RuntimeValidationTests(unittest.TestCase):
         )
         self.assertTrue(demo.studio_css)
         self.assertIsNotNone(demo.studio_theme)
+
+    @unittest.skipIf(
+        Image is None or not importlib.util.find_spec("gradio"),
+        "Gradio and Pillow needed for the semi-auto tag route test",
+    )
+    def test_semi_auto_tag_events_suggest_then_replace_then_weight(self):
+        """Kiểm tra trọn tuyến semi-auto: gõ → dropdown CSV → chọn tag → nút ±."""
+        import asyncio
+        from gradio.state_holder import SessionState
+
+        rows = studio.load_csv_tags()
+        with patch.object(
+            studio,
+            "prime_prompt_tag_catalog",
+            return_value="✅ CSV kho gợi ý đã sẵn sàng.",
+        ):
+            demo = studio.build_app(self.runtime)
+        config = demo.get_config_file()
+
+        def component(kind, needle, prop):
+            return next(
+                c for c in config["components"]
+                if c["type"] == kind and needle in str(c["props"].get(prop))
+            )
+
+        prompt_box = component("textbox", "gửi model", "label")
+        dropdown = component("dropdown", "Semi-auto tag", "label")
+        weight_up = next(
+            c for c in config["components"]
+            if c["props"].get("elem_id") == "prompt-weight-up"
+        )
+
+        def event_index(component_id, event):
+            return next(
+                d["id"] for d in config["dependencies"]
+                if (component_id, event) in d["targets"]
+            )
+
+        state = SessionState(demo)
+
+        async def flow():
+            async def run(index, inputs):
+                result = await demo.process_api(
+                    index, inputs, state=state, explicit_call=True
+                )
+                return result["data"]
+
+            with patch.object(studio, "load_csv_tags", return_value=rows):
+                suggested, note = await run(
+                    event_index(prompt_box["id"], "input"), ["1girl, mắt"]
+                )
+            self.assertEqual(suggested["__type__"], "update")
+            values = [value for _, value in suggested["choices"]]
+            self.assertIn("blue_eyes", values)
+            self.assertTrue(all(label.startswith(("[G]", "<")) for label, _ in suggested["choices"]))
+            self.assertIn("tag từ CSV", note)
+
+            with patch.object(studio, "load_csv_tags", return_value=rows):
+                prompt, applied_note, cleared = await run(
+                    event_index(dropdown["id"], "input"), ["1girl, mắt", "blue_eyes"]
+                )
+            self.assertEqual(prompt, "1girl, blue_eyes")
+            self.assertIn("thay `mắt`", applied_note)
+            self.assertEqual(cleared["choices"], [])
+
+            with patch.object(studio, "load_csv_tags", return_value=rows):
+                weighted, weight_note, _ = await run(
+                    event_index(weight_up["id"], "click"), ["1girl, blue_eyes"]
+                )
+            self.assertEqual(weighted, "1girl, (blue_eyes:1.1)")
+            self.assertIn("tăng trọng số", weight_note)
+
+        asyncio.run(flow())
 
     @unittest.skipIf(
         not importlib.util.find_spec("gradio"), "Gradio needed for UI wiring test"
@@ -1568,6 +1886,28 @@ class RuntimeValidationTests(unittest.TestCase):
             "composite": file_data(source),
         }
 
+        # Tra chỉ số theo nhãn nút thật thay vì số thứ tự cứng: thêm/bớt sự kiện
+        # gợi ý tag không làm lệch các phép thử bên dưới.
+        config = demo.get_config_file()
+
+        def index_of(needle, event="click"):
+            button = next(
+                c for c in config["components"]
+                if c["type"] == "button" and needle in str(c["props"].get("value"))
+            )
+            return next(
+                d["id"] for d in config["dependencies"] if (button["id"], event) in d["targets"]
+            )
+
+        generate_index = index_of("Tạo ảnh từ prompt")
+        image_index = index_of("Biến đổi ảnh")
+        upscale_index = index_of("Phóng to ảnh")
+        inpaint_index = index_of("Sửa vùng đã tô")
+        eyes_index = index_of("perfect eyes")
+        repair_index = index_of("Thêm gợi ý sửa vùng")
+        to_image_index = index_of("Dùng ảnh mới nhất để biến đổi")
+        to_inpaint_index = index_of("Dùng ảnh mới nhất để sửa vùng")
+
         async def process(index, inputs):
             return (
                 await demo.process_api(index, inputs, state=state, explicit_call=True)
@@ -1601,23 +1941,23 @@ class RuntimeValidationTests(unittest.TestCase):
             # Không còn preset phong cách: nút trigger mắt chỉ thêm "perfect eyes"
             # vào đúng ô prompt đang hiển thị, negative giữ nguyên.
             triggered = await process(
-                7, [studio.DEFAULT_PROMPT, studio.DEFAULT_NEGATIVE]
+                eyes_index, [studio.DEFAULT_PROMPT, studio.DEFAULT_NEGATIVE]
             )
             self.assertIn("perfect eyes", triggered[0])
             self.assertEqual(triggered[1], studio.DEFAULT_NEGATIVE)
-            self.assertEqual(await process(7, triggered), triggered)
+            self.assertEqual(await process(eyes_index, triggered), triggered)
             # Nút gợi ý sửa vùng cũng chỉ đổi hai ô đang hiển thị.
-            leg_prompts = await process(8, [*triggered, "legs"])
+            leg_prompts = await process(repair_index, [*triggered, "legs"])
             self.assertIn("natural toes", leg_prompts[0])
             self.assertIn("broken legs", leg_prompts[1])
-            self.assertEqual(await process(8, [*leg_prompts, "legs"]), leg_prompts)
+            self.assertEqual(await process(repair_index, [*leg_prompts, "legs"]), leg_prompts)
             adult_prompts = (
                 "1girl, adult woman, nsfw, explicit, portrait",
                 "bad hands",
             )
             for index, inputs, expected in (
                 (
-                    0,
+                    generate_index,
                     [
                         "512x512",
                         *shared(
@@ -1630,7 +1970,7 @@ class RuntimeValidationTests(unittest.TestCase):
                     ("  my own portrait  ", "  no hidden tags  "),
                 ),
                 (
-                    1,
+                    image_index,
                     [
                         file_data(source),
                         "512x512",
@@ -1643,7 +1983,7 @@ class RuntimeValidationTests(unittest.TestCase):
                     ("paint this picture", "my bad quality"),
                 ),
                 (
-                    3,
+                    inpaint_index,
                     [
                         editor,
                         None,
@@ -1655,7 +1995,7 @@ class RuntimeValidationTests(unittest.TestCase):
                     ("no repair suggestions", "bad hands"),
                 ),
                 (
-                    3,
+                    inpaint_index,
                     [
                         editor,
                         file_data(mask),
@@ -1668,7 +2008,7 @@ class RuntimeValidationTests(unittest.TestCase):
                 ),
                 # Prompt do người dùng tự viết; không còn ô tick xác nhận nào.
                 (
-                    0,
+                    generate_index,
                     [
                         "512x512",
                         *shared(*adult_prompts),
@@ -1694,7 +2034,7 @@ class RuntimeValidationTests(unittest.TestCase):
             # Hires fix qua đường sự kiện UI: 512×512 → 1,5× = 768×768, 2 lượt pipe.
             calls_before = len(FakePipe.calls)
             data = await process(
-                0,
+                generate_index,
                 [
                     "512x512",
                     *shared("hires portrait", "bad"),
@@ -1712,7 +2052,7 @@ class RuntimeValidationTests(unittest.TestCase):
             # Tab Phóng to ảnh qua sự kiện UI: 512×512 → 1024×1024, một lượt pipe.
             calls_before = len(FakePipe.calls)
             data = await process(
-                2, [file_data(source), "2×", 0.4, *shared("upscale me", "bad")]
+                upscale_index, [file_data(source), "2×", 0.4, *shared("upscale me", "bad")]
             )
             self.assertIn("phóng to 512×512 → 1024×1024", data[2])
             self.assertEqual(len(FakePipe.calls), calls_before + 1)
@@ -1721,7 +2061,7 @@ class RuntimeValidationTests(unittest.TestCase):
             del FakePipe.calls[calls_before:]
             # Không còn ô tick/không có bộ lọc: prompt tới pipe nguyên văn.
             await process(
-                0,
+                generate_index,
                 [
                     "512x512",
                     *shared(*adult_prompts),
@@ -1738,9 +2078,9 @@ class RuntimeValidationTests(unittest.TestCase):
                 adult_prompts,
             )
             self.assertEqual(len(FakePipe.calls), 6)
-            self.assertTrue(Path((await process(4, [None]))[0]["path"]).is_file())
+            self.assertTrue(Path((await process(to_image_index, [None]))[0]["path"]).is_file())
             self.assertTrue(
-                Path((await process(6, [None]))[0]["background"]["path"]).is_file()
+                Path((await process(to_inpaint_index, [None]))[0]["background"]["path"]).is_file()
             )
 
         mock_diffusers = types.ModuleType("diffusers")

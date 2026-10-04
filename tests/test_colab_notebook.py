@@ -357,6 +357,9 @@ def fake_modules(free_gib=15, gpu=True, total_gib=16):
     }
 
 
+@unittest.skipUnless(
+    NOTEBOOK.is_file(), "Legacy WAI_Illustrious_Colab.ipynb is not present in this checkout."
+)
 class ColabNotebookTests(unittest.TestCase):
     def setUp(self):
         FakePipeline.last_instance = None
