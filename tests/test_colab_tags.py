@@ -628,3 +628,63 @@ class VietnameseGlossaryTests(unittest.TestCase):
                 self.assertNotIn(",", value, f"{name}:{key}")
                 self.assertNotIn("\n", value, f"{name}:{key}")
                 self.assertTrue(key == key.strip() and " " not in key.strip("()"), f"{name}:{key}")
+
+
+class ClothingVocabularyRound7Tests(unittest.TestCase):
+    """Đợt 7: khung đồng phục theo tên riêng, sở hữu cách, động từ mặc/cởi."""
+
+    def test_uniform_frame_keeps_proper_name_but_translates_the_frame(self):
+        # Dòng đồng phục đặt theo tên trường/nhóm: chỉ dịch phần khung, không bịa tên riêng.
+        self.assertEqual(
+            studio.vietnamese_tag_label("tokiwadai_school_uniform", "0"),
+            "Đồng phục trường Tokiwadai",
+        )
+        self.assertEqual(
+            studio.vietnamese_tag_label("gekkoukan_high_school_uniform", "0"),
+            "Đồng phục trường trung học phổ thông Gekkoukan",
+        )
+        self.assertEqual(
+            studio.vietnamese_tag_label("garreg_mach_monastery_uniform", "0"),
+            "Đồng phục tu viện Garreg Mach",
+        )
+        self.assertEqual(
+            studio.vietnamese_tag_label("tokyo-3_middle_school_uniform", "0"),
+            "Đồng phục trường trung học cơ sở Tokyo-3",
+        )
+
+    def test_uniform_frame_uppercases_abbreviation_and_stays_out_of_the_way(self):
+        self.assertEqual(studio.vietnamese_tag_label("u.a._school_uniform", "0"), "Đồng phục trường U.A.")
+        # Prefix toàn từ đã có bản dịch thì quy tắc ghép thắng, không coi là tên riêng.
+        self.assertIsNone(studio._tag_vi_uniform_frame("red_school_uniform"))
+        self.assertEqual(studio.vietnamese_tag_label("red_school_uniform", "0"), "Đồng phục học đường màu đỏ")
+        self.assertEqual(studio.vietnamese_tag_label("national_soccer_team_uniform", "0"),
+                         "Đồng phục đội tuyển bóng đá quốc gia")
+
+    def test_possessive_apostrophe_reads_as_cua(self):
+        self.assertEqual(studio.vietnamese_tag_label("fool's_hat", "0"), "Mũ của chú hề")
+        self.assertEqual(
+            studio.vietnamese_tag_label("lifting_another's_clothes", "0"),
+            "Đang nhấc quần áo người khác lên",
+        )
+        self.assertEqual(
+            studio.vietnamese_tag_label("grabbing_another's_shirt", "0"),
+            "Đang nắm áo sơ mi người khác",
+        )
+        self.assertEqual(studio.vietnamese_tag_label("undressing_another", "0"), "Đang cởi đồ người khác")
+
+    def test_curated_label_beats_composition_for_hyphenated_names(self):
+        # "high-waist_panties": ghép từ vẫn chạy được sau khi thêm "waist" nhưng bản curate phải thắng.
+        self.assertEqual(studio.vietnamese_tag_label("high-waist_panties", "0"), "Quần lót cạp cao")
+
+    def test_verb_at_the_end_only_reorders_when_it_is_actually_a_verb(self):
+        self.assertEqual(studio.vietnamese_tag_label("pseudo_skirt_lift", "0"), "Nhấc chân váy giả")
+        # "piercing"/"grab" ở đây là danh từ, không được đảo thành cụm động từ.
+        self.assertEqual(studio.vietnamese_tag_label("nose_piercing", "0"), "Khuyên mũi")
+        self.assertEqual(studio.vietnamese_tag_label("torn_pantyhose", "0"), "Quần tất bị rách")
+
+    def test_clothing_vocabulary_stays_clean(self):
+        for key, value in studio._TAG_VI_UNIFORM_FRAMES.items():
+            self.assertTrue(key and value == value.strip(), key)
+            self.assertNotIn(",", value, key)
+        for key, value in studio._TAG_VI_POSSESSIVES.items():
+            self.assertTrue(key.endswith("'s") and value, key)

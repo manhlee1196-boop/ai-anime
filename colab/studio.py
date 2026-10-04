@@ -3854,6 +3854,117 @@ _TAG_VI_WORDS.update({
     "pie": "bánh nhân",
     "pudding": "bánh pudding",
     "jelly": "thạch",
+    # Đợt 7 — trang phục: môn thể thao, vùng miền, kiểu cắt.
+    "fool": "kẻ ngốc",
+    "national": "quốc gia",
+    "team": "đội",
+    "baseball": "bóng chày",
+    "basketball": "bóng rổ",
+    "volleyball": "bóng chuyền",
+    "tennis": "quần vợt",
+    "track": "điền kinh",
+    "swim": "bơi",
+    "butler": "quản gia",
+    "prison": "tù",
+    "tactical": "chiến thuật",
+    "work": "lao động",
+    "workout": "tập thể dục",
+    "biker": "mô tô",
+    "tribal": "văn hoá bộ lạc",
+    "ornate": "cầu kỳ",
+    "patchwork": "chắp vá",
+    "padded": "có đệm",
+    "hooded": "có mũ trùm",
+    "sideless": "hở bên",
+    "shoulderless": "không vai",
+    "breastless": "không ngực",
+    "tube": "dạng ống",
+    "wringing": "vắt",
+    "korean": "Hàn Quốc",
+    "german": "Đức",
+    "italian": "Ý",
+    "french": "Pháp",
+    "spanish": "Tây Ban Nha",
+    "english": "Anh",
+    "indian": "Ấn Độ",
+    "russian": "Nga",
+    "hawaiian": "Hawaii",
+    "aloha": "aloha",
+    "ainu": "Ainu",
+    "meiji": "Minh Trị",
+    "roman": "La Mã",
+    "greek": "Hy Lạp",
+    "egyptian": "Ai Cập",
+    "arabian": "Ả Rập",
+    "persian": "Ba Tư",
+    "viking": "kỵ sĩ Bắc Âu",
+    "native": "bản địa",
+    "victorian": "thời Victoria",
+    "edwardian": "thời Edward",
+    "medieval": "trung cổ",
+    "renaissance": "phục hưng",
+    "baroque": "baroque",
+    "gothic": "gothic",
+    "cyberpunk": "cyberpunk",
+    "steampunk": "steampunk",
+    "religious": "tôn giáo",
+    "ceremonial": "nghi lễ",
+    "traditional": "truyền thống",
+    "modern": "hiện đại",
+    "futuristic": "tương lai",
+    "antique": "cổ",
+    "exotic": "độc lạ",
+    "regal": "hoàng gia",
+    "royal": "hoàng gia",
+    "noble": "quý tộc",
+    "peasant": "nông dân",
+    "servant": "người hầu",
+    "schoolgirl": "nữ sinh",
+    "schoolboy": "nam sinh",
+    "uniformed": "mặc đồng phục",
+    "crossdressing": "mặc đồ khác giới",
+    "boob": "ngực",
+    "ofuda": "bùa ofuda",
+    "kimono": "kimono",
+    "overall": "yếm",
+    "overalls": "quần yếm",
+    "skirt": "chân váy",
+    "belt": "thắt lưng",
+    "sash": "dải thắt",
+    "poncho": "áo poncho",
+    "tunic": "áo tuynic",
+    "doublet": "áo doublet",
+    "bodice": "áo corset trên",
+    "gown": "đầm dạ hội",
+    "waist": "eo",
+    "crotch": "đũng quần",
+    "openchest": "hở ngực",
+    "midriff": "vòng eo",
+    "crop": "cắt ngắn",
+    "highwaist": "cạp cao",
+    "lowleg": "cạp trễ",
+    "zippered": "có khóa kéo",
+    "buttoned": "có cúc",
+    "cutout": "mổ xẻ",
+    "gartered": "có dây treo",
+    "unarmored": "không giáp",
+    "store": "cửa hàng",
+    "basket": "cái rổ",
+    "band": "dải băng",
+    "baton": "cái gậy",
+    "ruff": "diềm xếp",
+    "snap": "cúc bấm",
+    "worship": "sùng bái",
+    "bloomers": "quần phồng",
+    "pillbox": "hộp nhỏ",
+    "porkpie": "porkpie",
+    "hard": "bảo hộ",
+    "fold": "gập",
+    "pencil": "bút chì",
+    "dixie": "dixie",
+    "cup": "cái cốc",
+    "bowl": "cái bát",
+    "boat": "thuyền",
 })
 # Tính từ mô tả (hình thái, trạng thái, kích thước) — khác với danh từ bổ nghĩa ở
 # vị trí trong cụm tiếng Việt, nên tách riêng.
@@ -4376,6 +4487,25 @@ _TAG_VI_COMPOSITE_HEADS.update({
     "sari": "Váy sari",
     "cheongsam": "Xường xám",
     "hanbok": "Áo hanbok",
+    # Đợt 7 — trang phục: bộ phận món đồ.
+    "bloomers": "Quần phồng",
+    "ruff": "Diềm cổ",
+    "tassel": "Chùm tua rua",
+    "band": "Dải băng",
+    "basket": "Cái rổ",
+    "baton": "Cái gậy",
+    "snap": "Cúc bấm",
+    "store": "Cửa hàng",
+    "worship": "Sự sùng bái",
+    "overhang": "Vạt thừa",
+    "upskirt": "Ảnh hớ váy",
+    "flip": "Cái lật",
+    "poncho": "Áo poncho",
+    "tunic": "Áo tuynic",
+    "gown": "Đầm dạ hội",
+    "doublet": "Áo doublet",
+    "bodice": "Áo corset",
+    "dirndl": "Váy dirndl",
 })
 
 
@@ -5432,6 +5562,87 @@ TAG_VI_LABELS.update({
     "on_swing": "Trên đu quay",
     "on_furniture": "Trên nội thất",
     "foreskin_day": "Ngày bao quy đầu",
+    # Đợt 7 — trang phục: thẻ nóng.
+    "national_soccer_team_uniform": "Đồng phục đội tuyển bóng đá quốc gia",
+    "soccer_uniform": "Đồng phục bóng đá",
+    "baseball_uniform": "Đồng phục bóng chày",
+    "basketball_uniform": "Đồng phục bóng rổ",
+    "volleyball_uniform": "Đồng phục bóng chuyền",
+    "tennis_uniform": "Đồng phục quần vợt",
+    "track_uniform": "Đồng phục điền kinh",
+    "swim_cap": "Mũ bơi",
+    "skirt_suit": "Bộ vest chân váy",
+    "pencil_dress": "Váy bút chì",
+    "tube_dress": "Váy quây",
+    "sideless_dress": "Váy chẽ bên",
+    "pillbox_hat": "Mũ hộp nhỏ",
+    "porkpie_hat": "Mũ porkpie",
+    "dixie_cup_hat": "Mũ giấy Dixie Cup",
+    "hard_hat": "Mũ bảo hộ",
+    "fold-over_boots": "Bốt gập cổ",
+    "bowl_hat": "Mũ hình bát",
+    "bowler_hat": "Mũ bowler",
+    "ancient_egyptian_clothes": "Quần áo Ai Cập cổ đại",
+    "ancient_roman_clothes": "Quần áo La Mã cổ đại",
+    "roman_clothes": "Quần áo La Mã",
+    "greek_clothes": "Quần áo Hy Lạp",
+    "egyptian_clothing": "Trang phục Ai Cập",
+    "arabian_clothes": "Quần áo Ả Rập",
+    "korean_clothes": "Trang phục Hàn Quốc",
+    "german_clothes": "Trang phục Đức",
+    "ainu_clothes": "Trang phục Ainu",
+    "hawaiian_shirt": "Áo Hawaii",
+    "aloha_shirt": "Áo aloha",
+    "meiji_schoolgirl_uniform": "Đồng phục nữ sinh thời Minh Trị",
+    "native_american_clothes": "Trang phục người bản địa châu Mỹ",
+    "victorian_clothes": "Quần áo thời Victoria",
+    "edwardian_clothes": "Quần áo thời Edward",
+    "medieval_clothes": "Quần áo trung cổ",
+    "renaissance_clothes": "Quần áo thời phục hưng",
+    "tactical_clothes": "Quần áo chiến thuật",
+    "biker_clothes": "Quần áo dân phượt",
+    "prison_clothes": "Quần áo tù nhân",
+    "religious_clothing": "Trang phục tôn giáo",
+    "work_uniform": "Đồng phục lao động",
+    "workout_clothing": "Quần áo tập thể dục",
+    "through_clothes": "Xuyên qua quần áo",
+    "ofuda_on_clothes": "Bùa ofuda dán trên quần áo",
+    "fool's_hat": "Mũ của chú hề",
+    "lifting_another's_clothes": "Đang nhấc quần áo người khác lên",
+    "pulling_another's_clothes": "Đang kéo quần áo người khác",
+    "grabbing_another's_shirt": "Đang nắm áo sơ mi người khác",
+    "undressing_another": "Đang cởi đồ người khác",
+    "undressing_self": "Đang tự cởi đồ",
+    "undressing_partner": "Đang cởi đồ cho bạn tình",
+    "dressing_another": "Đang mặc đồ cho người khác",
+    "putting_on_gloves": "Đang đeo găng tay",
+    "putting_on_jewelry": "Đang đeo trang sức",
+    "wringing_clothes": "Đang vắt quần áo",
+    "padded_gloves": "Găng tay có đệm",
+    "hooded_dress": "Đầm có mũ trùm",
+    "patchwork_clothes": "Quần áo chắp vá",
+    "ornate_clothes": "Quần áo cầu kỳ",
+    "boob_hat": "Mũ hình ngực",
+    "kimono_skirt": "Chân váy kimono",
+    "overall_skirt": "Chân váy yếm",
+    "belt_boots": "Bốt có quai",
+    "waist_ribbon": "Ruy băng eo",
+    "skirt_bow": "Nơ trên chân váy",
+    "hat_band": "Dải băng mũ",
+    "hat_tassel": "Tua rua trên mũ",
+    "hat_bobbles": "Quả bông trên mũ",
+    "glove_snap": "Cúc bấm găng tay",
+    "ribbons_(anatomy)": "Dải ruy băng",
+    "armored_vehicle": "Xe cơ giới bọc thép",
+    "clothing_store": "Cửa hàng quần áo",
+    "shoulderless_shirt": "Áo không vai",
+    "breastless_clothes": "Quần áo không ngực",
+    "crotchless_clothing": "Quần áo hở đũng",
+    "undone_neck_ribbon": "Caravat nơ cổ chưa cài",
+    "crossdressing_male": "Nam mặc đồ nữ",
+    "crossdressing_female": "Nữ mặc đồ nam",
+    "beaded_jewelry": "Trang sức hạt cườm",
+    "team_skull_uniform": "Đồng phục Team Skull",
 })
 
 
@@ -5457,10 +5668,19 @@ def _vi_singular(token):
 
 
 def _vi_word(token):
-    """Nhãn tiếng Việt của một từ bổ nghĩa, chấp nhận cả dạng số nhiều."""
+    """Nhãn tiếng Việt của một từ bổ nghĩa, chấp nhận số nhiều và sở hữu cách."""
     label = _TAG_VI_WORDS.get(token) or _TAG_VI_COLORS.get(token)
     if label:
         return label
+    possessive = _TAG_VI_POSSESSIVES.get(token)
+    if possessive:
+        return possessive
+    if token.endswith("'s"):
+        stem = token[:-2]
+        stem_label = (_TAG_VI_WORDS.get(stem) or _TAG_VI_COMPOSITE_HEADS.get(stem)
+                      or TAG_VI_LABELS.get(stem))
+        if stem_label:
+            return "của " + _lower_first(stem_label)
     singular = _vi_singular(token)
     if singular:
         return _TAG_VI_WORDS.get(singular) or _TAG_VI_COLORS.get(singular)
@@ -5489,6 +5709,11 @@ def _compose_vietnamese_tag_label(name):
     # "covering_nipples": động từ/trạng thái đứng đầu phải do quy tắc cụm xử lý,
     # nếu không sẽ đảo nhầm thành "Núm vú che".
     if parts[0] in _TAG_VI_ACTION_PREFIXES or parts[0] in _TAG_VI_PAST_STATES:
+        return None
+    if (len(parts) > 2 and parts[-1] in _TAG_VI_TRAILING_ACTIONS
+            and parts[-2] in _TAG_VI_ACTION_TARGETS):
+        # "pseudo_skirt_lift": động từ đứng sau danh từ thì quy tắc cụm lo thứ tự,
+        # còn "nose_piercing"/"butt_grab" (danh từ thật) vẫn phải do compose dịch.
         return None
     for size in range(min(2, len(parts) - 1), 0, -1):
         head_key = "_".join(parts[-size:])
@@ -5594,6 +5819,16 @@ _TAG_VI_ACTION_PREFIXES = {
     "kneading": "Đang nhào|",
     "peeling": "Đang bóc|",
     "soaping": "Đang thoa xà phòng|",
+    # Đợt 7 — động từ mặc/cởi.
+    "lifting": "Đang nhấc|",
+    "wringing": "Đang vắt|",
+    "dressing": "Đang mặc|",
+    "undressing": "Đang cởi|",
+    "putting": "Đang mặc|on",
+    "stripping": "Đang lột|",
+    "zipping": "Đang kéo khóa|",
+    "buttoning": "Đang cài cúc|",
+    "unbuttoning": "Đang mở cúc|",
 }
 # Trạng thái đã rồi: đặt SAU danh từ theo tiếng Việt ("<áo> được buộc").
 _TAG_VI_PAST_STATES = {
@@ -5607,6 +5842,9 @@ _TAG_VI_PAST_STATES = {
     "loosened": "nới lỏng", "tightened": "thắt chặt", "bitten": "bị cắn",
     "torn": "bị rách", "cut": "bị cắt", "flipped": "lật sang bên",
     "removed": "đã tháo ra", "discarded": "đã bỏ đi",
+    # Đợt 7 — trạng thái mở/vắt.
+    "undone": "chưa cài",
+    "wrung": "đã vắt",
 }
 # Hướng chuyển động "<danh từ>_<hướng>". Tiếng Việt đặt động từ trước nên cần mẫu riêng
 # cho từng lớp: trang phục / chi tay chân / đuôi-cánh-tai / còn lại.
@@ -5649,6 +5887,84 @@ _TAG_VI_LEADING_STATES = {
     "withering": "đang héo", "fading": "bị phai", "steaming": "đang bốc khói",
     "smoking": "đang bốc khói", "bleeding": "đang chảy máu", "twitching": "giật giật",
 }
+# Khung "đồng phục của <tên riêng>": chỉ dịch PHẦN KHUNG, tên riêng giữ nguyên.
+# Đây là họ thẻ lớn nhất còn trống của nhóm trang phục (~600 thẻ): tên trường, học viện,
+# đội, tổ chức trong anime/game không có bản dịch Việt, nhưng "school_uniform" thì có.
+_TAG_VI_UNIFORM_FRAMES = {
+    "girls'_academy_school_uniform": "Đồng phục học viện nữ sinh",
+    "girls_academy_school_uniform": "Đồng phục học viện nữ sinh",
+    "private_academy_school_uniform": "Đồng phục học viện tư thục",
+    "private_high_school_uniform": "Đồng phục trường trung học tư thục",
+    "junior_high_school_uniform": "Đồng phục trường trung học cơ sở",
+    "middle_school_uniform": "Đồng phục trường trung học cơ sở",
+    "high_school_uniform": "Đồng phục trường trung học phổ thông",
+    "academy_school_uniform": "Đồng phục học viện",
+    "gakuen_school_uniform": "Đồng phục học viện",
+    "academy_uniform": "Đồng phục học viện",
+    "girls_school_uniform": "Đồng phục trường nữ sinh",
+    "schoolgirl_uniform": "Đồng phục nữ sinh",
+    "schoolboy_uniform": "Đồng phục nam sinh",
+    "school_uniform": "Đồng phục trường",
+    "military_uniform": "Đồng phục quân đội",
+    "naval_uniform": "Đồng phục hải quân",
+    "police_uniform": "Đồng phục cảnh sát",
+    "nurse_uniform": "Đồng phục y tá",
+    "maid_uniform": "Đồng phục hầu gái",
+    "butler_uniform": "Đồng phục quản gia",
+    "idol_uniform": "Đồng phục thần tượng",
+    "cheerleader_uniform": "Đồng phục cổ động viên",
+    "training_uniform": "Đồng phục tập luyện",
+    "monastery_uniform": "Đồng phục tu viện",
+    "dorm_uniform": "Đồng phục ký túc xá",
+    "prison_uniform": "Đồng phục tù nhân",
+    "national_soccer_team_uniform": "Đồng phục đội tuyển bóng đá quốc gia",
+    "squad's_uniform": "Đồng phục đội",
+    "team_uniform": "Đồng phục đội",
+    "uniform": "Đồng phục",
+}
+# Sở hữu cách: "của X" đặt SAU danh từ trong tiếng Việt.
+_TAG_VI_POSSESSIVES = {
+    "another's": "của người khác", "other's": "của người kia", "someone's": "của ai đó",
+    "player's": "của người chơi", "owner's": "của chủ nhân", "viewer's": "của người xem",
+    "character's": "của nhân vật", "author's": "của tác giả", "artist's": "của họa sĩ",
+    "girl's": "của cô gái", "boy's": "của cậu bé", "women's": "của phụ nữ",
+    "men's": "của đàn ông", "kid's": "của trẻ em", "cat's": "của mèo", "dog's": "của chó",
+    "fox's": "của cáo", "rabbit's": "của thỏ", "dragon's": "của rồng",
+}
+_TAG_VI_NAME_PUNCTUATION = re.compile(r"^[a-z0-9][a-z0-9.'\-]*$")
+
+
+def _vi_proper_name(text):
+    """Giữ nguyên tên riêng nhưng viết hoa đúng: "st._gloriana's" → "St. Gloriana's"."""
+    words = []
+    for token in text.replace("_", " ").split():
+        if re.fullmatch(r"[a-z](\.[a-z])*\.", token) or re.fullmatch(r"[a-z](\.[a-z])+\.", token):
+            words.append(token.upper())  # "u.a." -> "U.A.", "st." -> "St."
+            continue
+        words.append(token[:1].upper() + token[1:])
+    return " ".join(words)
+
+
+def _tag_vi_uniform_frame(name):
+    """Dịch khung "<tên riêng>_<loại>uniform", giữ nguyên tên riêng."""
+    lowered = name.casefold()
+    for frame in sorted(_TAG_VI_UNIFORM_FRAMES, key=len, reverse=True):
+        if not lowered.endswith("_" + frame) and lowered != frame:
+            continue
+        prefix = name[: len(name) - len(frame) - 1].strip() if lowered != frame else ""
+        if not prefix:
+            continue
+        tokens = [token for token in prefix.replace(" ", "_").split("_") if token]
+        if not tokens or any(not _TAG_VI_NAME_PUNCTUATION.fullmatch(token) for token in tokens):
+            return None
+        # Phần đầu toàn từ tiếng Anh đã có bản dịch ("red_school_uniform") -> không phải
+        # tên riêng, để quy tắc ghép xử lý trật tự từ cho đúng.
+        if all(token in _TAG_VI_WORDS or token in _TAG_VI_COLORS for token in tokens):
+            return None
+        return f"{_TAG_VI_UNIFORM_FRAMES[frame]} {_vi_proper_name(prefix)}"
+    return None
+
+
 # Lượng từ: tiếng Việt đặt TRƯỚC danh từ ("three_tails" → "Ba cái đuôi").
 _TAG_VI_QUANTITY_MODIFIERS = {
     "1": "Một", "2": "Hai", "3": "Ba", "4": "Bốn", "5": "Năm", "6": "Sáu", "7": "Bảy",
@@ -5986,14 +6302,18 @@ def vietnamese_tag_label(name, category):
         if "-" in base:
             candidates.append(base.replace("-", "_"))
     for candidate in dict.fromkeys(candidates):
-        if candidate != name:
-            translated = TAG_VI_LABELS.get(candidate)
-            if translated:
-                return translated
+        # Ưu tiên 1: nhãn đã curate (kể cả khi chỉ khớp sau khi chuẩn hoá gạch nối).
+        curated = TAG_VI_LABELS.get(candidate)
+        if curated:
+            return curated
+    for candidate in dict.fromkeys(candidates):
         translated = (_compose_vietnamese_tag_label(candidate)
                       or _vietnamese_fragment_label(candidate, category))
         if translated:
             return translated
+        framed = _tag_vi_uniform_frame(candidate)
+        if framed:
+            return framed
     return fallback
 
 
