@@ -736,3 +736,113 @@ class CompositionAndBackgroundRound9Tests(unittest.TestCase):
         self.assertEqual(studio.vietnamese_tag_label("warm_colors", "0"), "Màu ấm")
         self.assertEqual(studio.vietnamese_tag_label("muted_colors", "0"), "Màu trầm")
         self.assertEqual(studio.vietnamese_tag_label("colored_sketch", "0"), "Bản phác thảo có màu")
+
+
+class CharacterDetailRound10Tests(unittest.TestCase):
+    """Đợt 10: thẻ chi tiết nhân vật + chữ số số lượng + chữ láy tiếng Việt."""
+
+    def test_digit_quantities_read_as_vietnamese_counts(self):
+        for tag, expected in (
+            ("2_penises", "Hai dương vật"),
+            ("9_tails", "Chín cái đuôi"),
+            ("1_horn", "Một cái sừng"),
+            ("2_toes", "Hai ngón chân"),
+            ("3_eyes", "Ba con mắt"),
+            ("13_hearts", "Mười ba trái tim"),
+            ("20_fingers", "Hai mươi ngón tay"),
+        ):
+            self.assertEqual(studio.vietnamese_tag_label(tag, "0"), expected, tag)
+
+    def test_sixty_nine_stays_a_number_not_a_count(self):
+        # "69" không có trong bảng số lượng nên không được dịch kiểu "Sáu mươi chín cái".
+        self.assertEqual(studio.vietnamese_tag_label("69_position", "0"), "Vị trí 69")
+
+    def test_hair_and_tail_ornament_family(self):
+        self.assertEqual(
+            studio.vietnamese_tag_label("bandaid_hair_ornament", "0"), "Phụ kiện tóc băng cá nhân"
+        )
+        self.assertEqual(
+            studio.vietnamese_tag_label("lightning_bolt_hair_ornament", "0"),
+            "Phụ kiện tóc hình tia sét",
+        )
+        self.assertEqual(studio.vietnamese_tag_label("entwined_tails", "0"), "Đuôi quấn vào nhau")
+        self.assertEqual(studio.vietnamese_tag_label("tapering_tail", "0"), "Đuôi vót nhọn")
+        self.assertEqual(studio.vietnamese_tag_label("quad_tails", "0"), "Bốn cái đuôi")
+
+    def test_eye_and_brow_details(self):
+        self.assertEqual(studio.vietnamese_tag_label("hypnotic_eyes", "0"), "Mắt bị thôi miên")
+        self.assertEqual(studio.vietnamese_tag_label("beady_eyes", "0"), "Mắt tròn nhỏ")
+        self.assertEqual(studio.vietnamese_tag_label("bloodshot_eyes", "0"), "Mắt vằn máu")
+        self.assertEqual(
+            studio.vietnamese_tag_label("unusually_open_eyes", "0"), "Mở mắt to bất thường"
+        )
+        self.assertEqual(studio.vietnamese_tag_label("furrowed_eyebrows", "0"), "Lông mày cau")
+
+    def test_absence_tags(self):
+        self.assertEqual(studio.vietnamese_tag_label("no_dickey", "0"), "Không có cổ áo giả")
+        self.assertEqual(studio.vietnamese_tag_label("not_for_sale", "5"), "Không bán")
+
+    def test_shipped_labels_are_clean(self):
+        """Quét tệp đã dựng: không lặp từ, không mở đầu bằng chữ thường.
+
+        Ghép từ dễ sinh "tóc tóc"/"hình hình"/"màu màu" trong khi "lùm lùm", "chuồn
+        chuồn" là từ láy thật. Kiểm tra trên CSV thay vì toàn catalog để chạy nhanh.
+        """
+        path = Path(__file__).resolve().parents[1] / "danbooru_e621_merged_vi_vn.csv"
+        self.assertTrue(path.exists(), "cần chạy scripts/build_vietnamese_translate_file.py")
+        allowed = studio._vi_reduplicatives()
+        repeated, lowercase = [], []
+        for line in path.read_text(encoding="utf-8").splitlines():
+            fields = line.split(",", 2)
+            if len(fields) != 3 or not fields[2]:
+                continue
+            label = fields[2]
+            if studio.TAG_VI_LABELS.get(fields[0]) == label:
+                continue  # nhãn đã curate: người viết có thể cố ý lặp "Mew Mew"
+            words = label.split()
+            for index in range(1, len(words)):
+                if words[index] == words[index - 1]:
+                    if words[index][:1].isupper():
+                        continue  # tên riêng viết hoa: "Mew Mew", "Doki Doki" là hợp lệ
+                    pair = f"{words[index]} {words[index]}".casefold()
+                    if pair not in allowed:
+                        repeated.append(f"{fields[0]} → {label}")
+                    break
+            if label[:1].islower():
+                lowercase.append(f"{fields[0]} → {label}")
+        self.assertEqual(repeated, [], "nhãn lặp từ liền nhau: " + "; ".join(repeated[:8]))
+        self.assertEqual(lowercase, [], "nhãn mở đầu chữ thường: " + "; ".join(lowercase[:8]))
+
+    def test_legitimate_reduplication_survives_the_tidy_pass(self):
+        self.assertEqual(studio.vietnamese_tag_label("dragonfly_print", "0"), "Họa tiết chuồn chuồn")
+        self.assertEqual(studio.vietnamese_tag_label("staring_at_chest", "0"), "Nhìn chằm chằm ngực")
+        self.assertEqual(studio.vietnamese_tag_label("huge_bulge", "0"), "Chỗ lùm lùm khổng lồ")
+
+    def test_tidy_pass_fixes_duplicated_head_words(self):
+        self.assertEqual(studio.vietnamese_tag_label("hair_scrunchie", "0"), "Dây buộc tóc")
+        self.assertEqual(studio.vietnamese_tag_label("soccer_ball", "0"), "Quả bóng đá")
+        self.assertEqual(studio.vietnamese_tag_label("tree_stump", "0"), "Gốc cây")
+        self.assertEqual(studio.vietnamese_tag_label("robot_humanoid", "0"), "Dạng người máy")
+
+    def test_preposition_is_not_repeated_after_a_state(self):
+        self.assertEqual(
+            studio.vietnamese_tag_label("shirt_tucked_into_underwear", "0"),
+            "Áo sơ mi giắt vào trong đồ lót",
+        )
+        self.assertEqual(studio.vietnamese_tag_label("shirt_tucked", "0"), "Áo sơ mi giắt vào trong")
+
+    def test_team_names_stay_proper_nouns(self):
+        self.assertEqual(
+            studio.vietnamese_tag_label("orange_planet_uniform", "0"), "Đồng phục Orange Planet"
+        )
+        self.assertEqual(studio.vietnamese_tag_label("space_uniform", "0"), "Đồng phục vũ trụ")
+        self.assertEqual(
+            studio.vietnamese_tag_label("dream_academy_school_uniform", "0"),
+            "Đồng phục học viện Dream",
+        )
+
+    def test_hyphenated_bandaid_tags_are_translated(self):
+        self.assertEqual(studio.vietnamese_tag_label("band-aid_on_face", "0"), "Băng cá nhân trên mặt")
+
+    def test_emoticon_tag_gets_a_readable_vi_label(self):
+        self.assertEqual(studio.vietnamese_tag_label("0_0", "0"), "Mắt tròn xoe")
