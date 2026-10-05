@@ -604,7 +604,8 @@ class VietnameseGlossaryTests(unittest.TestCase):
         self.assertEqual(studio.vietnamese_tag_label("one_eye_visible", "0"), "Một con mắt nhìn thấy được")
         # Động từ tiếng Việt đặt trước danh từ dù tiếng Anh để sau: "dress_pull".
         self.assertEqual(studio.vietnamese_tag_label("dress_pull", "0"), "Kéo váy")
-        self.assertEqual(studio.vietnamese_tag_label("underwear_pull", "0"), "Kéo đồ lót")
+        # Đợt 11: món đồ + động từ do quy tắc cụm lo nên giữ được thể tiếp diễn "Đang kéo".
+        self.assertEqual(studio.vietnamese_tag_label("underwear_pull", "0"), "Đang kéo đồ lót")
         # "of" được lược bỏ vì tiếng Việt nói "Xô sữa", không "Xô của sữa".
         self.assertEqual(studio.vietnamese_tag_label("bucket_of_milk", "0"), "Xô sữa")
         self.assertEqual(studio.vietnamese_tag_label("curved_horns", "0"), "Sừng cong")
@@ -846,3 +847,82 @@ class CharacterDetailRound10Tests(unittest.TestCase):
 
     def test_emoticon_tag_gets_a_readable_vi_label(self):
         self.assertEqual(studio.vietnamese_tag_label("0_0", "0"), "Mắt tròn xoe")
+
+
+class SpeciesAndRelationRound11Tests(unittest.TestCase):
+    """Đợt 11: họ giới tính/loài, động từ quan hệ, đồ vật cầm tay và lượng từ "multi"."""
+
+    def test_gender_and_build_families(self):
+        self.assertEqual(studio.vietnamese_tag_label("dominant_female", "0"), "Nhân vật nữ chiếm ưu thế")
+        self.assertEqual(
+            studio.vietnamese_tag_label("athletic_anthro", "0"), "Nhân vật nhân hóa cường tráng"
+        )
+        self.assertEqual(studio.vietnamese_tag_label("bottomless_female", "0"), "Nữ hở dưới")
+        self.assertEqual(studio.vietnamese_tag_label("pregnant_male", "0"), "Nhân vật nam mang thai")
+        self.assertEqual(studio.vietnamese_tag_label("morbidly_obese_female", "0"), "Nữ béo bệnh lý")
+
+    def test_species_prefixes_for_humanoids(self):
+        self.assertEqual(studio.vietnamese_tag_label("felid_humanoid", "0"), "Dạng người họ mèo")
+        self.assertEqual(studio.vietnamese_tag_label("canid_humanoid", "0"), "Dạng người họ chó")
+        self.assertEqual(studio.vietnamese_tag_label("arthropod_humanoid", "0"), "Dạng người chân khớp")
+
+    def test_transitive_relation_rule(self):
+        # "<A>_<động từ>_<B>" chỉ chạy khi cả hai vế đã biết, không bao giờ đoán bừa.
+        self.assertEqual(studio.vietnamese_tag_label("male_penetrating_female", "0"), "Nam thâm nhập nữ")
+        self.assertEqual(studio.vietnamese_tag_label("human_penetrated", "0"), "Người bị thâm nhập")
+        self.assertEqual(
+            studio.vietnamese_tag_label("gynomorph_penetrating_female", "0"), "Dạng cái thâm nhập nữ"
+        )
+
+    def test_family_pairs_use_and(self):
+        self.assertEqual(studio.vietnamese_tag_label("brother_and_sister", "0"), "Anh em trai và chị em gái")
+        self.assertEqual(studio.vietnamese_tag_label("parent_and_child", "0"), "Cha mẹ và trẻ em")
+        self.assertEqual(studio.vietnamese_tag_label("mother_and_daughter", "0"), "Mẹ và con gái")
+
+    def test_quantity_words_come_before_the_noun(self):
+        self.assertEqual(studio.vietnamese_tag_label("multi_genitalia", "0"), "Nhiều bộ phận sinh dục")
+        self.assertEqual(studio.vietnamese_tag_label("multi_tail", "0"), "Nhiều cái đuôi")
+        self.assertEqual(studio.vietnamese_tag_label("both_hands", "0"), "Cả hai bàn tay")
+        # WORDS phải thắng bảng số lượng, nếu không "single_leg_armor" mất chữ "chiếc".
+        self.assertEqual(studio.vietnamese_tag_label("single_leg_armor", "0"), "Giáp chân một chiếc")
+
+    def test_held_objects_are_named(self):
+        self.assertEqual(studio.vietnamese_tag_label("holding_bouquet", "0"), "Cầm bó hoa")
+        self.assertEqual(studio.vietnamese_tag_label("holding_chopsticks", "0"), "Cầm đôi đũa")
+        self.assertEqual(studio.vietnamese_tag_label("holding_ladder", "0"), "Cầm thang")
+        self.assertEqual(studio.vietnamese_tag_label("holding_riding_crop", "0"), "Cầm roi cưỡi ngựa")
+
+    def test_garment_action_verbs_yield_to_the_phrase_rule(self):
+        # HEAD "lift"/"pull" từng nuốt các thẻ này và cho "Nâng lên áo choàng".
+        self.assertEqual(studio.vietnamese_tag_label("cloak_lift", "0"), "Nhấc áo choàng")
+        self.assertEqual(studio.vietnamese_tag_label("underwear_pull", "0"), "Đang kéo đồ lót")
+        self.assertEqual(studio.vietnamese_tag_label("belt_grab", "0"), "Nắm thắt lưng")
+        # Bộ phận cơ thể thì compose vẫn đúng, không được nhường.
+        self.assertEqual(studio.vietnamese_tag_label("butt_grab", "0"), "Bóp mông")
+        self.assertEqual(studio.vietnamese_tag_label("head_grab", "0"), "Bóp đầu")
+
+    def test_head_nouns_can_act_as_modifiers(self):
+        self.assertEqual(
+            studio.vietnamese_tag_label("penis_size_difference", "0"), "Chênh lệch kích thước dương vật"
+        )
+        self.assertEqual(studio.vietnamese_tag_label("height_difference", "0"), "Chênh lệch chiều cao")
+        self.assertEqual(studio.vietnamese_tag_label("species_transformation", "0"), "Sự biến đổi loài")
+
+    def test_piercing_and_ring_family(self):
+        self.assertEqual(studio.vietnamese_tag_label("wedding_ring", "0"), "Nhẫn cưới")
+        self.assertEqual(studio.vietnamese_tag_label("septum_piercing", "0"), "Khuyên vách mũi")
+        self.assertEqual(studio.vietnamese_tag_label("barbell_piercing", "0"), "Khuyên thanh thẳng")
+        self.assertEqual(studio.vietnamese_tag_label("corset_piercing", "0"), "Khuyên áo corset")
+
+    def test_frame_and_speech_bubble_tags(self):
+        self.assertEqual(studio.vietnamese_tag_label("out_of_frame", "0"), "Lọt ra ngoài khung hình")
+        self.assertEqual(studio.vietnamese_tag_label("foot_out_of_frame", "0"), "Chân lọt ra ngoài khung")
+        self.assertEqual(
+            studio.vietnamese_tag_label("spoken_question_mark", "0"), "Dấu hỏi trong bóng thoại"
+        )
+
+    def test_proper_names_stay_capitalized(self):
+        self.assertEqual(
+            studio.vietnamese_tag_label("nine_ball_maid_uniform", "0"), "Đồng phục hầu gái Nine Ball"
+        )
+        self.assertEqual(studio.vietnamese_tag_label("pilot_uniform", "0"), "Đồng phục phi công")

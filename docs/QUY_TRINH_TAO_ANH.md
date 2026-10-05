@@ -156,8 +156,8 @@ một thẻ chỉ xuất hiện trong tệp khi nó thực sự có bản dịch
 gọi) sẽ báo lỗi nếu ai đó sửa `TAG_VI_LABELS` mà quên tạo lại tệp. Nhãn mới trong từ điển luôn thắng cột chú giải đông lạnh của CSV
 (`_prefer_vietnamese_label`), và quy tắc ghép xếp danh từ bổ nghĩa theo trật tự tiếng Việt
 (`rabbit_ear_hat` → **Mũ tai thỏ**, nối màu bằng `màu` với nhóm trang phục: `black_bra` →
-**Áo ngực màu đen**). Bộ ghép có ba lớp từ vựng (2.864 mục cố định,
-743 danh từ chính, 1.333 bổ ngữ, 36 màu) cộng mười lăm quy tắc cụm cho chi tiết nhân vật
+**Áo ngực màu đen**). Bộ ghép có ba lớp từ vựng (2.964 mục cố định,
+783 danh từ chính, 1.521 bổ ngữ, 36 màu) cộng mười bảy quy tắc cụm cho chi tiết nhân vật
 (`<động từ>[ <phó từ hướng>]_<tân ngữ>`, `<A>_<giới từ>_<B>`, `<món đồ>_only`,
 `<bộ phận>_<hướng>`, `<danh từ>_<trạng thái>`, `see_through_/floating_<x>`, `<bộ phận>less`,
 danh từ chính là loài vật hay nội thất, `<món đồ|bộ phận>_<động từ>` (Kéo váy, Liếm đuôi),
@@ -174,9 +174,14 @@ còn quy tắc ghép nhường cho quy tắc cụm khi token cuối là động 
 Hai cơ chế giữ nhãn ghép tự nhiên: `_tag_vi_quantity` nhận chữ số 1..20 nên `13_hearts` → Mười ba trái tim mà
 `69_position` vẫn là Vị trí 69; `_tidy_vietnamese_label` bỏ từ lặp liền nhau do ghép (`soccer_ball` → Quả bóng đá)
 nhưng tra ngược chính từ điển để giữ từ láy (`chuồn chuồn`, `lùm lùm`, `chằm chằm`). Test `test_shipped_labels_are_clean`
-quét tệp đã dựng và chặn cả hai loại lỗi (lặp từ, mở đầu bằng chữ thường):
+quét tệp đã dựng và chặn cả hai loại lỗi (lặp từ, mở đầu bằng chữ thường). Đợt 11 thêm hai quy tắc
+cấu trúc: `_TAG_VI_TRANSITIVE_RELATIONS` cho `<A>_<động từ>_<B>` (`male_penetrating_female` → Nam thâm nhập nữ,
+chỉ chạy khi cả hai vế đã biết) và `_TAG_VI_GARMENT_ACTION_VERBS` để `<món đồ>_<động từ>` nhường cho quy tắc cụm
+(`cloak_lift` → Nhấc áo choàng thay vì Nâng lên áo choàng) trong khi bộ phận cơ thể vẫn do compose xử lý
+(`butt_grab` → Bóp mông); `_vi_modifier` còn nhận danh từ chính làm bổ ngữ (`penis_size_difference` →
+Chênh lệch kích thước dương vật) nhưng WORDS phải tra trước bảng số lượng để `single_leg_armor` không mất chữ "chiếc":
 thêm một danh từ chính mở khóa cả họ
-thẻ, nên độ phủ tăng từ 1.707 lên **27.368** thẻ mà không phải dịch máy — và tăng có chủ đích theo
+thẻ, nên độ phủ tăng từ 1.707 lên **29.619** thẻ mà không phải dịch máy — và tăng có chủ đích theo
 hướng ưu tiên thẻ tả nhân vật (mắt, tóc, mặt, tai/đuôi, trang phục, biểu cảm) trước bối cảnh hay metadata.
 Từ đợt bố cục/bối cảnh, liên từ `to/at/with` trong cụm tương tác bị lược (`talking_to_viewer` → Nói chuyện
 với người xem), và `_tag_vi_uniform_frame` chỉ nhường quy tắc ghép khi phần đầu là **màu** — thêm từ vào
@@ -198,4 +203,4 @@ Phần thứ tự thẻ, khối 75 token và các thẻ Illustrious bám tốt l
 
 ## 7. Chưa được kiểm chứng
 
-Mã và tài liệu này đã qua `python -m unittest discover -s tests -v` (**144 test: 101 đạt, 43 bỏ qua, 0 thất bại**) và `scripts/build_colab_studio.py` tái tạo notebook; các test CPU bao gồm pin/download giả lập, cache/hash, kích thước, output size và nhánh OOM → CPU giả lập, cùng nạp catalog CSV, autocomplete có toán tử `*`/`@`, định dạng file dịch tiếng Việt `danbooru_e621_merged_vi_vn.csv` (kèm vệ sinh nhãn: không lặp từ, viết hoa chữ đầu), trật tự từ trong nhãn ghép, tỷ lệ phủ nhóm chi tiết nhân vật, trật tự lượng từ/động từ, khung đồng phục theo tên riêng, sở hữu cách, cụm tương tác với người xem và vệ sinh từ điển (2.864 mục, không dấu phẩy/không ký tự ngoại lai). Sandbox thiếu PyTorch và `diffusers` nên các test kiến trúc checkpoint và inference bị bỏ qua; Gradio 6.15.2 và Pillow đã cài nên test dựng UI và chạy sự kiện `process_api` đã chạy thật. Chưa xác nhận SHA Anime6B với file chính thức do lỗi TLS khi tải, và **chưa** chạy hires/upscale hoặc đo chất lượng ảnh, tốc độ, VRAM trên GPU Colab. Xem `VERIFICATION.md` để biết đầy đủ giới hạn.
+Mã và tài liệu này đã qua `python -m unittest discover -s tests -v` (**155 test: 112 đạt, 43 bỏ qua, 0 thất bại**) và `scripts/build_colab_studio.py` tái tạo notebook; các test CPU bao gồm pin/download giả lập, cache/hash, kích thước, output size và nhánh OOM → CPU giả lập, cùng nạp catalog CSV, autocomplete có toán tử `*`/`@`, định dạng file dịch tiếng Việt `danbooru_e621_merged_vi_vn.csv` (kèm vệ sinh nhãn: không lặp từ, viết hoa chữ đầu), trật tự từ trong nhãn ghép, tỷ lệ phủ nhóm chi tiết nhân vật, trật tự lượng từ/động từ, khung đồng phục theo tên riêng, sở hữu cách, cụm tương tác với người xem và vệ sinh từ điển (2.964 mục, không dấu phẩy/không ký tự ngoại lai). Sandbox thiếu PyTorch và `diffusers` nên các test kiến trúc checkpoint và inference bị bỏ qua; Gradio 6.15.2 và Pillow đã cài nên test dựng UI và chạy sự kiện `process_api` đã chạy thật. Chưa xác nhận SHA Anime6B với file chính thức do lỗi TLS khi tải, và **chưa** chạy hires/upscale hoặc đo chất lượng ảnh, tốc độ, VRAM trên GPU Colab. Xem `VERIFICATION.md` để biết đầy đủ giới hạn.

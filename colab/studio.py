@@ -3068,6 +3068,108 @@ TAG_VI_LABELS = {
     "genitals": "Bộ phận sinh dục", "nsfw": "Nội dung nhạy cảm",
 }
 TAG_VI_LABELS.update({
+    # Đợt 11 — thẻ nóng ghép máy không tự nhiên nên viết tay.
+    "hand_on_another's_shoulder": "Đặt tay lên vai người khác",
+    "hands_on_another's_shoulders": "Đặt hai tay lên vai người khác",
+    "hand_on_another's_chest": "Đặt tay lên ngực người khác",
+    "hand_on_another's_stomach": "Đặt tay lên bụng người khác",
+    "hand_on_another's_waist": "Đặt tay lên eo người khác",
+    "hand_on_another's_thigh": "Đặt tay lên đùi người khác",
+    "hand_on_another's_cheek": "Đặt tay lên má người khác",
+    "hands_on_another's_cheeks": "Đặt hai tay lên má người khác",
+    "hand_on_another's_chin": "Đặt tay lên cằm người khác",
+    "hand_on_another's_neck": "Đặt tay lên cổ người khác",
+    "hand_on_another's_back": "Đặt tay lên lưng người khác",
+    "hand_on_another's_ass": "Đặt tay lên mông người khác",
+    "hand_on_another's_hip": "Đặt tay lên hông người khác",
+    "hand_on_another's_leg": "Đặt tay lên chân người khác",
+    "hand_on_another's_arm": "Đặt tay lên cánh tay người khác",
+    "head_on_another's_shoulder": "Tựa đầu lên vai người khác",
+    "grabbing_another's_ass": "Bóp mông người khác",
+    "grabbing_another's_arm": "Nắm cánh tay người khác",
+    "grabbing_another's_thighs": "Nắm đùi người khác",
+    "grabbing_another's_penis": "Nắm dương vật người khác",
+    "holding_another's_wrist": "Nắm cổ tay người khác",
+    "holding_another's_arm": "Nắm cánh tay người khác",
+    "holding_another's_leg": "Giữ chân người khác",
+    "holding_another's_face": "Ôm mặt người khác",
+    "spreading_another's_legs": "Kéo rộng chân người khác",
+    "spreading_another's_pussy": "Mở âm hộ người khác",
+    "finger_in_another's_mouth": "Đưa ngón tay vào miệng người khác",
+    "arm_around_another's_waist": "Vòng tay ôm eo người khác",
+    "arm_around_another's_shoulder": "Vòng tay qua vai người khác",
+    "licking_another's_face": "Liếm mặt người khác",
+    "kissing_on_the_cheek": "Hôn lên má",
+    "missionary_position": "Tư thế truyền giáo",
+    "reverse_missionary_position": "Tư thế truyền giáo ngược",
+    "reverse_cowgirl_position": "Tư thế cưỡi ngựa ngược",
+    "squatting_cowgirl_position": "Tư thế cưỡi ngựa ngồi xổm",
+    "doggystyle_position": "Tư thế doggy",
+    "spooning_position": "Tư thế thuyền chung thủy",
+    "sixty_nine_position": "Tư thế 69",
+    "kneeling_oral_position": "Tư thế quỳ bằng miệng",
+    "stand_and_carry_position": "Tư thế bế đứng",
+    "prone_bone_position": "Tư thế nằm sấp",
+    "fully_clothed_female": "Nữ mặc kín đồ",
+    "fully_clothed_male": "Nam mặc kín đồ",
+    "fully_clothed_anthro": "Nhân thú mặc kín đồ",
+    "fully_clothed_person": "Nhân vật mặc kín đồ",
+    "mostly_nude_female": "Nữ gần khỏa thân",
+    "mostly_nude_male": "Nam gần khỏa thân",
+    "mostly_nude_anthro": "Nhân thú gần khỏa thân",
+    "partially_clothed_female": "Nữ mặc hở một phần",
+    "partially_clothed_male": "Nam mặc hở một phần",
+    "partially_clothed_anthro": "Nhân thú mặc hở một phần",
+    "topless_anthro": "Nhân thú hở trên",
+    "topless_animal": "Động vật hở trên",
+    "bottomless_female": "Nữ hở dưới",
+    "bottomless_male": "Nam hở dưới",
+    "bottomless_anthro": "Nhân thú hở dưới",
+    "morbidly_obese_female": "Nữ béo bệnh lý",
+    "morbidly_obese_male": "Nam béo bệnh lý",
+    "morbidly_obese_anthro": "Nhân thú béo bệnh lý",
+    "anatomically_correct_genitalia": "Bộ phận sinh dục đúng giải phẫu",
+    "anatomically_correct_penis": "Dương vật đúng giải phẫu",
+    "anatomically_correct_vulva": "Âm hộ đúng giải phẫu",
+    "anatomically_correct_breasts": "Ngực đúng giải phẫu",
+    "anatomically_correct_anus": "Hậu môn đúng giải phẫu",
+    "nine_ball_maid_uniform": "Đồng phục hầu gái Nine Ball",
+    "riding_crop": "Roi cưỡi ngựa",
+    "cloaked": "Có áo choàng",
+    "gynomorph_penetrating_female": "Dạng cái thâm nhập nữ",
+    "gynomorph_penetrating_male": "Dạng cái thâm nhập nam",
+    "andromorph_penetrating_female": "Dạng đực thâm nhập nữ",
+    "andromorph_penetrating_male": "Dạng đực thâm nhập nam",
+    "intersex_penetrating_female": "Liên giới tính thâm nhập nữ",
+    "intersex_penetrating_male": "Liên giới tính thâm nhập nam",
+    "shirt_hold": "Nắm áo sơ mi",
+    "female_penetrating_male": "Nữ thâm nhập nam",
+    "female_penetrating_female": "Nữ thâm nhập nữ",
+    "male_penetrating_male": "Nam thâm nhập nam",
+    "feral_penetrating_anthro": "Thú thâm nhập nhân thú",
+    "feral_penetrating_female": "Thú thâm nhập nữ",
+    "feral_penetrating_male": "Thú thâm nhập nam",
+    "holding_riding_crop": "Cầm roi cưỡi ngựa",
+    "crop_top_lift": "Nhấc áo croptop",
+    "crop_top_hoodie": "Áo hoodie croptop",
+    "crop_top_only": "Chỉ mặc áo croptop",
+    "split_crop": "Áo croptop tách đôi",
+    "crop_top_overhang": "Vạt thừa lộ trên áo croptop",
+    "out_of_frame": "Lọt ra ngoài khung hình",
+    "in_frame": "Trong khung hình",
+    "foot_out_of_frame": "Chân lọt ra ngoài khung",
+    "head_out_of_frame": "Đầu lọt ra ngoài khung",
+    "knees_out_of_frame": "Đầu gối lọt ra ngoài khung",
+    "hand_out_of_frame": "Bàn tay lọt ra ngoài khung",
+    "leg_out_of_frame": "Chân lọt ra ngoài khung",
+    "upper_body_out_of_frame": "Thân trên lọt ra ngoài khung",
+    "frame_by_frame": "Từng khung hình một",
+    "spoken_question_mark": "Dấu hỏi trong bóng thoại",
+    "spoken_exclamation_mark": "Dấu chấm than trong bóng thoại",
+    "spoken_musical_note": "Nốt nhạc trong bóng thoại",
+    "spoken_note": "Nốt nhạc trong bóng thoại",
+    "speech_bubble_start": "Đầu bong bóng thoại",
+    "speech_bubble_tail": "Đuôi bong bóng thoại",
     # Thẻ phổ biến về số lượng, biểu cảm và tư thế.
     "couple": "Cặp đôi", "multiple_people": "Nhiều người",
     "female_focus": "Tập trung vào nhân vật nữ", "male_focus": "Tập trung vào nhân vật nam",
@@ -3394,6 +3496,197 @@ _TAG_VI_WORDS = {
     "loose": "rộng",
 }
 _TAG_VI_WORDS.update({
+    # Đợt 11 — danh từ họ hàng cho họ thẻ <A>_and_<B>.
+    "parent": "cha mẹ",
+    "son": "con trai",
+    "daughter": "con gái",
+    "mother": "mẹ",
+    "father": "cha",
+    "brothers": "anh em trai",
+    "grandmother": "bà",
+    "grandfather": "ông",
+    "twin_sister": "chị em gái song sinh",
+    # Đợt 11 — bổ ngữ cho họ giới tính/loài/trang phục.
+    "pregnant": "mang thai",
+    "athletic": "cường tráng",
+    "toned": "thon săn",
+    "voluptuous": "nóng bỏng",
+    "dominant": "chiếm ưu thế",
+    "submissive": "nhượng bộ",
+    "bottomless": "hở phần dưới",
+    "topless": "hở phần trên",
+    "clothed": "mặc đồ",
+    "nude": "khỏa thân",
+    "bound": "bị trói",
+    "gaping": "há rộng",
+    "inflated": "phồng to",
+    "censored": "đã kiểm duyệt",
+    "presenting": "chĩa ra",
+    "spreading": "mở rộng",
+    "felid": "họ mèo",
+    "canid": "họ chó",
+    "equid": "họ ngựa",
+    "leporid": "họ thỏ",
+    "lagomorph": "bộ thỏ",
+    "rodent": "bộ gặm nhấm",
+    "arthropod": "chân khớp",
+    "scalie": "bò sát",
+    "mustelid": "họ chồn",
+    "procyonid": "họ gấu trúc",
+    "pantherine": "họ mèo lớn",
+    "sciurid": "sóc",
+    "aquatic": "dưới nước",
+    "alien": "ngoài hành tinh",
+    "anal": "hậu môn",
+    "vaginal": "âm đạo",
+    "oral": "bằng miệng",
+    "penile": "thuộc dương vật",
+    "cock": "dương vật",
+    "pussy": "âm hộ",
+    "testes": "tinh hoàn",
+    "balls": "tinh hoàn",
+    "gynomorph": "dạng cái",
+    "andromorph": "dạng đực",
+    "dildo": "dương vật giả",
+    "kissing": "hôn",
+    "bikini": "bikini",
+    "thong": "chữ T",
+    "highleg": "cắt cao",
+    "sweater": "áo len",
+    "rope": "dây thừng",
+    "suit": "vest",
+    "jacket": "áo khoác",
+    "garter": "dây giữ bít tất",
+    "armwear": "đồ tay",
+    "neckwear": "khăn cổ",
+    "forehead": "trán",
+    "nape": "gáy",
+    "sole": "lòng bàn chân",
+    "heel": "gót",
+    "microphone": "mic",
+    "size": "kích thước",
+    "height": "chiều cao",
+    "width": "bề ngang",
+    "weight": "cân nặng",
+    "missionary": "truyền giáo",
+    "doggystyle": "doggy",
+    "watermark": "hình mờ",
+    "logo": "biểu tượng",
+    "macro": "phóng to",
+    # Đợt 11 — bổ ngữ cho họ giới tính/loài/trang phục.
+    "assertive": "tự tin",
+    "elderly": "lớn tuổi",
+    "featureless": "không chi tiết",
+    "hipped": "hông",
+    "outstretched": "duỗi thẳng",
+    "arched": "cong",
+    "inverted": "đảo ngược",
+    "throbbing": "giật thình thịch",
+    "bouncing": "nảy",
+    "constricted": "co hẹp",
+    "limited": "hạn chế",
+    "rectangular": "hình chữ nhật",
+    "circular": "hình tròn",
+    "triangular": "hình tam giác",
+    "anatomical": "giải phẫu",
+    "symbolic": "tượng trưng",
+    "imminent": "sắp xảy ra",
+    "delayed": "trễ",
+    "centered": "canh giữa",
+    "spaced": "giãn cách",
+    "mollusk": "thân mềm",
+    "cephalopod": "đầu chân vòng",
+    "arachnid": "họ nhện",
+    "lagomorphs": "bộ thỏ",
+    "monstrous": "quái dị",
+    "elemental": "nguyên tố",
+    "goo": "nhầy",
+    "robotic": "người máy",
+    "mechanized": "cơ giới hóa",
+    "fennec": "cáo sa mạc",
+    "hunting": "săn mồi",
+    "domestic": "nhà",
+    "wild": "dã ngoại",
+    "toothed": "có răng",
+    "baleen": "tấm sừng",
+    "genital": "sinh dục",
+    "boobs": "ngực",
+    "futa": "futanari",
+    "buttplug": "chậu hậu môn",
+    "deep": "sâu",
+    "virgin": "trinh nữ",
+    "competition": "thi đấu",
+    "visor": "lưỡi trai",
+    "bridal": "cô dâu",
+    "wedding": "cưới",
+    "thighband": "dải đùi",
+    "spaghetti": "dây mảnh",
+    "slingshot": "dây chéo",
+    "potted": "trồng chậu",
+    "stuffed": "nhồi bông",
+    "shin": "cẳng chân",
+    "knuckle": "khớp ngón",
+    "bouquet": "bó hoa",
+    "fork": "dĩa",
+    "spoon": "thìa",
+    "chopsticks": "đũa",
+    "wand": "đũa phép",
+    "pen": "bút máy",
+    "axe": "rìu",
+    "popsicle": "kem que",
+    "scythe": "lưỡi hái",
+    "dagger": "dao găm",
+    "hammer": "búa",
+    "paintbrush": "cọ vẽ",
+    "guitar": "đàn guitar",
+    "syringe": "ống tiêm",
+    "controller": "tay cầm",
+    "can": "lon",
+    "vase": "lọ hoa",
+    "clipboard": "bảng kẹp",
+    "pompoms": "bông cổ vũ",
+    "mop": "cây lau nhà",
+    "age": "tuổi",
+    "species": "loài",
+    "gender": "giới tính",
+    "musical": "âm nhạc",
+    "barbell": "thanh thẳng",
+    "septum": "vách mũi",
+    "industrial": "industrial",
+    "medial": "phía trong",
+    "lateral": "ngoài",
+    "proximal": "gần gốc",
+    "twin": "đôi",
+    "triple_": "ba",
+    "cowgirl": "cưỡi ngựa",
+    "reverse": "ngược",
+    "spooning": "thuyền chung thủy",
+    "milling": "quay",
+    "sample": "mẫu",
+    "company": "công ty",
+    "serial": "sê-ri",
+    "production": "sản xuất",
+    "newsboy": "newsboy",
+    "pilot": "phi công",
+    "abyssal": "vực thẳm",
+    "weibo": "Weibo",
+    "pixiv": "Pixiv",
+    "twitter": "Twitter",
+    "instagram": "Instagram",
+    "spoken": "trong bóng thoại",
+    "thought": "trong bong bóng nghĩ",
+    "question": "hỏi",
+    "exclamation": "cảm thán",
+    "speech": "nói",
+    "tile": "gạch",
+    "brick": "gạch nung",
+    "concrete": "bê tông",
+    "ceramic": "gốm",
+    "disposable": "dùng một lần",
+    "giant": "khổng lồ",
+    "tiny": "rất nhỏ",
+    "tiny_": "nhỏ xíu",
+    "germ": "vi trùng",
     # "space_uniform": có mặt "space" trong WORDS để quy tắc ghép thắng khung tên riêng.
     "space": "vũ trụ",
     # Đợt 3 – chi tiết nhân vật: nghề/nhóm người, loài, hình khối, chất liệu mũ áo.
@@ -4315,6 +4608,48 @@ _TAG_VI_COMPOSITE_HEADS = {
 # Danh từ ghép được mở rộng theo các nhóm hay gặp nhất trong catalog. Mỗi mục ở đây
 # Mỗi mục mở ra một họ thẻ "<modifier>_<danh từ>" mà không phải liệt kê từng thẻ một.
 _TAG_VI_COMPOSITE_HEADS.update({
+    # Đợt 11 — danh từ chính mới (đồ vật cầm tay, họ loài, khung hình).
+    "bouquet": "Bó hoa",
+    "fork": "Dĩa",
+    "spoon": "Thìa",
+    "chopsticks": "Đôi đũa",
+    "wand": "Cây đũa phép",
+    "pen": "Bút máy",
+    "axe": "Rìu",
+    "popsicle": "Cây kem que",
+    "scythe": "Lưỡi hái",
+    "dagger": "Dao găm",
+    "hammer": "Búa",
+    "paintbrush": "Cọ vẽ",
+    "guitar": "Đàn guitar",
+    "syringe": "Ống tiêm",
+    "controller": "Tay cầm chơi game",
+    "can": "Lon",
+    "vase": "Lọ hoa",
+    "clipboard": "Bảng kẹp giấy",
+    "microphone": "Micrô",
+    "mop": "Cây lau nhà",
+    "bucket": "Xô",
+    "ladder": "Thang",
+    "pompoms": "Bông cổ vũ",
+    "genitalia": "Bộ phận sinh dục",
+    "cumshot": "Tinh dịch bắn ra",
+    "sweater_vest": "Áo len gilê",
+    "stuffed_toy": "Thú nhồi bông",
+    # Đợt 11 — danh từ chính mới (đồ vật cầm tay, họ loài, khung hình).
+    "smoking_pipe": "Tẩu thuốc",
+    "game_controller": "Tay cầm chơi game",
+    "handheld_console": "Máy chơi game cầm tay",
+    "ranged_weapon": "Vũ khí tầm xa",
+    "poke_ball": "Poké Ball",
+    "gohei": "Gậy gohei",
+    "difference": "Chênh lệch",
+    "frame": "Khung hình",
+    "playtime": "Giờ chơi",
+    "visor_cap": "Mũ lưỡi trai có lưới chắn",
+    "thong_bikini": "Bikini dây",
+    "potted_plant": "Chậu cây cảnh",
+    "rope_belt": "Thắt lưng dây",
     # Trang phục
     "uniform": "Đồng phục", "clothes": "Quần áo", "clothing": "Trang phục",
     "underwear": "Đồ lót", "swimwear": "Đồ bơi", "swimsuit": "Đồ bơi",
@@ -6304,16 +6639,41 @@ def _vi_head(key):
     return None
 
 
+# Động từ tác động lên món đồ: dạng <món đồ>_<động từ> do quy tắc cụm đảm nhiệm.
+_TAG_VI_GARMENT_ACTION_VERBS = {
+    "lift", "pull", "grab", "adjust", "lower", "unzip", "tug", "remove", "wear",
+}
+
+# Động từ hai ngôi trong thẻ e621: "<A>_penetrating_<B>" → "<A> thâm nhập <B>".
+_TAG_VI_TRANSITIVE_RELATIONS = {
+    "penetrating": "thâm nhập", "rimming": "liếm hậu môn", "fingering": "đút ngón tay vào",
+    "molesting": "sàm sỡ", "undressing": "cởi đồ của", "dickriding": "cưỡi lên",
+    "facesitting": "ngồi lên mặt", "riding": "cưỡi lên", "kissing": "hôn",
+}
+
+
 def _vi_modifier(part):
-    """Bản dịch một từ bổ nghĩa trong cụm: WORDS hoặc chữ số số lượng.
+    """Bản dịch một từ bổ nghĩa trong cụm: WORDS, màu, số lượng hoặc danh từ chính.
+
+    Danh từ chính cũng dùng làm bổ ngữ được (`penis` trong `penis_size_difference`,
+    `species` trong `species_transformation`) — chỉ mở khi token đó có trong HEADS nên
+    không thể tạo nhãn bừa.
+    
 
     "4_arms" → "4" không có trong WORDS nhưng tiếng Việt đọc là lượng từ ("Bốn cánh tay").
     Chỉ nhận chữ số nào có sẵn trong bảng (1..20), nếu không "69_position" sẽ thành
     "Sáu mươi chín cái vị trí".
     """
-    if part.isdigit() and part in _TAG_VI_QUANTITY_MODIFIERS:
-        return _lower_first(_TAG_VI_QUANTITY_MODIFIERS[part])
-    return _vi_word(part)
+    # WORDS thắng (giữ "single" → "một chiếc"); số lượng chỉ là phương án dự phòng
+    # cho chữ số 1..20 và multi/many/both… — nhờ vậy "single_leg_armor" không mất "chiếc".
+    word = _vi_word(part)
+    if word:
+        return word
+    quantity = _TAG_VI_QUANTITY_MODIFIERS.get(part)
+    if quantity:
+        return _lower_first(quantity)
+    head = _TAG_VI_COMPOSITE_HEADS.get(part)
+    return _lower_first(head) if head else None
 
 
 # Từ láy tiếng Việt: lặp âm có chủ đích, KHÔNG phải lỗi trùng từ khi ghép.
@@ -6380,6 +6740,14 @@ def _compose_vietnamese_tag_label(name):
     # "covering_nipples": động từ/trạng thái đứng đầu phải do quy tắc cụm xử lý,
     # nếu không sẽ đảo nhầm thành "Núm vú che".
     if parts[0] in _TAG_VI_ACTION_PREFIXES or parts[0] in _TAG_VI_PAST_STATES:
+        return None
+    # "cloak_lift": HEAD "lift" từng thắng và cho "Nâng lên áo choàng" trong khi quy tắc
+    # cụm <món đồ>_<động từ> dịch đúng hơn ("Nhấc áo choàng", "Đang kéo quần short").
+    if (len(parts) == 2 and parts[1] in _TAG_VI_GARMENT_ACTION_VERBS and parts[0] in _TAG_VI_GARMENT_TOKENS
+            and parts[0] not in _TAG_VI_BODY_TOKENS):
+        # Nhường quy tắc cụm cho <món đồ>_<động từ>: "Nhấc áo choàng" đúng hơn
+        # "Nâng lên áo choàng", "Đang kéo quần short" đúng hơn "Kéo quần". Bộ phận cơ thể
+        # (butt_grab, head_grab) không có trong quy tắc cụm nên compose vẫn lo.
         return None
     if (len(parts) > 2 and parts[-1] in _TAG_VI_TRAILING_ACTIONS
             and parts[-2] in _TAG_VI_ACTION_TARGETS):
@@ -6538,6 +6906,10 @@ _TAG_VI_ACTION_PREFIXES = {
 }
 # Trạng thái đã rồi: đặt SAU danh từ theo tiếng Việt ("<áo> được buộc").
 _TAG_VI_PAST_STATES = {
+    # Đợt 11: dạng bị động của họ thẻ quan hệ.
+    "penetrated": "bị thâm nhập",
+    "rimmed": "bị liếm hậu môn",
+    "mounted": "bị cưỡi lên",
     "tied": "được buộc", "untied": "cởi dây", "unbuttoned": "mở khuy",
     "unzipped": "kéo khóa", "unlaced": "cởi dây buộc", "unfastened": "mở",
     "hidden": "được che", "concealed": "được che", "revealed": "lộ ra",
@@ -6679,7 +7051,7 @@ _TAG_VI_QUANTITY_MODIFIERS = {
     "8": "Tám", "9": "Chín", "one": "Một", "two": "Hai", "three": "Ba", "four": "Bốn",
     "five": "Năm", "six": "Sáu", "seven": "Bảy", "eight": "Tám", "nine": "Chín",
     "ten": "Mười", "eleven": "Mười một", "twelve": "Mười hai", "single": "Một",
-    "multiple": "Nhiều", "many": "Nhiều", "few": "Vài", "extra": "Thêm", "both": "Cả hai",
+    "multi": "Nhiều", "multiple": "Nhiều", "many": "Nhiều", "few": "Vài", "extra": "Thêm", "both": "Cả hai",
     "triple": "Ba", "quad": "Bốn", "quadruple": "Bốn", "quintuple": "Năm",
     "sextuple": "Sáu", "septuple": "Bảy", "octuple": "Tám", "nonuple": "Chín",
     "decuple": "Mười",
@@ -6770,6 +7142,7 @@ _TAG_VI_PREPOSITIONS = {
     "upon": "trên",
     "toward": "về phía",
     "towards": "về phía",
+    "and": "và",
     "into": "vào trong",
     "beneath": "bên dưới",
     "underneath": "bên dưới",
@@ -6938,6 +7311,12 @@ def _vietnamese_fragment_label(fragment, category, depth=0):
     for index, token in enumerate(tokens):
         if index == 0 or index == len(tokens) - 1:
             continue
+        relation = _TAG_VI_TRANSITIVE_RELATIONS.get(token)
+        if relation is not None:
+            who = _vietnamese_fragment_label("_".join(tokens[:index]), category, depth + 1)
+            whom = _vietnamese_fragment_label("_".join(tokens[index + 1:]), category, depth + 1)
+            if who and whom and len(tokens) <= 4:
+                return f"{who} {relation} {_lower_first(whom)}"
         preposition = _TAG_VI_PREPOSITIONS.get(token)
         if preposition is None:
             continue
