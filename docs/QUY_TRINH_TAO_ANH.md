@@ -16,11 +16,23 @@ Tài liệu này giải thích accordion **🧭 Quy trình chuẩn · khung prom
 Đọc prompt hiện tại, tách thành từng thẻ (phân tách bằng dấu phẩy), rồi:
 
 - **Khử trùng lặp** theo phần lõi của thẻ (bỏ trọng số `(thẻ:1.1)` và ngoặc khi so sánh; ví dụ `(long hair:1.1)` và `long hair` bị coi là một).
-- **Phân nhóm** mỗi thẻ vào 12 nhóm theo đúng thứ tự ưu tiên CLIP:
+- **Phân nhóm** mỗi thẻ vào 12 nhóm, xếp theo thứ tự ưu tiên CLIP — chủ thể và chi tiết
+  nhân vật dẫn đầu, phần kỹ thuật xếp sau:
 
-  `Chất lượng → Nhãn phân loại → Chủ thể → Ngoại hình → Trang phục → Tư thế/hành động → Thẻ khác của bạn → Bố cục/góc máy → Bối cảnh → Ánh sáng/màu → Phong cách → Độ nét (cuối prompt)`
+  `Chủ thể → Nhãn phân loại → Ngoại hình → Trang phục → Tư thế/hành động → Bố cục/góc máy → Bối cảnh → Ánh sáng/màu → Phong cách → Thẻ khác của bạn → Chất lượng → Độ nét (cuối prompt)`
 
-  Thẻ không khớp nhóm nào nằm ở nhóm *Thẻ khác của bạn*, giữ nguyên vị trí tương đối.
+  Việc khớp nhóm chạy trên bản chuẩn hoá: `blue_eyes` được đọc thành `blue eyes` trước khi
+  so với luật (giữa `_` và chữ không có ranh giới từ nên `\beyes\b` không khớp), rồi mới thử
+  lại trên bản gốc cho các luật có gạch dưới trong regex (`rating_\w+`). Cơ thể và bộ phận
+  nhân vật (vú, đuôi, cánh, sừng, bộ phận sinh dục, hình xăm, khuyên xuyên) được xếp vào
+  nhóm **Ngoại hình** để nằm trong khối dẫn đầu prompt; tay/chân/đầu vẫn thuộc **Tư thế**
+  vì luật tư thế được xét trước.
+  Trong một nhóm, thứ tự bạn đã viết được giữ nguyên. Thẻ không khớp nhóm nào nằm ở
+  nhóm *Thẻ khác của bạn* (sau phong cách, ngay trước khối chất lượng). Khối chất lượng
+  đặt **áp chót** thay vì mở đầu: nhà phát hành WAI v17 chỉ khuyến nghị *có* 2–3 thẻ
+  `masterpiece/best quality` (không nhiều hơn), còn để cuối thì prompt không bị chúng
+  chen mất chỗ của thẻ tả nhân vật; `absurdres` vẫn chốt cuối vì thẻ độ nét đặt sau cùng
+  cho kết quả tốt nhất.
 - **Thêm thẻ neo còn thiếu** của khung đã chọn — chỉ thêm khi nhóm đó **đang trống**, để không nhồi thừa thẻ chất lượng.
 - Trả về chuỗi mới **kèm ghi chú**: số thẻ đã sắp xếp, phân nhóm, thẻ neo đã thêm, thẻ trùng đã bỏ.
 - Nếu kết quả dài hơn 2200 ký tự, nút báo lỗi và **không** ghi gì (bỏ bớt thẻ rồi bấm lại).
@@ -91,7 +103,7 @@ Dropdown **Khung prompt theo loại ảnh** dùng cho nút *Sắp xếp prompt t
 | CFG | 1–12 (mặc định 6) | **5–7** |
 | Kích thước gốc | preset 512² … 1024×1344 | ≥ 1024×1024, ví dụ 1024×1344 |
 | Hires fix | `Tắt` / `1.25×` / `1.5×` / `1.75×` / `2×`, strength 0.2–0.7 (mặc định 0.4) | `1.5`, denoise **0.35–0.5** |
-| Prompt dương | do bạn viết | mở đầu `masterpiece, best quality, amazing quality` (không nhiều hơn) |
+| Prompt dương | do bạn viết | `masterpiece, best quality, amazing quality` (không nhiều hơn) — Studio xếp áp chót, ngay trước `absurdres` |
 | Negative | do bạn viết (nút nạp nhanh) | `bad quality, worst quality, worst detail, sketch, censor` |
 
 Studio ghim sampler Euler a. Hires dùng weight chính thức **RealESRGAN_x4plus_anime_6B** (release `v0.2.2.4`) với RRDBNet 6 block, chạy theo tile rồi lấy mẫu xuống tỷ lệ bạn chọn (`1.25×`/`1.5×`/`1.75×`/`2×`); lượt sau WAI img2img tinh chỉnh với cùng prompt/seed/LoRA. Cách này tránh cài `realesrgan`/BasicSR và cây dependency cũ; model chỉ tải ở lần hires/upscale đầu tiên, vào `/content/wai_upscaler_cache`. Kích thước đầu ra được làm tròn xuống bội số 8 và giới hạn ≈4,2 MP. Weight dự kiến 17.938.799 byte; SHA-256 đang ghim `f872d837d3c90ed2e05227bed711af5671a6fd1c9f7d7e91c911a61f155e99da` theo metadata mirror Hugging Face. Real-ESRGAN phát hành theo giấy phép [BSD-3-Clause](https://github.com/xinntao/Real-ESRGAN/blob/master/LICENSE). GitHub Release API không công bố digest và sandbox không tải được asset GitHub vì lỗi TLS, nên **chưa xác minh độc lập SHA này với file chính thức**. Downloader từ chối mọi file sai kích thước/hash; cần xác nhận lần tải và chất lượng inference trên Colab/GPU thật trước khi coi pipeline đã được kiểm chứng.

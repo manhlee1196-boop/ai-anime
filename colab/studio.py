@@ -53,13 +53,15 @@ REAL_ESRGAN_MODEL = {
 REAL_ESRGAN_CACHE = "/content/wai_upscaler_cache"
 REAL_ESRGAN_TILE_SIZE = 256
 REAL_ESRGAN_TILE_PAD = 16
-# Prompt mẫu viết theo THỨ TỰ CHUẨN của dân chuyên nghiệp (chất lượng → chủ thể
-# → ngoại hình → tư thế → bối cảnh → ánh sáng → phong cách → độ nét). Bạn sửa/xóa
-# tùy ý; Studio gửi đúng nội dung hai ô prompt/negative cho model.
+# Prompt mẫu viết theo THỨ TỰ CHUẨN mà Studio dùng: chủ thể đứng đầu để CLIP bám
+# đối tượng, chi tiết nhân vật (tóc/mắt/mặt/biểu cảm) và trang phục đi ngay sau, rồi
+# tư thế → bố cục → bối cảnh → ánh sáng → phong cách; thẻ lạ của bạn xếp sau phong
+# cách, thẻ chất lượng đặt áp chót và thẻ độ nét chốt cuối. Bạn sửa/xóa tùy ý;
+# Studio gửi đúng nội dung hai ô prompt/negative cho model.
 DEFAULT_PROMPT = (
-    "masterpiece, best quality, amazing quality, 1girl, solo, adult woman, "
-    "long dark hair, gentle smile, standing under cherry blossoms, petals falling, "
-    "spring, soft sunlight, cel shading, anime illustration, absurdres"
+    "1girl, solo, adult woman, long dark hair, gentle smile, "
+    "standing under cherry blossoms, petals falling, spring, soft sunlight, "
+    "cel shading, anime illustration, masterpiece, best quality, amazing quality, absurdres"
 )
 # Negative mặc định nhắm lỗi ngón tay/ngón chân; người dùng tự sửa theo ý mình.
 # Muốn ngắn hơn hãy nạp bộ "Chuẩn nhà phát hành WAI v17" trong UI — negative quá
@@ -362,7 +364,7 @@ RECOMMENDED_STEPS = (15, 30)
 RECOMMENDED_CFG = (5.0, 7.0)
 RECOMMENDED_HIRES_STRENGTH = (0.35, 0.5)
 SDXL_TOKEN_CHUNK = 75  # khối token CLIP của SDXL/Illustrious
-QUALITY_HEAD = ("masterpiece", "best quality", "amazing quality")
+QUALITY_TAGS = ("masterpiece", "best quality", "amazing quality")
 QUALITY_TAIL = ("absurdres",)
 
 # Negative theo mục đích: mỗi preset cố ý GIỮ NGẮN. Nhà phát hành cảnh báo
@@ -534,20 +536,24 @@ NEGATIVE_REPLACE = "Ghi đè ô negative"
 NEGATIVE_APPEND = "Nối thêm thẻ còn thiếu"
 NEGATIVE_MODES = (NEGATIVE_REPLACE, NEGATIVE_APPEND)
 
-# Thứ tự thẻ chuẩn: thẻ đứng trước được CLIP chú ý nhiều hơn, nên chất lượng và
-# chủ thể đi đầu, bối cảnh/ánh sáng/phong cách đi sau, thẻ độ nét chốt cuối.
+# Thứ tự thẻ chuẩn: thẻ đứng trước được CLIP chú ý nhiều hơn. Chủ thể và chi tiết
+# nhân vật (tóc/mắt/mặt/biểu cảm) dẫn đầu vì đó là thứ người dùng chỉnh nhiều nhất;
+# trang phục — tư thế — bố cục — bối cảnh — ánh sáng — phong cách theo sau, thẻ lạ của
+# người dùng đứng sau phong cách. Thẻ CHẤT LƯỢNG đặt áp chót: nhà phát hành WAI v17
+# chỉ khuyến nghị *có* 2–3 thẻ masterpiece/best quality, còn để cuối thì khối chất
+# lượng không chen mất vị trí mở đầu của thẻ tả nhân vật. absurdres luôn chốt cuối.
 PROMPT_SECTIONS = (
-    "quality",
-    "rating",
     "subject",
+    "rating",
     "appearance",
     "outfit",
     "pose",
-    "extra",
     "composition",
     "background",
     "lighting",
     "style",
+    "extra",
+    "quality",
     "tail",
 )
 SECTION_LABELS = {
@@ -614,8 +620,11 @@ _SECTION_RULES = (
         r"\bmakeup\b|\bexpression\b|\bsmile\b|\bblush\b|\btall\b|\bpetite\b|"
         r"\bslim\b|\bcurvy\b|\bmuscular\b|\bbraid\b|\bponytail\b|\btwintails\b|"
         r"\bbangs\b|\bbob cut\b|\bbun\b|\bwavy\b|\bstraight hair\b|\blong hair\b|"
-        r"\bshort hair\b|\bblue eyes\b|\bbody\b|\bproportions\b|\bnails?\b|\bfingernails?\b|\btoenails?\b|\bnail polish\b|\bnail art\b|\bpupils?\b|\bheterochromia\b|\beyelashes\b|\beyebrows\b|\birides\b|\biris\b)",
-        # Móng và chi tiết mắt được xếp vào nhóm Ngoại hình thay vì 'extra'.
+        r"\bshort hair\b|\bblue eyes\b|\bbody\b|\bproportions\b|\bnails?\b|\bfingernails?\b|\btoenails?\b|\bnail polish\b|\bnail art\b|\bpupils?\b|\bheterochromia\b|\beyelashes\b|\beyebrows\b|\birides\b|\biris\b|\bbreasts?\b|\bchest\b|\bnavel\b|\bwaist\b|\bhips?\b|\bthighs?\b|\btails?\b|\bwings?\b|\bhorns?\b|\bclaws?\b|\bfangs?\b|\bscales\b|\bmuzzles?\b|\bhooves?\b|\btalons?\b|\bnipples?\b|\bareolas?\b|\bpiercings?\b|\btattoos?\b|\bgenitals?\b|\bpussy\b|\bpenis\b|\bvulva\b|\btesticles?\b|\bexoskeleton\b|\bantennae\b)"
+        # Móng và chi tiết mắt được xếp vào nhóm Ngoại hình thay vì 'extra'. Cơ thể và bộ
+        # phận nhân vật (vú, đuôi, cánh, sừng, bộ phận sinh dục…) cũng về nhóm này vì thẻ tả
+        # nhân vật cần đứng đầu prompt. Tay/chân/đầu vẫn thuộc 'pose' do thứ tự khớp.
+
     ),
     (
         "composition",
@@ -632,6 +641,7 @@ _SECTION_RULES = (
         r"\bsakura\b|\brain\b|\bsnow\b|\bnight\b|\bday\b|\bsunset\b|\bsunrise\b|"
         r"\bdawn\b|\bdusk\b|\bindoors\b|\boutdoors\b|\bsea\b|\bocean\b|\bbeach\b|"
         r"\bmountains?\b|\bhills?\b|\bgarden\b|\bpark\b|\blibrary\b|\btrains?\b|"
+        r"\bspring\b|\bsummer\b|\bautumn\b|\bwinter\b|"
         r"\bstation\b|\bwindows?\b|\bdoors?\b|\bneon\b|\bvillage\b|\bcorridor\b|"
         r"\belevator\b|\blobby\b|\bdesks?\b|classroom|\bbedroom\b|\bkitchen\b|"
         r"\bbridge\b|\briver\b|\bfields?\b|\bflowers?\b|\bpetals?\b|\bstars\b|"
@@ -686,7 +696,7 @@ PROMPT_SCAFFOLDS = {
     "character": {
         "label": "Nhân vật · 1 nhân vật",
         "anchors": {
-            "quality": QUALITY_HEAD,
+            "quality": QUALITY_TAGS,
             "subject": ("1girl", "solo"),
             "style": ("anime illustration", "cel shading"),
             "tail": QUALITY_TAIL,
@@ -695,7 +705,7 @@ PROMPT_SCAFFOLDS = {
     "portrait": {
         "label": "Chân dung cận mặt",
         "anchors": {
-            "quality": QUALITY_HEAD,
+            "quality": QUALITY_TAGS,
             "subject": ("1girl", "solo"),
             "composition": ("close-up", "looking at viewer"),
             "lighting": ("soft lighting",),
@@ -706,7 +716,7 @@ PROMPT_SCAFFOLDS = {
     "scene": {
         "label": "Phong cảnh · không nhân vật",
         "anchors": {
-            "quality": QUALITY_HEAD,
+            "quality": QUALITY_TAGS,
             "subject": ("no humans",),
             "composition": ("wide shot",),
             "background": ("detailed background", "scenery"),
@@ -717,7 +727,7 @@ PROMPT_SCAFFOLDS = {
     "action": {
         "label": "Hành động / key visual",
         "anchors": {
-            "quality": QUALITY_HEAD,
+            "quality": QUALITY_TAGS,
             "subject": ("1girl", "solo"),
             "pose": ("dynamic pose",),
             "composition": ("dynamic angle", "depth of field"),
@@ -815,10 +825,17 @@ def estimate_tokens(text):
 
 
 def classify_tag(tag):
-    """Xếp một thẻ vào nhóm trong PROMPT_SECTIONS (không khớp → 'extra')."""
+    """Xếp một thẻ vào nhóm trong PROMPT_SECTIONS (không khớp → 'extra').
+
+    Luật khớp được viết theo dạng người đọc (`blue eyes`, `from behind`) trong khi prompt
+    Danbooru viết `blue_eyes`: giữa `_` và chữ không có ranh giới từ nên `\\beyes\\b`
+    không khớp. Vì vậy thử trên bản đã đổi `_`/`-` thành dấu cách TRƯỚC, rồi mới thử trên
+    bản gốc để các luật có dấu gạch dưới trong regex (vd. `rating_\\w+`) vẫn chạy.
+    """
     core = tag_core(tag)
+    spaced = re.sub(r"[_\-]+", " ", core)
     for section, pattern in _SECTION_RES:
-        if pattern.search(core):
+        if pattern.search(spaced) or pattern.search(core):
             return section
     return "extra"
 
@@ -878,8 +895,8 @@ def structure_prompt(prompt, kind="character"):
     ]
     note = (
         f"**{PROMPT_SCAFFOLDS[kind]['label']}** · đã sắp xếp {len(ordered)} thẻ theo "
-        "thứ tự: chất lượng → chủ thể → ngoại hình → trang phục → tư thế → bố cục → "
-        "bối cảnh → ánh sáng → phong cách → độ nét."
+        "thứ tự: chủ thể → nhãn phân loại → ngoại hình → trang phục → tư thế → bố cục "
+        "→ bối cảnh → ánh sáng → phong cách → thẻ khác → chất lượng → độ nét."
     )
     if used:
         note += "\n\n- Phân nhóm: " + ", ".join(used) + "."
@@ -981,8 +998,10 @@ def analyze_prompt(
         findings.append(
             (
                 "info",
-                "Chưa có thẻ chất lượng. WAI v17 khuyến nghị mở đầu bằng "
-                "`masterpiece, best quality, amazing quality` (không cần nhiều hơn).",
+                "Chưa có thẻ chất lượng. WAI v17 khuyến nghị thêm "
+                "`masterpiece, best quality, amazing quality` (không cần nhiều hơn); "
+                "Studio xếp khối này áp chót, ngay trước `absurdres`, để phần chi tiết "
+                "nhân vật được CLIP đọc trước.",
             )
         )
 
@@ -7587,9 +7606,10 @@ def build_app(runtime):
                         )
                         prompt_report = gr.Markdown("", elem_classes="studio-hint")
                         gr.Markdown(
-                            "Thứ tự chuẩn: chất lượng → nhãn phân loại → chủ thể → ngoại "
-                            "hình → trang phục → tư thế → bố cục → bối cảnh → ánh sáng → "
-                            "phong cách → `absurdres`. Negative chia theo mục đích và cố "
+                            "Thứ tự chuẩn: chủ thể → nhãn phân loại → ngoại hình/chi tiết "
+                            "nhân vật → trang phục → tư thế → bố cục → bối cảnh → ánh sáng "
+                            "→ phong cách → thẻ khác → chất lượng → `absurdres`. Negative "
+                            "chia theo mục đích và cố "
                             "ý ngắn: nhà phát hành WAI v17 cảnh báo negative quá dài làm "
                             "giảm chất lượng ảnh.",
                             elem_classes="studio-hint",
