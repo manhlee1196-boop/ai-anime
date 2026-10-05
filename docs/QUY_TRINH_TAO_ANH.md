@@ -156,8 +156,8 @@ một thẻ chỉ xuất hiện trong tệp khi nó thực sự có bản dịch
 gọi) sẽ báo lỗi nếu ai đó sửa `TAG_VI_LABELS` mà quên tạo lại tệp. Nhãn mới trong từ điển luôn thắng cột chú giải đông lạnh của CSV
 (`_prefer_vietnamese_label`), và quy tắc ghép xếp danh từ bổ nghĩa theo trật tự tiếng Việt
 (`rabbit_ear_hat` → **Mũ tai thỏ**, nối màu bằng `màu` với nhóm trang phục: `black_bra` →
-**Áo ngực màu đen**). Bộ ghép có ba lớp từ vựng (2.630 mục cố định,
-671 danh từ chính, 1.061 bổ ngữ, 36 màu) cộng mười lăm quy tắc cụm cho chi tiết nhân vật
+**Áo ngực màu đen**). Bộ ghép có ba lớp từ vựng (2.786 mục cố định,
+723 danh từ chính, 1.227 bổ ngữ, 36 màu) cộng mười lăm quy tắc cụm cho chi tiết nhân vật
 (`<động từ>[ <phó từ hướng>]_<tân ngữ>`, `<A>_<giới từ>_<B>`, `<món đồ>_only`,
 `<bộ phận>_<hướng>`, `<danh từ>_<trạng thái>`, `see_through_/floating_<x>`, `<bộ phận>less`,
 danh từ chính là loài vật hay nội thất, `<món đồ|bộ phận>_<động từ>` (Kéo váy, Liếm đuôi),
@@ -172,8 +172,11 @@ nhãn đã curate luôn được tra TRƯỚC khi chạy quy tắc ghép nên `h
 còn quy tắc ghép nhường cho quy tắc cụm khi token cuối là động từ có tân ngữ đứng ngay trước
 (`pseudo_skirt_lift` → Nhấc chân váy giả) mà vẫn dịch được danh từ ở cùng vị trí (`nose_piercing` → Khuyên mũi):
 thêm một danh từ chính mở khóa cả họ
-thẻ, nên độ phủ tăng từ 1.707 lên **25.790** thẻ mà không phải dịch máy — và tăng có chủ đích theo
-hướng ưu tiên thẻ tả nhân vật (mắt, tóc, mặt, tai/đuôi, trang phục, biểu cảm) trước bối cảnh hay metadata. Chuỗi `<x>_shaped_<head>` được ưu tiên
+thẻ, nên độ phủ tăng từ 1.707 lên **26.585** thẻ mà không phải dịch máy — và tăng có chủ đích theo
+hướng ưu tiên thẻ tả nhân vật (mắt, tóc, mặt, tai/đuôi, trang phục, biểu cảm) trước bối cảnh hay metadata.
+Từ đợt bố cục/bối cảnh, liên từ `to/at/with` trong cụm tương tác bị lược (`talking_to_viewer` → Nói chuyện
+với người xem), và `_tag_vi_uniform_frame` chỉ nhường quy tắc ghép khi phần đầu là **màu** — thêm từ vào
+`_TAG_VI_WORDS` (như `dream`, `paradise`) không được biến tên học viện thành mô tả chung. Chuỗi `<x>_shaped_<head>` được ưu tiên
 thành “HEAD hình X” (`heart-shaped_pupils` → **Đồng tử hình trái tim**). Test chốt lại ba bất
 biến: không trùng khóa trong các dict từ điển, mọi tính từ trong `_TAG_VI_ADJECTIVE_MODIFIERS`
 phải có mặt trong `_TAG_VI_WORDS`, và không nhãn nào chứa dấu phẩy/xuống dòng. Tên họa sĩ/nhân vật/tác phẩm
@@ -191,4 +194,4 @@ Phần thứ tự thẻ, khối 75 token và các thẻ Illustrious bám tốt l
 
 ## 7. Chưa được kiểm chứng
 
-Mã và tài liệu này đã qua `python -m unittest discover -s tests -v` (**120 test: 77 đạt, 43 bỏ qua, 0 thất bại**) và `scripts/build_colab_studio.py` tái tạo notebook; các test CPU bao gồm pin/download giả lập, cache/hash, kích thước, output size và nhánh OOM → CPU giả lập, cùng nạp catalog CSV, autocomplete có toán tử `*`/`@`, định dạng file dịch tiếng Việt `danbooru_e621_merged_vi_vn.csv`, trật tự từ trong nhãn ghép, tỷ lệ phủ nhóm chi tiết nhân vật, trật tự lượng từ/động từ, khung đồng phục theo tên riêng, sở hữu cách và vệ sinh từ điển (2.630 mục, không dấu phẩy/không ký tự ngoại lai). Sandbox thiếu PyTorch và `diffusers` nên các test kiến trúc checkpoint và inference bị bỏ qua; Gradio 6.15.2 và Pillow đã cài nên test dựng UI và chạy sự kiện `process_api` đã chạy thật. Chưa xác nhận SHA Anime6B với file chính thức do lỗi TLS khi tải, và **chưa** chạy hires/upscale hoặc đo chất lượng ảnh, tốc độ, VRAM trên GPU Colab. Xem `VERIFICATION.md` để biết đầy đủ giới hạn.
+Mã và tài liệu này đã qua `python -m unittest discover -s tests -v` (**132 test: 89 đạt, 43 bỏ qua, 0 thất bại**) và `scripts/build_colab_studio.py` tái tạo notebook; các test CPU bao gồm pin/download giả lập, cache/hash, kích thước, output size và nhánh OOM → CPU giả lập, cùng nạp catalog CSV, autocomplete có toán tử `*`/`@`, định dạng file dịch tiếng Việt `danbooru_e621_merged_vi_vn.csv`, trật tự từ trong nhãn ghép, tỷ lệ phủ nhóm chi tiết nhân vật, trật tự lượng từ/động từ, khung đồng phục theo tên riêng, sở hữu cách, cụm tương tác với người xem và vệ sinh từ điển (2.786 mục, không dấu phẩy/không ký tự ngoại lai). Sandbox thiếu PyTorch và `diffusers` nên các test kiến trúc checkpoint và inference bị bỏ qua; Gradio 6.15.2 và Pillow đã cài nên test dựng UI và chạy sự kiện `process_api` đã chạy thật. Chưa xác nhận SHA Anime6B với file chính thức do lỗi TLS khi tải, và **chưa** chạy hires/upscale hoặc đo chất lượng ảnh, tốc độ, VRAM trên GPU Colab. Xem `VERIFICATION.md` để biết đầy đủ giới hạn.

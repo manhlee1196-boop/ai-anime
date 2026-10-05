@@ -688,3 +688,51 @@ class ClothingVocabularyRound7Tests(unittest.TestCase):
             self.assertNotIn(",", value, key)
         for key, value in studio._TAG_VI_POSSESSIVES.items():
             self.assertTrue(key.endswith("'s") and value, key)
+
+
+class CompositionAndBackgroundRound9Tests(unittest.TestCase):
+    """Đợt 9: bố cục/kỹ thuật + bối cảnh, và khối động từ tương tác với người xem."""
+
+    def test_interaction_with_viewer_drops_the_english_preposition(self):
+        # "to/at" không dịch sang "tới/tại": tiếng Việt nói "Nói chuyện với người xem".
+        self.assertEqual(
+            studio.vietnamese_tag_label("talking_to_viewer", "0"), "Nói chuyện với người xem"
+        )
+        self.assertEqual(studio.vietnamese_tag_label("aiming_at_viewer", "0"), "Chĩa về phía người xem")
+        self.assertEqual(studio.vietnamese_tag_label("feeding_viewer", "0"), "Đút cho người xem")
+        self.assertEqual(studio.vietnamese_tag_label("waving_at_viewer", "0"), "Vẫy tay với người xem")
+
+    def test_composition_frames_compose(self):
+        self.assertEqual(studio.vietnamese_tag_label("duo_focus", "0"), "Trọng tâm hai nhân vật")
+        self.assertEqual(studio.vietnamese_tag_label("bust_portrait", "0"), "Ảnh chân dung bán thân")
+        self.assertEqual(studio.vietnamese_tag_label("high-angle_view", "0"), "Góc nhìn từ trên cao")
+        self.assertEqual(studio.vietnamese_tag_label("resolution_mismatch", "0"), "Độ phân giải không khớp")
+
+    def test_background_and_scenery_modifiers(self):
+        self.assertEqual(studio.vietnamese_tag_label("blurred_background", "0"), "Nền mờ")
+        self.assertEqual(studio.vietnamese_tag_label("grid_background", "0"), "Nền lưới")
+        self.assertEqual(studio.vietnamese_tag_label("palm_tree", "0"), "Cây cọ")
+        self.assertEqual(studio.vietnamese_tag_label("train_interior", "0"), "Bên trong tàu hỏa")
+
+    def test_light_is_not_translated_as_a_colour_in_every_position(self):
+        # "light" một mình là màu nhạt, nhưng "lights" là hệ thống đèn.
+        self.assertEqual(studio.vietnamese_tag_label("lights", "0"), "Đèn")
+        self.assertEqual(studio.vietnamese_tag_label("floating_lights", "0"), "Đèn lơ lửng")
+
+    def test_uniform_frame_only_yields_to_colour_prefixes(self):
+        # Thêm "dream"/"paradise" vào WORDS không được biến tên học viện thành mô tả chung.
+        self.assertEqual(
+            studio.vietnamese_tag_label("dream_academy_school_uniform", "0"), "Đồng phục học viện Dream"
+        )
+        self.assertEqual(
+            studio.vietnamese_tag_label("paradise_private_academy_school_uniform", "0"),
+            "Đồng phục học viện tư thục Paradise",
+        )
+        self.assertEqual(
+            studio.vietnamese_tag_label("red_school_uniform", "0"), "Đồng phục học đường màu đỏ"
+        )
+
+    def test_color_vocabulary_stays_grammatical(self):
+        self.assertEqual(studio.vietnamese_tag_label("warm_colors", "0"), "Màu ấm")
+        self.assertEqual(studio.vietnamese_tag_label("muted_colors", "0"), "Màu trầm")
+        self.assertEqual(studio.vietnamese_tag_label("colored_sketch", "0"), "Bản phác thảo có màu")

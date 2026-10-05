@@ -227,8 +227,8 @@ Các nút dùng ảnh mới nhất tự mở đúng chế độ sau khi nạp �
 Kho thẻ Gradio hiển thị nhãn tiếng Việt trước tên gốc, ví dụ **Tóc dài — long_hair**,
 **Mắt xanh dương — blue_eyes**. Có thể tìm bằng nhãn Việt có dấu/không dấu, tag hoặc
 bí danh tiếng Anh; nhiều cụm trong một prompt được tìm riêng trên toàn bộ catalog.
-CSV có cột chú giải Việt ở vị trí thứ năm. Từ điển gồm **2.630 mục** cùng quy tắc ghép
-(671 danh từ chính × 1.061 bổ ngữ × 36 màu) và mười lăm quy tắc cụm — `wearing_/holding_/looking_at_/no_`
+CSV có cột chú giải Việt ở vị trí thứ năm. Từ điển gồm **2.786 mục** cùng quy tắc ghép
+(723 danh từ chính × 1.227 bổ ngữ × 36 màu) và mười lăm quy tắc cụm — `wearing_/holding_/looking_at_/no_`
 (kèm phó từ hướng: `looking_down_at_viewer`), `<A>_<giới từ>_<B>`, `<món đồ>_only`,
 `<bộ phận>_<hướng>`, `<danh từ>_<trạng thái>`, `see_through_<x>`/`floating_<x>`, hậu tố `-less`
 họ loài/nội thất (`canine_ears`, `office_chair`), lượng từ + loại từ (`three_tails` →
@@ -236,7 +236,8 @@ họ loài/nội thất (`canine_ears`, `office_chair`), lượng từ + loại 
 `tail_lick` → `Liếm đuôi`), nội động từ (`melting_tail` → `Đuôi đang tan chảy`), gạch nối và
 `(giải nghĩa)` (`see-through_dress`, `pearl_(gem)`) cùng số nhiều (`curved_horns`), khung đồng phục theo tên riêng
 (`tokiwadai_school_uniform` → `Đồng phục trường Tokiwadai`, giữ nguyên và viết hoa tên riêng), sở hữu cách
-(`fool's_hat` → `Mũ của chú hề`) và động từ mặc/cởi (`undressing_another` → `Đang cởi đồ người khác`) — phủ **25.790 thẻ**,
+(`fool's_hat` → `Mũ của chú hề`) và động từ mặc/cởi (`undressing_another` → `Đang cởi đồ người khác`),
+liên từ bị lược trong cụm tương tác (`talking_to_viewer` → `Nói chuyện với người xem`) — phủ **26.585 thẻ**,
 ưu tiên chi tiết nhân vật
 (tóc, mắt, mặt, tai/đuôi, trang phục, biểu cảm);
 đây **không phải bản dịch máy đầy đủ cho 349.714 thẻ**. Tên
@@ -255,7 +256,7 @@ theo đúng định dạng mà Semi-Auto Tag Complete của Character Select SAA
 
 - Mỗi dòng là `tag,category,translation`, **không có dòng tiêu đề**, UTF-8 không BOM, xuống dòng LF,
   mỗi thẻ xuất hiện đúng một lần theo thứ tự phổ biến giảm dần của CSV nguồn.
-- Từ điển gồm **2.630 mục dịch cố định** + bộ ghép **671 danh từ chính × 1.061 bổ ngữ × 36 màu**
+- Từ điển gồm **2.786 mục dịch cố định** + bộ ghép **723 danh từ chính × 1.227 bổ ngữ × 36 màu**
   và mười lăm quy tắc cụm: `wearing_hat` → **Đội mũ** (động từ chọn theo loại món đồ: Đội/Mặc/Đeo/Thắt/Đi/Mang),
   `holding_sword` → **Cầm kiếm**, `no_gloves` → **Không có găng tay**, `bandaid_on_face` →
   **Băng cá nhân trên khuôn mặt**, `hat_with_ribbon` → **Mũ kèm ruy băng**, `hairless` →
@@ -266,19 +267,22 @@ theo đúng định dạng mà Semi-Auto Tag Complete của Character Select SAA
   `multiple_arms` → **Nhiều cánh tay**, `curved_horns` → **Sừng cong**, `melting_tail` →
   **Đuôi đang tan chảy**, `see-through_dress` → **Váy liền xuyên thấu**, `pearl_(gem)` → **Ngọc trai**, `tokiwadai_school_uniform` →
   **Đồng phục trường Tokiwadai**, `fool's_hat` → **Mũ của chú hề**, `national_soccer_team_uniform` →
-  **Đồng phục đội tuyển bóng đá quốc gia**.
+  **Đồng phục đội tuyển bóng đá quốc gia**, `talking_to_viewer` → **Nói chuyện với người xem**,
+  `blurred_background` → **Nền mờ**, `bust_portrait` → **Ảnh chân dung bán thân**.
   Mỗi mục danh từ mới mở khóa cả họ thẻ nên độ phủ tăng nhanh hơn số từ phải viết tay.
 - Trường dịch **không chứa dấu phẩy**: bộ nạp JavaScript của SAA cắt dòng bằng `line.split(',', 3)`
   nên phần sau trường thứ ba bị bỏ; script tự đổi `,` thành `;`, bỏ nháy và làm phẳng xuống dòng.
 - Chỉ thẻ **có bản dịch thật** được ghi. Mục chưa dịch (`Chưa có bản dịch`), từ loại thuần
   (`Tác phẩm`, `Nhân vật`, `Họa sĩ`) và tên họa sĩ (nhóm 1 và 8 — SAA bỏ qua khi nạp file dịch)
   bị loại, nên tệp không chứa dòng vô nghĩa. Tên riêng được giữ nguyên theo chủ trương của repo.
-- Hiện tại: **25.790/349.714 thẻ** (994 KB), phủ **96,8%** trong 500 thẻ phổ biến nhất, **96,6%**
-  trong 1.000, **93,2%** trong 2.000, **65,6%** trong 5.000 và **51,0%** trong 10.000 thẻ đầu. Vì ưu tiên
+- Hiện tại: **26.585/349.714 thẻ** (1,0 MB), phủ **96,8%** trong 500 thẻ phổ biến nhất, **96,6%**
+  trong 1.000, **93,5%** trong 2.000, **67,0%** trong 5.000 và **52,8%** trong 10.000 thẻ đầu. Vì ưu tiên
   hiện tại là **chi tiết nhân vật**, nhóm thẻ ngoại hình/trang phục/biểu cảm đạt **99,6%** trong 1.000
-  thẻ đầu, **99,8%** trong 3.000, **99,3%** trong 5.000, **93,0%** trong 10.000 và **84,5%** trong 20.000
-  (tính theo lượt dùng trong CSV: **98,5%**); riêng nhóm **Trang phục & phụ kiện** đạt **61,0%** số thẻ và
-  **98,6%** lượt dùng — vẫn không phải bản dịch máy cho toàn bộ catalog.
+  thẻ đầu, **99,8%** trong 3.000, **99,3%** trong 5.000, **93,0%** trong 10.000 và **84,7%** trong 20.000
+  (tính theo lượt dùng trong CSV: **98,5%**); riêng nhóm **Trang phục & phụ kiện** đạt **61,2%** số thẻ và
+  **98,6%** lượt dùng. Sau đợt bố cục/bối cảnh: **Bố cục & kỹ thuật** còn 35,8% số thẻ nhưng **99,6%** lượt
+  dùng, **Bối cảnh & thiên nhiên** 19,3% số thẻ · **95,9%** lượt dùng — phần còn lại chủ yếu là tên họa sĩ,
+  tên tác phẩm và thẻ cực hiếm, nên vẫn **không** phải bản dịch máy cho toàn bộ catalog.
 - Từ điển trong mã **luôn thắng** cột chú giải cũ của CSV (`_prefer_vietnamese_label`), nên thêm
   bản dịch vào `colab/studio.py` là Studio và file dịch nhận ngay — không phải tạo lại CSV 13,7 MB
   hay đổi `TAG_CSV_SHA256`.
