@@ -8157,6 +8157,117 @@ def apply_keyword_tag_suggestion_ui(prompt_text, selected):
     return updated, message, gr.update(choices=[], value=None)
 
 
+# --- Chọn ảnh nguồn để sửa / phóng -------------------------------------------------
+# Ba nút ở khung Kết quả trước đây luôn lấy ảnh mới nhất nên không cách nào chọn ảnh
+# khác. Thư viện ảnh giờ là danh sách nguồn: bấm vào ảnh là chọn, và ảnh của các lượt
+# tạo trước vẫn nạp được bằng nút ↻ (đọc thư mục xuất).
+GALLERY_SOURCE_LIMIT = 40
+
+
+def gallery_item_path(item):
+    """(đường dẫn, chú thích) của một phần tử gr.Gallery: (path, caption) | dict | path."""
+    caption = ""
+    if isinstance(item, (tuple, list)):
+        path, *rest = item
+        caption = str(rest[0]) if rest and rest[0] else ""
+    elif isinstance(item, dict):
+        image = item.get("image", item)
+        path = image.get("path") if isinstance(image, dict) else image
+        caption = str(item.get("caption") or "")
+    else:
+        path = item
+    return (str(path) if path else ""), caption
+
+
+def gallery_entries(gallery_value):
+    """Ảnh còn trên đĩa trong một giá trị thư viện, giữ nguyên thứ tự hiển thị."""
+    entries = []
+    for item in gallery_value or []:
+        path, caption = gallery_item_path(item)
+        if path and Path(path).is_file():
+            entries.append((path, caption))
+    return entries
+
+
+def tapped_gallery_path(gallery_value, index):
+    """Đường dẫn ở vị trí thứ `index` trong thư viện (Gradio đánh số theo thứ tự hiển thị)."""
+    items = list(gallery_value or [])
+    try:
+        position = index[0] if isinstance(index, (list, tuple)) else index
+        path, _ = gallery_item_path(items[int(position)])
+    except (IndexError, TypeError, ValueError):
+        return None
+    return path or None
+
+
+def output_dir_entries(directory, limit=GALLERY_SOURCE_LIMIT):
+    """Mọi ảnh PNG trong thư mục xuất, mới nhất trước — gồm cả ảnh của lượt tạo trước."""
+    if not directory:
+        return []
+    try:
+        files = sorted(Path(directory).glob("*.png"), key=lambda item: item.stat().st_mtime,
+                       reverse=True)
+    except OSError:
+        return []
+    return [(str(path), "") for path in files[:limit] if path.is_file()]
+
+
+def source_entries(directory, gallery_value=None):
+    """Danh sách cho ô chọn ảnh: cả thư mục xuất (mới nhất trước), kèm chú thích của
+    ảnh đang hiện trong thư viện. Rơi xuống thư viện khi không đọc được thư mục."""
+    captions = dict(gallery_entries(gallery_value))
+    entries = [(path, captions.get(path, "")) for path, _ in output_dir_entries(directory)]
+    if not entries:
+        entries = [(path, captions.get(path, "")) for path, _ in reversed(captions.items())]
+    return entries
+
+
+def source_picker_state(entries, keep=None, pick=None):
+    """(choices, value) cho ô chọn ảnh nguồn — phần thuần logic, không cần Gradio.
+
+    Ưu tiên ảnh vừa bấm trong thư viện (`pick`), rồi tới lựa chọn đang giữ (`keep`),
+    cuối cùng mới tới ảnh mới nhất; nhờ vậy hành vi cũ "luôn lấy ảnh mới nhất" vẫn còn
+    mà người dùng vẫn chỉ định được bức cụ thể.
+    """
+    choices = [
+        (f"{index + 1} · {Path(path).name}" + (f" · {caption}" if caption else ""), path)
+        for index, (path, caption) in enumerate(entries)
+    ]
+    paths = [path for path, _ in entries]
+    if pick in paths:
+        value = pick
+    elif keep in paths:
+        value = keep
+    else:
+        value = paths[0] if paths else None
+    return choices, value
+
+
+def source_picker_update(entries, keep=None, pick=None):
+    """Giá trị gr.update cho ô chọn ảnh nguồn."""
+    import gradio as gr
+
+    choices, value = source_picker_state(entries, keep=keep, pick=pick)
+    return gr.update(choices=choices, value=value)
+
+
+def selected_source_image(path):
+    """Ảnh người dùng chọn; báo lỗi rõ thay vì âm thầm lấy ảnh mới nhất."""
+    import gradio as gr
+
+    if not path:
+        raise gr.Error("Chưa có ảnh để nạp — hãy tạo ảnh trước, hoặc bấm ↻ để đọc thư mục xuất.")
+    if not Path(path).is_file():
+        raise gr.Error("Ảnh đã chọn không còn trên đĩa (Colab có thể đã đổi phiên).")
+    return Image.open(path).convert("RGB")
+
+
+def editor_value_for(image):
+    """Giá trị cho gr.ImageEditor: lớp nền và composite là ảnh đã chọn, chưa có nét vẽ."""
+    layer = image.convert("RGBA")
+    return {"background": layer, "layers": [], "composite": layer}
+
+
 def build_app(runtime):
     """Build Gradio Blocks without opening a public tunnel until launch cell runs."""
     tag_catalog_status = prime_prompt_tag_catalog()
@@ -8907,7 +9018,9 @@ def build_app(runtime):
             ):
                 gr.Markdown("### 02 · Kết quả", elem_classes="studio-section-heading")
                 gr.Markdown(
-                    "Ảnh tạo xong xuất hiện tại đây. Chọn ảnh để mở lớn hoặc tải xuống.",
+                    "Ảnh tạo xong xuất hiện tại đây. Chọn ảnh để mở lớn hoặc tải xuống; bấm một "
+                    "ảnh cũng là **chỉ định nó làm ảnh nguồn** cho tab *Sửa vùng* / *Phóng to* / "
+                    "*Biến đổi*.",
                     elem_classes="studio-section-subtitle",
                 )
                 gallery = gr.Gallery(
@@ -8924,15 +9037,23 @@ def build_app(runtime):
                     f"**Chế độ:** {runtime.execution_mode}"
                 )
                 with gr.Row():
-                    to_image = gr.Button(
-                        "Dùng ảnh mới nhất để biến đổi", size="sm", scale=1
+                    source_choice = gr.Dropdown(
+                        label="Ảnh sẽ nạp vào tab sửa / phóng",
+                        choices=[],
+                        value=None,
+                        allow_custom_value=False,
+                        info="Mặc định là ảnh vừa tạo; bấm ảnh trong thư viện để chọn ảnh khác, "
+                             "hoặc ↻ để đọc cả ảnh của các lượt tạo trước.",
+                        scale=4,
                     )
-                    to_upscale = gr.Button(
-                        "Dùng ảnh mới nhất để phóng to", size="sm", scale=1
+                    source_refresh = gr.Button("↻", scale=1, variant="secondary")
+                with gr.Row():
+                    to_all = gr.Button(
+                        "↪ Nạp ảnh đã chọn vào cả ba tab", size="sm", variant="primary", scale=3
                     )
-                    to_inpaint = gr.Button(
-                        "Dùng ảnh mới nhất để sửa vùng", size="sm", scale=1
-                    )
+                    to_image = gr.Button("→ ◈ Biến đổi", size="sm", scale=1)
+                    to_upscale = gr.Button("→ ⤢ Phóng to", size="sm", scale=1)
+                    to_inpaint = gr.Button("→ ✎ Sửa vùng", size="sm", scale=1)
                 downloads = gr.File(
                     label="Tải ảnh PNG", file_count="multiple", interactive=False
                 )
@@ -8983,29 +9104,85 @@ def build_app(runtime):
                 concurrency_limit=1,
             )
 
-        def load_last(path):
-            if not path or not Path(path).is_file():
-                raise gr.Error("Hãy tạo ít nhất một ảnh trước.")
-            return Image.open(path).convert("RGB")
+        def load_selected(path):
+            """(ảnh RGB, ảnh RGB cho phóng to, ảnh RGBA cho sửa vùng, dòng trạng thái)."""
+            image = selected_source_image(path)
+            return (
+                image,
+                image.copy(),
+                editor_value_for(image),
+                f"↪ Đã nạp **{Path(path).name}** · {image.width}×{image.height} px",
+            )
 
-        def edit_last(path):
-            image = load_last(path).convert("RGBA")
-            return {"background": image, "layers": [], "composite": image}
+        def load_into_all(path):
+            image, upscale_value, editor_value, note = load_selected(path)
+            return image, upscale_value, editor_value, (
+                f"{note} → **◈ Biến đổi**, **⤢ Phóng to** và **✎ Sửa vùng** — chọn tab rồi chạy "
+                "tiếp, thông số đang giữ nguyên."
+            )
 
+        def load_into_image_tab(path):
+            image, _, _, note = load_selected(path)
+            return image, f"{note} → **◈ Biến đổi**."
+
+        def load_into_upscale_tab(path):
+            _, upscale_value, _, note = load_selected(path)
+            return upscale_value, f"{note} → **⤢ Phóng to**."
+
+        def load_into_inpaint_tab(path):
+            _, _, editor_value, note = load_selected(path)
+            return editor_value, f"{note} → **✎ Sửa vùng**."
+
+        # Ảnh vừa tạo xong tự cập nhật vào ô chọn; bấm ảnh trong thư viện là chọn ảnh đó.
+        def picker_entries(gallery_value=None):
+            return source_entries(getattr(runtime, "output_dir", None), gallery_value)
+
+        gallery.change(
+            fn=lambda value, keep: source_picker_update(picker_entries(value), keep=keep),
+            inputs=[gallery, source_choice],
+            outputs=source_choice,
+            api_visibility="private",
+            queue=False,
+        )
+        gallery.select(
+            fn=lambda value, data: source_picker_update(
+                picker_entries(value), pick=tapped_gallery_path(value, data.index)
+            ),
+            inputs=gallery,
+            outputs=source_choice,
+            api_visibility="private",
+            queue=False,
+        )
+        source_refresh.click(
+            fn=lambda keep: source_picker_update(picker_entries(), keep=keep),
+            inputs=source_choice,
+            outputs=source_choice,
+            api_visibility="private",
+            queue=False,
+        )
+        to_all_event = to_all.click(
+            fn=load_into_all,
+            inputs=source_choice,
+            outputs=[image_source, upscale_source, editor, status],
+            api_visibility="private",
+        )
         to_image_event = to_image.click(
-            fn=load_last,
-            inputs=latest,
-            outputs=image_source,
+            fn=load_into_image_tab,
+            inputs=source_choice,
+            outputs=[image_source, status],
             api_visibility="private",
         )
         to_upscale_event = to_upscale.click(
-            fn=load_last,
-            inputs=latest,
-            outputs=upscale_source,
+            fn=load_into_upscale_tab,
+            inputs=source_choice,
+            outputs=[upscale_source, status],
             api_visibility="private",
         )
         to_inpaint_event = to_inpaint.click(
-            fn=edit_last, inputs=latest, outputs=editor, api_visibility="private"
+            fn=load_into_inpaint_tab,
+            inputs=source_choice,
+            outputs=[editor, status],
+            api_visibility="private",
         )
         # Gõ một chủ đề/từ khóa ở cuối prompt để tìm tag English trong catalog CSV;
         # chọn một tag xác thực từ kết quả sẽ thay thế từ khóa ngay.
@@ -9243,8 +9420,10 @@ def build_app(runtime):
             outputs=[prompt, negative, tag_status],
             api_visibility="private", queue=False,
         )
-        # Open the destination only when loading the latest image succeeded.
+        # Only open a destination tab after the *selected* image really loaded (a missing
+        # file raises gr.Error and must not yank the user into an empty tab).
         for event, destination in (
+            (to_all_event, "image"),
             (to_image_event, "image"),
             (to_upscale_event, "upscale"),
             (to_inpaint_event, "inpaint"),
@@ -9256,6 +9435,13 @@ def build_app(runtime):
                 inputs=[], outputs=[workspace_tabs, mode_tabs],
                 api_visibility="private", queue=False,
             )
+        # Mở lại trang là danh sách ảnh trên đĩa vẫn chọn được (không chỉ ảnh vừa tạo).
+        demo.load(
+            fn=lambda: source_picker_update(picker_entries()),
+            outputs=source_choice,
+            api_visibility="private",
+            queue=False,
+        )
         demo.load(fn=None, js=PROMPT_TAG_WEIGHT_SHORTCUT_JS)
         demo.queue(max_size=4, default_concurrency_limit=1, api_open=False)
     # Gradio 6 applies CSS and themes at launch, not in the Blocks constructor.

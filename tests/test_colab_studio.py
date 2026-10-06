@@ -10,6 +10,7 @@ import importlib.util
 import inspect
 import io
 import json
+import os
 from pathlib import Path
 import sys
 import tempfile
@@ -1943,8 +1944,10 @@ class RuntimeValidationTests(unittest.TestCase):
         inpaint_index = index_of("Sửa vùng đã tô")
         eyes_index = index_of("perfect eyes")
         repair_index = index_of("Thêm gợi ý sửa vùng")
-        to_image_index = index_of("Dùng ảnh mới nhất để biến đổi")
-        to_inpaint_index = index_of("Dùng ảnh mới nhất để sửa vùng")
+        to_image_index = index_of("→ ◈ Biến đổi")
+        to_upscale_index = index_of("→ ⤢ Phóng to")
+        to_inpaint_index = index_of("→ ✎ Sửa vùng")
+        to_all_index = index_of("Nạp ảnh đã chọn vào cả ba tab")
 
         async def process(index, inputs):
             return (
@@ -2116,10 +2119,25 @@ class RuntimeValidationTests(unittest.TestCase):
                 adult_prompts,
             )
             self.assertEqual(len(FakePipe.calls), 6)
-            self.assertTrue(Path((await process(to_image_index, [None]))[0]["path"]).is_file())
-            self.assertTrue(
-                Path((await process(to_inpaint_index, [None]))[0]["background"]["path"]).is_file()
+            # Ảnh nguồn giờ do người dùng CHỈ ĐỊNH (không còn luôn lấy ảnh mới nhất):
+            # một lần nạp phải vào cả ba tab, và phải đúng file đã chọn.
+            chosen = data[1][-1]["path"]
+            loaded = await process(to_all_index, [chosen])
+            self.assertEqual(Path(loaded[0]["path"]).name, Path(chosen).name)
+            self.assertEqual(Path(loaded[1]["path"]).name, Path(chosen).name)
+            self.assertEqual(Path(loaded[2]["background"]["path"]).name, Path(chosen).name)
+            self.assertIn("Đã nạp", loaded[3])
+            self.assertTrue(Path((await process(to_image_index, [chosen]))[0]["path"]).is_file())
+            self.assertEqual(
+                Path((await process(to_upscale_index, [chosen]))[0]["path"]).name,
+                Path(chosen).name,
             )
+            self.assertTrue(
+                Path((await process(to_inpaint_index, [chosen]))[0]["background"]["path"]).is_file()
+            )
+            # Chưa chọn ảnh thì phải báo lỗi rõ, không âm thầm lấy một ảnh khác.
+            with self.assertRaises(Exception):
+                await process(to_all_index, [None])
 
         mock_diffusers = types.ModuleType("diffusers")
         mock_diffusers.AutoPipelineForImage2Image = FakeDerived
@@ -2179,3 +2197,82 @@ class RuntimeValidationTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class SourceImagePickerTests(unittest.TestCase):
+    """Ô chọn ảnh nguồn cho tab Sửa vùng / Phóng to / Biến đổi (không cần Gradio, Pillow)."""
+
+    def setUp(self):
+        self.root = Path(tempfile.mkdtemp())
+        self.paths = []
+        for index in range(3):
+            path = self.root / f"img_{index}.png"
+            path.write_bytes(b"\x89PNG\r\n\x1a\n" + bytes([index]))
+            os.utime(path, (1000 + 1000 * index, 1000 + 1000 * index))
+            self.paths.append(path)
+
+    def test_gallery_item_path_accepts_every_gradio_shape(self):
+        self.assertEqual(
+            studio.gallery_item_path((str(self.paths[0]), "Seed 42")), (str(self.paths[0]), "Seed 42")
+        )
+        self.assertEqual(
+            studio.gallery_item_path({"image": {"path": str(self.paths[1])}, "caption": "Seed 43"}),
+            (str(self.paths[1]), "Seed 43"),
+        )
+        self.assertEqual(studio.gallery_item_path(str(self.paths[2])), (str(self.paths[2]), ""))
+
+    def test_gallery_entries_drops_images_missing_from_disk(self):
+        gallery = [(str(p), "") for p in self.paths] + [(str(self.root / "gone.png"), "x")]
+        self.assertEqual(
+            [path for path, _ in studio.gallery_entries(gallery)], [str(p) for p in self.paths]
+        )
+
+    def test_tapped_index_follows_display_order(self):
+        gallery = [(str(p), "") for p in self.paths]
+        self.assertEqual(studio.tapped_gallery_path(gallery, [1]), str(self.paths[1]))
+        self.assertEqual(studio.tapped_gallery_path(gallery, 2), str(self.paths[2]))
+        self.assertIsNone(studio.tapped_gallery_path(gallery, 9))
+        self.assertIsNone(studio.tapped_gallery_path([], 0))
+
+    def test_output_dir_entries_is_newest_first(self):
+        (self.root / "notes.txt").write_text("không phải ảnh")
+        entries = studio.output_dir_entries(self.root)
+        self.assertEqual(
+            [Path(path).name for path, _ in entries], ["img_2.png", "img_1.png", "img_0.png"]
+        )
+        self.assertEqual(studio.output_dir_entries(None), [])
+        self.assertEqual(studio.output_dir_entries(self.root / "khong-ton-tai"), [])
+
+    def test_source_entries_adds_captions_and_falls_back_to_gallery(self):
+        gallery = [(str(p), f"Seed {40 + index}") for index, p in enumerate(self.paths)]
+        entries = studio.source_entries(self.root, gallery)
+        self.assertEqual(entries[0], (str(self.paths[2]), "Seed 42"))
+        # Thư mục không đọc được vẫn còn danh sách ảnh của thư viện.
+        self.assertEqual(
+            [path for path, _ in studio.source_entries(self.root / "khong-ton-tai", gallery)],
+            [str(self.paths[2]), str(self.paths[1]), str(self.paths[0])],
+        )
+
+    def test_picker_state_defaults_to_newest_but_honours_selection(self):
+        entries = studio.source_entries(self.root, [])
+        choices, value = studio.source_picker_state(entries)
+        self.assertEqual(value, str(self.paths[2]))
+        self.assertEqual(choices[0][0], "1 · img_2.png")
+        _, keep = studio.source_picker_state(entries, keep=str(self.paths[0]))
+        self.assertEqual(keep, str(self.paths[0]))
+        _, picked = studio.source_picker_state(
+            entries, keep=str(self.paths[0]), pick=str(self.paths[1])
+        )
+        self.assertEqual(picked, str(self.paths[1]))
+        self.assertEqual(studio.source_picker_state([]), ([], None))
+
+    def test_ui_no_longer_hardcodes_the_newest_image(self):
+        source = (Path(__file__).resolve().parents[1] / "colab" / "studio.py").read_text(encoding="utf-8")
+        self.assertNotIn("Dùng ảnh mới nhất", source)
+        # Bốn nút nạp ảnh + nút ↻ đều lấy giá trị từ ô chọn, không từ State "latest".
+        self.assertEqual(source.count("inputs=source_choice"), 5)
+        for loader in ("load_into_all", "load_into_image_tab", "load_into_upscale_tab",
+                       "load_into_inpaint_tab"):
+            self.assertIn(f"fn={loader},", source)
+        self.assertIn("Nạp ảnh đã chọn vào cả ba tab", source)
+        self.assertIn("GALLERY_SOURCE_LIMIT = 40", source)

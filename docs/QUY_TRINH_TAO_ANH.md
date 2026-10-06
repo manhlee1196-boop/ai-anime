@@ -6,6 +6,11 @@ Tài liệu này giải thích accordion **🧭 Quy trình chuẩn · khung prom
 
 > **Thư viện prompt trên điện thoại:** danh sách prompt trong accordion 📚 là **danh sách chạm (radio) cuộn được** — chạm một dòng là nạp ngay, hoặc chọn dòng rồi bấm **⬇️ Nạp prompt đã chọn**.
 
+> **Ảnh nguồn cho ◈ Biến đổi · ⤢ Phóng to · ✎ Sửa vùng:** không còn kiểu "luôn lấy ảnh mới nhất". Khung
+> **02 · Kết quả** có ô **Ảnh sẽ nạp vào tab sửa / phóng** (mặc định = ảnh vừa tạo, bấm ảnh trong thư viện để
+> đổi), nút **↪ Nạp ảnh đã chọn vào cả ba tab** để chuẩn bị cho cả sửa lẫn biến đổi trong một lần bấm, và ba nút
+> `→` nếu chỉ cần một tab. `↻` nạp danh sách từ `/content/wai_outputs` nên ảnh của lượt tạo trước vẫn dùng được.
+
 > **Nguyên tắc quan trọng:** cả ba nút trong accordion **chỉ ghi nội dung hiển thị** vào ô *Prompt gửi model*, ô *Negative gửi model* hoặc ô báo cáo. Không có thẻ nào được ghép ngầm khi bạn bấm tạo ảnh — bạn xem, sửa hoặc xóa trước khi tạo.
 
 ---
