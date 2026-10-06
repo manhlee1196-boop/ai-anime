@@ -24,6 +24,10 @@ Tài liệu này giải thích accordion **🧭 Quy trình chuẩn · khung prom
 > (bạn thấy dòng "Đã dựng index … từ khóa từ nhãn tiếng Việt"). Trước đây bảng này được dựng ngay trong cú gõ đầu tiên —
 > mất ~1 s CPU và làm đứng cả trang, chỉ xuất hiện sau khi thêm tra nhãn Việt.
 
+> **Khi gặp đơ, lấy số liệu thay vì mô tả:** Studio in vào output Ô 8 dòng `⏱ … hết X s` cho sự kiện chậm (ngưỡng 0,3 s) và
+> `⏳ vẫn đang chạy sau 10 s`; ngay trên trang sẽ hiện "Trang bị chặn X s khi chuyển tab „…" — mở DevTools rồi gõ
+> `window.__waiBlockLog` để xem 12 lần chặn gần nhất. Gửi các dòng đó là đủ để chỉ ra nguyên nhân.
+
 > **Xác nhận bản đang chạy:** đầu trang có chip **"Bản dựng …"**. Mã giao diện nằm trong **ô 7**, nên sau khi lấy
 > notebook mới phải chạy lại ô 7 rồi ô 8 và ô 9; chỉ chạy lại ô 9 thì trình duyệt vẫn dùng mã cũ và sẽ vẫn thấy đơ.
 

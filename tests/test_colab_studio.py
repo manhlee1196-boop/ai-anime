@@ -2531,3 +2531,77 @@ class UiResponsivenessTests(unittest.TestCase):
         with self.assertRaises(gr.Error) as missing:
             studio.selected_source_image(str(root / "khong-co-file.png"))
         self.assertIn("không còn trên đĩa", str(missing.exception))
+
+
+class UiEventInstrumentationTests(unittest.TestCase):
+    """Nhật ký sự kiện UI chậm — bằng chứng để biết "đơ" là do đâu, không phải đoán."""
+
+    class FakeBlockFn:
+        def __init__(self, fn):
+            self.fn = fn
+            self.targets = [(7, "click")]
+
+    class FakeDemo:
+        def __init__(self, fns, blocks=None):
+            self.fns = fns
+            self.blocks = blocks or {}
+
+    def test_slow_handler_is_logged_and_result_is_untouched(self):
+        def handler(text):
+            return text.upper()
+
+        demo = self.FakeDemo({3: self.FakeBlockFn(handler)})
+        studio.instrument_ui_events(demo)
+        wrapped = demo.fns[3].fn
+        self.assertTrue(getattr(wrapped, "_wai_timed", False))
+        self.assertEqual(wrapped("ok"), "OK")
+        # Nhẹ thì không in gì; chậm thì phải có dòng ⏱ kèm nhãn sự kiện.
+        with contextlib.redirect_stdout(io.StringIO()) as quiet:
+            wrapped("ok")
+        self.assertEqual(quiet.getvalue().strip(), "")
+
+        def slow(text):
+            import time as _time
+            _time.sleep(studio.SLOW_EVENT_SECONDS + 0.05)
+            return text
+
+        demo2 = self.FakeDemo({9: self.FakeBlockFn(slow)})
+        studio.instrument_ui_events(demo2)
+        with contextlib.redirect_stdout(io.StringIO()) as log:
+            self.assertEqual(demo2.fns[9].fn("x"), "x")
+        self.assertIn("#9", log.getvalue())
+        self.assertIn("click", log.getvalue())
+
+    def test_generator_handlers_still_stream_and_are_logged_at_the_end(self):
+        def stream():
+            yield 1
+            yield 2
+            yield 3
+
+        demo = self.FakeDemo({1: self.FakeBlockFn(stream)})
+        studio.instrument_ui_events(demo)
+        with contextlib.redirect_stdout(io.StringIO()) as log:
+            self.assertEqual(list(demo.fns[1].fn()), [1, 2, 3])
+        self.assertNotIn("⏱", log.getvalue())
+
+    def test_wrapping_is_idempotent_and_errors_stay_visible(self):
+        def boom():
+            raise ValueError("sai")
+
+        demo = self.FakeDemo({2: self.FakeBlockFn(boom)})
+        studio.instrument_ui_events(demo)
+        first = demo.fns[2].fn
+        studio.instrument_ui_events(demo)
+        self.assertIs(demo.fns[2].fn, first, "không bọc hai lần")
+        with contextlib.redirect_stdout(io.StringIO()) as log:
+            with self.assertRaises(ValueError):
+                first()
+        self.assertIn("⚠️", log.getvalue())
+
+    def test_notebook_launch_disables_ssr_and_keeps_upload_limit(self):
+        # ssr_mode mặc định tắt (GRADIO_SSR_MODE); còn max_file_size chỉ áp cho UPLOAD,
+        # không chặn tải ảnh lớn — nên không được nâng lên vô hạn.
+        notebook_cells = json.loads(NOTEBOOK.read_text(encoding="utf-8"))["cells"]
+        launch = "".join(notebook_cells[8]["source"])
+        self.assertNotIn("ssr_mode=True", launch)
+        self.assertIn('max_file_size="12mb"', launch)

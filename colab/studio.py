@@ -7993,6 +7993,7 @@ STUDIO_OFFLINE_WATCHDOG_JS = r"""() => {
     if (window.__waiOfflineWatchdog) return;
     window.__waiOfflineWatchdog = true;
     let failures = 0;
+    let blockUntil = 0;
     const banner = () => {
         const existing = document.getElementById("studio-offline-banner");
         if (existing) return existing;
@@ -8004,6 +8005,9 @@ STUDIO_OFFLINE_WATCHDOG_JS = r"""() => {
         const button = document.createElement("button");
         button.type = "button";
         button.textContent = "Tải lại trang";
+        const detail = document.createElement("span");
+        detail.setAttribute("data-wai-block", "");
+        node.insertBefore(detail, node.firstChild);
         button.addEventListener("click", () => window.location.reload());
         node.appendChild(text);
         node.appendChild(button);
@@ -8023,7 +8027,10 @@ STUDIO_OFFLINE_WATCHDOG_JS = r"""() => {
     };
     const show = (offline) => {
         const node = document.getElementById("studio-offline-banner");
-        if (node) node.style.display = offline ? "flex" : "none";
+        if (!node) return;
+        // Dòng "bị chặn" giữ trên màn hình tới blockUntil để người dùng kịp đọc.
+        if (!offline && performance.now() < blockUntil) return;
+        node.style.display = offline ? "flex" : "none";
     };
     const root = (window.gradio_config && window.gradio_config.root) || ".";
     const url = root.replace(/\/+$/, "") + "/config";
@@ -8039,6 +8046,55 @@ STUDIO_OFFLINE_WATCHDOG_JS = r"""() => {
         show(failures >= 2);
     };
     window.setInterval(ping, 20000);
+
+    // Bằng chứng "đơ" phải lấy từ chính trình duyệt: đo khoảng thời gian từ cú bấm
+    // tới lần vẽ kế tiếp. Nếu > 0,4 s thì trang thật sự bị chặn (không phải cảm giác).
+    const blocks = [];
+    window.__waiBlockLog = blocks;
+    const note = (ms, what, how) => {
+        blocks.push({at: new Date().toISOString(), ms: Math.round(ms), what, how});
+        while (blocks.length > 12) blocks.shift();
+        console.warn(`[wai] chặn ${Math.round(ms)} ms sau khi ${how}: ${what}`);
+        const box = banner();
+        const line = box.querySelector("[data-wai-block]");
+        blockUntil = performance.now() + 25000;
+        if (line) {
+            line.textContent = `Trang bị chặn ${Math.round(ms / 100) / 10} s khi ${how} „${what}”. `
+                + `Xem window.__waiBlockLog trong DevTools để lấy nhật ký.`;
+        }
+        setTimeout(() => { blockUntil = 0; show(false); }, 25000);
+    };
+    let pending = null;
+    document.addEventListener("click", (event) => {
+        const node = event.target && event.target.closest
+            ? event.target.closest("button, [role='tab'], label, a, input")
+            : null;
+        pending = {
+            at: performance.now(),
+            what: ((node && node.innerText) || (event.target && event.target.tagName) || "?")
+                .replace(/\s+/g, " ").trim().slice(0, 60),
+            how: node && node.matches("[role='tab']") ? "chuyển tab" : "bấm nút",
+        };
+        // Hai vòng rAF: trang chỉ được coi là phản hồi sau khi vẽ xong.
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+            if (!pending) return;
+            const ms = performance.now() - pending.at;
+            if (ms > 400) note(ms, pending.what, pending.how);
+            pending = null;
+        }));
+    }, true);
+    try {
+        const observer = new PerformanceObserver((list) => {
+            for (const entry of list.getEntries()) {
+                if (entry.duration >= 700) {
+                    note(entry.duration, pending ? pending.what : "tác vụ dài trên luồng chính", "chặn");
+                }
+            }
+        });
+        observer.observe({entryTypes: ["longtask"]});
+    } catch (error) {
+        // Safari iOS không có longtask — đã có đo click→paint ở trên.
+    }
     document.addEventListener("visibilitychange", () => {
         if (document.visibilityState === "visible") ping();
     });
@@ -8532,6 +8588,105 @@ def editor_value_for(image):
     đã cache, trình duyệt chỉ tải một lần.
     """
     return {"background": image, "layers": [], "composite": None}
+
+
+SLOW_EVENT_SECONDS = 0.3
+SLOW_EVENT_WARNING_SECONDS = 10.0
+
+
+def instrument_ui_events(demo):
+    """In ra notebook mỗi sự kiện UI tốn quá `SLOW_EVENT_SECONDS`, và báo trước nếu
+    một sự kiện vẫn còn chạy sau 10 giây.
+
+    Mục đích: khi người dùng báo "trang đơ", ô chạy Gradio cho biết ĐÚNG sự kiện nào
+    và mất bao lâu — hết phải đoán xem là tab, hàng đợi hay catalog. Chỉ in, không đổi
+    hành vi; sự kiện tạo ảnh (generator) được tính tới khi kết thúc.
+    """
+    import functools
+    import inspect
+
+    labels = {}
+    for index, block_fn in list(getattr(demo, "fns", {}).items()):
+        fn = getattr(block_fn, "fn", None)
+        if fn is None or getattr(fn, "_wai_timed", False):
+            continue
+        name = labels.setdefault(
+            index, _ui_event_label(demo, block_fn, index)
+        )
+
+        @functools.wraps(fn)
+        def wrapper(*args, _fn=fn, _name=name, **kwargs):
+            started = time.perf_counter()
+            alarm = threading.Timer(SLOW_EVENT_WARNING_SECONDS, _slow_event_started, args=(_name,))
+            alarm.daemon = True
+            alarm.start()
+            try:
+                result = _fn(*args, **kwargs)
+            except BaseException:
+                alarm.cancel()
+                _slow_event_done(_name, started, failed=True)
+                raise
+            if inspect.isgenerator(result):
+                return _timed_generator(result, _name, started, alarm)
+            if inspect.isasyncgen(result):
+                return _timed_async_generator(result, _name, started, alarm)
+            alarm.cancel()
+            _slow_event_done(_name, started)
+            return result
+
+        wrapper._wai_timed = True
+        block_fn.fn = wrapper
+    return demo
+
+
+def _ui_event_label(demo, block_fn, index):
+    """'gallery.change «Ảnh đã tạo»' — đủ để đọc trong log mà không cần biết internals."""
+    event = "?"
+    title = ""
+    try:
+        targets = list(getattr(block_fn, "targets", []) or [])
+        if targets:
+            renderable_id, event = targets[0][0], targets[0][1]
+            block = getattr(demo, "blocks", {}).get(renderable_id)
+            if block is not None:
+                title = getattr(block, "label", None) or type(block).__name__
+                event = f"{type(block).__name__.lower()}.{event}"
+    except Exception:
+        pass
+    return f"#{index} {event}" + (f" «{title}»" if title else "")
+
+
+def _slow_event_started(name):
+    print(f"⏳ Sự kiện {name} vẫn đang chạy sau {SLOW_EVENT_WARNING_SECONDS:g} s — "
+          "đây là thứ đang giữ giao diện chờ.", flush=True)
+
+
+def _slow_event_done(name, started, failed=False):
+    took = time.perf_counter() - started
+    if took >= SLOW_EVENT_SECONDS or failed:
+        flag = "⚠️" if failed else "⏱"
+        print(f"{flag} {name} hết {took:,.2f} s" + (" (lỗi)" if failed else ""), flush=True)
+
+
+def _timed_generator(gen, name, started, alarm):
+    try:
+        for item in gen:
+            yield item
+    finally:
+        alarm.cancel()
+        _slow_event_done(name, started)
+
+
+def _timed_async_generator(agen, name, started, alarm):
+    async def run():
+        try:
+            async for item in agen:
+                yield item
+        finally:
+            alarm.cancel()
+            _slow_event_done(name, started)
+
+    return run()
 
 
 def build_app(runtime):
@@ -9604,13 +9759,14 @@ def build_app(runtime):
             items, picker, message = prompt_library_reset()
             return items, gr.Radio(**picker), message
 
+        # Đọc file/dán danh sách prompt là thao tác với dữ liệu tới 2 MB — để trong queue
+        # để không chặn event loop khi Colab đang chạy suy luận.
         prompt_file.upload(
             fn=load_library_from_file,
             inputs=prompt_file,
             outputs=library_outputs,
             api_visibility="private",
-            queue=False,
-            show_progress="hidden",
+            show_progress="minimal",
         )
         prompt_file.clear(
             fn=clear_library,
@@ -9624,8 +9780,7 @@ def build_app(runtime):
             inputs=prompt_paste,
             outputs=library_outputs,
             api_visibility="private",
-            queue=False,
-            show_progress="hidden",
+            show_progress="minimal",
         )
         sample_button.click(
             fn=load_sample_library,
@@ -9731,6 +9886,7 @@ def build_app(runtime):
         # kẹt ở trạng thái chờ — người dùng thấy là trang "treo đơ". Job GPU đã tự
         # giới hạn bằng concurrency_id="wai_gpu", còn lại mặc định 1 event/sự kiện.
         demo.queue(max_size=64, default_concurrency_limit=1, api_open=False)
+    instrument_ui_events(demo)
     # Gradio 6 applies CSS and themes at launch, not in the Blocks constructor.
     demo.studio_theme = gr.themes.Soft(
         primary_hue="purple", secondary_hue="pink", neutral_hue="slate"
