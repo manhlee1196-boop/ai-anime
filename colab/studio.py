@@ -53,7 +53,7 @@ REAL_ESRGAN_MODEL = {
 }
 # Cập nhật mỗi lần sửa colab/studio.py: header in mã này để người dùng biết phiên
 # Colab đang chạy bản nào (chạy lại riêng ô 9 KHÔNG cập nhật mã UI — nằm ở ô 7).
-STUDIO_BUILD = "2026.10.06 · chống đơ tab"
+STUDIO_BUILD = "2026.10.06 · tab không đơ"
 REAL_ESRGAN_CACHE = "/content/wai_upscaler_cache"
 REAL_ESRGAN_TILE_SIZE = 256
 REAL_ESRGAN_TILE_PAD = 16
@@ -269,14 +269,24 @@ for _field, _label, _choices in LOOK_FIELDS:
 
 
 def _add_prompt_tags(text, tags):
-    """Append visible preset/repair tags once to an editable prompt."""
-    seen = {part.strip().casefold() for part in text.split(",")}
+    """Append visible preset/repair tags once to an editable prompt.
+
+    So khớp theo lõi thẻ, nên `(perfect eyes:1.1)` được coi là đã có `perfect eyes`
+    và không bị chèn thêm một bản không trọng số.
+    """
+    base = text if isinstance(text, str) else ""
+    seen = set()
+    for part in base.split(","):
+        core = tag_core(part)
+        if core:
+            seen.add(core.casefold())
     for tag in tags:
-        tag = tag.strip()
-        if tag and tag.casefold() not in seen:
-            text = f"{text}, {tag}" if text else tag
-            seen.add(tag.casefold())
-    return text
+        tag = str(tag or "").strip()
+        core = tag_core(tag)
+        if tag and core and core.casefold() not in seen:
+            base = f"{base}, {tag}" if base else tag
+            seen.add(core.casefold())
+    return base
 
 
 def add_eyes_trigger(prompt, negative):
@@ -800,11 +810,25 @@ def split_tags(text):
 
 
 def tag_core(tag):
-    """Bỏ cú pháp nhấn mạnh ((thẻ), [thẻ], (thẻ:1.2)) để so khớp nội dung thẻ."""
-    core = tag.strip()
-    match = WEIGHT_RE.match(core)
-    if match:
-        core = match.group("body").strip()
+    """Bỏ cú pháp nhấn mạnh ((thẻ), [thẻ], (thẻ:1.2)) để so khớp nội dung thẻ.
+
+    Gỡ từng lớp ngoặc và trọng số, nên ``((perfect eyes:1.1))`` khớp ``perfect eyes``
+    chứ không còn sót ``:1.1``.
+    """
+    core = str(tag or "").strip()
+    for _ in range(8):
+        match = WEIGHT_RE.fullmatch(core)
+        if match:
+            body = match.group("body").strip()
+            if body and body.count("(") == body.count(")"):
+                core = body
+                continue
+        if len(core) >= 2 and {"(": ")", "[": "]"}.get(core[0]) == core[-1]:
+            inner = core[1:-1].strip()
+            if inner:
+                core = inner
+                continue
+        break
     return core.strip("()[] ").strip()
 
 
@@ -1649,7 +1673,19 @@ def _library_from_json(payload, name):
             continue
         title = row.get("title") or row.get("name") or row.get("vi") or ""
         prompt = row.get("prompt") or row.get("en") or row.get("content") or ""
-        entries.append((title, [str(prompt)]))
+        lines = [str(prompt)]
+        negative = row.get("negative") or row.get("negative_prompt")
+        if negative:
+            lines.append("Negative: " + " ".join(str(negative).split()))
+        for key, label in (
+            ("steps", "Steps"),
+            ("cfg", "CFG"),
+            ("size", "Size"),
+            ("seed", "Seed"),
+        ):
+            if row.get(key) not in (None, ""):
+                lines.append(f"{label}: {row[key]}")
+        entries.append((title, lines))
     items = _library_items(entries)
     return {"name": name, "description": "", "items": items} if items else None
 
@@ -2411,7 +2447,7 @@ class StudioRuntime:
         )
         del source
 
-        result_bgr = np.empty((height * 4, width * 4, 3), dtype=np.uint8)
+        resultresult_bgr = np.empty((height * 4, width * 4, 3), dtype=np.uint8)
         tile_size = REAL_ESRGAN_TILE_SIZE
         tile_pad = REAL_ESRGAN_TILE_PAD
         with self.torch.inference_mode():
@@ -7559,11 +7595,11 @@ def _tag_field_pattern(query):
 
 
 def _build_tag_label_word_index(rows):
-    """from → danh sách thẻ, lập chỉ mục trên NHÃN TIẾNG VIỆT của catalog.
+    r"""from → danh sách thẻ, lập chỉ mục trên NHÃN TIẾNG VIỆT của catalog.
 
-    Tách từ bằng `\w+` (không phải split theo khoảng trắng) vì nhãn có dấu chấm và
-    dấu phẩy — ví dụ "U.A." phải cho hai từ "u" và "a" như cách `_tag_query_pattern`
-    ghép regex `(?<!\w)u\s+a(?!\w)`.
+    Tách từ bằng ``\w+`` (không phải split theo khoảng trắng) vì nhãn có dấu chấm và
+    dấu phẩy — ví dụ "U.A." phải cho hai từ "u" và "a" như cách ``_tag_query_pattern``
+    ghép regex ``(?<!\w)u\s+a(?!\w)``.
     """
     word_index = {}
     for row in rows:
@@ -7993,7 +8029,6 @@ STUDIO_OFFLINE_WATCHDOG_JS = r"""() => {
     if (window.__waiOfflineWatchdog) return;
     window.__waiOfflineWatchdog = true;
     let failures = 0;
-    let blockUntil = 0;
     const banner = () => {
         const existing = document.getElementById("studio-offline-banner");
         if (existing) return existing;
@@ -8005,9 +8040,6 @@ STUDIO_OFFLINE_WATCHDOG_JS = r"""() => {
         const button = document.createElement("button");
         button.type = "button";
         button.textContent = "Tải lại trang";
-        const detail = document.createElement("span");
-        detail.setAttribute("data-wai-block", "");
-        node.insertBefore(detail, node.firstChild);
         button.addEventListener("click", () => window.location.reload());
         node.appendChild(text);
         node.appendChild(button);
@@ -8028,9 +8060,29 @@ STUDIO_OFFLINE_WATCHDOG_JS = r"""() => {
     const show = (offline) => {
         const node = document.getElementById("studio-offline-banner");
         if (!node) return;
-        // Dòng "bị chặn" giữ trên màn hình tới blockUntil để người dùng kịp đọc.
-        if (!offline && performance.now() < blockUntil) return;
         node.style.display = offline ? "flex" : "none";
+    };
+    // Chậm UI và mất đường hầm là hai việc khác nhau. Dải này không có nút tải lại
+    // và không được gọi banner() — nếu không, một cú bấm > 0,4 s bị báo là mất kết nối.
+    const blockBanner = (message) => {
+        let node = document.getElementById("studio-block-banner");
+        if (!node) {
+            node = document.createElement("div");
+            node.id = "studio-block-banner";
+            node.setAttribute("role", "status");
+            Object.assign(node.style, {
+                position: "fixed", left: "50%", bottom: "72px", transform: "translateX(-50%)",
+                zIndex: "9998", display: "none",
+                padding: "10px 14px", borderRadius: "12px", background: "#3a3428", color: "#fff8e8",
+                boxShadow: "0 6px 18px rgba(0,0,0,.28)", font: "600 13px system-ui, sans-serif",
+                maxWidth: "92vw"
+            });
+            document.body.appendChild(node);
+        }
+        node.textContent = message;
+        node.style.display = "flex";
+        clearTimeout(node._hide);
+        node._hide = setTimeout(() => { node.style.display = "none"; }, 25000);
     };
     const root = (window.gradio_config && window.gradio_config.root) || ".";
     const url = root.replace(/\/+$/, "") + "/config";
@@ -8055,14 +8107,11 @@ STUDIO_OFFLINE_WATCHDOG_JS = r"""() => {
         blocks.push({at: new Date().toISOString(), ms: Math.round(ms), what, how});
         while (blocks.length > 12) blocks.shift();
         console.warn(`[wai] chặn ${Math.round(ms)} ms sau khi ${how}: ${what}`);
-        const box = banner();
-        const line = box.querySelector("[data-wai-block]");
-        blockUntil = performance.now() + 25000;
-        if (line) {
-            line.textContent = `Trang bị chặn ${Math.round(ms / 100) / 10} s khi ${how} „${what}”. `
-                + `Xem window.__waiBlockLog trong DevTools để lấy nhật ký.`;
-        }
-        setTimeout(() => { blockUntil = 0; show(false); }, 25000);
+        blockBanner(
+            `Trang bị chặn ${Math.round(ms / 100) / 10} s khi ${how} „${what}”. `
+            + `Không phải mất kết nối — đừng tải lại chỉ vì dòng này. `
+            + `Xem window.__waiBlockLog trong DevTools để lấy nhật ký.`
+        );
     };
     let pending = null;
     document.addEventListener("click", (event) => {
@@ -8310,6 +8359,41 @@ def _prompt_weight_boundary(text):
     return text[:split + 1], text[split + 1:]
 
 
+def _explicit_prompt_weight(fragment):
+    """(lõi, trọng số) của ``(thẻ:1.1)``, kể cả khi đang bị bọc ``((thẻ:1.1))``.
+
+    ``((blue eyes))`` không phải trọng số. Gỡ lớp nhấn rồi mới tăng, nếu không
+    nút +1 biến nó thành ``(((blue eyes)):1.1)``. Dấu ngoặc lệch như
+    ``((blue_eyes:1.2)`` không được đọc thành trọng số 1.2.
+    """
+    text = str(fragment or "").strip()
+
+    def explicit(value):
+        match = WEIGHT_RE.fullmatch(value)
+        if not match:
+            return None
+        body = match.group("body").strip()
+        if not body or body.count("(") != body.count(")"):
+            return None
+        return body, float(match.group("weight"))
+
+    found = explicit(text)
+    if found:
+        return found
+    body = text
+    for _ in range(8):
+        if len(body) < 2 or {"(": ")", "[": "]"}.get(body[0]) != body[-1]:
+            break
+        inner = body[1:-1].strip()
+        if not inner:
+            break
+        body = inner
+        found = explicit(body)
+        if found:
+            return found
+    return body, 1.0
+
+
 def adjust_prompt_tag_weight(prompt_text, direction):
     """Adjust the selected/caret tag, or the final phrase, in 0.1 increments.
 
@@ -8347,10 +8431,9 @@ def adjust_prompt_tag_weight(prompt_text, direction):
         return text, "Đặt con trỏ trong một tag hoặc chọn cụm tag cần chỉnh trọng số."
 
     # A weighted group is kept intact: "(long hair, blue_eyes:1.1)" is adjusted as
-    # a whole, the same way ComfyUI and WebUI wrap a selected fragment.
-    match = WEIGHT_RE.fullmatch(fragment)
-    tag = match.group("body") if match else fragment
-    current = float(match.group("weight")) if match else 1.0
+    # a whole, the same way ComfyUI and WebUI wrap a selected fragment. Emphasis
+    # wrappers are removed first so "((blue eyes))" becomes "(blue eyes:1.1)".
+    tag, current = _explicit_prompt_weight(fragment)
     low, high = PROMPT_TAG_WEIGHT_RANGE
     updated_weight = round(min(high, max(low, current + direction * PROMPT_TAG_WEIGHT_STEP)), 1)
     leading = region[:len(region) - len(region.lstrip())]
@@ -8551,6 +8634,43 @@ def source_picker_state(entries, keep=None, pick=None):
     return choices, value
 
 
+def merge_source_entries(remembered, fresh, limit=GALLERY_SOURCE_LIMIT):
+    """Gộp ảnh thư viện với danh sách đã nạp bằng ↻, không đọc đĩa.
+
+    Ảnh mới trong thư viện đứng trước. Ảnh cũ đã nạp không bị xóa chỉ vì người dùng
+    bấm một ảnh hoặc vì lượt tạo vừa thay cả thư viện. Trùng đường dẫn thì giữ chú
+    thích không rỗng.
+    """
+    captions = {}
+    for bucket in (remembered or [], fresh or []):
+        if isinstance(bucket, (str, bytes)):
+            continue
+        for item in bucket:
+            if not isinstance(item, (list, tuple)) or not item or not item[0]:
+                continue
+            path = str(item[0])
+            caption = str(item[1]) if len(item) > 1 and item[1] else ""
+            # Ảnh thư viện đi sau nên chú thích mới (seed, kích thước) thắng chú thích cũ.
+            if caption or path not in captions:
+                captions[path] = caption
+    ordered = []
+    seen = set()
+    for bucket in (fresh or [], remembered or []):
+        if isinstance(bucket, (str, bytes)):
+            continue
+        for item in bucket:
+            if not isinstance(item, (list, tuple)) or not item or not item[0]:
+                continue
+            path = str(item[0])
+            if path in seen:
+                continue
+            seen.add(path)
+            ordered.append([path, captions.get(path, "")])
+            if len(ordered) >= limit:
+                return ordered
+    return ordered
+
+
 def source_picker_update(entries, keep=None, pick=None):
     """Giá trị gr.update cho ô chọn ảnh nguồn."""
     import gradio as gr
@@ -8635,6 +8755,12 @@ def instrument_ui_events(demo):
             return result
 
         wrapper._wai_timed = True
+        # Gradio chỉ tiêm SelectData khi inspect.signature thấy annotation. wraps
+        # không đổi chữ ký *args của wrapper, nên phải gán lại chữ ký gốc.
+        try:
+            wrapper.__signature__ = inspect.signature(fn)
+        except (TypeError, ValueError):
+            pass
         block_fn.fn = wrapper
     return demo
 
@@ -8689,8 +8815,25 @@ def _timed_async_generator(agen, name, started, alarm):
     return run()
 
 
+def warn_if_gradio_freezes_tabs():
+    """Gradio 6.11–6.15.2 khóa trình duyệt khi bấm tab. Ô 2 phải cài 6.17.3."""
+    try:
+        from importlib.metadata import version
+        from packaging.version import Version
+        current = Version(version("gradio"))
+    except Exception:
+        return
+    if current < Version("6.16.0"):
+        print(
+            f"⚠️ Gradio {current} làm trình duyệt báo «trang không phản hồi» khi bấm "
+            "✦ Tạo ảnh / 🏷️ Kho thẻ / 📚 Thư viện. Runtime → Restart runtime → Run all "
+            "để ô 2 cài Gradio 6.17.3. Chỉ chạy lại ô 8 hoặc ô 9 không hết đơ."
+        )
+
+
 def build_app(runtime):
     """Build Gradio Blocks without opening a public tunnel until launch cell runs."""
+    warn_if_gradio_freezes_tabs()
     tag_catalog_status = prime_prompt_tag_catalog()
     import gradio as gr
     from PIL import Image
@@ -8894,8 +9037,9 @@ def build_app(runtime):
             "<span class='studio-chip'><span class='studio-chip-dot'></span>Model đã xác minh</span>"
             "<span class='studio-chip'>GPU Colab</span>"
             f"<span class='studio-chip' id='studio-build-chip' "
-            f"title='Mã bản dựng của ô 7 — không thấy dòng này nghĩa là phiên Colab "
-            f"vẫn đang chạy bản cũ (phải chạy lại ô 7)'>Bản dựng {STUDIO_BUILD}</span></div>"
+            f"title='Mã bản dựng của ô 7. Không thấy dòng này, hoặc bấm tab vẫn báo "
+            f"trang không phản hồi: Restart runtime rồi Run all — ô 2 phải cài Gradio 6.17.3, "
+            f"chỉ chạy lại ô 8/9 không đủ'>Bản dựng {STUDIO_BUILD}</span></div>"
             "<div class='studio-privacy'>"
             "<span class='studio-privacy-mark' aria-hidden='true'>!</span>"
             "<span><strong>Liên kết không có đăng nhập:</strong> bất kỳ ai có link đều "
@@ -9466,8 +9610,8 @@ def build_app(runtime):
                         choices=[],
                         value=None,
                         allow_custom_value=True,
-                        info="Mặc định là ảnh vừa tạo; bấm ảnh trong thư viện để chọn ảnh khác, "
-                             "hoặc ↻ để đọc cả ảnh của các lượt tạo trước.",
+                        info="Mặc định là ảnh vừa tạo; bấm ảnh trong thư viện để chọn ảnh đó "
+                             "mà không xóa danh sách đã nạp bằng ↻.",
                         scale=4,
                     )
                     source_refresh = gr.Button("↻", scale=1, variant="secondary")
@@ -9482,6 +9626,8 @@ def build_app(runtime):
                     label="Tải ảnh PNG", file_count="multiple", interactive=False
                 )
                 latest = gr.State(None)
+                # Danh sách ↻ / mở trang. Bấm ảnh chỉ gộp bộ nhớ này, không quét đĩa.
+                source_memory = gr.State([])
                 gr.Markdown(
                     "Ảnh chỉ nằm ở `/content/wai_outputs` của phiên Colab (không lưu "
                     "Drive) — **tải xuống trước khi runtime hết hạn**.",
@@ -9558,38 +9704,60 @@ def build_app(runtime):
             return editor_value, f"{note} → **✎ Sửa vùng**."
 
         # Ảnh vừa tạo xong tự cập nhật vào ô chọn; bấm ảnh trong thư viện là chọn ảnh đó.
-        # Hai sự kiện này chỉ đọc bộ nhớ (giá trị gallery do server gửi về) — tuyệt đối
-        # không quét đĩa ở đây, vì mỗi lần cập nhật thư viện lại kéo theo một lượt
-        # glob/stat trên /content là nguyên nhân khiến trang đứng hình giữa lượt tạo.
+        # Hai sự kiện bấm/đổi thư viện chỉ đọc bộ nhớ (giá trị gallery do server gửi về
+        # và source_memory) — tuyệt đối không quét đĩa ở đây, vì mỗi lần cập nhật thư viện
+        # lại kéo theo một lượt glob/stat trên /content là nguyên nhân khiến trang đứng hình.
         def picker_entries(gallery_value=None, ttl=OUTPUT_SCAN_TTL_SECONDS):
             return source_entries(
                 getattr(runtime, "output_dir", None), gallery_value, verify=False, ttl=ttl
             )
 
+        def on_gallery_change(value, remembered, keep):
+            fresh = source_entries(None, value, verify=False)
+            merged = merge_source_entries(remembered, fresh)
+            newest = fresh[0][0] if fresh else None
+            return source_picker_update(merged, keep=keep, pick=newest), merged
+
+        def on_gallery_select(value, remembered, data: gr.SelectData):
+            # Annotation bắt buộc: Gradio 6 chỉ tiêm SelectData khi tham số là subclass
+            # của EventData. Lambda không gắn được hint, nên data không bao giờ tới.
+            fresh = source_entries(None, value, verify=False)
+            merged = merge_source_entries(remembered, fresh)
+            return (
+                source_picker_update(
+                    merged, pick=tapped_gallery_path(value, getattr(data, "index", None))
+                ),
+                merged,
+            )
+
+        def refresh_source_picker(keep):
+            entries = picker_entries(ttl=0)
+            return source_picker_update(entries, keep=keep), entries
+
+        def load_source_picker():
+            entries = picker_entries(ttl=0)
+            return source_picker_update(entries), entries
+
         gallery.change(
-            fn=lambda value, keep: source_picker_update(
-                source_entries(None, value, verify=False), keep=keep
-            ),
-            inputs=[gallery, source_choice],
-            outputs=source_choice,
+            fn=on_gallery_change,
+            inputs=[gallery, source_memory, source_choice],
+            outputs=[source_choice, source_memory],
             api_visibility="private",
             queue=False,
         )
         gallery.select(
-            fn=lambda value, data: source_picker_update(
-                source_entries(None, value, verify=False), pick=tapped_gallery_path(value, data.index)
-            ),
-            inputs=gallery,
-            outputs=source_choice,
+            fn=on_gallery_select,
+            inputs=[gallery, source_memory],
+            outputs=[source_choice, source_memory],
             api_visibility="private",
             queue=False,
         )
-        # Chỉ nút ↻ mới thật sự đọc thư mục xuất; nó chạy trong queue (không chiếm
-        # slot "wai_gpu") nên bấm lúc đang tạo ảnh vẫn có phản hồi ngay.
+        # Chỉ nút ↻ mới thật sự đọc thư mục xuất; ttl=0 bỏ cache 5 giây. Nó chạy trong
+        # queue (không chiếm slot "wai_gpu") nên bấm lúc đang tạo ảnh vẫn có phản hồi.
         source_refresh.click(
-            fn=lambda keep: source_picker_update(picker_entries(), keep=keep),
+            fn=refresh_source_picker,
             inputs=source_choice,
-            outputs=source_choice,
+            outputs=[source_choice, source_memory],
             api_visibility="private",
             show_progress="minimal",
         )
@@ -9873,8 +10041,8 @@ def build_app(runtime):
             )
         # Mở lại trang là danh sách ảnh trên đĩa vẫn chọn được (không chỉ ảnh vừa tạo).
         demo.load(
-            fn=lambda: source_picker_update(picker_entries(ttl=0)),
-            outputs=source_choice,
+            fn=load_source_picker,
+            outputs=[source_choice, source_memory],
             api_visibility="private",
             show_progress="minimal",
         )

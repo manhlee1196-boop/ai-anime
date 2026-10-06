@@ -28,6 +28,8 @@
 
 [![Mở trong Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/manhlee1196-boop/ai-anime/blob/main/WAI_Illustrious_Colab.ipynb)
 
+> **File `WAI_Illustrious_Colab.ipynb` không có trong checkout hiện tại** — nút Colab của mục này sẽ 404 cho đến khi file được thêm lại. Studio dùng [`WAI_Illustrious_Studio_Colab.ipynb`](WAI_Illustrious_Studio_Colab.ipynb).
+
 **[WAI_Illustrious_Colab.ipynb](WAI_Illustrious_Colab.ipynb)** không mở URL chia sẻ, vẫn tạo ảnh bằng checkpoint WAI-illustrious SDXL với hai LoRA tùy chọn và inpainting ô 8.
 
 ## Chạy nhanh
@@ -66,19 +68,23 @@ Bạn có thể tự kiểm tra SHA-256 trong Colab: `sha256sum /content/wai_mod
 
   **Mã UI nằm ở ô 7** — chạy lại riêng ô 8/ô 9 không cập nhật giao diện. Header của Studio có chip **"Bản dựng …"**; không thấy chip đó (hoặc thấy ngày cũ) là phiên Colab vẫn chạy bản cũ, hãy chạy lại ô 7 rồi ô 8, ô 9.
 
-  **Studio tự báo sự kiện nào chậm**: `colab/studio.py` bọc mọi handler UI và in vào output của Ô 8 dòng `⏱ #n gallery.change «Ảnh đã tạo» hết 1,4 s s` (ngưỡng 0,3 s) hoặc `⏳ vẫn đang chạy sau 10 s`; phía trình duyệt có watchdog đo **bấm → vẽ xong** (`window.__waiBlockLog` trong DevTools) và hiện "Trang bị chặn X s khi chuyển tab …". Khi báo lỗi, kèm hai số này là tìm ra nguyên nhân ngay.
+  **Studio tự báo sự kiện nào chậm**: `colab/studio.py` bọc mọi handler UI và in vào output của Ô 8 dòng `⏱ #n gallery.change «Ảnh đã tạo» hết 1,4 s s` (ngưỡng 0,3 s) hoặc `⏳ vẫn đang chạy sau 10 s`; phía trình duyệt có watchdog đo **bấm → vẽ xong** (`window.__waiBlockLog` trong DevTools) và hiện dải riêng "Trang bị chặn X s khi chuyển tab …" — dải này không phải mất kết nối và không có nút tải lại. Khi báo lỗi, kèm hai số này là tìm ra nguyên nhân ngay.
   **Gõ tiếng Việt để tìm tag không còn dựng bảng tra giữa cú gõ**: index từ khóa theo nhãn Việt và bảng tên thẻ đã chuẩn hoá được dựng một lần ở Ô 7/Ô 8 (in ra "Đã dựng index N từ khóa từ nhãn tiếng Việt"), nên cú gõ đầu tiên sau khi mở trang nhanh như các cú sau (~1 ms thay vì ~1 s).
   Khi chuyển tab cũng nhẹ hơn: observer phím tắt `Ctrl+↑/↓` chỉ quan sát vùng ô prompt rồi tự ngắt (trước đây nó chạy theo mọi thay đổi DOM của cả trang), và tab **✎ Sửa vùng** chỉ tải một ảnh thay vì hai bản PNG full-size vì `editor_value_for` không còn nhân bản `composite`.
 - **🧭 Quy trình chuẩn · khung prompt + negative tối ưu (ô 7).** Ba nút hỗ trợ, tất cả **chỉ ghi vào nội dung hiển thị** để bạn sửa: **Sắp xếp prompt theo thứ tự chuẩn** (chủ thể → nhãn phân loại → ngoại hình/chi tiết nhân vật → trang phục → tư thế → bố cục → bối cảnh → ánh sáng → phong cách → thẻ khác → chất lượng → `absurdres`; bỏ thẻ trùng, thêm thẻ neo của khung đã chọn), **Nạp negative đã chọn** (8 bộ: chuẩn nhà phát hành WAI v17, Illustrious chuẩn, tay/chân, giữ chất 2D, chân dung, phong cảnh, an toàn nội dung, inpaint; ghi đè hoặc nối thêm) và **🩺 Kiểm tra prompt & thông số** (ước lượng token so với khối 75 token của SDXL, thẻ chất lượng thừa/trùng/vừa dương vừa âm, cú pháp Pony, trọng số > 1.2, negative quá dài, steps/CFG/kích thước/hires ngoài khuyến nghị). Nhóm **💅 Chi tiết mắt & móng** trong tab **✨ Chi tiết** chỉ thêm các thẻ mô tả (màu mắt, kiểu/màu móng) vào hai ô đang hiển thị. Quy trình đầy đủ: [`docs/QUY_TRINH_TAO_ANH.md`](docs/QUY_TRINH_TAO_ANH.md).
 - **Tự sửa mặt/tay (auto-detailer, tùy chọn).** Ô 2 **cài thêm `ultralytics==8.4.170`** (chỉ cảnh báo nếu thất bại, các chế độ khác vẫn chạy). Khi bật mục **Tự sửa mặt/tay** trong tab **⚙️ Thông số**, Studio tải weight YOLOv8 (`face_yolov8n.pt`, `hand_yolov8n.pt`) từ `Bingsu/adetailer` @ `c310c216` vào **`/content/wai_detailer_cache`**, **kiểm SHA-256 đầy đủ** (khớp metadata HF đã đối chiếu) rồi phát hiện mặt/bàn tay và inpaint lại đúng vùng đó với strength/ngưỡng/số vùng bạn chọn. Weight sai hash bị xóa và không nạp; cần mạng ở lần bật đầu tiên. Tính năng này chỉ là gợi ý chỉnh sửa, **không đảm bảo** hết lỗi ngón/mặt.
 
-Kiểm tra cấu trúc notebook và hành vi tải/hash/nạp LoRA bằng mock CPU: `python -m unittest discover -s tests -v` (hiện **186 test: 158 đạt, 28 bỏ qua** — phần bỏ qua do thiếu `torch`/`diffusers` và notebook legacy không còn trong checkout; UI Gradio 6.15.2 và Pillow đã được cài nên các test dựng giao diện và tuyến sự kiện thật chạy được). `colab/studio.py` là bản mã nguồn tương ứng của ô 7 và `python scripts/build_colab_studio.py` tái tạo **chính xác** notebook từ nó — sửa giao diện ở `colab/studio.py` rồi chạy lại script. Việc tải thực tế checkpoint/LoRA/weight YOLOv8, khả năng chạy với GPU Colab và chất lượng ảnh/tay-chân-mắt **chưa thể xác nhận** trong môi trường kiểm thử CPU này.
+Kiểm tra cấu trúc notebook và hành vi tải/hash/nạp LoRA bằng mock CPU: `python -m unittest discover -s tests -v` (hiện **188 test: 160 đạt, 28 bỏ qua** — phần bỏ qua do thiếu `torch`/`diffusers` và notebook legacy không còn trong checkout; UI Gradio 6.17.3 và Pillow đã được cài nên các test dựng giao diện và tuyến sự kiện thật chạy được). `colab/studio.py` là bản mã nguồn tương ứng của ô 7 và `python scripts/build_colab_studio.py` tái tạo **chính xác** notebook từ nó — sửa giao diện ở `colab/studio.py` rồi chạy lại script. Việc tải thực tế checkpoint/LoRA/weight YOLOv8, khả năng chạy với GPU Colab và chất lượng ảnh/tay-chân-mắt **chưa thể xác nhận** trong môi trường kiểm thử CPU này.
 
 ---
 
 # Mirai Studio — Cloudflare SDXL (tùy chọn, không cần cho Colab WAI)
 
-**Nếu bạn chỉ dùng WAI với liên kết cá nhân Colab, dừng ở hướng dẫn đầu trang; không cần triển khai phần này.** Mã ứng dụng ở **[`web/`](web/)** gồm giao diện React/Vite, Worker API và Cloudflare Workers AI binding. Đây là ứng dụng khác với notebook Colab ở trên: **Cloudflare Workers AI chạy SDXL Base 1.0 / SDXL Lightning do Cloudflare lưu trữ, KHÔNG chạy checkpoint WAI-illustrious v17**. Muốn dùng đúng WAI cần GPU bên ngoài; xem mục bên dưới. Ảnh mẫu trong giao diện là ảnh minh họa đóng gói sẵn, **không phải ảnh ứng dụng vừa tạo**.
+**Nếu bạn chỉ dùng WAI với liên kết cá nhân Colab, dừng ở hướng dẫn đầu trang; không cần triển khai phần này.**
+
+> **Thư mục `web/` không có trong checkout hiện tại.** Đoạn dưới là tài liệu ứng dụng Cloudflare tùy chọn, không cần cho Studio Colab.
+
+Mã ứng dụng ở **[`web/`](web/)** gồm giao diện React/Vite, Worker API và Cloudflare Workers AI binding. Đây là ứng dụng khác với notebook Colab ở trên: **Cloudflare Workers AI chạy SDXL Base 1.0 / SDXL Lightning do Cloudflare lưu trữ, KHÔNG chạy checkpoint WAI-illustrious v17**. Muốn dùng đúng WAI cần GPU bên ngoài; xem mục bên dưới. Ảnh mẫu trong giao diện là ảnh minh họa đóng gói sẵn, **không phải ảnh ứng dụng vừa tạo**.
 
 ## Tính năng
 
@@ -218,7 +224,7 @@ Mã nằm trong `colab/studio.py`; tái tạo notebook bằng `python scripts/bu
 
 Giao diện có header sản phẩm/cảnh báo bảo mật, panel **Soạn prompt** và panel **Kết quả**. Trên màn hình rộng hai panel nằm cạnh nhau; dưới 900 px chúng xếp dọc. Prompt/Negative luôn ở ngoài tab và giữ nguyên khi chuyển tác vụ; thanh tab cuộn ngang, vùng bấm đủ lớn cho thao tác cảm ứng.
 
-**Chọn ảnh nào để sửa / phóng.** Khung **02 · Kết quả** có ô **Ảnh sẽ nạp vào tab sửa / phóng**: mặc định là ảnh vừa tạo xong, nhưng bấm một ảnh trong thư viện (hoặc chọn trong dropdown — nhãn gồm số thứ tự, tên file, `Seed … · kích thước`) sẽ chỉ định đúng ảnh đó. Nút `↻` đọc lại toàn bộ PNG trong `/content/wai_outputs`, nên vẫn chọn được ảnh của các lượt tạo trước khi trang được tải lại. Bấm **↪ Nạp ảnh đã chọn vào cả ba tab** để đưa ảnh vào ◈ Biến đổi, ⤢ Phóng to và ✎ Sửa vùng cùng lúc, hoặc dùng ba nút `→ ◈ Biến đổi` / `→ ⤢ Phóng to` / `→ ✎ Sửa vùng` để nạp rồi mở ngay một tab. Không chọn ảnh nào thì Studio báo lỗi rõ, không âm thầm lấy ảnh khác.
+**Chọn ảnh nào để sửa / phóng.** Khung **02 · Kết quả** có ô **Ảnh sẽ nạp vào tab sửa / phóng**: mặc định là ảnh vừa tạo xong, nhưng bấm một ảnh trong thư viện (hoặc chọn trong dropdown — nhãn gồm số thứ tự, tên file, `Seed … · kích thước`) sẽ chỉ định đúng ảnh đó mà không xóa các ảnh đã nạp. Nút `↻` đọc lại toàn bộ PNG trong `/content/wai_outputs` (bỏ cache vài giây), nên vẫn chọn được ảnh của các lượt tạo trước khi trang được tải lại. Bấm **↪ Nạp ảnh đã chọn vào cả ba tab** để đưa ảnh vào ◈ Biến đổi, ⤢ Phóng to và ✎ Sửa vùng cùng lúc, hoặc dùng ba nút `→ ◈ Biến đổi` / `→ ⤢ Phóng to` / `→ ✎ Sửa vùng` để nạp rồi mở ngay một tab. Không chọn ảnh nào thì Studio báo lỗi rõ, không âm thầm lấy ảnh khác.
 
 Sáu tab chính, mặc định mở **✦ Tạo ảnh**:
 

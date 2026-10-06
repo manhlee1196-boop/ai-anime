@@ -146,7 +146,7 @@ class NotebookTests(unittest.TestCase):
         self.assertIn("if not WAI_STUDIO_VERSION_VERIFIED:", prepare)
         install = "".join(n["cells"][2]["source"])
         for requirement in (
-            '"gradio==6.15.2"',
+            '"gradio==6.17.3"',
             '"pydantic>=2.12.5,<3"',
             '"starlette>=1.3.1,<2"',
         ):
@@ -190,6 +190,18 @@ class NotebookTests(unittest.TestCase):
         self.assertIn("ProxyHandler({})", tunnel_source)
         self.assertNotIn("google.colab.kernel.proxyPort", tunnel_source)
         compile(tunnel_source, "studio-cloudflare-tunnel", "exec")
+        intro = "".join(n["cells"][0]["source"])
+        self.assertIn("chủ thể → nhãn phân loại → ngoại hình", intro)
+        self.assertNotIn("chất lượng → chủ thể → ngoại hình", intro)
+        prepare = "".join(n["cells"][4]["source"])
+        self.assertIn("Studio sẽ dừng, không nạp file khác", prepare)
+        self.assertNotIn("KHÔNG xác thực là WAI v17", prepare)
+        lora = "".join(n["cells"][5]["source"])
+        self.assertIn("except ValueError:\n        raise", lora)
+        loaded = "".join(n["cells"][6]["source"])
+        self.assertIn("Chạy tiếp ô 7, rồi ô 8 và ô 9", loaded)
+        self.assertIn("del studio_runtime", loaded)
+        self.assertNotIn("ô 8 sửa vùng", loaded)
         try:
             import nbformat
         except ImportError:
@@ -232,7 +244,7 @@ class NotebookTests(unittest.TestCase):
         start = "from importlib.metadata import PackageNotFoundError, version"
         check = install[install.index(start) :]
         versions = {
-            "gradio": "6.15.2",
+            "gradio": "6.17.3",
             "gradio_client": "2.5.0",
             "pydantic": "2.12.5",
             "starlette": "1.3.1",
@@ -531,12 +543,27 @@ class PromptLibraryTests(unittest.TestCase):
         parsed = studio.parse_prompt_library(
             json.dumps(
                 [
-                    {"title": "Chân dung", "prompt": "1girl, portrait, soft light"},
+                    {
+                        "title": "Chân dung",
+                        "prompt": "1girl, portrait, soft light",
+                        "negative": "lowres, bad hands",
+                        "steps": 28,
+                        "cfg": 6,
+                        "size": "832x1216",
+                        "seed": 7,
+                    },
                     {"name": "Phong cảnh", "en": "1girl, landscape, wide sky"},
                 ]
             )
         )
         self.assertEqual([i["title"] for i in parsed["items"]], ["Chân dung", "Phong cảnh"])
+        tuned_json = parsed["items"][0]
+        self.assertEqual(tuned_json["negative"], "lowres, bad hands")
+        self.assertEqual(tuned_json["steps"], 28)
+        self.assertEqual(tuned_json["cfg"], 6.0)
+        self.assertEqual(tuned_json["size"], "832x1216")
+        self.assertEqual(tuned_json["seed"], 7)
+        self.assertNotIn("Negative:", tuned_json["prompt"])
 
         plain = studio.parse_prompt_library(
             "1girl, under cherry blossoms, masterpiece\n\n"
@@ -699,6 +726,11 @@ class RuntimeValidationTests(unittest.TestCase):
         self.assertEqual(triggered.count("perfect eyes"), 1)
         self.assertEqual(kept, negative)
         self.assertEqual(studio.add_eyes_trigger(triggered, negative)[0], triggered)
+        # Trọng số và lớp nhấn không được tính là thẻ khác, nếu không nút chèn thêm bản trần.
+        for already in ("(perfect eyes:1.1)", "((perfect eyes))", "((perfect eyes:1.2))"):
+            again, _ = studio.add_eyes_trigger(f"{already}, anime portrait", negative)
+            self.assertEqual(again, f"{already}, anime portrait")
+            self.assertEqual(again.casefold().count("perfect eyes"), 1)
         # Gợi ý sửa vùng cũng là hành động tường minh của người dùng.
         repaired, repaired_neg = studio.apply_repair_hints(
             "portrait", "bad hands", "eyes"
@@ -2327,6 +2359,18 @@ class SourceImagePickerTests(unittest.TestCase):
         self.assertEqual(picked, str(self.paths[1]))
         self.assertEqual(studio.source_picker_state([]), ([], None))
 
+    def test_merge_keeps_loaded_images_when_the_gallery_is_only_the_latest_batch(self):
+        remembered = [[str(self.paths[0]), "cũ"], [str(self.paths[1]), ""]]
+        fresh = [(str(self.paths[2]), "mới"), (str(self.paths[1]), "caption")]
+        merged = studio.merge_source_entries(remembered, fresh)
+        self.assertEqual(
+            [row[0] for row in merged],
+            [str(self.paths[2]), str(self.paths[1]), str(self.paths[0])],
+        )
+        self.assertEqual(merged[1][1], "caption")
+        self.assertEqual(merged[2][1], "cũ")
+        self.assertEqual(studio.merge_source_entries(None, []), [])
+
     def test_ui_no_longer_hardcodes_the_newest_image(self):
         source = (Path(__file__).resolve().parents[1] / "colab" / "studio.py").read_text(encoding="utf-8")
         self.assertNotIn("Dùng ảnh mới nhất", source)
@@ -2387,13 +2431,50 @@ class UiResponsivenessTests(unittest.TestCase):
         self.assertIn('concurrency_id="wai_gpu"', self.source)
         self.assertIn("concurrency_limit=1,", self.source)
 
+    def function_body(self, name):
+        """Thân hàm lồng trong build_app, cắt ở def cùng cấp kế tiếp."""
+        marker = f"def {name}("
+        start = self.source.index(marker)
+        start = self.source.rfind("\n", 0, start) + 1
+        lines = self.source[start:].splitlines()
+        indent = len(lines[0]) - len(lines[0].lstrip())
+        out = [lines[0]]
+        for line in lines[1:]:
+            stripped = line.lstrip()
+            if stripped and (len(line) - len(stripped)) <= indent and stripped.startswith(
+                ("def ", "class ")
+            ):
+                break
+            out.append(line)
+        return "\n".join(out)
+
     def test_tapping_a_gallery_image_never_scans_the_output_dir(self):
-        for anchor in ("gallery.change(", "gallery.select("):
+        # Handler nằm ngoài khai báo .select( vì lambda không gắn được hint SelectData.
+        # Ý định giữ nguyên: bấm/đổi thư viện chỉ đọc bộ nhớ, không glob thư mục xuất.
+        for name in ("on_gallery_change", "on_gallery_select"):
+            body = self.function_body(name)
+            self.assertIn("source_entries(None,", body)
+            self.assertIn("verify=False", body)
+            self.assertNotIn("picker_entries(", body)
+            self.assertNotIn("output_dir_entries(", body)
+            self.assertNotIn(".glob(", body)
+        select_body = self.function_body("on_gallery_select")
+        self.assertIn("data: gr.SelectData", select_body)
+        self.assertIn("merge_source_entries(", select_body)
+        self.assertNotIn("lambda value, data", self.source)
+        for anchor, handler in (
+            ("gallery.change(", "on_gallery_change"),
+            ("gallery.select(", "on_gallery_select"),
+        ):
             block = self.block(anchor)
-            self.assertIn("source_entries(None,", block)
-            self.assertIn("verify=False", block)
+            self.assertIn(f"fn={handler},", block)
+            self.assertIn("queue=False", block)
             self.assertNotIn("picker_entries(", block)
-        # Chỉ nút ↻ và lần mở trang mới đọc thư mục xuất, và phải qua queue.
+            self.assertNotIn("output_dir_entries(", block)
+        # Chỉ nút ↻ và lần mở trang mới đọc thư mục xuất, bỏ cache, và phải qua queue.
+        for name in ("refresh_source_picker", "load_source_picker"):
+            body = self.function_body(name)
+            self.assertIn("picker_entries(ttl=0)", body)
         for anchor in ("source_refresh.click(", "demo.load("):
             block = self.block(anchor)
             self.assertNotIn("queue=False", block)
@@ -2499,6 +2580,14 @@ class UiResponsivenessTests(unittest.TestCase):
         # Không tự tải lại khi người dùng còn đang nhìn tab khác (tránh mất trạng thái).
         self.assertIn('visibilityState !== "visible"', js)
         self.assertIn("demo.load(fn=None, js=STUDIO_OFFLINE_WATCHDOG_JS)", self.source)
+        # Cú bấm chậm không được mở dải "Mất kết nối" (dải đó có nút tải lại trang).
+        note = js.split("const note =", 1)[1].split("let pending", 1)[0]
+        self.assertIn("blockBanner(", note)
+        self.assertIn("Không phải mất kết nối", note)
+        self.assertNotIn("banner()", note)
+        self.assertNotIn("studio-offline-banner", note)
+        self.assertNotIn("location.reload", note)
+        self.assertIn("studio-block-banner", js)
 
     def test_editor_value_shares_the_loaded_file_and_skips_the_composite(self):
         # composite do trình duyệt tự vẽ; sao chép/convert thêm ở server chỉ để đưa
@@ -2597,6 +2686,17 @@ class UiEventInstrumentationTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 first()
         self.assertIn("⚠️", log.getvalue())
+
+    def test_timing_wrapper_keeps_the_selectdata_signature(self):
+        def handler(value, data: int):
+            return data
+
+        demo = self.FakeDemo({4: self.FakeBlockFn(handler)})
+        studio.instrument_ui_events(demo)
+        signature = inspect.signature(demo.fns[4].fn)
+        self.assertIn("data", signature.parameters)
+        self.assertIs(signature.parameters["data"].annotation, int)
+        self.assertEqual(demo.fns[4].fn("ảnh", 3), 3)
 
     def test_notebook_launch_disables_ssr_and_keeps_upload_limit(self):
         # ssr_mode mặc định tắt (GRADIO_SSR_MODE); còn max_file_size chỉ áp cho UPLOAD,

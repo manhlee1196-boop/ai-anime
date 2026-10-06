@@ -312,6 +312,13 @@ class TagCatalogTests(unittest.TestCase):
         regrouped, _ = studio.adjust_prompt_tag_weight(grouped, 1)
         self.assertEqual(regrouped, "1girl, (long_hair, blue_eyes:1.2)")
 
+        # Lớp nhấn ((thẻ)) không phải trọng số — không được bọc thêm một lớp ngoặc.
+        emphasized, _ = studio.adjust_prompt_tag_weight("1girl, ((blue eyes))", 1)
+        self.assertEqual(emphasized, "1girl, (blue eyes:1.1)")
+        nested, _ = studio.adjust_prompt_tag_weight("1girl, ((blue_eyes:1.2))", -1)
+        self.assertEqual(nested, "1girl, (blue_eyes:1.1)")
+        self.assertEqual(studio.tag_core("((perfect eyes:1.1))"), "perfect eyes")
+
         # Ký tự đánh dấu không bao giờ sót lại, kể cả khi không chỉnh được gì.
         for prompt in (
             "",
