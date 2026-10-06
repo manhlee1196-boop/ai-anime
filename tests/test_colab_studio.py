@@ -902,6 +902,90 @@ class RuntimeValidationTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "CPU"):
             self.runtime._realesrgan_x4(object())
 
+    @unittest.skipIf(Image is None, "Pillow needed for raster smoke tests")
+    def test_realesrgan_tile_upscale_defines_result_buffer(self):
+        """Phóng to phải ghi buffer `result_bgr`. Lỗi tên này làm tab phóng to chết."""
+        try:
+            import numpy as np
+        except ImportError:
+            self.skipTest("numpy needed to exercise the Real-ESRGAN tile path")
+
+        class FakeTensor:
+            def __init__(self, array):
+                self.array = np.asarray(array)
+
+            @property
+            def shape(self):
+                return self.array.shape
+
+            def unsqueeze(self, axis):
+                return FakeTensor(np.expand_dims(self.array, axis))
+
+            def to(self, device=None, dtype=None):
+                return self
+
+            def div_(self, value):
+                self.array = self.array / value
+                return self
+
+            def __getitem__(self, item):
+                return FakeTensor(self.array[item])
+
+            def detach(self):
+                return self
+
+            def float(self):
+                return FakeTensor(self.array.astype(np.float32))
+
+            def clamp_(self, low, high):
+                self.array = np.clip(self.array, low, high)
+                return self
+
+            def mul_(self, value):
+                self.array = self.array * value
+                return self
+
+            def round_(self):
+                self.array = np.rint(self.array)
+                return self
+
+            def permute(self, *axes):
+                return FakeTensor(np.transpose(self.array, axes))
+
+            def numpy(self):
+                return np.ascontiguousarray(self.array)
+
+        def pad(tensor, pads, mode="reflect"):
+            left, right, top, bottom = pads
+            return FakeTensor(
+                np.pad(
+                    tensor.array,
+                    ((0, 0), (0, 0), (top, bottom), (left, right)),
+                    mode=mode,
+                )
+            )
+
+        def identity_x4(tile):
+            return FakeTensor(np.repeat(np.repeat(tile.array, 4, axis=-1), 4, axis=-2))
+
+        torch_api = types.SimpleNamespace(
+            float16=np.float16,
+            float32=np.float32,
+            uint8=np.uint8,
+            from_numpy=FakeTensor,
+            inference_mode=staticmethod(contextlib.nullcontext),
+            nn=types.SimpleNamespace(functional=types.SimpleNamespace(pad=pad)),
+        )
+        source = Image.new("RGB", (32, 24), "white")
+        source.putpixel((1, 2), (10, 20, 30))
+        source.putpixel((31, 23), (200, 100, 50))
+        self.runtime.torch = torch_api
+        result = self.runtime._realesrgan_x4_on_device(source, identity_x4, "cpu")
+        self.assertEqual(result.size, (128, 96))
+        self.assertEqual(result.getpixel((4, 8)), (10, 20, 30))
+        self.assertEqual(result.getpixel((124, 92)), (200, 100, 50))
+        self.assertNotIn("resultresult_bgr", inspect.getsource(studio.StudioRuntime._realesrgan_x4_on_device))
+
     def test_hires_size_is_multiple_of_8_and_clamped_to_pixel_budget(self):
         self.assertIsNone(studio._hires_size(1024, 1024, studio.HIRES_OFF))
         self.assertEqual(studio._hires_size(512, 512, "1.25×"), (640, 640, False))

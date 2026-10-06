@@ -53,7 +53,7 @@ REAL_ESRGAN_MODEL = {
 }
 # Cập nhật mỗi lần sửa colab/studio.py: header in mã này để người dùng biết phiên
 # Colab đang chạy bản nào (chạy lại riêng ô 9 KHÔNG cập nhật mã UI — nằm ở ô 7).
-STUDIO_BUILD = "2026.10.06 · tab không đơ"
+STUDIO_BUILD = "2026.10.07 · sửa phóng to"
 REAL_ESRGAN_CACHE = "/content/wai_upscaler_cache"
 REAL_ESRGAN_TILE_SIZE = 256
 REAL_ESRGAN_TILE_PAD = 16
@@ -2447,7 +2447,7 @@ class StudioRuntime:
         )
         del source
 
-        resultresult_bgr = np.empty((height * 4, width * 4, 3), dtype=np.uint8)
+        result_bgr = np.empty((height * 4, width * 4, 3), dtype=np.uint8)
         tile_size = REAL_ESRGAN_TILE_SIZE
         tile_pad = REAL_ESRGAN_TILE_PAD
         with self.torch.inference_mode():
