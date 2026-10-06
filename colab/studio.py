@@ -7872,24 +7872,41 @@ PROMPT_TAG_WEIGHT_SELECTION_JS = r"""(promptText) => {
     ];
 }"""
 PROMPT_TAG_WEIGHT_SHORTCUT_JS = r"""() => {
+    // Phím tắt Ctrl+↑/↓ cho ô prompt. Observer CHỈ sống tới khi gắn được listener:
+    // quan sát document.body với subtree:true sẽ chạy callback cho MỌI thay đổi DOM
+    // (chuyển tab, gallery cập nhật, ảnh tải xong) và mỗi lần lại querySelector toàn
+    // trang — trên điện thoại đó là giật lag lặp lại vô thời hạn khi thao tác.
+    let observer = null;
+    const cleanup = () => {
+        if (observer) { observer.disconnect(); observer = null; }
+    };
     const attachShortcut = () => {
         const field = document.querySelector("#studio-prompt textarea");
-        if (!field || field.dataset.waiWeightShortcuts === "ready") return;
-        field.dataset.waiWeightShortcuts = "ready";
-        field.addEventListener("keydown", (event) => {
-            if (!event.ctrlKey || !["ArrowUp", "ArrowDown"].includes(event.key)) return;
-            event.preventDefault();
-            event.stopPropagation();
-            const id = event.key === "ArrowUp" ? "prompt-weight-up" : "prompt-weight-down";
-            const element = document.getElementById(id);
-            const button = element?.matches("button") ? element : element?.querySelector("button");
-            button?.click();
-        });
+        if (!field) return false;
+        if (field.dataset.waiWeightShortcuts !== "ready") {
+            field.dataset.waiWeightShortcuts = "ready";
+            field.addEventListener("keydown", (event) => {
+                if (!event.ctrlKey || !["ArrowUp", "ArrowDown"].includes(event.key)) return;
+                event.preventDefault();
+                event.stopPropagation();
+                const id = event.key === "ArrowUp" ? "prompt-weight-up" : "prompt-weight-down";
+                const element = document.getElementById(id);
+                const button = element?.matches("button") ? element : element?.querySelector("button");
+                button?.click();
+            });
+        }
+        cleanup();
+        return true;
     };
 
-    attachShortcut();
-    const observer = new MutationObserver(attachShortcut);
-    observer.observe(document.body, { childList: true, subtree: true });
+    if (!attachShortcut()) {
+        observer = new MutationObserver(attachShortcut);
+        // Quan sát vùng chứa ô prompt (nơi textarea thực sự xuất hiện) thay vì cả body.
+        observer.observe(document.querySelector("#studio-prompt") || document.body,
+                         { childList: true, subtree: true });
+        // Phòng khi Gradio đổi cấu trúc DOM: đừng để observer sống mãi.
+        setTimeout(cleanup, 30000);
+    }
 }"""
 PROMPT_TAG_CATEGORY_MARKS = {
     "0": "[G]", "1": "[A]", "3": "[©]", "4": "[C]", "5": "[M]",
@@ -8361,9 +8378,17 @@ def selected_source_image(path):
 
 
 def editor_value_for(image):
-    """Giá trị cho gr.ImageEditor: lớp nền và composite là ảnh đã chọn, chưa có nét vẽ."""
-    layer = image.convert("RGBA")
-    return {"background": layer, "layers": [], "composite": layer}
+    """Giá trị cho gr.ImageEditor: chỉ có lớp nền là ảnh đã chọn, chưa có nét vẽ.
+
+    Để ``composite`` trống vì Gradio tự vẽ composite ở trình duyệt khi tô, còn tuyến
+    sửa vùng đọc ``background`` + ``layers`` (xem ``_editor_mask``). Trước đây hàm này
+    ``convert("RGBA")`` rồi nhét cùng một ảnh vào cả background lẫn composite, nên mỗi lần nạp ảnh máy phải
+    mã hóa thêm một PNG RGBA full-size và tab ✎ Sửa vùng phải tải về đúng file đó khi
+    được mở — trên điện thoại (và qua đường hầm Colab) đó là khoảng một giây đứng hình.
+    Trả ảnh gốc còn nguyên ``filename`` giúp cả ba khung ◈ / ⤢ / ✎ dùng chung MỘT file
+    đã cache, trình duyệt chỉ tải một lần.
+    """
+    return {"background": image, "layers": [], "composite": None}
 
 
 def build_app(runtime):

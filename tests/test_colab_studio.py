@@ -2421,6 +2421,30 @@ class UiResponsivenessTests(unittest.TestCase):
         )
         self.assertEqual([row[0] for row in found], ["cat_eared"])
 
+    def test_weight_shortcut_js_does_not_observe_the_whole_document(self):
+        # Một MutationObserver trên document.body chạy theo MỌI thay đổi DOM — tức là
+        # mỗi lần chuyển tab — nên phải ngắt ngay khi gắn được phím tắt.
+        js = studio.PROMPT_TAG_WEIGHT_SHORTCUT_JS
+        self.assertIn("observer.disconnect()", js)
+        self.assertNotIn("observe(document.body", js)
+        self.assertIn('querySelector("#studio-prompt")', js)
+        self.assertIn("ArrowUp", js)
+        self.assertIn("ArrowDown", js)
+
+    def test_editor_value_shares_the_loaded_file_and_skips_the_composite(self):
+        # composite do trình duyệt tự vẽ; sao chép/convert thêm ở server chỉ để đưa
+        # cho tab ✎ một file PNG thứ hai là nguyên nhân khựng khi mở tab đó.
+        if Image is None:
+            self.skipTest("Pillow required")
+        root = Path(tempfile.mkdtemp())
+        path = root / "wai_t2i_20260102_000000_000000_1.png"
+        Image.new("RGB", (64, 48), "white").save(path)
+        image = studio.selected_source_image(str(path))
+        value = studio.editor_value_for(image)
+        self.assertIsNone(value["composite"])
+        self.assertEqual(value["layers"], [])
+        self.assertIs(value["background"], image)
+
     def test_selected_source_image_reads_a_real_png_and_reports_bad_files(self):
         if Image is None or not importlib.util.find_spec("gradio"):
             self.skipTest("Pillow and Gradio are required to load an image")

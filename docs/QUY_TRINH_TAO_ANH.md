@@ -16,6 +16,10 @@ Tài liệu này giải thích accordion **🧭 Quy trình chuẩn · khung prom
 > bộ nhớ; chỉ `↻` mới quét `/content/wai_outputs`. Khi bạn gõ nhanh, lượt tìm catalog đang chạy sẽ tự hủy để theo kịp phím
 > cuối cùng — vì vậy danh sách gợi ý có thể trễ một nhịp thay vì làm trang đứng lại.
 
+> **Chuyển tab nhẹ:** tab **✎ Sửa vùng** chỉ nạp một bản ảnh (không còn bản sao `composite`) nên mở ngay sau khi
+> "Nạp ảnh đã chọn vào cả ba tab" ít bị khựng hơn trên điện thoại; phím tắt `Ctrl+↑/↓` chỉ theo dõi vùng ô prompt
+> rồi ngừng quan sát, không chạy theo mọi thay đổi của cả trang.
+
 > **Nguyên tắc quan trọng:** cả ba nút trong accordion **chỉ ghi nội dung hiển thị** vào ô *Prompt gửi model*, ô *Negative gửi model* hoặc ô báo cáo. Không có thẻ nào được ghép ngầm khi bạn bấm tạo ảnh — bạn xem, sửa hoặc xóa trước khi tạo.
 
 ---
