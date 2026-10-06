@@ -926,3 +926,89 @@ class SpeciesAndRelationRound11Tests(unittest.TestCase):
             studio.vietnamese_tag_label("nine_ball_maid_uniform", "0"), "Đồng phục hầu gái Nine Ball"
         )
         self.assertEqual(studio.vietnamese_tag_label("pilot_uniform", "0"), "Đồng phục phi công")
+
+
+class VietnameseSearchIndexRound14Tests(unittest.TestCase):
+    """Index tra theo nhãn tiếng Việt phải dựng lúc khởi động, không dựng giữa cú gõ.
+
+    Đây chính là chỗ Studio "đơ" sau khi thêm bản dịch Việt: `_caption_search_matches`
+    trước đây tự dựng index bên trong handler của sự kiện gõ prompt (~1 s CPU, lâu hơn
+    nhiều trên Colab đang tải model), và tìm kiểu *đuôi*/*giữa* normalize lại 349.714
+    tên thẻ mỗi lần gõ.
+    """
+
+    def setUp(self):
+        self.rows = studio.parse_tag_csv(
+            'long_hair,0,100,,Tóc dài\r\n'
+            'red_hair,0,200,,Tóc đỏ\r\n'
+            'hair_bow,0,80,,Nơ cài tóc\r\n'
+            'blue_eyes,0,50,,Mắt xanh dương\r\n'
+            'eyes,0,10,,Mắt\r\n'
+            'uniform,0,60,,Đồng phục U.A.\r\n'
+            'city,7,30,town\r\n'
+        )
+
+    def test_wildcard_search_matches_a_brute_force_reference(self):
+        for query, mode in (("*air", "suffix"), ("*hair*", "contains")):
+            found, total = studio._prompt_tag_suggestion_results(self.rows, query)
+            names = [studio.normalize_csv_tag(row[0]) for row in self.rows]
+            needle = studio.normalize_csv_tag(query[1:].strip("*"))
+            ref = [
+                row for row, name in zip(self.rows, names)
+                if (name.endswith(needle) if mode == "suffix" else needle in name)
+            ]
+            ref.sort(key=lambda row: (-row[2], row[0]))  # cùng quy tắc xếp hạng của Studio
+            self.assertEqual([row[0] for row in found], [row[0] for row in ref], query)
+            self.assertEqual(total, len(ref), query)
+
+    def test_normalized_names_are_cached_per_catalog_object(self):
+        first = studio.tag_normalized_names(self.rows)
+        self.assertIs(studio.tag_normalized_names(self.rows), first)
+        other = studio.parse_tag_csv('solo,0,9,,Một mình\r\n')
+        second = studio.tag_normalized_names(other)
+        self.assertEqual(list(second), ["solo"])
+        self.assertIsNot(second, first)
+        with patch.object(studio, "load_csv_tags", return_value=self.rows):
+            # normalize_csv_tag đổi "_" thành " " — đây chính là chuỗi dùng để so khớp.
+            self.assertEqual(studio.tag_normalized_names()[0], "long hair")
+
+    def test_label_index_splits_on_punctuation_like_the_query_pattern(self):
+        index = studio._build_tag_label_word_index(self.rows)
+        self.assertIn("mắt", index)
+        self.assertIn("tóc", index)
+        # `_tag_query_pattern` khớp theo từ, nên "U.A." phải cho hai từ "u" và "a";
+        # đổi sang split() theo khoảng trắng (nhanh hơn) sẽ mất hai từ này.
+        labeled = [("ua_uniform", "0", 10, "", (), "Đồng phục U.A.")]
+        word_index = studio._build_tag_label_word_index(labeled)
+        self.assertIn("u", word_index)
+        self.assertIn("a", word_index)
+        self.assertNotIn("u.a.", word_index)
+        self.assertNotIn("đồng phục u.a.", word_index)
+
+    def test_caption_search_falls_back_to_full_scan_for_other_catalogs(self):
+        pattern = studio._tag_query_pattern("mắt", preserve_accents=True)
+        found = studio._caption_search_matches(self.rows, "mắt", pattern)
+        self.assertIn("eyes", [row[0] for row in found])
+        self.assertIsNone(studio.tag_label_word_index(self.rows))
+
+    def test_priming_warms_the_indexes_once_and_reports_the_dictionary(self):
+        status = studio.prime_prompt_tag_catalog()
+        self.assertIn("đã kiểm SHA-256", status)
+        self.assertIn("từ khóa từ nhãn tiếng Việt", status)
+        self.assertIs(studio._TAG_LABEL_WORD_INDEX_ROWS, studio._TAG_ROWS)
+        self.assertIs(studio._TAG_SEARCH_NAMES[0], studio._TAG_ROWS)
+        rebuilt = id(studio._TAG_LABEL_WORD_INDEX)
+        choices, note = studio.get_keyword_tag_suggestions("1girl, mắt")
+        self.assertTrue(choices)
+        # Cú gõ đầu tiên không được dựng lại index.
+        self.assertEqual(id(studio._TAG_LABEL_WORD_INDEX), rebuilt)
+        self.assertIs(studio._TAG_LABEL_WORD_INDEX_ROWS, studio._TAG_ROWS)
+        self.assertIn("tag từ CSV", note)
+
+    def test_accent_normalize_memo_keeps_pure_behavior(self):
+        for value in ("Mắt_x  \n xanh", "U.A.", "cat's", "", None, 12, "nơ"):
+            once = studio._normalize_tag_text_preserving_accents(value)
+            self.assertEqual(once, studio._normalize_tag_text_preserving_accents(value), value)
+        self.assertEqual(studio._normalize_tag_text_preserving_accents("Mắt_x  \n xanh"), "mắt x xanh")
+        self.assertEqual(studio._normalize_tag_text_preserving_accents(None), "")
+        self.assertEqual(studio._normalize_tag_text_preserving_accents("Mắt"), "mắt")

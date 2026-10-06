@@ -20,6 +20,10 @@ Tài liệu này giải thích accordion **🧭 Quy trình chuẩn · khung prom
 > "Nạp ảnh đã chọn vào cả ba tab" ít bị khựng hơn trên điện thoại; phím tắt `Ctrl+↑/↓` chỉ theo dõi vùng ô prompt
 > rồi ngừng quan sát, không chạy theo mọi thay đổi của cả trang.
 
+> **Gõ tiếng Việt mượt hơn từ đợt này:** bảng tra theo nhãn tiếng Việt và bảng tên thẻ đã chuẩn hoá được **dựng sẵn ở Ô 7/Ô 8**
+> (bạn thấy dòng "Đã dựng index … từ khóa từ nhãn tiếng Việt"). Trước đây bảng này được dựng ngay trong cú gõ đầu tiên —
+> mất ~1 s CPU và làm đứng cả trang, chỉ xuất hiện sau khi thêm tra nhãn Việt.
+
 > **Xác nhận bản đang chạy:** đầu trang có chip **"Bản dựng …"**. Mã giao diện nằm trong **ô 7**, nên sau khi lấy
 > notebook mới phải chạy lại ô 7 rồi ô 8 và ô 9; chỉ chạy lại ô 9 thì trình duyệt vẫn dùng mã cũ và sẽ vẫn thấy đơ.
 

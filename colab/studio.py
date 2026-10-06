@@ -7468,6 +7468,9 @@ _TAG_ROWS = None
 _TAG_LOCK = threading.Lock()
 _TAG_LABEL_WORD_INDEX_ROWS = None
 _TAG_LABEL_WORD_INDEX = None
+# Tên thẻ đã chuẩn hoá, dựng một lần cho mỗi catalog. Tìm kiểu *đuôi*/*giữa* phải đối
+# chiếu 349.714 tên; gọi normalize_csv_tag trong vòng lặp mỗi lần gõ là phần tốn nhất.
+_TAG_SEARCH_NAMES = None
 _TAG_LABEL_INDEX_LOCK = threading.Lock()
 TAG_PAGE_SIZE = 60
 # Search-only wording helps natural Vietnamese prompt fragments find canonical tags.
@@ -7511,10 +7514,29 @@ def normalize_csv_tag(value):
     return re.sub(r"[\s_-]+", " ", value).strip()
 
 
+_VI_TEXT_CACHE = {}
+VI_TEXT_CACHE_LIMIT = 600_000
+
+
 def _normalize_tag_text_preserving_accents(value):
-    """Normalize separators/case but keep Vietnamese marks to disambiguate captions."""
-    value = unicodedata.normalize("NFC", str(value or "").casefold())
-    return re.sub(r"[\s_-]+", " ", value).strip()
+    """Normalize separators/case but keep Vietnamese marks to disambiguate captions.
+
+    Có memo: hàm này chạy trên 349.714 nhãn khi dựng index từ khóa và chạy lại cho từng
+    ứng viên mỗi lần tìm. Nhãn trong catalog lặp lại rất nhiều (cùng một cụm cho hàng
+    nghìn thẻ) nên bộ nhớ chỉ vài MB mà tiết kiệm phần lớn thời gian.
+    """
+    text = value if isinstance(value, str) else None
+    if text is not None:
+        cached = _VI_TEXT_CACHE.get(text)
+        if cached is not None:
+            return cached
+    normalized = unicodedata.normalize("NFC", str(value or "").casefold())
+    normalized = re.sub(r"[\s_-]+", " ", normalized).strip()
+    if text is not None:
+        if len(_VI_TEXT_CACHE) >= VI_TEXT_CACHE_LIMIT:
+            _VI_TEXT_CACHE.clear()
+        _VI_TEXT_CACHE[text] = normalized
+    return normalized
 
 
 def _tag_query_pattern(query, allow_partial_last=False, preserve_accents=False):
@@ -7536,22 +7558,73 @@ def _tag_field_pattern(query):
     return re.compile(r"(?:^|,)\s*" + re.escape(query) + r"\s*(?:,|$)")
 
 
+def _build_tag_label_word_index(rows):
+    """from → danh sách thẻ, lập chỉ mục trên NHÃN TIẾNG VIỆT của catalog.
+
+    Tách từ bằng `\w+` (không phải split theo khoảng trắng) vì nhãn có dấu chấm và
+    dấu phẩy — ví dụ "U.A." phải cho hai từ "u" và "a" như cách `_tag_query_pattern`
+    ghép regex `(?<!\w)u\s+a(?!\w)`.
+    """
+    word_index = {}
+    for row in rows:
+        label = _normalize_tag_text_preserving_accents(row[5])
+        for word in set(re.findall(r"\w+", label)):
+            word_index.setdefault(word, []).append(row)
+    return word_index
+
+
+def tag_label_word_index(rows):
+    """Index nhãn Việt đã dựng sẵn cho catalog đang nạp; dựng một lần nếu chưa có.
+
+    Trả ``None`` khi ``rows`` không phải catalog chung — khi đó nơi tìm kiếm quét trực
+    tiếp, giữ nguyên hành vi cho các bộ dữ liệu nhỏ (test, catalog tự nạp lại).
+    """
+    if rows is not _TAG_ROWS:
+        return None
+    global _TAG_LABEL_WORD_INDEX_ROWS, _TAG_LABEL_WORD_INDEX
+    with _TAG_LABEL_INDEX_LOCK:
+        if _TAG_LABEL_WORD_INDEX_ROWS is not rows or _TAG_LABEL_WORD_INDEX is None:
+            _TAG_LABEL_WORD_INDEX = _build_tag_label_word_index(rows)
+            _TAG_LABEL_WORD_INDEX_ROWS = rows
+    return _TAG_LABEL_WORD_INDEX
+
+
+def tag_normalized_names(rows=None):
+    """Danh sách tên thẻ đã chuẩn hoá, trùng thứ tự với ``rows`` — cache theo catalog."""
+    global _TAG_SEARCH_NAMES
+    rows = load_csv_tags() if rows is None else rows
+    cached = _TAG_SEARCH_NAMES
+    if cached is None or cached[0] is not rows:
+        cached = (rows, tuple(normalize_csv_tag(row[0]) for row in rows))
+        _TAG_SEARCH_NAMES = cached
+    return cached[1]
+
+
+def prime_tag_label_index(rows=None):
+    """Dựng index NGAY LÚC KHỞI ĐỘNG.
+
+    Trước đây index được dựng bên trong `_caption_search_matches`, tức là cú gõ tiếng
+    Việt đầu tiên phải trả ~1 s CPU (đo trên máy test; Colab chậm hơn và còn đang tải
+    model) — chính là khoảng "đơ" mà người dùng gặp sau khi thêm tra nhãn tiếng Việt.
+    Dựng ở ô 7/8 thì người dùng thấy dòng tiến trình, còn sự kiện UI chỉ việc tra.
+    """
+    try:
+        # Nhận sẵn rows từ nơi gọi: khởi động chỉ được phép nạp catalog MỘT lần,
+        # nếu gọi lại load_csv_tags() thì một lỗi mạng nhỏ cũng thành hai lượt thử.
+        rows = load_csv_tags() if rows is None else rows
+        return len(tag_label_word_index(rows) or {})
+    except Exception:
+        return 0
+
+
 def _caption_search_matches(rows, raw_query, pattern):
     """Use a cached caption-word index for the shared catalog; preserve query accents."""
     query_words = re.findall(r"\w+", _normalize_tag_text_preserving_accents(raw_query))
     candidates = rows
-    if query_words and rows is _TAG_ROWS:
-        global _TAG_LABEL_WORD_INDEX_ROWS, _TAG_LABEL_WORD_INDEX
-        with _TAG_LABEL_INDEX_LOCK:
-            if _TAG_LABEL_WORD_INDEX_ROWS is not rows:
-                word_index = {}
-                for row in rows:
-                    label = _normalize_tag_text_preserving_accents(row[5])
-                    for word in set(re.findall(r"\w+", label)):
-                        word_index.setdefault(word, []).append(row)
-                _TAG_LABEL_WORD_INDEX = word_index
-                _TAG_LABEL_WORD_INDEX_ROWS = rows
-            candidates = _TAG_LABEL_WORD_INDEX.get(query_words[0], ())
+    if query_words:
+        index = tag_label_word_index(rows)
+        if index is not None:
+            candidates = index.get(query_words[0], ())
     return [
         row for row in candidates
         if pattern.search(_normalize_tag_text_preserving_accents(row[5]))
@@ -8019,7 +8092,13 @@ def prime_prompt_tag_catalog():
         print(message)
         return message
     message = f"✅ CSV kho gợi ý đã sẵn sàng: {len(rows):,} tag, đã kiểm SHA-256."
-    print(message)
+    tag_normalized_names(rows)  # làm ấm bảng tên thẻ cho tìm *đuôi*/*giữa*
+    indexed = prime_tag_label_index(rows)
+    if indexed:
+        message += f" Đã dựng index {indexed:,} từ khóa từ nhãn tiếng Việt."
+        print(message)
+    else:
+        print(message)
     return message
 
 
@@ -8063,10 +8142,11 @@ def _prompt_tag_suggestion_results(rows, fragment, token=None):
     normalized_query = normalize_csv_tag(query)
     if mode in ("contains", "suffix"):
         found = []
+        names = tag_normalized_names(rows)
         for index, row in enumerate(rows):
             if stale and not index % 8192 and stale():
                 raise PromptTagSearchSuperseded()
-            name = normalize_csv_tag(row[0])
+            name = names[index]
             matches = normalized_query in name if mode == "contains" else name.endswith(normalized_query)
             if normalized_query and matches:
                 found.append(row)
