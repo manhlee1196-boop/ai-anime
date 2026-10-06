@@ -11,6 +11,7 @@ import inspect
 import io
 import json
 import os
+import re
 from pathlib import Path
 import sys
 import tempfile
@@ -1404,7 +1405,10 @@ class RuntimeValidationTests(unittest.TestCase):
         self.assertEqual(
             live_suggestion_event["outputs"], [inline_suggestions["id"], inline_status["id"]]
         )
-        self.assertFalse(live_suggestion_event["queue"])
+        # queue=True: quét catalog 349k dòng tốn tới ~1,5 s CPU, nếu chạy trên
+        # event loop (queue=False) thì mọi request khác của trang phải chờ => treo.
+        self.assertTrue(live_suggestion_event["queue"])
+        self.assertTrue(live_suggestion_event["trigger_mode"], "always_last")
         apply_suggestion_event = next(
             d for d in config["dependencies"]
             if (inline_suggestions["id"], "input") in d["targets"]
@@ -1416,7 +1420,7 @@ class RuntimeValidationTests(unittest.TestCase):
             apply_suggestion_event["outputs"],
             [prompt_field["id"], inline_status["id"], inline_suggestions["id"]],
         )
-        self.assertFalse(apply_suggestion_event["queue"])
+        self.assertTrue(apply_suggestion_event["queue"])
 
         eyes_button = next(
             c
@@ -1449,8 +1453,11 @@ class RuntimeValidationTests(unittest.TestCase):
             [prompt_field["id"], negative_field["id"]],
         )
         # Gồm 2 sự kiện gợi ý tag inline, 2 chỉnh trọng số, 2 kho thẻ,
-        # 3 chuyển tab ảnh và một listener Ctrl+↑/↓.
-        self.assertEqual(len(config["dependencies"]), 30)
+        # 3 chuyển tab ảnh, các sự kiện của ô chọn ảnh nguồn (gallery.change/select, ↻,
+        # 4 nút nạp + 4 bước chuyển tab sau khi nạp, demo.load) và một listener Ctrl+↑/↓.
+        # Con số này là "mọi thứ phải có", không phải số sự kiện tối đa: thêm handler ở
+        # test này để bắt buộc cập nhật dòng trên khi giao diện đổi.
+        self.assertEqual(len(config["dependencies"]), 36)
         self.assertEqual(prompt_field["props"].get("elem_id"), "studio-prompt")
         for elem_id, target in (
             ("prompt-weight-down", "click"),
@@ -1474,11 +1481,16 @@ class RuntimeValidationTests(unittest.TestCase):
         self.assertIn("selectionStart", studio.PROMPT_TAG_WEIGHT_SELECTION_JS)
         self.assertIn("ArrowUp", studio.PROMPT_TAG_WEIGHT_SHORTCUT_JS)
         self.assertIn("ArrowDown", studio.PROMPT_TAG_WEIGHT_SHORTCUT_JS)
-        load_event = next(
+        # Hai listener lúc mở trang: một cho Ctrl+↑/↓ (chỉ JS), một cho ô chọn ảnh nguồn.
+        load_events = [
             d for d in config["dependencies"]
             if any(target[1] == "load" for target in d["targets"])
-        )
+        ]
+        self.assertEqual(len(load_events), 2)
+        load_event = next(d for d in load_events if d.get("js"))
         self.assertEqual(load_event["js"], studio.PROMPT_TAG_WEIGHT_SHORTCUT_JS)
+        self.assertTrue(any(not d.get("js") and d["queue"] for d in load_events),
+                        "ô chọn ảnh nguồn phải nạp danh sách ảnh qua queue")
         # Six horizontal workspace tabs plus four generation modes.
         tabs = [c for c in config["components"] if c["type"] == "tabitem"]
         self.assertEqual(
@@ -2122,19 +2134,21 @@ class RuntimeValidationTests(unittest.TestCase):
             # Ảnh nguồn giờ do người dùng CHỈ ĐỊNH (không còn luôn lấy ảnh mới nhất):
             # một lần nạp phải vào cả ba tab, và phải đúng file đã chọn.
             chosen = data[1][-1]["path"]
+            chosen_size = Image.open(chosen).size
             loaded = await process(to_all_index, [chosen])
-            self.assertEqual(Path(loaded[0]["path"]).name, Path(chosen).name)
-            self.assertEqual(Path(loaded[1]["path"]).name, Path(chosen).name)
-            self.assertEqual(Path(loaded[2]["background"]["path"]).name, Path(chosen).name)
+            # Gradio có thể tự lưu ảnh thành file tạm tên khác, nên thứ phải kiểm tra
+            # là đúng ảnh (kích thước) và đúng tên file trong dòng trạng thái.
+            for slot in (loaded[0], loaded[1], loaded[2]["background"]):
+                path = Path(slot["path"])
+                self.assertTrue(path.is_file())
+                self.assertEqual(Image.open(path).size, chosen_size)
             self.assertIn("Đã nạp", loaded[3])
-            self.assertTrue(Path((await process(to_image_index, [chosen]))[0]["path"]).is_file())
-            self.assertEqual(
-                Path((await process(to_upscale_index, [chosen]))[0]["path"]).name,
-                Path(chosen).name,
-            )
-            self.assertTrue(
-                Path((await process(to_inpaint_index, [chosen]))[0]["background"]["path"]).is_file()
-            )
+            self.assertIn(Path(chosen).name, loaded[3])
+            for index in (to_image_index, to_upscale_index):
+                value = (await process(index, [chosen]))[0]
+                self.assertEqual(Image.open(value["path"]).size, chosen_size)
+            editor_value = (await process(to_inpaint_index, [chosen]))[0]
+            self.assertEqual(Image.open(editor_value["background"]["path"]).size, chosen_size)
             # Chưa chọn ảnh thì phải báo lỗi rõ, không âm thầm lấy một ảnh khác.
             with self.assertRaises(Exception):
                 await process(to_all_index, [None])
@@ -2276,3 +2290,151 @@ class SourceImagePickerTests(unittest.TestCase):
             self.assertIn(f"fn={loader},", source)
         self.assertIn("Nạp ảnh đã chọn vào cả ba tab", source)
         self.assertIn("GALLERY_SOURCE_LIMIT = 40", source)
+
+
+class UiResponsivenessTests(unittest.TestCase):
+    """Bấm tab/nút khi đang tạo ảnh không được làm đứng cả trang (báo lỗi Đợt 13).
+
+    Nguyên nhân gốc: Gradio chạy handler có ``queue=False`` ngay trên event loop, nên
+    một lượt quét catalog 349k dòng (~0,4-1,5 s CPU, lâu hơn nhiều khi GPU đang tải)
+    hoặc một lượt glob/stat trên ``/content`` chặn toàn bộ HTTP/SSE — mọi thành phần
+    trên trang kẹt ở trạng thái chờ. Các test dưới đây giữ cho phần nặng chạy trong
+    queue và giữ cho đường bấm chuột chỉ đọc bộ nhớ.
+    """
+
+    source = (ROOT / "colab" / "studio.py").read_text(encoding="utf-8")
+
+    def block(self, anchor):
+        """Toàn bộ khai báo sự kiện Gradio tính từ ``anchor`` tới dấu đóng ngoặc cuối."""
+        lines = self.source[self.source.index(anchor):].splitlines()
+        out = []
+        for line in lines:
+            out.append(line)
+            if line.strip() == ")":  # dấu đóng ngoặc của chính khai báo sự kiện
+                break
+        return "\n".join(out)
+
+    def test_catalog_search_events_run_in_the_queue(self):
+        for anchor in (
+            "fn=update_keyword_tag_suggestions,",
+            "fn=apply_keyword_tag_suggestion_ui,",
+            "fn=apply_csv_tags,",
+        ):
+            self.assertIn(anchor, self.source)
+            block = self.block(anchor)
+            self.assertLess(len(block), 1200, "cắt khai báo sự kiện quá xa")
+            self.assertNotIn(
+                "queue=False", block,
+                f"{anchor} phải chạy trong queue, không chạy trên event loop",
+            )
+
+    def test_queue_leaves_room_for_ui_events_while_generating(self):
+        match = re.search(r"demo\.queue\(max_size=(\d+), default_concurrency_limit=(\d+)", self.source)
+        self.assertIsNotNone(match, "phải cấu hình hàng đợi rõ ràng")
+        max_size, default_limit = (int(value) for value in match.groups())
+        # Một lượt tạo ảnh giữ slot của nó nhiều phút; hàng đợi nhỏ thì thao tác khác
+        # bị từ chối (HTTP 429) và giao diện kẹt luôn ở trạng thái chờ.
+        self.assertGreaterEqual(max_size, 16)
+        self.assertGreaterEqual(default_limit, 1)
+        # Job GPU vẫn phải chạy một lượt một — tránh tràn VRAM trên Colab.
+        self.assertIn('concurrency_id="wai_gpu"', self.source)
+        self.assertIn("concurrency_limit=1,", self.source)
+
+    def test_tapping_a_gallery_image_never_scans_the_output_dir(self):
+        for anchor in ("gallery.change(", "gallery.select("):
+            block = self.block(anchor)
+            self.assertIn("source_entries(None,", block)
+            self.assertIn("verify=False", block)
+            self.assertNotIn("picker_entries(", block)
+        # Chỉ nút ↻ và lần mở trang mới đọc thư mục xuất, và phải qua queue.
+        for anchor in ("source_refresh.click(", "demo.load("):
+            block = self.block(anchor)
+            self.assertNotIn("queue=False", block)
+
+    def test_source_dropdown_accepts_the_value_the_app_sets(self):
+        # Gradio đối chiếu giá trị dropdown với `choices`; nếu choices chưa kịp cập
+        # nhật thì server trả "not in the list of choices" thay vì nạp ảnh.
+        block = self.block("source_choice = gr.Dropdown(")
+        self.assertIn("allow_custom_value=True", block)
+
+    def test_output_listing_sorts_by_embedded_time_without_stat(self):
+        root = Path(tempfile.mkdtemp())
+        names = [
+            "wai_t2i_20260102_000000_000000_1.png",
+            "wai_upscale_20260103_000000_000000_2.png",
+            "wai_inpaint_20260104_000000_000000_3.png",
+        ]
+        for index, name in enumerate(names):
+            path = root / name
+            path.write_bytes(b"\x89PNG\r\n\x1a\n")
+            # mtime ngược hẳn thứ tự thời gian trong tên: chỉ được dùng tên.
+            os.utime(path, (1_700_000_000 - index, 1_700_000_000 - index))
+
+        stats = {"count": 0}
+        real_stat = Path.stat
+
+        def counting(self, *args, **kwargs):
+            stats["count"] += 1
+            return real_stat(self, *args, **kwargs)
+
+        def no_is_file(self, *args, **kwargs):
+            raise AssertionError("không được is_file() từng file khi liệt kê thư mục xuất")
+
+        with patch.object(Path, "stat", counting), patch.object(Path, "is_file", no_is_file):
+            entries = studio.output_dir_entries(root, ttl=0)
+        # Path.glob chỉ stat chính thư mục; không có stat nào cho từng ảnh.
+        self.assertLessEqual(stats["count"], 1)
+        self.assertEqual([Path(path).name for path, _ in entries], list(reversed(names)))
+
+    def test_output_listing_can_reuse_a_recent_scan(self):
+        root = Path(tempfile.mkdtemp())
+        (root / "wai_t2i_20260102_000000_000000_1.png").write_bytes(b"\x89PNG\r\n\x1a\n")
+        first = studio.output_dir_entries(root, ttl=300)
+        (root / "wai_t2i_20260103_000000_000000_2.png").write_bytes(b"\x89PNG\r\n\x1a\n")
+        self.assertEqual(len(studio.output_dir_entries(root, ttl=300)), len(first))
+        self.assertEqual(len(studio.output_dir_entries(root, ttl=0)), 2)
+
+    def test_valid_tag_set_follows_the_loaded_catalog(self):
+        try:
+            first = [("solo", "0", 900, "một mình", (), "một mình")]
+            second = [("city", "0", 800, "thành phố", (), "thành phố")]
+            with patch.object(studio, "load_csv_tags", return_value=first):
+                self.assertIn("solo", studio.csv_tag_names())
+                self.assertNotIn("city", studio.csv_tag_names())
+            with patch.object(studio, "load_csv_tags", return_value=second):
+                self.assertIn("city", studio.csv_tag_names())
+                self.assertNotIn("solo", studio.csv_tag_names())
+        finally:
+            studio._CSV_TAG_NAMES = None
+            studio._CSV_TAG_ROWS = None
+
+    def test_superseded_catalog_search_stops_instead_of_finishing(self):
+        rows = [(f"tag_{index}", "0", index, "", (), "") for index in range(30_000)]
+        stale_token = studio.prompt_tag_request_begin()
+        studio.prompt_tag_request_begin()  # người dùng gõ tiếp
+        self.assertFalse(studio.prompt_tag_search_alive(stale_token))
+        with self.assertRaises(studio.PromptTagSearchSuperseded):
+            studio._prompt_tag_suggestion_results(rows, "*ag", token=stale_token)
+        current = studio.prompt_tag_request_begin()
+        found, _ = studio._prompt_tag_suggestion_results(
+            [("cat_eared", "0", 5, "", (), "")], "*eared", token=current
+        )
+        self.assertEqual([row[0] for row in found], ["cat_eared"])
+
+    def test_selected_source_image_reads_a_real_png_and_reports_bad_files(self):
+        if Image is None or not importlib.util.find_spec("gradio"):
+            self.skipTest("Pillow and Gradio are required to load an image")
+        import gradio as gr
+
+        root = Path(tempfile.mkdtemp())
+        good = root / "wai_t2i_20260102_000000_000000_1.png"
+        Image.new("RGB", (24, 16), "white").save(good)
+        self.assertEqual(studio.selected_source_image(str(good)).size, (24, 16))
+        broken = root / "wai_t2i_20260102_000001_000000_2.png"
+        broken.write_text("không phải ảnh")
+        with self.assertRaises(gr.Error) as bad:
+            studio.selected_source_image(str(broken))
+        self.assertIn("Không đọc được ảnh", str(bad.exception))
+        with self.assertRaises(gr.Error) as missing:
+            studio.selected_source_image(str(root / "khong-co-file.png"))
+        self.assertIn("không còn trên đĩa", str(missing.exception))

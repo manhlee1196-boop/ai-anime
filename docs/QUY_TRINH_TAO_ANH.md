@@ -11,6 +11,11 @@ Tài liệu này giải thích accordion **🧭 Quy trình chuẩn · khung prom
 > đổi), nút **↪ Nạp ảnh đã chọn vào cả ba tab** để chuẩn bị cho cả sửa lẫn biến đổi trong một lần bấm, và ba nút
 > `→` nếu chỉ cần một tab. `↻` nạp danh sách từ `/content/wai_outputs` nên ảnh của lượt tạo trước vẫn dùng được.
 
+> **Giao diện phản hồi cả lúc đang tạo ảnh:** tìm tag và đọc danh sách ảnh nguồn chạy trong hàng đợi riêng, không chặn
+> nhau với job GPU (job GPU vẫn một lượt một để giữ VRAM). Bấm ảnh trong thư viện để chọn ảnh nguồn là tức thời vì chỉ đọc
+> bộ nhớ; chỉ `↻` mới quét `/content/wai_outputs`. Khi bạn gõ nhanh, lượt tìm catalog đang chạy sẽ tự hủy để theo kịp phím
+> cuối cùng — vì vậy danh sách gợi ý có thể trễ một nhịp thay vì làm trang đứng lại.
+
 > **Nguyên tắc quan trọng:** cả ba nút trong accordion **chỉ ghi nội dung hiển thị** vào ô *Prompt gửi model*, ô *Negative gửi model* hoặc ô báo cáo. Không có thẻ nào được ghép ngầm khi bạn bấm tạo ảnh — bạn xem, sửa hoặc xóa trước khi tạo.
 
 ---

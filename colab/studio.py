@@ -11,6 +11,7 @@ import os
 import re
 import secrets
 import threading
+import time
 import unicodedata
 from datetime import datetime, timezone
 from pathlib import Path
@@ -7761,11 +7762,30 @@ def browse_csv_tags(query, category, theme, sort, page):
         )
 
 
+_CSV_TAG_NAMES = None
+_CSV_TAG_ROWS = None
+
+
+def csv_tag_names(rows=None):
+    """Tập tên thẻ hợp lệ của catalog — dựng một lần cho mỗi bộ dữ liệu đang nạp.
+
+    Dựng lại set 349k phần tử mỗi lần bấm tốn ~90 ms CPU; khi đang tạo ảnh, lượng CPU
+    đó phải chờ GIL nên tính bằng giây. Khóa theo chính đối tượng rows (``is``) nên
+    một catalog khác — ví dụ bản vá trong test — không bao giờ dùng nhầm set cũ.
+    """
+    global _CSV_TAG_NAMES, _CSV_TAG_ROWS
+    rows = load_csv_tags() if rows is None else rows
+    if _CSV_TAG_ROWS is not rows:
+        _CSV_TAG_NAMES = frozenset(row[0] for row in rows)
+        _CSV_TAG_ROWS = rows
+    return _CSV_TAG_NAMES
+
+
 def apply_csv_tags(positive, negative, selected, destination):
     if not selected:
         return positive, negative, "Hãy tìm và chọn ít nhất một thẻ."
     # Only canonical names in the verified catalog may be inserted.
-    valid = {row[0] for row in load_csv_tags()}
+    valid = csv_tag_names()
     selected = list(dict.fromkeys(name for name in selected if name in valid))
     current = negative if destination == "Negative prompt" else positive
     existing = {normalize_csv_tag(tag) for tag in split_tags(current or "")}
@@ -7923,9 +7943,34 @@ def prime_prompt_tag_catalog():
     return message
 
 
-def _prompt_tag_suggestion_results(rows, fragment):
-    """Search the verified catalog and memoize results across keystrokes."""
+class PromptTagSearchSuperseded(Exception):
+    """Lượt tìm cũ đã bị lần gõ mới ghi đè — không cần quét nốt catalog."""
+
+
+_PROMPT_TAG_REQUEST_SEQ = 0
+
+
+def prompt_tag_request_begin():
+    """Ghi nhận một lượt tìm thẻ mới, trả số thứ tự để lượt cũ tự dừng."""
+    global _PROMPT_TAG_REQUEST_SEQ
+    with _PROMPT_TAG_SUGGESTION_LOCK:
+        _PROMPT_TAG_REQUEST_SEQ += 1
+        return _PROMPT_TAG_REQUEST_SEQ
+
+
+def prompt_tag_search_alive(token):
+    return token == _PROMPT_TAG_REQUEST_SEQ
+
+
+def _prompt_tag_suggestion_results(rows, fragment, token=None):
+    """Search the verified catalog and memoize results across keystrokes.
+
+    ``token`` (số thứ tự của lượt gõ) cho phép quét catalog theo từng cụm 8192 dòng và
+    dừng sớm nếu người dùng đã gõ tiếp: một lượt tìm đầy tốn tới ~1,5 s CPU, nên nếu để
+    chạy trọn vẹn cho từng phím thì máy — đang gồng GPU — sẽ không còn phản hồi.
+    """
     mode, query = _prompt_tag_search_mode(fragment)
+    stale = (lambda: not prompt_tag_search_alive(token)) if token is not None else None
     cache_key = (
         id(rows), mode,
         _normalize_tag_text_preserving_accents(query), normalize_csv_tag(query),
@@ -7938,7 +7983,9 @@ def _prompt_tag_suggestion_results(rows, fragment):
     normalized_query = normalize_csv_tag(query)
     if mode in ("contains", "suffix"):
         found = []
-        for row in rows:
+        for index, row in enumerate(rows):
+            if stale and not index % 8192 and stale():
+                raise PromptTagSearchSuperseded()
             name = normalize_csv_tag(row[0])
             matches = normalized_query in name if mode == "contains" else name.endswith(normalized_query)
             if normalized_query and matches:
@@ -7966,6 +8013,8 @@ def _prompt_tag_suggestion_results(rows, fragment):
                 rows, query, sort="Khớp nhất", page=1
             )
 
+    if stale and stale():
+        raise PromptTagSearchSuperseded()
     result = (rows, tuple(found), total)
     with _PROMPT_TAG_SUGGESTION_LOCK:
         cached = _PROMPT_TAG_SUGGESTION_CACHE.get(cache_key)
@@ -7988,7 +8037,7 @@ def _replace_prompt_tag_fragment(text, replacement):
 
 
 def get_keyword_tag_suggestions(
-    prompt_text, rows=None, limit=PROMPT_TAG_SUGGESTION_LIMIT
+    prompt_text, rows=None, limit=PROMPT_TAG_SUGGESTION_LIMIT, token=None
 ):
     """Search the preloaded CSV and return English tags with Danbooru/e621 marks."""
     limit = _prompt_tag_suggestion_limit(limit)
@@ -8003,7 +8052,7 @@ def get_keyword_tag_suggestions(
         return [], "Gõ ít nhất 2 ký tự ở cuối prompt (ví dụ `mắt` hoặc `eyes`) để tìm trong CSV."
 
     rows = load_csv_tags() if rows is None else rows
-    found, total = _prompt_tag_suggestion_results(rows, fragment)
+    found, total = _prompt_tag_suggestion_results(rows, fragment, token=token)
     choices = [prompt_tag_choice(row) for row in found[:max(1, int(limit))]]
     if not total:
         if mode == "artist":
@@ -8114,9 +8163,13 @@ def update_keyword_tag_suggestions(prompt_text, limit=PROMPT_TAG_SUGGESTION_LIMI
     """Gradio adapter for live suggestions from the preloaded CSV catalog."""
     import gradio as gr
 
+    token = prompt_tag_request_begin()
     try:
-        choices, message = get_keyword_tag_suggestions(prompt_text, limit=limit)
+        choices, message = get_keyword_tag_suggestions(prompt_text, limit=limit, token=token)
         return gr.update(choices=choices, value=None), message
+    except PromptTagSearchSuperseded:
+        # Người dùng đã gõ tiếp: giữ nguyên danh sách cũ, lượt mới sẽ trả lời.
+        return gr.update(), gr.update()
     except Exception as exc:
         return gr.update(choices=[], value=None), (
             f"Không đọc được CSV kho gợi ý ({type(exc).__name__}). Mở tab **🏷️ Kho thẻ** "
@@ -8179,12 +8232,17 @@ def gallery_item_path(item):
     return (str(path) if path else ""), caption
 
 
-def gallery_entries(gallery_value):
-    """Ảnh còn trên đĩa trong một giá trị thư viện, giữ nguyên thứ tự hiển thị."""
+def gallery_entries(gallery_value, verify=True):
+    """Ảnh trong một giá trị thư viện, giữ nguyên thứ tự hiển thị.
+
+    ``verify=False`` bỏ qua bước ``is_file()`` (stat trên ổ mạng) khi ảnh vừa được
+    server gửi về thư viện — ảnh đó chắc chắn còn; nếu không, ``selected_source_image``
+    sẽ báo rõ khi nạp.
+    """
     entries = []
     for item in gallery_value or []:
         path, caption = gallery_item_path(item)
-        if path and Path(path).is_file():
+        if path and (not verify or Path(path).is_file()):
             entries.append((path, caption))
     return entries
 
@@ -8200,23 +8258,57 @@ def tapped_gallery_path(gallery_value, index):
     return path or None
 
 
-def output_dir_entries(directory, limit=GALLERY_SOURCE_LIMIT):
-    """Mọi ảnh PNG trong thư mục xuất, mới nhất trước — gồm cả ảnh của lượt tạo trước."""
+_OUTPUT_SCAN_CACHE = {}
+OUTPUT_SCAN_TTL_SECONDS = 5
+
+
+def output_timestamp(name):
+    """Chuỗi thời gian UTC nằm trong tên ảnh, đã bỏ phần mode.
+
+    Ảnh có tên ``wai_<mode>_<YYYYmmdd>_<HHMMSS>_<micro>_<seed>.png``; xếp theo cả tên
+    thì ``upscale`` luôn đứng trước ``t2i`` bất kể thời gian, còn lấy ``st_mtime`` thì
+    phải ``stat()`` từng file — trên ổ mạng ``/content`` của Colab mỗi lần stat mất
+    hàng chục ms. Mốc thời gian trong tên cho đúng thứ tự mà không chạm đĩa.
+    """
+    parts = Path(name).stem.split("_")
+    for index, part in enumerate(parts):
+        if len(part) == 8 and part.isdigit():
+            return "_".join(parts[index:index + 3])
+    return Path(name).stem
+
+
+def output_dir_entries(directory, limit=GALLERY_SOURCE_LIMIT, ttl=OUTPUT_SCAN_TTL_SECONDS):
+    """Mọi ảnh PNG trong thư mục xuất, mới nhất trước — gồm cả ảnh của lượt tạo trước.
+
+    Tên file đã chứa mốc thời gian tạo (``wai_<ngày>_<giờ>_<seed>_<i>.png``) nên xếp
+    theo tên là đúng thứ tự thời gian: tránh ``stat()`` từng file, vốn trên ổ mạng
+    ``/content`` của Colab (gcsfuse) tốn vài chục ms mỗi ảnh và từng làm nghẽn cả app.
+    Kết quả được giữ lại ``ttl`` giây để nút ↻ / mở lại trang không quét lại đĩa liên tục.
+    """
     if not directory:
         return []
+    key = str(Path(directory))
+    now = time.time()
+    cached = _OUTPUT_SCAN_CACHE.get(key)
+    if ttl and cached and now - cached[0] < ttl:
+        return list(cached[1][:limit])
     try:
-        files = sorted(Path(directory).glob("*.png"), key=lambda item: item.stat().st_mtime,
-                       reverse=True)
+        files = sorted(
+            Path(key).glob("*.png"), key=lambda path: output_timestamp(path.name), reverse=True
+        )
     except OSError:
         return []
-    return [(str(path), "") for path in files[:limit] if path.is_file()]
+    entries = [(str(path), "") for path in files[:limit]]
+    _OUTPUT_SCAN_CACHE[key] = (now, entries)
+    return list(entries)
 
 
-def source_entries(directory, gallery_value=None):
+def source_entries(directory, gallery_value=None, verify=True, ttl=OUTPUT_SCAN_TTL_SECONDS):
     """Danh sách cho ô chọn ảnh: cả thư mục xuất (mới nhất trước), kèm chú thích của
     ảnh đang hiện trong thư viện. Rơi xuống thư viện khi không đọc được thư mục."""
-    captions = dict(gallery_entries(gallery_value))
-    entries = [(path, captions.get(path, "")) for path, _ in output_dir_entries(directory)]
+    captions = dict(gallery_entries(gallery_value, verify=verify))
+    entries = [(path, captions.get(path, ""))
+               for path, _ in output_dir_entries(directory, ttl=ttl)]
     if not entries:
         entries = [(path, captions.get(path, "")) for path, _ in reversed(captions.items())]
     return entries
@@ -8254,12 +8346,18 @@ def source_picker_update(entries, keep=None, pick=None):
 def selected_source_image(path):
     """Ảnh người dùng chọn; báo lỗi rõ thay vì âm thầm lấy ảnh mới nhất."""
     import gradio as gr
+    from PIL import Image
 
     if not path:
         raise gr.Error("Chưa có ảnh để nạp — hãy tạo ảnh trước, hoặc bấm ↻ để đọc thư mục xuất.")
     if not Path(path).is_file():
         raise gr.Error("Ảnh đã chọn không còn trên đĩa (Colab có thể đã đổi phiên).")
-    return Image.open(path).convert("RGB")
+    try:
+        return Image.open(path).convert("RGB")
+    except Exception as exc:  # file đang ghi dở, dung lượng 0, hoặc không phải ảnh
+        raise gr.Error(
+            f"Không đọc được ảnh đã chọn ({type(exc).__name__}): {Path(path).name}"
+        ) from exc
 
 
 def editor_value_for(image):
@@ -9041,7 +9139,7 @@ def build_app(runtime):
                         label="Ảnh sẽ nạp vào tab sửa / phóng",
                         choices=[],
                         value=None,
-                        allow_custom_value=False,
+                        allow_custom_value=True,
                         info="Mặc định là ảnh vừa tạo; bấm ảnh trong thư viện để chọn ảnh khác, "
                              "hoặc ↻ để đọc cả ảnh của các lượt tạo trước.",
                         scale=4,
@@ -9134,11 +9232,18 @@ def build_app(runtime):
             return editor_value, f"{note} → **✎ Sửa vùng**."
 
         # Ảnh vừa tạo xong tự cập nhật vào ô chọn; bấm ảnh trong thư viện là chọn ảnh đó.
-        def picker_entries(gallery_value=None):
-            return source_entries(getattr(runtime, "output_dir", None), gallery_value)
+        # Hai sự kiện này chỉ đọc bộ nhớ (giá trị gallery do server gửi về) — tuyệt đối
+        # không quét đĩa ở đây, vì mỗi lần cập nhật thư viện lại kéo theo một lượt
+        # glob/stat trên /content là nguyên nhân khiến trang đứng hình giữa lượt tạo.
+        def picker_entries(gallery_value=None, ttl=OUTPUT_SCAN_TTL_SECONDS):
+            return source_entries(
+                getattr(runtime, "output_dir", None), gallery_value, verify=False, ttl=ttl
+            )
 
         gallery.change(
-            fn=lambda value, keep: source_picker_update(picker_entries(value), keep=keep),
+            fn=lambda value, keep: source_picker_update(
+                source_entries(None, value, verify=False), keep=keep
+            ),
             inputs=[gallery, source_choice],
             outputs=source_choice,
             api_visibility="private",
@@ -9146,19 +9251,21 @@ def build_app(runtime):
         )
         gallery.select(
             fn=lambda value, data: source_picker_update(
-                picker_entries(value), pick=tapped_gallery_path(value, data.index)
+                source_entries(None, value, verify=False), pick=tapped_gallery_path(value, data.index)
             ),
             inputs=gallery,
             outputs=source_choice,
             api_visibility="private",
             queue=False,
         )
+        # Chỉ nút ↻ mới thật sự đọc thư mục xuất; nó chạy trong queue (không chiếm
+        # slot "wai_gpu") nên bấm lúc đang tạo ảnh vẫn có phản hồi ngay.
         source_refresh.click(
             fn=lambda keep: source_picker_update(picker_entries(), keep=keep),
             inputs=source_choice,
             outputs=source_choice,
             api_visibility="private",
-            queue=False,
+            show_progress="minimal",
         )
         to_all_event = to_all.click(
             fn=load_into_all,
@@ -9186,12 +9293,15 @@ def build_app(runtime):
         )
         # Gõ một chủ đề/từ khóa ở cuối prompt để tìm tag English trong catalog CSV;
         # chọn một tag xác thực từ kết quả sẽ thay thế từ khóa ngay.
+        # Gõ prompt là sự kiện lặp lại liên tục nên bắt buộc chạy trong queue với
+        # trigger_mode="always_last": nếu queue=False, Gradio chạy handler ngay trên
+        # event loop và mỗi phím (quét 349k dòng, tới ~1,5 s) chặn toàn bộ HTTP/SSE
+        # — trang đứng hẳn cho tới khi xong.
         prompt.input(
             fn=update_keyword_tag_suggestions,
             inputs=[prompt, keyword_tag_limit],
             outputs=[keyword_tag_suggestion, keyword_tag_status],
             api_visibility="private",
-            queue=False,
             show_progress="minimal",
             trigger_mode="always_last",
         )
@@ -9200,15 +9310,14 @@ def build_app(runtime):
             inputs=[prompt, keyword_tag_limit],
             outputs=[keyword_tag_suggestion, keyword_tag_status],
             api_visibility="private",
-            queue=False,
             show_progress="minimal",
+            trigger_mode="always_last",
         )
         keyword_tag_suggestion.input(
             fn=apply_keyword_tag_suggestion_ui,
             inputs=[prompt, keyword_tag_suggestion],
             outputs=[prompt, keyword_tag_status, keyword_tag_suggestion],
             api_visibility="private",
-            queue=False,
             show_progress="hidden",
         )
         keyword_tag_weight_down.click(
@@ -9418,7 +9527,8 @@ def build_app(runtime):
             fn=apply_csv_tags,
             inputs=[prompt, negative, tag_selection, tag_destination],
             outputs=[prompt, negative, tag_status],
-            api_visibility="private", queue=False,
+            api_visibility="private",
+            show_progress="minimal",
         )
         # Only open a destination tab after the *selected* image really loaded (a missing
         # file raises gr.Error and must not yank the user into an empty tab).
@@ -9437,13 +9547,17 @@ def build_app(runtime):
             )
         # Mở lại trang là danh sách ảnh trên đĩa vẫn chọn được (không chỉ ảnh vừa tạo).
         demo.load(
-            fn=lambda: source_picker_update(picker_entries()),
+            fn=lambda: source_picker_update(picker_entries(ttl=0)),
             outputs=source_choice,
             api_visibility="private",
-            queue=False,
+            show_progress="minimal",
         )
         demo.load(fn=None, js=PROMPT_TAG_WEIGHT_SHORTCUT_JS)
-        demo.queue(max_size=4, default_concurrency_limit=1, api_open=False)
+        # max_size phải đủ lớn: mỗi lượt tạo ảnh giữ một slot hàng đợi trong nhiều phút,
+        # với max_size nhỏ thì mọi thao tác khác bị từ chối (HTTP 429) và giao diện
+        # kẹt ở trạng thái chờ — người dùng thấy là trang "treo đơ". Job GPU đã tự
+        # giới hạn bằng concurrency_id="wai_gpu", còn lại mặc định 1 event/sự kiện.
+        demo.queue(max_size=64, default_concurrency_limit=1, api_open=False)
     # Gradio 6 applies CSS and themes at launch, not in the Blocks constructor.
     demo.studio_theme = gr.themes.Soft(
         primary_hue="purple", secondary_hue="pink", neutral_hue="slate"
