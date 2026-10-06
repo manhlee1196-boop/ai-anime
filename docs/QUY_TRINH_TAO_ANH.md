@@ -20,6 +20,9 @@ Tài liệu này giải thích accordion **🧭 Quy trình chuẩn · khung prom
 > "Nạp ảnh đã chọn vào cả ba tab" ít bị khựng hơn trên điện thoại; phím tắt `Ctrl+↑/↓` chỉ theo dõi vùng ô prompt
 > rồi ngừng quan sát, không chạy theo mọi thay đổi của cả trang.
 
+> **Xác nhận bản đang chạy:** đầu trang có chip **"Bản dựng …"**. Mã giao diện nằm trong **ô 7**, nên sau khi lấy
+> notebook mới phải chạy lại ô 7 rồi ô 8 và ô 9; chỉ chạy lại ô 9 thì trình duyệt vẫn dùng mã cũ và sẽ vẫn thấy đơ.
+
 > **Nguyên tắc quan trọng:** cả ba nút trong accordion **chỉ ghi nội dung hiển thị** vào ô *Prompt gửi model*, ô *Negative gửi model* hoặc ô báo cáo. Không có thẻ nào được ghép ngầm khi bạn bấm tạo ảnh — bạn xem, sửa hoặc xóa trước khi tạo.
 
 ---

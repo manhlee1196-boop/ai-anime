@@ -2478,6 +2478,19 @@ class UiResponsivenessTests(unittest.TestCase):
         self.assertIn("ArrowUp", js)
         self.assertIn("ArrowDown", js)
 
+    def test_header_shows_the_build_stamp(self):
+        # Mã UI nằm trong ô 7: chỉ chạy lại ô 8/9 thì trình duyệt vẫn dùng bản cũ.
+        # Con dấu "Bản dựng …" trên header là cách nhanh nhất để xác nhận phiên nào
+        # đang thật sự chạy.
+        self.assertIn('STUDIO_BUILD = "', self.source)
+        self.assertIn("id='studio-build-chip'", self.source)
+        self.assertIn("Bản dựng {STUDIO_BUILD}", self.source)
+        # Attribute của chip phải dùng nháy đơn: nháy kép sẽ nuốt các thẻ HTML sau đó.
+        at = self.source.index("id='studio-build-chip'")
+        chip = self.source[at:at + 420]
+        self.assertIn("title='", chip)
+        self.assertNotIn('title="', chip)
+
     def test_offline_watchdog_is_installed_and_only_pings_when_useful(self):
         js = studio.STUDIO_OFFLINE_WATCHDOG_JS
         for needle in ("__waiOfflineWatchdog", "setInterval(ping, 20000)", "/config",

@@ -51,6 +51,9 @@ REAL_ESRGAN_MODEL = {
     "sha256": "f872d837d3c90ed2e05227bed711af5671a6fd1c9f7d7e91c911a61f155e99da",
     "version": "xinntao/Real-ESRGAN@v0.2.2.4",
 }
+# Cập nhật mỗi lần sửa colab/studio.py: header in mã này để người dùng biết phiên
+# Colab đang chạy bản nào (chạy lại riêng ô 9 KHÔNG cập nhật mã UI — nằm ở ô 7).
+STUDIO_BUILD = "2026.10.06 · chống đơ tab"
 REAL_ESRGAN_CACHE = "/content/wai_upscaler_cache"
 REAL_ESRGAN_TILE_SIZE = 256
 REAL_ESRGAN_TILE_PAD = 16
@@ -8644,7 +8647,7 @@ def build_app(runtime):
         elem_id="wai-studio",
     ) as demo:
         gr.HTML(
-            "<header class='studio-hero'>"
+            f"<header class='studio-hero'>"
             "<div class='studio-brand'>"
             "<div class='studio-mark' aria-hidden='true'>✦</div>"
             "<div class='studio-brand-copy'>"
@@ -8654,7 +8657,10 @@ def build_app(runtime):
             "</div></div>"
             "<div class='studio-meta'>"
             "<span class='studio-chip'><span class='studio-chip-dot'></span>Model đã xác minh</span>"
-            "<span class='studio-chip'>GPU Colab</span></div>"
+            "<span class='studio-chip'>GPU Colab</span>"
+            f"<span class='studio-chip' id='studio-build-chip' "
+            f"title='Mã bản dựng của ô 7 — không thấy dòng này nghĩa là phiên Colab "
+            f"vẫn đang chạy bản cũ (phải chạy lại ô 7)'>Bản dựng {STUDIO_BUILD}</span></div>"
             "<div class='studio-privacy'>"
             "<span class='studio-privacy-mark' aria-hidden='true'>!</span>"
             "<span><strong>Liên kết không có đăng nhập:</strong> bất kỳ ai có link đều "
