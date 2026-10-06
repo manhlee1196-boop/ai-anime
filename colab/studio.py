@@ -7908,6 +7908,66 @@ PROMPT_TAG_WEIGHT_SHORTCUT_JS = r"""() => {
         setTimeout(cleanup, 30000);
     }
 }"""
+STUDIO_OFFLINE_WATCHDOG_JS = r"""() => {
+    // Trang kẹt vĩnh viễn (phải tải lại) thường là mất đường hầm giữa chừng: Gradio
+    // không phát lại sự kiện đã rơi, nên người dùng chỉ thấy màn hình đứng. Vòng ping
+    // nhẹ này giữ cho kết nối còn "sống" sau thời gian dài không có dữ liệu (lượt tạo
+    // ảnh có thể kéo dài nhiều phút) và báo rõ ràng + cho nút tải lại khi mất kết nối,
+    // thay vì để trang treo im lặng.
+    if (window.__waiOfflineWatchdog) return;
+    window.__waiOfflineWatchdog = true;
+    let failures = 0;
+    const banner = () => {
+        const existing = document.getElementById("studio-offline-banner");
+        if (existing) return existing;
+        const node = document.createElement("div");
+        node.id = "studio-offline-banner";
+        node.setAttribute("role", "alert");
+        const text = document.createElement("span");
+        text.textContent = "Mất kết nối với phiên Colab — giao diện đang chờ phản hồi.";
+        const button = document.createElement("button");
+        button.type = "button";
+        button.textContent = "Tải lại trang";
+        button.addEventListener("click", () => window.location.reload());
+        node.appendChild(text);
+        node.appendChild(button);
+        Object.assign(node.style, {
+            position: "fixed", left: "50%", bottom: "16px", transform: "translateX(-50%)",
+            zIndex: "9999", display: "flex", gap: "10px", alignItems: "center",
+            padding: "10px 14px", borderRadius: "12px", background: "#2b2140", color: "#ffffff",
+            boxShadow: "0 6px 18px rgba(0,0,0,.28)", font: "600 13px system-ui, sans-serif",
+            maxWidth: "92vw"
+        });
+        Object.assign(button.style, {
+            minHeight: "30px", padding: "4px 10px", borderRadius: "8px", border: "0",
+            background: "#8a74ef", color: "#ffffff", fontWeight: "700", cursor: "pointer"
+        });
+        document.body.appendChild(node);
+        return node;
+    };
+    const show = (offline) => {
+        const node = document.getElementById("studio-offline-banner");
+        if (node) node.style.display = offline ? "flex" : "none";
+    };
+    const root = (window.gradio_config && window.gradio_config.root) || ".";
+    const url = root.replace(/\/+$/, "") + "/config";
+    const ping = async () => {
+        if (document.visibilityState !== "visible") return;
+        try {
+            const response = await fetch(url + "?wai=" + Date.now(), {cache: "no-store"});
+            failures = response.ok ? 0 : failures + 1;
+        } catch (error) {
+            failures += 1;
+        }
+        if (failures >= 2) banner();
+        show(failures >= 2);
+    };
+    window.setInterval(ping, 20000);
+    document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible") ping();
+    });
+}"""
+
 PROMPT_TAG_CATEGORY_MARKS = {
     "0": "[G]", "1": "[A]", "3": "[©]", "4": "[C]", "5": "[M]",
     "7": "<G>", "8": "<A>", "9": "<U>", "10": "<©>",
@@ -9578,6 +9638,8 @@ def build_app(runtime):
             show_progress="minimal",
         )
         demo.load(fn=None, js=PROMPT_TAG_WEIGHT_SHORTCUT_JS)
+        # Giám sát kết nối: trang cho biết đang mất phiên thay vì đứng im vĩnh viễn.
+        demo.load(fn=None, js=STUDIO_OFFLINE_WATCHDOG_JS)
         # max_size phải đủ lớn: mỗi lượt tạo ảnh giữ một slot hàng đợi trong nhiều phút,
         # với max_size nhỏ thì mọi thao tác khác bị từ chối (HTTP 429) và giao diện
         # kẹt ở trạng thái chờ — người dùng thấy là trang "treo đơ". Job GPU đã tự

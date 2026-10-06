@@ -407,7 +407,9 @@ class NotebookTests(unittest.TestCase):
             self.assertEqual(len(calls), 1)
             self.assertNotIn("auth", calls[0])
             self.assertNotIn("auth_message", calls[0])
-            self.assertEqual(calls[0]["share"], True)
+            # Mặc định KHÔNG bật Gradio Share: mọi request (cả ảnh) phải đi qua relay
+            # công cộng gradio.live, nguồn gây nghẽn/kẹt hẳn phải tải lại trang.
+            self.assertIs(calls[0]["share"], False)
             self.assertEqual(calls[0]["theme"], "test-theme")
             self.assertEqual(calls[0]["css"], "test-css")
             self.assertEqual(calls[0]["footer_links"], [])
@@ -415,12 +417,52 @@ class NotebookTests(unittest.TestCase):
             self.assertIn(str(ns["local_cache_root"]), calls[0]["blocked_paths"])
             self.assertIn(str(ns["local_lora_cache"]), calls[0]["blocked_paths"])
             self.assertNotIn(str(ck.parent), calls[0]["allowed_paths"])
-            self.assertIn("Ai có link đều có thể dùng GPU", text.getvalue())
+            self.assertNotIn("Ai có link đều có thể dùng GPU", text.getvalue())
+            self.assertIn("trycloudflare.com", text.getvalue())
             old_app = ns["studio_app"]
             with contextlib.redirect_stdout(io.StringIO()):
                 exec(launch, ns)
             self.assertTrue(old_app.closed)
             self.assertEqual(len(calls), 2)
+
+    def test_launch_can_opt_back_into_gradio_share(self):
+        launch = "".join(
+            json.loads(NOTEBOOK.read_text(encoding="utf-8"))["cells"][8]["source"]
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            ck = root / "weights.safetensors"
+            ck.touch()
+            runtime = types.SimpleNamespace(
+                output_dir=root / "outputs", backup_dir=root / "backup",
+                checkpoint=ck, lora_paths={"anatomy": ck},
+            )
+            calls = []
+
+            class FakeApp:
+                studio_theme = "test-theme"
+                studio_css = "test-css"
+
+                def launch(self, **kwargs):
+                    calls.append(kwargs)
+                    return (None, None, "https://temporary.gradio.live")
+
+                def close(self):
+                    pass
+
+            ns = {
+                "studio_runtime": runtime,
+                "build_app": lambda _: FakeApp(),
+                "local_cache_root": root / "wai_model_cache",
+                "local_lora_cache": root / "wai_lora_cache",
+                "GRADIO_SHARE": True,
+            }
+            text = io.StringIO()
+            with contextlib.redirect_stdout(text):
+                exec(launch, ns)
+            self.assertIs(calls[0]["share"], True)
+            self.assertIn("https://temporary.gradio.live", text.getvalue())
+            self.assertIn("Ai có link đều có thể dùng GPU", text.getvalue())
 
 
 class PromptLibraryTests(unittest.TestCase):
@@ -1457,7 +1499,7 @@ class RuntimeValidationTests(unittest.TestCase):
         # 4 nút nạp + 4 bước chuyển tab sau khi nạp, demo.load) và một listener Ctrl+↑/↓.
         # Con số này là "mọi thứ phải có", không phải số sự kiện tối đa: thêm handler ở
         # test này để bắt buộc cập nhật dòng trên khi giao diện đổi.
-        self.assertEqual(len(config["dependencies"]), 36)
+        self.assertEqual(len(config["dependencies"]), 37)
         self.assertEqual(prompt_field["props"].get("elem_id"), "studio-prompt")
         for elem_id, target in (
             ("prompt-weight-down", "click"),
@@ -1481,12 +1523,17 @@ class RuntimeValidationTests(unittest.TestCase):
         self.assertIn("selectionStart", studio.PROMPT_TAG_WEIGHT_SELECTION_JS)
         self.assertIn("ArrowUp", studio.PROMPT_TAG_WEIGHT_SHORTCUT_JS)
         self.assertIn("ArrowDown", studio.PROMPT_TAG_WEIGHT_SHORTCUT_JS)
-        # Hai listener lúc mở trang: một cho Ctrl+↑/↓ (chỉ JS), một cho ô chọn ảnh nguồn.
+        # Ba listener lúc mở trang: Ctrl+↑/↓ (chỉ JS), giám sát kết nối (chỉ JS),
+        # và ô chọn ảnh nguồn.
         load_events = [
             d for d in config["dependencies"]
             if any(target[1] == "load" for target in d["targets"])
         ]
-        self.assertEqual(len(load_events), 2)
+        self.assertEqual(len(load_events), 3)
+        self.assertEqual(
+            sum(1 for d in load_events if not d.get("js") and d["queue"]), 1,
+            "chỉ sự kiện nạp danh sách ảnh nguồn là gọi handler",
+        )
         load_event = next(d for d in load_events if d.get("js"))
         self.assertEqual(load_event["js"], studio.PROMPT_TAG_WEIGHT_SHORTCUT_JS)
         self.assertTrue(any(not d.get("js") and d["queue"] for d in load_events),
@@ -2430,6 +2477,15 @@ class UiResponsivenessTests(unittest.TestCase):
         self.assertIn('querySelector("#studio-prompt")', js)
         self.assertIn("ArrowUp", js)
         self.assertIn("ArrowDown", js)
+
+    def test_offline_watchdog_is_installed_and_only_pings_when_useful(self):
+        js = studio.STUDIO_OFFLINE_WATCHDOG_JS
+        for needle in ("__waiOfflineWatchdog", "setInterval(ping, 20000)", "/config",
+                       "studio-offline-banner", "location.reload()"):
+            self.assertIn(needle, js)
+        # Không tự tải lại khi người dùng còn đang nhìn tab khác (tránh mất trạng thái).
+        self.assertIn('visibilityState !== "visible"', js)
+        self.assertIn("demo.load(fn=None, js=STUDIO_OFFLINE_WATCHDOG_JS)", self.source)
 
     def test_editor_value_shares_the_loaded_file_and_skips_the_composite(self):
         # composite do trình duyệt tự vẽ; sao chép/convert thêm ở server chỉ để đưa
