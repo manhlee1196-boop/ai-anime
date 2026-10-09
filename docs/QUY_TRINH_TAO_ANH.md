@@ -31,11 +31,11 @@ Tài liệu này giải thích accordion **🧭 Quy trình chuẩn · khung prom
 > **Xác nhận bản đang chạy:** đầu trang có chip **"Bản dựng …"**. Mã giao diện nằm trong **ô 7**, nên sau khi lấy
 > notebook mới phải chạy lại ô 7 rồi ô 8 và ô 9; chỉ chạy lại ô 9 thì trình duyệt vẫn dùng mã cũ và sẽ vẫn thấy đơ.
 
-> **Nguyên tắc quan trọng:** cả bốn nút trong accordion **chỉ ghi nội dung hiển thị** vào ô *Prompt gửi model*, ô *Negative gửi model* hoặc ô báo cáo. Không có thẻ nào được ghép ngầm khi bạn bấm tạo ảnh — bạn xem, sửa hoặc xóa trước khi tạo.
+> **Nguyên tắc quan trọng:** cả sáu nút trong accordion **chỉ ghi nội dung hiển thị** vào ô *Prompt gửi model*, ô *Negative gửi model* hoặc ô báo cáo. Không có thẻ nào được ghép ngầm khi bạn bấm tạo ảnh — bạn xem, sửa hoặc xóa trước khi tạo.
 
 ---
 
-## 1. Bốn nút trong **🧭 Quy trình chuẩn**
+## 1. Sáu nút trong **🧭 Quy trình chuẩn**
 
 ### 1.1. Sắp xếp prompt theo thứ tự chuẩn
 Đọc prompt hiện tại, tách thành từng thẻ (phân tách bằng dấu phẩy), rồi:
@@ -116,6 +116,16 @@ Số token là **ước lượng heuristic** (mỗi từ ≈ 1 token, cộng th�
 | ⚠️ Không có trong kho | Có thể là mô tả tự do (Illustrious vẫn đọc được) hoặc gõ sai chính tả — kèm gợi ý tên thẻ gần nhất (tìm trong kho trước, rồi so chuỗi trong các tên thẻ cùng ký tự đầu) |
 
 Thẻ trùng chỉ được kiểm tra một lần (🩺 Kiểm tra prompt & thông số đã báo riêng). Lần đầu bấm, Studio dựng index tên/alias của ~350k thẻ nên chạy trong hàng đợi và có thể chậm một nhịp; các lần sau chỉ đọc bộ nhớ.
+
+### 1.5. 🛠️ Sửa prompt thành thẻ chuẩn
+Nút này biến ô *Prompt gửi model* thành một prompt dễ rà soát hơn bằng cách đối chiếu từng thẻ với cùng kho CSV đã xác minh SHA-256. Đây là công cụ **đề xuất**, không tự gửi ảnh và không thay đổi ô prompt khi bạn mới bấm nút phân tích.
+
+1. Bấm **🛠️ Sửa prompt thành thẻ chuẩn**. Studio tách các thẻ theo dấu phẩy, giữ lại cú pháp trọng số như `(long_hari:1.2)`, rồi phân loại từng thẻ.
+2. Alias (`longhair`), nhãn tiếng Việt (`tóc dài`) và lỗi gõ có gợi ý trong kho (`long_hari`) hiện thành dòng thay thế sang tên canonical; các dòng này **được chọn sẵn**.
+3. Với thẻ đã đúng tên trong kho, Studio liệt kê tối đa vài thẻ canonical có chung từ (ví dụ `blue_eyes` → `light_blue_eyes`) dưới dạng **thay thế tùy chọn**; các dòng này không được chọn sẵn. Bạn có thể bỏ lựa chọn bắt buộc, chọn phương án khác hoặc đánh dấu thêm phương án tùy chọn.
+4. Bấm **✅ Tạo prompt hoàn chỉnh**. Chỉ các dòng đang đánh dấu mới được áp dụng; trọng số/ngoặc được giữ nguyên, mô tả tự do và thẻ không có gợi ý giữ nguyên. Kết quả ghi vào lại ô *Prompt gửi model* để bạn đọc, sửa hoặc xóa trước khi tạo ảnh.
+
+Nếu kho thẻ không tải được, Studio báo lỗi thân thiện và không sửa prompt. Nếu một thẻ mô tả tự do không có trong kho thì không nhất thiết là lỗi — hãy chỉ thay nó khi bạn thực sự muốn dùng tên tag canonical. Khi muốn bắt đầu lại danh sách đề xuất, sửa prompt rồi bấm nút phân tích lần nữa.
 
 ---
 

@@ -1147,3 +1147,90 @@ class CatalogPromptCheckTests(unittest.TestCase):
         _, typo = studio.validate_prompt_tags("blue_eyee", rows)
         self.assertEqual(typo[0][1], "unknown")
         self.assertIn("blue_eyes", typo[0][3])
+
+
+class PromptRewriteTests(unittest.TestCase):
+    """🛠️ Sửa prompt thành thẻ chuẩn: đề xuất, chọn tùy chọn và áp dụng."""
+
+    def setUp(self):
+        self.rows = studio.parse_tag_csv(
+            'long_hair,0,100,"longhair,hair_long",Tóc dài\r\n'
+            'blue_eyes,0,50,,Mắt xanh dương\r\n'
+            'light_blue_eyes,0,35,,Mắt xanh dương nhạt\r\n'
+            'red_hair,0,30,,Tóc đỏ\r\n'
+            'red_dress,0,40,,Váy đỏ\r\n'
+            'solo,0,10,"alone",Một mình\r\n'
+        )
+
+    def test_proposes_required_fixes_and_optional_catalog_swaps(self):
+        segments, proposals = studio.propose_prompt_rewrites(
+            "longhair, tóc dài, blue_eyee, blue_eyes, (red_dress:1.2)",
+            self.rows,
+        )
+        by_core = {
+            studio.normalize_csv_tag(studio.tag_core(tag)): status
+            for tag, status, _, _ in segments
+        }
+        self.assertEqual(by_core["longhair"], "alias")
+        self.assertEqual(by_core["toc dai"], "label")
+        self.assertEqual(by_core["blue eyee"], "unknown")
+        self.assertEqual(by_core["blue eyes"], "ok")
+        self.assertEqual(by_core["red dress"], "ok")
+
+        fixes = [item for item in proposals if item["kind"] == "fix"]
+        self.assertEqual(
+            {(item["raw"], item["replacement"]) for item in fixes},
+            {
+                ("longhair", "long_hair"),
+                ("tóc dài", "long_hair"),
+                ("blue_eyee", "blue_eyes"),
+            },
+        )
+        swaps = [item for item in proposals if item["kind"] == "swap"]
+        self.assertTrue(any(
+            item["raw"] == "blue_eyes" and item["replacement"] == "light_blue_eyes"
+            for item in swaps
+        ))
+        self.assertTrue(all(item["value"].count("\t") == 1 for item in proposals))
+
+    def test_report_explains_preselected_fixes_and_optional_swaps(self):
+        segments, proposals = studio.propose_prompt_rewrites(
+            "longhair, blue_eyee, blue_eyes", self.rows
+        )
+        report = studio.format_rewrite_report(segments, proposals)
+        self.assertIn("🛠️ Sửa prompt thành thẻ chuẩn", report)
+        self.assertIn("đã chọn sẵn", report)
+        self.assertIn("`longhair` → `long_hair`", report)
+        self.assertIn("`blue_eyee` → `blue_eyes`", report)
+        self.assertIn("thay thế TÙY CHỌN", report)
+        self.assertIn("✅ Tạo prompt hoàn chỉnh", report)
+
+    def test_apply_keeps_weight_syntax_and_only_changes_selected_tags(self):
+        prompt = "longhair, tóc dài, blue_eyee, blue_eyes, (red_dress:1.2), free description"
+        updated, note = studio.apply_prompt_rewrite(
+            prompt,
+            [
+                "longhair\tlong_hair",
+                "toc dai\tlong_hair",
+                "blue eyee\tblue_eyes",
+                "blue eyes\tlight_blue_eyes",
+            ],
+        )
+        self.assertEqual(
+            updated,
+            "long_hair, long_hair, blue_eyes, light_blue_eyes, (red_dress:1.2), free description",
+        )
+        self.assertIn("Đã tạo prompt hoàn chỉnh", note)
+        self.assertIn("Prompt chỉ được ghi vào ô hiển thị", note)
+
+    def test_no_selection_is_read_only_and_empty_prompt_is_clear(self):
+        prompt = "longhair, blue_eyee"
+        unchanged, note = studio.apply_prompt_rewrite(prompt, [])
+        self.assertEqual(unchanged, prompt)
+        self.assertIn("giữ nguyên", note)
+        with self.assertRaises(ValueError):
+            studio.apply_prompt_rewrite("", [])
+        self.assertEqual(
+            studio.format_rewrite_report([], []),
+            "**🛠️ Sửa prompt thành thẻ chuẩn** · ô prompt đang trống — hãy viết hoặc nạp prompt trước rồi bấm lại.",
+        )
