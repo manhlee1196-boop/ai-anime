@@ -115,7 +115,7 @@ class TagCatalogTests(unittest.TestCase):
         self.assertEqual(len(first_row), 5)
         self.assertEqual(first_row[4], "Một nhân vật")
         rows = studio.parse_tag_csv(data.decode("utf-8"))
-        self.assertEqual(len(rows), 349714)
+        self.assertEqual(len(rows), 348716)
         found, total, _, _ = studio.search_csv_tags(rows, "tóc dài, blue eyes")
         names = {row[0] for row in found}
         self.assertGreaterEqual(total, 2)
@@ -379,7 +379,7 @@ class TagCatalogTests(unittest.TestCase):
             patch("urllib.request.urlopen", side_effect=AssertionError("unexpected network")),
         ):
             rows = studio.load_csv_tags()
-            self.assertEqual(len(rows), 349714)
+            self.assertEqual(len(rows), 348716)
             self.assertIs(rows, studio.load_csv_tags())
 
 
@@ -940,7 +940,7 @@ class VietnameseSearchIndexRound14Tests(unittest.TestCase):
 
     Đây chính là chỗ Studio "đơ" sau khi thêm bản dịch Việt: `_caption_search_matches`
     trước đây tự dựng index bên trong handler của sự kiện gõ prompt (~1 s CPU, lâu hơn
-    nhiều trên Colab đang tải model), và tìm kiểu *đuôi*/*giữa* normalize lại 349.714
+    nhiều trên Colab đang tải model), và tìm kiểu *đuôi*/*giữa* normalize lại khoảng 348k
     tên thẻ mỗi lần gõ.
     """
 

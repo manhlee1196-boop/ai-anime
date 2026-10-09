@@ -74,7 +74,7 @@ Bạn có thể tự kiểm tra SHA-256 trong Colab: `sha256sum /content/wai_mod
 - **🧭 Quy trình chuẩn · khung prompt + negative tối ưu (ô 7).** Sáu nút hỗ trợ, tất cả **chỉ ghi vào nội dung hiển thị** để bạn sửa: **Sắp xếp prompt theo thứ tự chuẩn** (chủ thể → nhãn phân loại → ngoại hình/chi tiết nhân vật → trang phục → tư thế → bố cục → bối cảnh → ánh sáng → phong cách → thẻ khác → chất lượng → `absurdres`; bỏ thẻ trùng, thêm thẻ neo của khung đã chọn), **Nạp negative đã chọn** (8 bộ: chuẩn nhà phát hành WAI v17, Illustrious chuẩn, tay/chân, giữ chất 2D, chân dung, phong cảnh, an toàn nội dung, inpaint; ghi đè hoặc nối thêm), **🩺 Kiểm tra prompt & thông số** (ước lượng token so với khối 75 token của SDXL, thẻ chất lượng thừa/trùng/vừa dương vừa âm, cú pháp Pony, trọng số > 1.2, negative quá dài, steps/CFG/kích thước/hires ngoài khuyến nghị), **🧪 Kiểm tra thẻ với kho thẻ** (đối chiếu từng thẻ trong hai ô với kho CSV Danbooru + e621 đã xác minh SHA-256: thẻ đúng tên, alias/nhãn tiếng Việt, thẻ không có trong kho kèm gợi ý sửa chính tả), và **🛠️ Sửa prompt thành thẻ chuẩn**. Công cụ sửa phân tích từng thẻ trong ô Prompt: alias/nhãn tiếng Việt/gõ sai có gợi ý đổi sang tên canonical và được chọn sẵn; thẻ đã đúng tên kho có thêm phương án thay thế tùy chọn để bạn đánh dấu. Bấm **✅ Tạo prompt hoàn chỉnh** để áp dụng các lựa chọn, giữ cú pháp trọng số và giữ nguyên mô tả tự do — kết quả chỉ ghi vào ô hiển thị để bạn xem, sửa hoặc xóa. Nhóm **💅 Chi tiết mắt & móng** trong tab **✨ Chi tiết** chỉ thêm các thẻ mô tả (màu mắt, kiểu/màu móng) vào hai ô đang hiển thị. Quy trình đầy đủ: [`docs/QUY_TRINH_TAO_ANH.md`](docs/QUY_TRINH_TAO_ANH.md).
 - **Tự sửa mặt/tay (auto-detailer, tùy chọn).** Ô 2 **cài thêm `ultralytics==8.4.170`** (chỉ cảnh báo nếu thất bại, các chế độ khác vẫn chạy). Khi bật mục **Tự sửa mặt/tay** trong tab **⚙️ Thông số**, Studio tải weight YOLOv8 (`face_yolov8n.pt`, `hand_yolov8n.pt`) từ `Bingsu/adetailer` @ `c310c216` vào **`/content/wai_detailer_cache`**, **kiểm SHA-256 đầy đủ** (khớp metadata HF đã đối chiếu) rồi phát hiện mặt/bàn tay và inpaint lại đúng vùng đó với strength/ngưỡng/số vùng bạn chọn. Weight sai hash bị xóa và không nạp; cần mạng ở lần bật đầu tiên. Tính năng này chỉ là gợi ý chỉnh sửa, **không đảm bảo** hết lỗi ngón/mặt.
 
-Kiểm tra cấu trúc notebook và hành vi tải/hash/nạp LoRA bằng mock CPU: `python -m unittest discover -s tests -v` (hiện **199 test: 153 đạt, 46 bỏ qua** — phần bỏ qua do thiếu `torch`/`diffusers`, Gradio/Pillow trong môi trường CPU và notebook legacy không còn trong checkout; các test backend và tuyến sự kiện tĩnh vẫn chạy được). `colab/studio.py` là bản mã nguồn tương ứng của ô 7 và `python scripts/build_colab_studio.py` tái tạo **chính xác** notebook từ nó — sửa giao diện ở `colab/studio.py` rồi chạy lại script. Việc tải thực tế checkpoint/LoRA/weight YOLOv8, khả năng chạy với GPU Colab và chất lượng ảnh/tay-chân-mắt **chưa thể xác nhận** trong môi trường kiểm thử CPU này.
+Kiểm tra cấu trúc notebook và hành vi tải/hash/nạp LoRA bằng mock CPU: `python -m unittest discover -s tests -v` (hiện **203 test: 157 đạt, 46 bỏ qua** — phần bỏ qua do thiếu `torch`/`diffusers`, Gradio/Pillow trong môi trường CPU và notebook legacy không còn trong checkout; các test backend và tuyến sự kiện tĩnh vẫn chạy được). `colab/studio.py` là bản mã nguồn tương ứng của ô 7 và `python scripts/build_colab_studio.py` tái tạo **chính xác** notebook từ nó — sửa giao diện ở `colab/studio.py` rồi chạy lại script. Việc tải thực tế checkpoint/LoRA/weight YOLOv8, khả năng chạy với GPU Colab và chất lượng ảnh/tay-chân-mắt **chưa thể xác nhận** trong môi trường kiểm thử CPU này.
 
 ---
 
@@ -191,10 +191,11 @@ Các bài test và build **không phải** là bằng chứng checkpoint WAI đ�
 
 Trong `WAI_Illustrious_Studio_Colab.ipynb`, mở tab **🏷️ Kho thẻ**.
 Nguồn là `danbooru_e621_merged_2026-10-01_pt20-ia-dd-ed-spc.csv` ở thư mục gốc
-(349.714 dòng, không có header: tên thẻ, mã danh mục, số lượt, bí danh, nhãn tiếng Việt).
-Cột thứ năm là chú giải hiển thị; nhãn dịch được lập chỉ mục để tìm kiếm, còn tên thẻ và bí danh tiếng Anh vẫn được giữ nguyên.
+(348.716 dòng, không có header: tên thẻ, mã danh mục, số lượt, bí danh, nhãn tiếng Việt).
+Bộ tối ưu đã bỏ các danh mục Metadata (`5`, `14`) và dòng không hợp lệ; một số tag kỹ thuật mà Studio dùng trong prompt (như `absurdres`, `highres`, `cel shading`) vẫn được công nhận là thẻ chuẩn ngoài kho.
+Cột thứ năm là chú giải hiển thị; nhãn dịch được lập chỉ mục để tìm kiếm, còn tên thẻ và bí danh tiếng Anh vẫn được giữ nguyên. Có thể tái tạo bộ lọc bằng `python scripts/optimize_prompt_catalog.py --in-place`; script giữ nguyên các dòng còn lại và ghi SHA-256 mới.
 
-- Tìm quét toàn bộ 349.714 thẻ bằng tiếng Việt hoặc English; dấu gạch dưới, gạch nối và khoảng trắng tương đương, có thể gõ tiếng Việt không dấu.
+- Tìm quét toàn bộ 348.716 tag prompt bằng tiếng Việt hoặc English; dấu gạch dưới, gạch nối và khoảng trắng tương đương, có thể gõ tiếng Việt không dấu.
 - Ngay dưới ô **Prompt**, gõ từ khóa ở cuối prompt (ví dụ `mắt`/`eyes`, `tóc`/`hair`, `nơ`/`bow` hoặc `váy`/`dress`) để tìm tag **tiếng Anh** trực tiếp trong CSV đã được nạp lúc Studio khởi động. Gợi ý chỉ lấy từ catalog, chọn một dòng sẽ thay từ khóa cuối bằng tên thẻ canonical; không tự chèn khi bạn chưa chọn. CSV dùng chung với tab Kho thẻ và được xác minh SHA-256 trước khi dùng.
 - Ba kiểu truy vấn và một bộ lọc theo **Semi-Auto Tag Complete** của [Character Select SAA](https://github.com/mirabarukaso/character_select_stand_alone_app): `chữ đầu` tìm tiền tố, `*đuôi` tìm hậu tố (ví dụ `*hair`), `*giữa*` tìm ở giữa tên thẻ, còn `@tên` **chỉ lọc thẻ họa sĩ** (nhóm 1 của Danbooru và 8 của e621) và dấu `@` không được chèn vào prompt. Mỗi dòng gợi ý mở đầu bằng nhãn danh mục: `[G] [A] [©] [C] [M]` cho Danbooru, `<G> <A> <©> <C> <S> <M> <L>` cho e621.
 - `Ctrl+↑` / `Ctrl+↓` trong ô prompt, hoặc hai nút **`+0,1` / `−0,1`** bên cạnh dropdown, chỉnh trọng số của tag đang bôi đen / tag ở con trỏ (nếu không có lựa chọn thì chỉnh cụm cuối prompt) theo bước `0,1` trong dải `0,1–2,0`; về `1,0` thì dấu `(tag:…)` được gỡ. Cả hai cách đều sửa text hiển thị nên bạn xem/xóa được trước khi bấm tạo.
@@ -210,13 +211,13 @@ ngay dưới Prompt / Negative. Chạy notebook rồi mở link Gradio ở ô 8:
 
 Khi `build_app()` khởi động ở ô 8, Studio nạp CSV gợi ý vào RAM một lần: dùng file đã có nếu khớp SHA-256 hoặc tải bản ở commit cố định rồi xác minh trước khi phân tích. Catalog dùng chung cho autocomplete và tab Kho thẻ; prompt gõ `mắt`, `eyes`, `tóc`, `hair`… sẽ tìm trong dữ liệu đó, hiện các tên thẻ tiếng Anh canonical kèm nhãn danh mục để chọn. Chọn tag thay cụm cuối prompt. Muốn thử kiểu tìm của SAA, gõ `*hair` (hậu tố), `*hair*` (chứa giữa) hoặc `@tên` (chỉ họa sĩ, nhóm 1 và 8). Muốn đổi nhấn mạnh, đặt con trỏ trong một tag hoặc bôi đen vài tag rồi bấm `Ctrl+↑`/`Ctrl+↓` (hoặc hai nút `±0,1`); trọng số bước `0,1`, kẹp trong `0,1–2,0`. Nếu CSV chưa tải được, tạo ảnh vẫn hoạt động và autocomplete sẽ báo lỗi/thử lại khi có yêu cầu. Muốn xem nhiều hơn N gợi ý hot nhất thì tăng ô **Số gợi ý** (16 → 150) cạnh dropdown gợi ý — vẫn chọn được thẻ nằm ngoài top-16; muốn tìm mọi thẻ trong CSV hoặc thêm nhiều tag cùng lúc thì mở tab kho thẻ:
 
-1. Khi khởi động, Colab tự đọc bản CSV có sẵn hoặc tải bản CSV gốc ~9 MB từ GitHub ở commit cố định và kiểm tra SHA-256; bản trong repo đã có thêm cột nhãn tiếng Việt (~13,7 MB), cả hai dạng đều được hỗ trợ. Nếu bước này thất bại, tải đúng CSV lên `/content/` qua bảng **Files** rồi dùng **Tìm / tải kho thẻ** để thử lại.
+1. Khi khởi động, Colab tự đọc bản CSV prompt đã lọc ~13,6 MB từ GitHub ở commit cố định và kiểm tra SHA-256; bản này giữ 5 cột để autocomplete, alias và nhãn Việt vẫn hoạt động, nhưng đã bỏ các danh mục Metadata/không hợp lệ. Nếu bước này thất bại, tải đúng CSV lên `/content/` qua bảng **Files** rồi dùng **Tìm / tải kho thẻ** để thử lại.
 2. Nhập cụm tiếng Việt hoặc English, hoặc dán các tag trong prompt cách nhau bằng dấu phẩy/xuống dòng; bộ tìm kiếm quét toàn bộ kho, bỏ qua dấu tiếng Việt và tìm cả tên/bí danh. Chọn danh mục/chủ đề và cách sắp xếp nếu cần; nhấn **Tìm** để cập nhật. Mỗi trang có 60 kết quả; nhập số trang rồi nhấn Tìm.
 3. Chọn nhiều thẻ trong kết quả, chọn Prompt hoặc Negative prompt, nhấn **Thêm thẻ đã chọn**. Nội dung hiển thị trực tiếp trong ô tương ứng; không có thẻ nào được thêm ngầm khi tạo ảnh. Đổi kết quả tìm kiếm sẽ xóa lựa chọn chưa thêm.
 
 Nếu GitHub không truy cập được, dùng bảng **Files** bên trái Colab để tải đúng CSV lên `/content/`, rồi nhấn Tìm lại.
 Kho chỉ nạp một lần vào RAM mỗi runtime, dùng chung dữ liệu chỉ đọc; prompt/lựa chọn vẫn riêng từng phiên Gradio.
-Không đưa toàn bộ danh sách 349.714 thẻ xuống trình duyệt. Lỗi kho thẻ không chặn viết prompt hoặc tạo ảnh.
+Không đưa toàn bộ danh sách 348.716 tag prompt xuống trình duyệt. Lỗi kho thẻ không chặn viết prompt hoặc tạo ảnh.
 Sau khi cập nhật notebook, cần chạy lại ô 7–8 để giao diện Gradio đang chạy nhận tính năng mới.
 Mã nằm trong `colab/studio.py`; tái tạo notebook bằng `python scripts/build_colab_studio.py`.
 
@@ -261,7 +262,7 @@ từ láy thật (`dragonfly_print` → `Họa tiết chuồn chuồn`); họ gi
 phủ **29.619 thẻ**,
 ưu tiên chi tiết nhân vật
 (tóc, mắt, mặt, tai/đuôi, trang phục, biểu cảm);
-đây **không phải bản dịch máy đầy đủ cho 349.714 thẻ**. Tên
+đây **không phải bản dịch máy đầy đủ cho 348.716 tag prompt**. Tên
 họa sĩ/nhân vật/tác phẩm được giữ nguyên kèm nhãn loại; mục chưa dịch được ghi rõ.
 Khi thêm kết quả, prompt nhận đúng tên thẻ tiếng Anh gốc — nhãn Việt không gửi vào model.
 Tạo lại cột nhãn bằng `python scripts/add_vietnamese_tag_captions.py`; sau khi chỉnh từ điển
@@ -296,8 +297,7 @@ theo đúng định dạng mà Semi-Auto Tag Complete của Character Select SAA
 - Chỉ thẻ **có bản dịch thật** được ghi. Mục chưa dịch (`Chưa có bản dịch`), từ loại thuần
   (`Tác phẩm`, `Nhân vật`, `Họa sĩ`) và tên họa sĩ (nhóm 1 và 8 — SAA bỏ qua khi nạp file dịch)
   bị loại, nên tệp không chứa dòng vô nghĩa. Tên riêng được giữ nguyên theo chủ trương của repo.
-- Hiện tại: **29.619/349.714 thẻ** (1,18 MB), phủ **96,8%** trong 500 thẻ phổ biến nhất, **96,7%**
-  trong 1.000, **94,2%** trong 2.000, **71,6%** trong 5.000 và **57,5%** trong 10.000 thẻ đầu. Theo
+- Hiện tại: **29.436/348.716 tag prompt**, phủ **96,2%** trong 500 thẻ phổ biến nhất, **95,7%** trong 1.000, **92,1%** trong 2.000, **70,9%** trong 5.000 và **57,2%** trong 10.000 thẻ đầu. Theo
   `python scripts/tag_vi_audit.py report` (chỉ đếm các danh mục dịch được 0/5/7/12/14, nên tên họa sĩ và
   tên tác phẩm không bị tính vào mẫu số), độ phủ **số thẻ · lượt dùng** của từng nhóm là: **Ngoại hình**
   5.989/8.714 · **68,7% / 99,2%**, **Trang phục & phụ kiện** 3.201/4.088 · **78,3% / 99,4%**, **Biểu cảm &
@@ -306,7 +306,7 @@ theo đúng định dạng mà Semi-Auto Tag Complete của Character Select SAA
   **6.112** thẻ trống, chủ yếu là thẻ ký hiệu (`?`, `^^^`, `:<`, `0_0`) hoặc tên riêng — phần không dịch
   được này giữ nguyên tiếng Anh theo chủ trương của repo, nên vẫn **không** phải bản dịch máy cho toàn bộ catalog.
 - Từ điển trong mã **luôn thắng** cột chú giải cũ của CSV (`_prefer_vietnamese_label`), nên thêm
-  bản dịch vào `colab/studio.py` là Studio và file dịch nhận ngay — không phải tạo lại CSV 13,7 MB
+  bản dịch vào `colab/studio.py` là Studio và file dịch nhận ngay — không phải tạo lại CSV 13,6 MB
   hay đổi `TAG_CSV_SHA256`.
 - Tạo lại sau khi thêm từ điển: `python scripts/build_vietnamese_translate_file.py`.
   Thêm `--bom` nếu muốn mở bằng Excel, `--check` để kiểm tra tệp đang có khớp với từ điển

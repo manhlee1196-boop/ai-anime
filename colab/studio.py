@@ -3031,13 +3031,13 @@ class StudioRuntime:
 
 # CSV is data only: lazily downloaded, pinned and verified; never executed.
 TAG_CSV_NAME = "danbooru_e621_merged_2026-10-01_pt20-ia-dd-ed-spc.csv"
-TAG_CSV_SHA256 = "1a906f4e1148846b77482bce29b988e3fdcc9ed8240a53f0889573511690a057"
-# Backward-compatible source at TAG_CSV_URL is the verified four-column catalog.
+TAG_CSV_SHA256 = "9e51c0bde90e0d9535ce8d4ce52c9e422ac347926bb493546ebe42f6f3b786df"
+# Keep accepting the older four-column catalog when a user uploads it manually.
 TAG_CSV_LEGACY_SHA256 = "287bb5ad86fcc56f535b9ebae8d3e696e5ff3fa5c057d6fa6884282fb083e738"
 TAG_CSV_MAX_BYTES = 32_000_000
 TAG_CSV_URL = (
     "https://raw.githubusercontent.com/manhlee1196-boop/ai-anime/"
-    "0a0d3b87a4f7fa77da3274674c4d89649f7c3657/" + TAG_CSV_NAME
+    "96cc543afa7664345129e5bbef3bd57167365091/" + TAG_CSV_NAME
 )
 TAG_CATEGORIES = {
     "0": "Danbooru · Chung", "1": "Danbooru · Họa sĩ",
@@ -7505,7 +7505,7 @@ _TAG_LOCK = threading.Lock()
 _TAG_LABEL_WORD_INDEX_ROWS = None
 _TAG_LABEL_WORD_INDEX = None
 # Tên thẻ đã chuẩn hoá, dựng một lần cho mỗi catalog. Tìm kiểu *đuôi*/*giữa* phải đối
-# chiếu 349.714 tên; gọi normalize_csv_tag trong vòng lặp mỗi lần gõ là phần tốn nhất.
+# chiếu khoảng 348k tên; gọi normalize_csv_tag trong vòng lặp mỗi lần gõ là phần tốn nhất.
 _TAG_SEARCH_NAMES = None
 _TAG_LABEL_INDEX_LOCK = threading.Lock()
 TAG_PAGE_SIZE = 60
@@ -7557,7 +7557,7 @@ VI_TEXT_CACHE_LIMIT = 600_000
 def _normalize_tag_text_preserving_accents(value):
     """Normalize separators/case but keep Vietnamese marks to disambiguate captions.
 
-    Có memo: hàm này chạy trên 349.714 nhãn khi dựng index từ khóa và chạy lại cho từng
+    Có memo: hàm này chạy trên khoảng 348k nhãn khi dựng index từ khóa và chạy lại cho từng
     ứng viên mỗi lần tìm. Nhãn trong catalog lặp lại rất nhiều (cùng một cụm cho hàng
     nghìn thẻ) nên bộ nhớ chỉ vài MB mà tiết kiệm phần lớn thời gian.
     """
@@ -7977,13 +7977,22 @@ def _catalog_name_buckets(rows):
 def _catalog_check_exempt_tags():
     """Thẻ hợp lệ nhưng không có trong kho CSV — chính Studio đề xuất hoặc chèn.
 
-    Gồm thẻ chất lượng chuẩn WAI v17, toàn bộ thẻ của 8 bộ negative, thẻ gợi ý sửa
-    vùng, thẻ của nhóm Chi tiết mắt & móng, trigger LoRA ``perfect eyes`` và các từ
-    khóa ``BREAK``/``AND`` của SDXL. Kiểm tra trong kho được ưu tiên hơn: thẻ vừa có
-    trong CSV vừa ở đây vẫn báo "đúng tên thẻ" chứ không phải "thẻ chuẩn ngoài kho".
+    Gồm thẻ chất lượng chuẩn WAI v17, toàn bộ thẻ của 8 bộ negative, thẻ neo của
+    khung prompt/phong cách, thẻ kỹ thuật `highres`/`absurdres`, thẻ gợi ý sửa vùng,
+    thẻ của nhóm Chi tiết mắt & móng, trigger LoRA ``perfect eyes`` và các từ khóa
+    ``BREAK``/``AND`` của SDXL. Một số tag kỹ thuật này nằm ở nhóm Metadata của nguồn
+    nên đã được lọc khỏi CSV tối ưu, nhưng vẫn là prompt hợp lệ của Studio. Kiểm tra
+    trong kho được ưu tiên hơn: thẻ vừa có trong CSV vừa ở đây vẫn báo "đúng tên thẻ"
+    chứ không phải "thẻ chuẩn ngoài kho".
     """
     tags = set(QUALITY_TAG_SET)
+    tags.update(QUALITY_TAIL)
+    tags.update(STYLE_TAG_HINTS)
+    tags.update(("highres", "hi_res", "absurdres", "absurd_res"))
     tags.update(("perfect eyes", "BREAK", "AND"))
+    for scaffold in PROMPT_SCAFFOLDS.values():
+        for anchor_tags in scaffold["anchors"].values():
+            tags.update(anchor_tags)
     for preset in NEGATIVE_PRESETS:
         tags.update(preset["tags"])
     for positive, negative in REPAIR_HINTS.values():
@@ -9798,7 +9807,7 @@ def build_app(runtime):
                                 )
                     with gr.Tab("🏷️ Kho thẻ", id="tags"):
                         gr.Markdown(
-                            "Nguồn CSV 01/10/2026 · 349.714 thẻ. Nhấn **Tìm / tải kho thẻ** để nạp lần đầu (~9 MB; bản có cột nhãn ~13,7 MB). "
+                            "Nguồn CSV 01/10/2026 · 348.716 tag prompt (đã bỏ metadata). Nhấn **Tìm / tải kho thẻ** để nạp lần đầu (~13,6 MB). "
                             "Tìm tiếng Việt hoặc English trên toàn bộ kho; có thể dán prompt nhiều cụm bằng dấu phẩy/xuống dòng, không cần dấu tiếng Việt. Cụm dài không khớp nguyên văn sẽ tìm theo từng từ khóa. "
                             "Nhãn Việt đứng trước thẻ gốc; tên riêng được giữ nguyên và mục chưa dịch được ghi rõ. "
                             "Khi thêm vào prompt chỉ dùng tên thẻ tiếng Anh gốc. "
