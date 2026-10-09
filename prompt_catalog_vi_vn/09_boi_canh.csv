@@ -50,10 +50,16 @@ water_drop,0,Giọt nước
 potted_plant,0,Cây cảnh trồng chậu
 floral_background,0,Nền thêu hoa
 classroom,0,Lớp học
+road,0,Road
+watercraft,0,Watercraft
 blurred_background,7,Nền mờ
 christmas_tree,0,Cây Giáng sinh
+house,0,House
+office_lady,0,Văn phòng lady
 polka_dot_background,0,Nền chấm bi
+outside_sex,7,Bên ngoài quan hệ tình dục
 photo_background,0,Nền ảnh chụp
+outdoor_nudity,7,Outdoor nudity
 striped_background,0,Nền kẻ sọc
 water_bottle,0,Cái chai nước
 school,0,Học đường
@@ -68,6 +74,7 @@ street,0,Đường phố
 checkered_background,0,Nền kẻ ca-rô
 dappled_sunlight,0,Nắng đốm
 orange_flower,0,Hoa cam
+castle,0,Castle
 waterfall,0,Thác nước
 black_flower,0,Hoa đen
 bare_tree,0,Cây trụi lá
@@ -90,22 +97,42 @@ pointing_up,0,Chỉ tay hướng lên
 halftone_background,0,Nền chấm nửa tông
 people,0,Những người
 beach_towel,0,Khăn tắm bãi biển
+road_sign,0,Road Bảng hiệu
+restaurant,0,Restaurant
+park,0,Park
+shop,0,Shop
+hill,0,Hill
 bedroom_sex,7,Quan hệ trong phòng ngủ
 grey_sky,0,Bầu trời xám
 christmas_lights,0,Đèn Giáng sinh
+hallway,0,Hallway
+swimming_trunks,7,Swimming trunks
+reflective_liquid,0,Reflective Dạng lỏng
+seashell,0,Seashell
 argyle_background,0,Nền kẻ quả thoi
 christmas_ornaments,0,Đồ trang trí Giáng sinh
+sauna,0,Sauna
+indoor_nudity,7,Indoor nudity
 purple_sky,0,Bầu trời tím
 city_lights,0,Đèn thành phố
+in_tree,0,Trong Cây
 flower_pot,0,Chậu hoa
+shrine,0,Shrine
 sparkle_background,0,Nền ánh lấp lánh
 jungle,0,Rừng rậm
 flower_ornament,0,Đồ trang trí hoa
+cafe,0,Cafe
 city_background,7,Nền thành phố
+church,0,Church
+against_tree,0,Chống lại Cây
+skyscape,7,Skyscape
+afloat,0,Afloat
 flower_symbol,0,Biểu tượng hoa
 living_room,0,Phòng khách
 cumulonimbus_cloud,0,Mây vũ tích
+indoor_sex,7,Indoor quan hệ tình dục
 red_sky,0,Bầu trời đỏ
+park_bench,0,Park Ghế dài
 school_emblem,0,Huy hiệu học đường
 monotone_background,7,Nền một tông
 plant_pot,7,Chậu cây cảnh
@@ -120,6 +147,9 @@ flower_on_head,0,Hoa trên đầu
 starry_sky_print,0,Họa tiết đầy sao bầu trời
 geometric_background,7,Nền hình học
 bamboo_forest,0,Rừng tre
+3d_background,0,Hình ảnh 3D background
+garden,0,Garden
+on_grass,7,On Cỏ
 plaid_background,0,Nền kẻ caro
 neck_flower,0,Hoa cổ
 green_flower,0,Hoa xanh lá
@@ -127,315 +157,1042 @@ dust_cloud,0,Đám mây bụi
 starry_sky_background,0,Nền bầu trời đầy sao
 tree_shade,0,Bóng cây
 cloud_print,0,Họa tiết đám mây
+streetwear,0,Streetwear
 yellow_sky,0,Bầu trời vàng
+train_station,0,Train station
 pink_sky,0,Bầu trời hồng
 plant_girl,0,Cô gái cây cảnh
+seaweed,0,Seaweed
+green_fart_cloud,7,Green fart Mây
+gym_storeroom,0,Thể dục storeroom
 vertical-striped_background,0,Nền dọc kẻ sọc
+shallow_water,0,Shallow Nước
+clear_sky,0,Clear Bầu trời
 diagonal-striped_background,0,Nền chéo kẻ sọc
+sunburst_background,0,Sunburst background
 cosmic_background,7,Nền vũ trụ
+eggplant,0,Eggplant
 temple,0,Thái dương
+street_lamp,7,Đường phố Đèn
+fitting_room,0,Fitting room
 dark_room,0,Căn phòng sẫm
 black_sky,0,Bầu trời đen
+colorful_background,0,Sặc sỡ background
 textured_background,7,Nền có kết cấu
+hydrokinesis,0,Hydrokinesis
 flower_hairclip,0,Kẹp tóc hoa
+landscape_dwarfing,7,Phong cảnh dwarfing
+sand_castle,0,Cát castle
+screenshot_background,0,Screenshot background
 paw_print_background,0,Nền họa tiết chân thú
 messy_room,0,Căn phòng rối
+bernese_mountain_dog,0,Bernese Núi Chó
+school_briefcase,0,Học đường briefcase
+cloud_emanata,7,Mây emanata
+ho-kago_tea_time,0,Ho-kago Trà time
+under_tree,0,Bên dưới Cây
 flower_(anatomy),7,Hoa
+evergreen_tree,7,Evergreen Cây
+amusement_park,0,Amusement park
 white_sky,0,Bầu trời trắng
+game_screenshot_background,0,Game screenshot background
 grey_flower,0,Hoa xám
 multicolored_flower,0,Hoa nhiều màu
+hanging_plant,0,Hanging Thực vật
+colorful_clouds,0,Sặc sỡ Mây
+grass_field,7,Cỏ Cánh đồng
+booth_seating,0,Booth seating
+burp_cloud,7,Burp Mây
+above_clouds,0,Above Mây
+city_destruction,7,Thành phố destruction
 flower_crown,7,Vương miện hoa
+sea_slug,0,Biển slug
+amazing_background,7,Amazing background
 monochrome_background,0,Nền đơn sắc
+building_destruction,7,Tòa nhà destruction
+plant_roots,0,Thực vật roots
 infirmary,0,Phòng y vụ
 flag_background,0,Nền hình cờ
 rainbow_background,0,Nền cầu vồng
 cherry_tree,0,Cây hoa anh đào
+hotel_room,0,Hotel room
 sketch_background,0,Nền bản phác thảo
 teal_background,7,Nền xanh cổ vịt
+tall_grass,0,Cao Cỏ
 wrist_flower,0,Hoa cổ tay
 aqua_flower,0,Hoa xanh ngọc
 snowflake_background,0,Nền bông tuyết
 brown_flower,0,Hoa nâu
+shower_room,7,Shower room
+coconut_tree,0,Coconut Cây
 glowing_flower,0,Hoa phát sáng
 dark_cloud,0,Đám mây sẫm
 sex_in_water,7,Quan hệ tình dục trong nước
+beach_mat,0,Bãi biển mat
 green_sky,0,Bầu trời xanh lá
 plant_tentacles,7,Xúc tu cây cảnh
 flower_on_liquid,0,Hoa trên dạng lỏng
 water_lily_flower,0,Hoa huệ nước
+boutonniere,0,Boutonniere
 head_flower,7,Hoa đầu
 spiral_background,0,Nền xoắn ốc
+honeycomb_background,0,Honeycomb background
+plant_sex,0,Thực vật quan hệ tình dục
 padded_room,0,Căn phòng có đệm
+water_inflation,7,Nước Phình to
+hakurei_shrine,0,Hakurei shrine
+flower_trim,0,Hoa trim
 sky_lantern,0,Đèn lồng bầu trời
+falling_flower,0,Falling Hoa
+chaldea_bedroom,0,Chaldea Phòng ngủ
+flower_garland,7,Hoa garland
 throne_room,0,Căn phòng ngai vàng
 sky_print,0,Họa tiết bầu trời
 cloud_tattoo,0,Hình xăm đám mây
+dirt_road,0,Bụi bẩn road
 starry_background,7,Nền đầy sao
+beach_volleyball,0,Bãi biển Bóng chuyền
 school_of_fish,0,Học đường cá
+xiangyun,0,Xiangyun
+school_gym,0,Học đường Thể dục
 fiery_background,0,Nền bằng lửa
+water_slide,0,Nước Cầu trượt
+on_water,0,On Nước
 paper_background,0,Nền giấy
 leaf_background,0,Nền chiếc lá
+water_yoyo,0,Nước yoyo
 greenhouse,0,Nhà kính
 flower_basket,0,Cái rổ hoa
+housewife,0,Housewife
+on_cloud,0,On Mây
+train_station_platform,0,Train station Đế dày
 space_background,7,Nền vũ trụ
 lavender_(flower),0,Màu tím oải hương
+seahorse,0,Seahorse
+changing_room,0,Changing room
+plant_monster,0,Thực vật Quái vật
 flower_cloud_(spongebob),7,Đám mây hoa
 sea_lion,0,Sư tử biển
 lace_background,0,Nền ren
+space_station,0,Vũ trụ station
+water_type_theme_(pokemon),0,Nước type theme (pokemon)
+coffee_shop,7,Cà phê shop
 flower_bouquet,7,Bó hoa
+roots,7,Roots
+qingxin_flower,0,Qingxin Hoa
+frustration_cloud,7,Frustration Mây
+on_tree_stump,0,On Cây Gốc cây
+board_eraser,0,Board eraser
+plant_pred,7,Thực vật pred
 pride_color_background,7,Nền màu tự hào
 smelling_flower,0,Ngửi hoa
 bubble_background,0,Nền bọt khí
+blowup_background,7,Blowup background
 cum_in_water,7,Tinh dịch trong nước
+dead_tree,7,Dead Cây
 multicolored_sky,0,Bầu trời nhiều màu
 burning_building,0,Tòa nhà đang cháy
+brick_road,0,Gạch nung road
+shrine_maiden,7,Shrine maiden
 sentient_plant,0,Thực vật có tri giác
 flower_eyepatch,0,Miếng bịt mắt hoa
+carnivorous_plant,0,Carnivorous Thực vật
 sea_otter,0,Rái cá biển
+ginkgo_tree,0,Ginkgo Cây
 water_balloon,0,Bóng bay nước
+sea_monster,0,Biển Quái vật
 apple_tree,0,Cây táo
 sea_serpent,0,Xà biển
 splatter_background,0,Nền văng
 sea_turtle,0,Rùa biển
+building_sex,0,Tòa nhà quan hệ tình dục
+mountain_range,7,Núi range
 cherry_blossom_tree,7,Cây hoa nở hoa anh đào
 interior_background,7,Nền bên trong
 oversized_flower,0,Hoa quá khổ
+destroyed_building,7,Destroyed Tòa nhà
+building_sand_sculpture,0,Tòa nhà Cát sculpture
+after-school_sweets_club_(blue_archive),0,After-school sweets club (blue archive)
 ankle_flower,0,Hoa cổ chân
 white_clouds,7,Mây trắng
+anaconda,0,Anaconda
+brown_fart_cloud,7,Nâu fart Mây
+gas_station,0,Gas station
 plant_name,0,Tên cây cảnh
+grass_root_youkai_network,0,Cỏ root youkai network
+eurasian_tree_sparrow,0,Eurasian Cây sparrow
+decorating_christmas_tree,0,Decorating Giáng sinh Cây
+great_pyrenees,0,Great pyrenees
+maid_cafe,0,Hầu gái cafe
+new_york_city,0,New york Thành phố
 rose_background,0,Nền hoa hồng
+water_breaking,0,Nước breaking
+abandoned_building,7,Bỏ hoang Tòa nhà
 bucket_of_water,0,Xô nước
+city_crushing,7,Thành phố crushing
+sea_urchin,0,Biển urchin
+planter,0,Planter
+scenery_porn,7,Phong cảnh porn
+water_manipulation,7,Nước manipulation
+grass_type_theme_(pokemon),0,Cỏ type theme (pokemon)
+on_flower,0,On Hoa
+green_grass,7,Green Cỏ
 gingham_background,0,Nền kẻ ô vuông
+saturated_background,0,Saturated background
+otaku_room,0,Otaku room
+sea_slug_girl,0,Biển slug girl
+foggy_background,7,Foggy background
+chalk_outline,0,Chalk Đường viền
+birch_tree,0,Birch Cây
 cyan_background,7,Nền xanh lơ
 building_penetrated,7,Tòa nhà bị thâm nhập
+green_hill_zone,0,Green hill zone
+storage_room,0,Storage room
 water_tank,0,Áo ba lỗ nước
+plant_antlers,7,Thực vật Gạc
+water_reflection,7,Nước Ảnh phản chiếu
+subway_station,0,Subway station
+splashing_water,7,Splashing Nước
 brown_sky,0,Bầu trời nâu
 painted_background,7,Nền vẽ họa tiết
+skate_park,0,Skate park
 star-shaped_background,7,Nền hình ngôi sao
+watercolor_background,0,Watercolor background
+too_many_flowers,0,Quá nhiều Hoa
 maple_tree,0,Cây phong
 floral_border,0,Viền ảnh thêu hoa
+water_cooler,0,Nước cooler
+sailing_watercraft,7,Sailing watercraft
 fire_flower,0,Hoa lửa
+dining_room,0,Dining room
+late_for_school,0,Late for Học đường
 mushroom_cloud,0,Đám mây nấm
+tree_trunk,7,Cây trunk
+forest_sex,7,Rừng quan hệ tình dục
 water_buffalo,0,Trâu nước
+beach_blanket,7,Bãi biển Chăn
+school_nurse,0,Học đường Y tá
+starry_sky_bright_(idolmaster),0,Starry Bầu trời Sáng (idolmaster)
 lotus_(flower),7,Sen
 giant_tree,0,Cây khổng lồ
+landscape_background,7,Phong cảnh background
+on_tree,0,On Cây
 triangle_background,0,Nền hình tam giác
 plant_transformation,7,Sự biến đổi cây cảnh
+susuki_grass,0,Susuki Cỏ
+room_filling,7,Room filling
+rough_time_school_(idolmaster),0,Rough time Học đường (idolmaster)
 plant_on_head,0,Thực vật trên đầu
 fire_background,7,Nền lửa
 plant_print,0,Họa tiết cây cảnh
 chewing_grass,7,Đang nhai cỏ
+myouren_temple_clan_(touhou),0,Myouren Thái dương clan (touhou)
+yunjian,0,Yunjian
 water_tower,0,Tháp nước
+pink_check_school_(idolmaster),0,Pink check Học đường (idolmaster)
+shrine_bell,0,Shrine Chuông
+seabed,7,Seabed
+room_you_can't_get_out_of_unless_you_x_(meme),0,Room you can't get out of unless you x (meme)
+water_ripple,7,Nước ripple
+sea_anemone,0,Biển anemone
+flower_shop,0,Hoa shop
+wilted_flower,0,Wilted Hoa
+beach_house,0,Bãi biển house
+seafloor,0,Seafloor
+tree_house,7,Cây house
+doctor's_office,7,Doctor's Văn phòng
+sofmap_background,0,Sofmap background
 flower_censor,0,Kiểm duyệt hoa
+drinking_fountain,0,Đang uống fountain
+mosaic_background,0,Mosaic background
+school_gateway,0,Học đường gateway
 flower_halo,0,Vầng hào quang hoa
+outdoor_background,7,Outdoor background
 dressing_room,0,Đang mặc căn phòng
+climbing_tree,0,Climbing Cây
+fir_tree,0,Fir Cây
+water_jacking,7,Nước jacking
+yellow_fart_cloud,7,Yellow fart Mây
+haunted_house,7,Haunted house
+tree-topper,0,Tree-topper
+artificial_flower,0,Artificial Hoa
+behind_tree,0,Behind Cây
 animal_background,0,Nền động vật
 bright_background,0,Nền sáng
 sparkling_background,7,Nền lấp lánh
+ocean_sunfish,0,Đại dương sunfish
+underwater_scenery,7,Dưới nước Phong cảnh
+locker_room_sex,7,Tủ để đồ room quan hệ tình dục
 background_shot,7,Cắt cảnh nền
 circle_background,7,Nền hình tròn
+game_background,7,Game background
+stink_cloud,7,Stink Mây
+fallen_tree,0,Fallen Cây
+water_world,0,Nước world
+negai_wa_itsuka_asa_wo_koete_(project_sekai),0,Negai wa itsuka asa wo koete (project sekai)
+cecilia_flower_(genshin_impact),0,Cecilia Hoa (genshin impact)
+peeing_into_water,7,Đi tiểu into Nước
+psychedelic_background,7,Psychedelic background
+shaded_background,7,Shaded background
 cloud_background,0,Nền đám mây
+full-stop_office_(identity)_(project_moon),0,Full-stop Văn phòng (identity) (project moon)
 bamboo_tree,7,Cây tre
+flower_pin,0,Hoa pin
+office_sex,7,Văn phòng quan hệ tình dục
 tree_bondage,7,Trói buộc cây
+water_lily,7,Nước lily
+paneled_background,0,Paneled background
 snow_on_tree,0,Tuyết trên cây
 two-tone_flower,0,Hoa hai tông
+purple_fart_cloud,7,Purple fart Mây
+giving_flower,0,Giving Hoa
 cat_tree,0,Cây mèo
+sea_angel,0,Biển Thiên thần
+water_park,7,Nước park
+red_ocean,0,Red Đại dương
+moriya_shrine,0,Moriya shrine
 school_bus,0,Xe buýt học đường
 tree_print,0,Họa tiết cây
+elpis_flower,0,Elpis Hoa
 blood_on_flower,0,Máu trên hoa
+sex_shop,0,Quan hệ tình dục shop
+sea_cucumber,0,Biển cucumber
+pitcher_plant,0,Pitcher Thực vật
+sefirot,0,Sefirot
 lightning_background,0,Nền sấm sét
+misty_lake,0,Misty Hồ
+water_droplets,7,Nước droplets
+radial_gradient_background,0,Radial Chuyển sắc background
+street_snap,0,Đường phố Cúc bấm
+greyscale_background,7,Thang xám background
+water_wheel,0,Nước wheel
+drinking_water,7,Đang uống Nước
+glory_hole_station,7,Glory hole station
+rainforest,0,Rainforest
+orange_fart_cloud,7,Orange fart Mây
+garden_of_eden,7,Garden of eden
+gingerbread_house,0,Gingerbread house
 flower_facial_mark,0,Dấu trên mặt hoa
+storm_cloud,0,Storm Mây
+ice_flower,0,Băng Hoa
+examination_room,7,Examination room
+florakinesis,0,Florakinesis
+garden_of_the_sun,0,Garden of Mặt trời
 orange_tree,0,Cây cam
 flower_underskirt,0,Chân váy lót hoa
+multi-lane_road,0,Multi-lane road
+frozen_lake,0,Frozen Hồ
+lumiose_city,0,Lumiose Thành phố
 green_room,7,Căn phòng xanh lá
+cloud_strife_(cosplay),0,Mây strife (cosplay)
+building_snowman,0,Tòa nhà Người tuyết
+flower_hairtie,0,Hoa hairtie
 flower_thigh_strap,0,Dây đeo đùi hoa
+steamroller,0,Steamroller
 silhouette_background,7,Nền bóng
+sea_spray,0,Biển spray
 oversized_plant,0,Cây cảnh quá khổ
 butterfly_background,0,Nền bươm bướm
+collage_background,0,Collage background
 three-toned_background,0,Nền thon săn ba
 flower_anklet,0,Vòng chân hoa
+mondstadt_city,0,Mondstadt Thành phố
+street_sign,7,Đường phố Bảng hiệu
 floating_city,0,Thành phố lơ lửng
+hyrule_castle,0,Hyrule castle
 character_background,0,Nền nhân vật
+water_stone,0,Nước stone
+city_skyline,7,Thành phố Đường chân trời thành phố
+high_school,7,High Học đường
+eating_flower,0,Ăn Hoa
+sea_salt_ice_cream,7,Biển Muối băng Màu kem
+apartment_building,7,Apartment Tòa nhà
+colorless_fart_cloud,7,Colorless fart Mây
 strawberry_plant,0,Cây cảnh dâu tây
 strawberry_background,0,Nền dâu tây
 gradient_flower,0,Hoa chuyển sắc
+dripping_water,7,Nhỏ giọt Nước
+building_insertion,7,Tòa nhà insertion
 blood_in_water,0,Máu trong nước
+floating_castle,0,Lơ lửng castle
 flower_button,0,Cúc áo hoa
+sky_surfing,0,Bầu trời surfing
+generic_flower,7,Generic Hoa
+spider_web_background,0,Nhện web background
+sky_mirage,0,Bầu trời mirage
 tied_to_tree,0,Trói vào cây
 gold_flower,0,Hoa vàng kim
+pixelated_background,0,Pixelated background
+cafe_maid_(love_live!),0,Cafe Hầu gái (love live!)
+blue_water,7,Blue Nước
+padisarah_flower,0,Padisarah Hoa
+6th_live_dream_~bloom_garden_party~,0,6th live Giấc mơ ~bloom garden party~
 floating_on_water,7,Lơ lửng trên nước
+bedroom_window,7,Phòng ngủ Cửa sổ
+damaged_building,7,Damaged Tòa nhà
 spoken_flower,0,Hoa trong bóng thoại
+shapes_background,0,Shapes background
+wooden_house,0,Wooden house
+house_of_cards,0,House of Thẻ
+green_water,0,Green Nước
+trinity_general_school_sportswear,0,Trinity general Học đường Quần áo thể thao
 brick_background,7,Nền gạch nung
 flower_swing,0,Đu quay hoa
+plant_vore,7,Thực vật Nuốt chửng
+station_wagon,0,Station wagon
 bird_of_paradise_flower,0,Chim hoa thiên đường
 smoke_cloud,7,Đám mây khói
+life_at_the_hakurei_shrine_(touhou),0,Life at hakurei shrine (touhou)
+water_hose,7,Nước hose
 laundry_room,7,Căn phòng giặt đồ
 cum_on_grass,7,Tinh dịch trên cỏ
 steam_clouds,7,Mây hơi nước
+school_festival,0,Học đường festival
+interrogation_room,7,Interrogation room
+castle_wall,7,Castle wall
+loud_background_music,7,Loud background music
+hospital_room,7,Hospital room
+ringed_background,7,Ringed background
 musical_note_background,0,Nền nốt nhạc âm nhạc
 magic_circle_background,0,Nền phép thuật hình tròn
 flower_collar,0,Cổ áo hoa
+water_elemental,0,Nước elemental
+northern_ocean_princess_(cosplay),0,Northern Đại dương princess (cosplay)
 water_censor,0,Kiểm duyệt nước
+succulent_plant,0,Succulent Thực vật
 water_masturbation,0,Thủ dâm nước
+beach_bar,7,Bãi biển bar
+public_park,7,Công cộng park
+school_nudity,7,Học đường nudity
+flower_wrapper,0,Hoa wrapper
+skydiving,7,Skydiving
+taking_in_water,7,Taking trong Nước
+galaxy_background,0,Galaxy background
 plant_boy,0,Cậu trai cây cảnh
+lake_guardians,7,Hồ guardians
+escape_room,0,Escape room
+firework_background,0,Firework background
 magenta_background,7,Nền hồng cánh sen
 shaped_cloud,0,Đám mây hình
+red_water,0,Red Nước
+dead_plants,0,Dead Thực vật
+tree_bark,0,Cây bark
+blue_fart_cloud,7,Blue fart Mây
+shining_needle_castle,0,Shining needle castle
+family_tree,0,Family Cây
+pink_fart_cloud,7,Pink fart Mây
 flower_in_drink,0,Hoa trong đồ uống
+myouren_temple,0,Myouren Thái dương
+bdsm_room,7,Bdsm room
 print_background,0,Nền họa tiết
+school_hallway,7,Học đường hallway
+sweat_clouds,7,Mồ hôi Mây
+everfree_forest,7,Everfree Rừng
+underwater_city,0,Dưới nước Thành phố
+doll_house,0,Búp bê house
+rock_garden,0,Tảng đá garden
+flower_trick,7,Hoa trick
 american_flag_background,0,Nền hình cờ Mỹ
+background_sex,7,Background quan hệ tình dục
 back_plant,7,Cây cảnh lưng
 dark_clouds,7,Mây sẫm
+server_room,0,Server room
+pink_water,0,Pink Nước
+hanging_from_tree,0,Hanging từ Cây
+ruined_building,7,Hoang tàn Tòa nhà
+christmas_tree_topper,7,Giáng sinh Cây topper
+park_ranger,7,Park ranger
+sopheria_flower_(tales),0,Sopheria Hoa (tales)
+green_burp_cloud,7,Green burp Mây
+water_ballooning,7,Nước ballooning
+sparkling_water,0,Sparkling Nước
 flower_on_helmet,7,Hoa trên mũ bảo hiểm
+spraying_water,7,Spraying Nước
 christmas_tree_print,0,Họa tiết cây Giáng sinh
 water_bowl,7,Bát nước
+model_building,0,Model Tòa nhà
+dithered_background,0,Dithered background
 gold_background,0,Nền vàng kim
 cross_background,0,Nền chữ thập
+japanese_house,7,Nhật Bản house
 clover_background,0,Nền cỏ ba lá
+flower_tact,0,Hoa tact
+garden_hose,7,Garden hose
+water_boiler,0,Nước boiler
 flower_armlet,0,Vòng đeo tay hoa
+dorm_room,7,Dorm room
 fish_background,0,Nền cá
+garden_eel,0,Garden eel
+police_station,0,Cảnh sát station
+hanging_flower,0,Hanging Hoa
 forest_of_magic,0,Rừng phép thuật
+echo_flower,0,Echo Hoa
 palm_tree_print,0,Họa tiết cây cọ
 cum_on_building,7,Tinh dịch trên tòa nhà
 transparent_flower,0,Hoa trong suốt
+oval_background,0,Oval background
+7_colored_flowers_(deltarune),0,7 colored Hoa (deltarune)
+sanzu_river,0,Sanzu Sông
 glowing_plants,0,Cây cảnh phát sáng
+classroom_nudity,7,Lớp học nudity
+water_fountain,7,Nước fountain
 plant_growth,0,Sự mọc cây cảnh
 willow_tree,7,Cây liễu
 grey_cloud,7,Đám mây xám
 water_tentacles,7,Xúc tu nước
+dry_grass,0,Dry Cỏ
+dynamax_clouds,7,Dynamax Mây
+tentacle_sex_in_water,7,Tentacle quan hệ tình dục trong Nước
 mountain_background,7,Nền núi
+station,7,Station
+haunted_house_(attraction),0,Haunted house (attraction)
 white_cloud,7,Đám mây trắng
+gas_cloud,7,Gas Mây
+simple_flower,0,Simple Hoa
 drawn_flower,0,Hoa vẽ
+tree_hollow,0,Cây hollow
 sky_bison,0,Bò rừng bầu trời
 knees_out_of_water,7,Đầu gối thò ra nước
 sea_bunny,0,Thỏ biển
+blue_grass,0,Blue Cỏ
+glistening_water,7,Lấp lánh Nước
 lemon_tree,0,Cây chanh
 velvet_room,0,Căn phòng nhung
+youkai_mountain,0,Youkai Núi
+scribble_background,0,Scribble background
 industrial_background,7,Nền industrial
+cafe_cuties_(league),0,Cafe cuties (league)
+house_plant,7,House Thực vật
+sweet_flower,0,Sweet Hoa
+beach_hut,7,Bãi biển hut
+multiple_seasonal_school_uniforms,0,Nhiều seasonal Học đường Đồng phục
 bat_background,0,Nền dơi
+sea_bream,0,Biển bream
+indoor_pool,7,Indoor pool
+mauve_background,7,Mauve background
 glowing_background,7,Nền phát sáng
+tardigrade,0,Tardigrade
 number_background,0,Nền chữ số
 school_wear_(idolmaster),0,Đồ mặc học đường
+peaceful_scenery,7,Yên tĩnh Phong cảnh
 tiled_background,7,Nền lát gạch
+water_spray,7,Nước spray
+outdoor_shower,7,Outdoor shower
+deep_sea,0,Deep Biển
+eating_grass,7,Ăn Cỏ
+boiling_water,7,Boiling Nước
+holy_water,0,Holy Nước
 pink_cloud,7,Đám mây hồng
+art_room,0,Art room
 water_background,7,Nền nước
+moving_background,0,Moving background
 hexagon_background,7,Nền lục giác
 training_room,0,Căn phòng tập luyện
+coniferous_tree,7,Coniferous Cây
+flower_bush,0,Hoa bush
+shrunken_city,7,Shrunken Thành phố
+macaron_background,0,Macaron background
+newsprint_background,0,Newsprint background
+princess_peach's_castle,0,Princess peach's castle
+dawn_office_(identity)_(project_moon),0,Rạng đông Văn phòng (identity) (project moon)
 snow_on_trees,7,Tuyết trên cây
 card_background,0,Nền thẻ
+water_pump,0,Nước pump
+waiting_room,0,Waiting room
 paper_flower,0,Hoa giấy
+dried_flower,0,Dried Hoa
+black_forest_cake,0,Black Rừng Bánh ngọt
+canterlot_castle,7,Canterlot castle
+kame_house,0,Kame house
+multicolored_squares_background,0,Multicolored squares background
+empire_state_building,0,Empire state Tòa nhà
 carrot_background,0,Nền cà rốt
 silk_flower_(genshin_impact),0,Hoa lụa
+grass_block,0,Cỏ block
+forest_fire,7,Rừng Lửa
+tileable,0,Tileable
+shrine_team_(len'en),0,Shrine team (len'en)
+sumeru_city,0,Sumeru Thành phố
 room_number,7,Chữ số căn phòng
+picking_flowers,0,Picking Hoa
 flower_pendant,0,Mặt dây chuyền hoa
 cum_on_tree,7,Tinh dịch trên cây
 flower_in_mane,7,Hoa trong bờm
 flower_balloon,0,Bóng bay hoa
+static_background,0,Static background
+kirby's_house,0,Kirby's house
+map_background,0,Map background
+dog_park,7,Chó park
+rocking_school_(idolmaster),0,Rocking Học đường (idolmaster)
 flower_wand,0,Cây đũa phép hoa
+hot_water,7,Hot Nước
+water_splashes,7,Nước splashes
+red_grass,0,Red Cỏ
+stylized_background,7,Stylized background
+street_gutter,0,Đường phố gutter
+puffer_fish_vomiting_water_(meme),0,Puffer Cá vomiting Nước (meme)
+pooping_into_water,7,Pooping into Nước
+futuristic_city,7,Tương lai Thành phố
+gracidea_flower,7,Gracidea Hoa
+beacon_of_the_reed_sea_(genshin_impact),0,Beacon of reed Biển (genshin impact)
+rainbow_road,0,Màu cầu vồng road
+destroyed_city,7,Destroyed Thành phố
+orgy_landscape,7,Orgy Phong cảnh
+power_plant,0,Sức mạnh Thực vật
+aozora_ni_negau_your_happiness!_(project_sekai),0,Aozora ni negau your happiness! (project sekai)
+mushroom_castle_(super_mario_64),7,Nấm castle (super mario 64)
+plant_manipulation,7,Thực vật manipulation
 flower_head,0,Đầu hoa
 dirty_room,7,Căn phòng bẩn
+tomato_plant,0,Tomato Thực vật
+doodle_background,0,Doodle background
+inazuma_city,0,Inazuma Thành phố
+peeing_on_tree,7,Đi tiểu on Cây
 flower_sticker,0,Nhãn dán hoa
+parting_water,0,Parting Nước
+minna_de_enjoy!_spojoy_park_(project_sekai),0,Minna de enjoy! spojoy park (project sekai)
+multicrack_office_(identity)_(project_moon),0,Multicrack Văn phòng (identity) (project moon)
+flowing_water,7,Tung bay Nước
+coughing_flowers,0,Coughing Hoa
+meeting_room,7,Meeting room
+kanazawa_station,0,Kanazawa station
+beach_shower,7,Bãi biển shower
 empty_room,0,Căn phòng trống
 temple_gate,0,Cổng thái dương
+water_shuriken,7,Nước shuriken
+cat_cafe,0,Mèo cafe
+column_lineup_background,0,Column lineup background
+mountain_climbing,0,Núi climbing
+forest_for_the_flames_(e.g.o),0,Rừng for flames (e.g.o)
+church_bell,0,Church Chuông
+japanese_castle,0,Nhật Bản castle
 tentacle_room,7,Căn phòng xúc tu
+sea_grass,7,Biển Cỏ
+nokotan_entering_a_classroom_(meme),0,Nokotan entering a Lớp học (meme)
 peach_tree,0,Cây đào
+salmon_background,7,Salmon background
 gear_background,0,Nền bánh răng
+academy_city,0,Academy Thành phố
 name_in_background,7,Tên trong nền
+office_worker,7,Văn phòng worker
 sea_angel_girl,0,Cô gái thiên thần biển
+animated_background,7,Animated background
+castle_town_(deltarune),0,Castle town (deltarune)
+city_scape,7,Thành phố scape
+city_wall,7,Thành phố wall
 cracked_background,0,Nền nứt
+notebook_paper_background,7,Notebook Giấy background
+pouring_water,7,Pouring Nước
+ambiguous_background,7,Mơ hồ background
 orange_clouds,7,Mây cam
+manhattan_cafe_(umamusume)_(cosplay),0,Manhattan cafe (umamusume) (cosplay)
+internet_cafe,0,Internet cafe
+pooping_on_grass,7,Pooping on Cỏ
 maroon_background,7,Nền nâu đỏ
+road_of_radiance_(umamusume),0,Road of radiance (umamusume)
 camouflage_background,0,Nền rằn ri
+pawprint_background,7,Pawprint background
+room_party,7,Room Tiệc
+fanghunt_office_(identity)_(project_moon),0,Fanghunt Văn phòng (identity) (project moon)
 water_on_glass,0,Nước trên thủy tinh
 cherry_background,0,Nền hoa anh đào
+purple_grass,7,Purple Cỏ
+aozora_no_saki_kagayaki_wo_oikakete_(project_sekai),0,Aozora không có saki kagayaki wo oikakete (project sekai)
 head_out_of_water,7,Đầu thò ra nước
 cum_on_city,7,Tinh dịch trên thành phố
 skull_background,0,Nền đầu lâu
+lactating_water,7,Sữa rỉ ra Nước
+koi_koi_cafe_(ensemble_stars!),0,Koi koi cafe (ensemble stars!)
+night_city_(cyberpunk),0,Ban đêm Thành phố (cyberpunk)
+international_space_station,0,International Vũ trụ station
+ten_no_hate_no_phoenix_e_(project_sekai),0,Ten không có hate không có phoenix e (project sekai)
+impressionist_background,7,Impressionist background
+road_closed_to_vehicles_sign,0,Road closed to Xe cộ Bảng hiệu
+millennium_castle_(tsukihime),0,Millennium castle (tsukihime)
+stone_building,0,Stone Tòa nhà
 ominous_background,7,Nền tăm tối
+grass_plain,7,Cỏ plain
+glowing_water,7,Phát sáng Nước
+the_loud_house_(style),0,loud house (style)
+koukyou_suru_machi_no_katasumi_de_(project_sekai),0,Koukyou suru machi không có katasumi de (project sekai)
+comic_background,0,Truyện tranh background
+beach_city,0,Bãi biển Thành phố
 glowing_tree,0,Cây phát sáng
+acacia_tree,7,Acacia Cây
+blade_of_grass,0,Blade of Cỏ
+castle_dedede,0,Castle dedede
 moon_background,0,Nền mặt trăng
+new_york_city_police_department,0,New york Thành phố Cảnh sát department
+water_glass,7,Nước Thủy tinh
+water_stream,0,Nước stream
+hook_office_(identity)_(project_moon),0,Hook Văn phòng (identity) (project moon)
+yellow_grass,7,Yellow Cỏ
 flower_vase,7,Lọ hoa
+swan_lake_headpiece,0,Thiên nga Hồ headpiece
+pomegranate_flower,0,Pomegranate Hoa
 oak_tree,7,Cây sồi
+hasu_no_sora_pop_up_shop_china_collection,0,Hasu không có sora pop lên shop china collection
 paw_flower,7,Hoa chân thú
+chinese_restaurant,0,Trung Quốc restaurant
+ruined_city,7,Hoang tàn Thành phố
+tavern_background,7,Tavern background
+dotabata_cafe_rec!!_(project_sekai),0,Dotabata cafe rec!! (project sekai)
+stilt_house,0,Stilt house
+molar_office_(identity)_(project_moon),0,Molar Văn phòng (identity) (project moon)
+beautiful_background,7,Beautiful background
 turquoise_background,7,Nền xanh ngọc lam
 building_in_pussy,7,Tòa nhà trong âm hộ
 offering_flower,7,Đưa cho hoa
+background_signs,7,Background Bảng hiệu
+convention_room,7,Convention room
+passion_flower,0,Passion Hoa
 red_clouds,7,Mây đỏ
 sea_stars,0,Ngôi sao biển
+bottled_water,7,Bottled Nước
 white_tree,0,Cây trắng
 mini_christmas_tree,0,Cây Giáng sinh siêu ngắn
+hawker_harrier,0,Hawker harrier
+divine_water_(fate),0,Thiêng liêng Nước (fate)
 purple_clouds,7,Mây tím
+inteyvat_flower_(genshin_impact),0,Inteyvat Hoa (genshin impact)
 lineart_background,0,Nền nét vẽ
+school_connection,0,Học đường connection
+chocolate_river_no_sono_saki_ni,0,Sô-cô-la Sông không có sono saki ni
+firefist_office_(identity)_(project_moon),0,Firefist Văn phòng (identity) (project moon)
 animal-shaped_cloud,0,Đám mây hình động vật
+square_background,7,Square background
+translucent_water,7,Bán trong suốt Nước
+break_room,7,Break room
+background_smoke,7,Background Khói
+garden_of_thorns_(e.g.o),0,Garden of Gai (e.g.o)
+koikoi_love_cafe_(ensemble_stars!),0,Koikoi love cafe (ensemble stars!)
+houndstooth_background,0,Houndstooth background
+citrus_tree,7,Citrus Cây
+sanjou_school_swords_(touken_ranbu),0,Sanjou Học đường Kiếm (touken ranbu)
 cactus_flower,7,Hoa xương rồng
+wilted_plant,7,Wilted Thực vật
+mountain_bike,7,Núi bike
 mountain_print,0,Họa tiết núi
+hiding_behind_tree,7,Hiding behind Cây
 flower_in_pocket,0,Hoa trong túi áo
+office_siren,0,Văn phòng siren
+after-school_valentines_(love_live!),0,After-school valentines (love live!)
+purple_water,0,Purple Nước
 fake_sky,0,Bầu trời giả
+itsukushima_shrine,0,Itsukushima shrine
+white_house,0,White house
+cure_sky_(cosplay),0,Cure Bầu trời (cosplay)
+danshi_koukou_valentine_(meme),0,Danshi koukou valentine (meme)
 sepia_background,7,Nền nâu vàng cổ điển
+pumpkin_hill,7,Bí ngô hill
+vibrant_background,7,Vibrant background
 heart-shaped_cloud,0,Đám mây hình trái tim
+water_spring,0,Nước Mùa xuân
 flower_tank_(touhou),0,Áo ba lỗ hoa
+nameless_hill,0,Nameless hill
+cucumber_plant,0,Cucumber Thực vật
+cucumber_flower,0,Cucumber Hoa
+prerendered_background,7,Prerendered background
+peeing_into_river,7,Đi tiểu into Sông
 red_room,7,Căn phòng đỏ
+candy_shop,7,Kẹo shop
 water_drop_print,0,Họa tiết nước giọt
 christmas_background,7,Nền Giáng sinh
 flower-trimmed_crown,0,Vương miện hoa viền
+garden_gnome,0,Garden gnome
+everbloom_(hollow_knight),0,Everbloom (hollow knight)
+high-cloud_quintet_(honkai:_star_rail),0,High-cloud quintet (honkai: ngôi sao rail)
+red_fart_cloud,7,Red fart Mây
+howl's_castle,0,Howl's castle
+on_building,0,On Tòa nhà
+stuck_in_tree,7,Stuck trong Cây
+city_below,0,Thành phố below
 cherry_blossom_background,0,Nền hoa nở hoa anh đào
+temple_of_time,0,Thái dương of time
+street_corner,7,Đường phố corner
+room_divider,7,Room divider
+shibuya_station,0,Shibuya station
+water_jug,7,Nước jug
+watering_flower,7,Watering Hoa
+shinto_shrine,7,Shinto shrine
+jeong's_office_(identity)_(project_moon),0,Jeong's Văn phòng (identity) (project moon)
+ano_hi_mita_yozora_wa_itsuka_no_mirai_e_(project_sekai),0,Ano hi mita yozora wa itsuka không có mirai e (project sekai)
+school_yard,0,Học đường yard
+karma_flower,7,Karma Hoa
+street_hopper_(idolmaster),0,Đường phố hopper (idolmaster)
+staff_room,0,Gậy trường room
+botanical_garden,0,Botanical garden
 floating_building,0,Tòa nhà lơ lửng
+triangular_tiling_background,0,Triangular tiling background
+cloudy_background,7,Cloudy background
+in_grass,7,Trong Cỏ
+office_setting,7,Văn phòng setting
+storm_clouds,7,Storm Mây
+tokyo_station,0,Tokyo station
+road_roller_da!_(meme),0,Road roller da! (meme)
+entering_room,7,Entering room
+honda_city,0,Honda Thành phố
+romaritime_flower,0,Romaritime Hoa
+castle_of_friendship,7,Castle of friendship
+chao_garden,7,Chao garden
+water_shuriken_(pokemon),0,Nước shuriken (pokemon)
 floating_flowers,0,Những bông hoa lơ lửng
+control_room,7,Control room
+pink_grass,7,Pink Cỏ
+security_room,7,Security room
+distant_city,7,Distant Thành phố
+bimbo_flower,7,Bimbo Hoa
+video_game_background,7,Video game background
+house_background,7,House background
 plant_bondage,7,Trói buộc cây cảnh
+nuclear_power_plant,7,Nuclear sức mạnh Thực vật
+cracked_road,0,Nứt road
+sydney_opera_house,0,Sydney Ô-pê-ra house
+orange_star_high_school,0,Orange ngôi sao high Học đường
+wonder_flower,0,Wonder Hoa
+butcher_shop_(place),0,Butcher shop (place)
+orange_grass,7,Orange Cỏ
+hot_water_bottle,0,Hot Nước Cái chai
+vape_cloud,7,Vape Mây
+kijiyama_north_high_school,0,Kijiyama north high Học đường
+operating_room,7,Operating room
+unfinished_background,7,Unfinished background
 pumpkin_background,0,Nền bí ngô
+pill_background,0,Pill background
+blueprint_background,0,Blueprint background
+grass_background,7,Cỏ background
+small_lamp_grass,0,Nhỏ Đèn Cỏ
+ecruteak_city,0,Ecruteak Thành phố
+kisaragi_station,0,Kisaragi station
 golden_flower_(undertale),0,Hoa màu vàng
+barber_shop,7,Barber shop
+luxurious_sea-lord,0,Luxurious sea-lord
 knee_out_of_water,7,Đầu gối thò ra nước
+rectangle_background,7,Rectangle background
 arrow_background,0,Nền mũi tên
+tropical_plants,7,Tropical Thực vật
+in_flower,0,Trong Hoa
+flower_clip,7,Hoa clip
 pink_tree,7,Cây hồng
+school_invader_(hundred_line),0,Học đường invader (hundred line)
 black_clouds,7,Mây đen
 cloud_over_head,0,Mây phía trên đầu
 multicolored_clouds,0,Mây nhiều màu
 stuffed_flower,0,Hoa nhồi bông
+butcher_shop,7,Butcher shop
+in_sky,7,Trong Bầu trời
+flying_grass,0,Đang bay Cỏ
+urban_background,7,Urban background
+my_room_(fire_emblem_fates),0,My room (fire Huy hiệu fates)
 pastel_background,7,Nền màu pastel
+bad_ass_temple,0,Bad Mông Thái dương
+lotus_flower_pastry,0,Sen Hoa pastry
+school_rooftop,0,Học đường rooftop
 touching_grass,7,Chạm cỏ
+green_gas_cloud,7,Green gas Mây
 blue_clouds,7,Mây xanh dương
+concrete_building,7,Bê tông Tòa nhà
+aspen_tree,7,Aspen Cây
+closet_room,7,Closet room
+bioluminescent_plants,7,Bioluminescent Thực vật
+gold_city_(umamusume)_(cosplay),0,Vàng Thành phố (umamusume) (cosplay)
+tree_sap,7,Cây sap
+utatsuyama_park,0,Utatsuyama park
+water_absorption,7,Nước absorption
+indoor_fish,0,Indoor Cá
 flower_day,0,Ngày hoa
 flag_on_building,7,Hình cờ trên tòa nhà
+coniferous_forest,7,Coniferous Rừng
+cafe_(blue_archive),0,Cafe (blue archive)
+sea_slug_boy,0,Biển slug boy
+bondage_theme_park,7,Trói buộc theme park
+background_crowd,7,Background crowd
+ramen_shop,7,Ramen shop
+cloud_gouger_(sword),0,Mây gouger (sword)
+astro_city,0,Astro Thành phố
+fantasy_tree_(fate),0,Fantasy Cây (fate)
 tree_boy,0,Cậu trai cây
+stock_image_background,7,Stock image background
+viparyas_flower,0,Viparyas Hoa
 cloud_pattern,7,Hoa văn đám mây
 water_butterfly,0,Bướm nước
+night_city,7,Ban đêm Thành phố
 flower_(accessory),7,Hoa
+grass_lily,0,Cỏ lily
 cat_background,0,Nền mèo
+boiler_room,7,Boiler room
+changing_station,7,Changing station
+school_crossing_sign,0,Học đường crossing Bảng hiệu
+outdoor_bath,7,Outdoor bath
+snowy_mountain,7,Snowy Núi
 hollow_tree,7,Cây trũng
+grainy_background,7,Grainy background
 golden_flower,7,Hoa màu vàng
+i'm_not_at_the_beach_this_is_a_bathtub_(meme),0,I'm not at Bãi biển this is a bathtub (meme)
+kara_no_kyoukai/the_garden_of_order,0,Kara không có kyoukai/the garden of order
+water_bubble,7,Nước Bọt khí
 cocktail_flower,0,Hoa cocktail
+frozen_flower,0,Frozen Hoa
+sailor_beach_wear_(no.s_project),0,Thủy thủ Bãi biển Đồ mặc (no.s project)
+funny_background_event,7,Funny background event
+squidward's_house,7,Squidward's house
+post_office,0,Post Văn phòng
+broken_building,7,Bị gãy Tòa nhà
+glitch_background,0,Glitch background
+water_jet,7,Nước jet
+water_dispenser,7,Nước dispenser
 teal_sky,7,Bầu trời xanh cổ vịt
 banana_tree,0,Cây chuối
+ilex_forest,0,Ilex Rừng
 tentacles_in_water,7,Xúc tu trong nước
+tokyo_city_hall,0,Tokyo Thành phố hall
+bounce_house,7,Bounce house
 diamond_background,7,Nền hình thoi
+sea_sparkle,0,Biển Lấp lánh
+tree_of_harmony,7,Cây of harmony
+shrine_tank_(touhou),0,Shrine Áo ba lỗ (touhou)
+mystic_water,7,Mystic Nước
+digital_background,7,Digital background
+peeing_on_plant,7,Đi tiểu on Thực vật
+house_party,7,House Tiệc
+landscape_painting,7,Phong cảnh painting
+persimmon_tree,0,Persimmon Cây
+fang_of_the_mountain_king_(genshin_impact),0,Răng nanh of Núi king (genshin impact)
+abandoned_city,7,Bỏ hoang Thành phố
+on_plant,7,On Thực vật
+water_breathing,7,Nước breathing
+water_heater,0,Nước heater
+csejte_pyramid_himeji_castle,0,Csejte pyramid himeji castle
+against_building,7,Chống lại Tòa nhà
 mechanical_flower,0,Hoa cơ khí
 pink_room,7,Căn phòng hồng
+cafe_parade_(idolmaster),0,Cafe parade (idolmaster)
+malevolent_shrine_(jujutsu_kaisen),0,Malevolent shrine (jujutsu kaisen)
+kanda_shrine,0,Kanda shrine
 flower_areola,7,Quầng vú hoa
 skull_in_fart_cloud,7,Đầu lâu trong đám mây trung tiện
+touch_grass_(meme),0,Touch Cỏ (meme)
+suga_shrine_otokozaka,0,Suga shrine otokozaka
+tree_trunk_bridge,0,Cây trunk bridge
 pink_clouds,7,Mây hồng
+shaking_off_water,7,Run rẩy off Nước
+laying_in_water,7,Laying trong Nước
 sentient_plants,7,Cây cảnh có tri giác
+rainbow_fart_cloud,7,Màu cầu vồng fart Mây
 small_animal_water_bottle,0,Cái chai nước động vật nhỏ
+sea_ganoderma,0,Biển ganoderma
+sunset_background,7,Hoàng hôn background
+mangrove_tree,7,Mangrove Cây
+chrysler_building,0,Chrysler Tòa nhà
 room_background,7,Nền căn phòng
+floating_water_bubble,0,Lơ lửng Nước Bọt khí
+south_park_(style),0,South park (style)
 two_tone_sky,7,Bầu trời hai tông
+spaceship_background,7,Spaceship background
+kirisame_magic_shop,0,Kirisame ma thuật shop
+n's_room,0,N's room
 water_torture,7,Tra tấn nước
+filtered_background,7,Filtered background
+starry_sky_camouflage,0,Starry Bầu trời Rằn ri
 industrial_plant,7,Cây cảnh industrial
+alternate_colored_grass,0,Khác colored Cỏ
 cloud_halo,0,Vầng hào quang đám mây
+flower_kingdom_(deltarune),0,Hoa kingdom (deltarune)
+flower_emanata,7,Hoa emanata
 skeleton_flower_(plant),0,Hoa bộ xương
+flower_wristband,0,Hoa Băng cổ tay
+ice_background,0,Băng background
 bear_background,0,Nền gấu
+unwelcome_school_(song),0,Unwelcome Học đường (song)
+bowser's_castle,7,Bowser's castle
+burial_at_sea,0,Burial at Biển
+house_collar_tag,7,House Vòng cổ Nhãn
+school_circle_(nikke),0,Học đường Hình tròn (nikke)
 school_(toaru),0,Học đường
+background_noise,7,Background noise
+soapy_water,7,Soapy Nước
+high_school_student,7,High Học đường student
 sea_creature,0,Sinh vật biển
+tropical_forest,7,Tropical Rừng
+secret_garden_(fate/extra_ccc),0,Secret garden (fate/extra ccc)
+anthill,7,Anthill
+himeji_castle,0,Himeji castle
+shinjuku_station,0,Shinjuku station
+hertas_spinning_to_piranha_plants_on_parade_(meme),0,Hertas spinning to piranha Thực vật on parade (meme)
+science_fiction_background,7,Science fiction background
+selene_girls_school_(nijisanji),0,Selene girls Học đường (nijisanji)
+school_trip,0,Học đường trip
+school_shooting,0,Học đường shooting
 hypnotic_background,7,Nền bị thôi miên
+pinned_to_tree,7,Pinned to Cây
 liquid_flower,0,Hoa dạng lỏng
 cloud_(marking),7,Mây
+let's_hit_the_road_(jojo),0,Let's hit road (jojo)
+watering_plants,7,Watering Thực vật
+water_clouding,7,Nước clouding
 purple_cloud,7,Đám mây tím
+lake_suwa,0,Hồ suwa
+inside_tree,0,Bên trong Cây
+toilet_water,7,Bồn cầu Nước
+white_church_set_(bloodborne),0,White church set (bloodborne)
+deciduous_tree,7,Deciduous Cây
+dead_plant,7,Dead Thực vật
+distracting_background,7,Distracting background
+building_print,0,Tòa nhà Họa tiết
 office_background,7,Nền văn phòng
+mana_tree,0,Mana Cây
+snowy_tree,7,Snowy Cây
+peach's_castle,7,Peach's castle
+nishino_flower_(umamusume)_(cosplay),0,Nishino Hoa (umamusume) (cosplay)
 green_trees,7,Cây xanh lá
+room_filling_inflation,7,Room filling Phình to
 moonlight_flower_(cosplay),0,Hoa ánh trăng
+summer_days_school_(idolmaster),0,Mùa hè Ban ngày Học đường (idolmaster)
+cafe_au_lait,0,Cafe au lait
+summer_elementary_school_(idolmaster),0,Mùa hè elementary Học đường (idolmaster)
+flower_charm,0,Hoa charm
+grass_wonder_(umamusume)_(cosplay),0,Cỏ wonder (umamusume) (cosplay)
+grass_print,0,Cỏ Họa tiết
 donut_background,0,Nền bánh donut
+tree_carving,7,Cây carving
+ocean_maid_(stellar_blade),0,Đại dương Hầu gái (stellar blade)
+chemical_plant,7,Chemical Thực vật
+dimly_lit_room,0,Dimly lit room
+seiun_sky_(umamusume)_(cosplay),0,Seiun Bầu trời (umamusume) (cosplay)
+bouncy_castle,7,Bouncy castle
 rain_cloud,7,Đám mây mưa
+outgrowing_building,7,Outgrowing Tòa nhà
+water_cum,7,Nước tinh dịch
+clawing_tree,7,Clawing Cây
+warm_water_prank,7,Warm Nước prank
+cafe_sweety_(nikke),0,Cafe sweety (nikke)
+radio_station,7,Radio station
+surrounded_by_flowers,0,Surrounded by Hoa
+sweets_house,0,Sweets house
+flag_on_sand_castle,7,Hình cờ on Cát castle
 back_room,7,Căn phòng lưng
 tree_transformation,7,Sự biến đổi cây
+shrine_gate,7,Shrine Cổng
+water_cannon,0,Nước cannon
 hawaiian_flower,7,Hoa Hawaii
+school_of_friendship,7,Học đường of friendship
+trailer_park,7,Trailer park
+road_markings,7,Road Dấu vết / hoa văn
+japanese_shrine,7,Nhật Bản shrine
+ocean_liner,0,Đại dương liner
+sandy_hook_elementary_school_shooting,0,Sandy hook elementary Học đường shooting
+dark_city,7,Sẫm Thành phố
 flower-shaped_chocolate,0,Sô-cô-la hình hoa
 flower_cutout,0,Lỗ cắt hoa
+shimonada_station,0,Shimonada station
+rainy_city,7,Rainy Thành phố
+church_pew,7,Church pew
+windmill_tree,0,Windmill Cây
+bath_water,7,Bath Nước
+multicolored_fart_cloud,7,Multicolored fart Mây
 pinstripe_background,0,Nền sọc chỉ
+osaka_castle,0,Osaka castle
+full_house_(card_hand),7,Full house (card hand)
 water_temple,0,Thái dương nước
+water_skiing,0,Nước skiing
+water_jacking_partner,7,Nước jacking partner

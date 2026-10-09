@@ -11,6 +11,7 @@ front_view,7,Góc nhìn chính diện
 dutch_angle,0,Góc nghiêng kiểu Hà Lan
 from_above,0,Góc nhìn từ trên
 depth_of_field,0,Độ sâu trường ảnh
+logo,0,Logo
 first_person_view,7,Góc nhìn thứ nhất
 close-up,0,Cận cảnh
 internal,7,Nội tạng
@@ -28,6 +29,7 @@ pokemon_focus,0,Tập trung vào Pokémon
 animal_focus,0,Trọng tâm động vật
 ass_focus,0,Trọng tâm mông
 camera,0,Máy ảnh
+motion_blur,0,Motion blur
 weibo_watermark,0,Dấu bản quyền Weibo
 high-angle_view,7,Góc nhìn từ trên cao
 duo_focus,7,Trọng tâm hai nhân vật
@@ -39,34 +41,54 @@ not_furry_focus,7,Không chú trọng furry
 text_focus,0,Trọng tâm chữ
 human_focus,7,Trọng tâm người
 food_focus,0,Trọng tâm thức ăn
+butt_from_the_front,7,Mông từ phía trước
 spanish_text,0,Chữ Tây Ban Nha
 hip_focus,0,Trọng tâm hông
 multiple_angles,7,Nhiều góc máy
+copyright_logo,0,Copyright logo
 vehicle_focus,0,Trọng tâm xe cộ
 anthro_focus,7,Trọng tâm nhân hóa
 perspective,0,Phối cảnh
 text_on_topwear,7,Chữ trong ảnh trên trang phục thân trên
 mecha_focus,0,Trọng tâm mecha
+millennium_science_school_logo,0,Millennium science Học đường logo
 white_text,7,Chữ trắng
 x-ray_view,7,Cảnh chụp X-quang
 twitter_logo,0,Logo Twitter
+bokeh,0,Bokeh
+mixed-language_text,0,Mixed-language Chữ trong ảnh
+text_box,7,Chữ trong ảnh Cái hộp
+engrish_text,0,Engrish Chữ trong ảnh
+romaji_text,0,Romaji Chữ trong ảnh
 russian_text,0,Chữ Nga
 camera_view,7,Góc nhìn máy ảnh
 text_background,0,Nền chữ
+heart_after_text,7,Trái tim sau Chữ trong ảnh
 text_with_heart,7,Chữ trong ảnh kèm trái tim
 fisheye,0,Ống kính mắt cá
+website_logo,7,Website logo
+before_and_after,0,Before và sau
 gore_focus,7,Trọng tâm máu me
 reflection_focus,0,Trọng tâm hình phản chiếu
 humanoid_focus,7,Trọng tâm dạng người
 color_coded_text,7,Chữ mã hóa theo màu
+video_game_dialogue_box,0,Video game Lời thoại Cái hộp
 armpit_focus,0,Trọng tâm nách
+video_camera,0,Video Máy ảnh
 red_text,7,Chữ đỏ
 instagram_logo,0,Logo Instagram
 feral_focus,7,Trọng tâm bán thú
+watermark_grid,0,Dấu bản quyền Lưới
 french_text,0,Chữ Pháp
 blue_text,7,Chữ xanh dương
+bilingual_text,0,Bilingual Chữ trong ảnh
+text-only_page,0,Text-only page
+twitter_x_logo,0,Twitter x logo
 portrait_(object),0,Chân dung
+simplified_chinese_text,0,Simplified Trung Quốc Chữ trong ảnh
+text_emphasis,7,Chữ trong ảnh nhấn mạnh
 german_text,0,Chữ Đức
+absurdly_detailed_composition,0,Absurdly detailed composition
 pixiv_logo,0,Logo Pixiv
 vulva_focus,7,Trọng tâm âm hộ
 object_focus,0,Trọng tâm vật thể
@@ -74,182 +96,549 @@ back_focus,0,Trọng tâm lưng
 text_on_headgear,7,Chữ trong ảnh trên đồ đội đầu
 green_text,7,Chữ xanh lá
 grey_text,7,Chữ xám
+subscribestar_logo,0,Subscribestar logo
+thai_text,0,Thai Chữ trong ảnh
 pink_text,7,Chữ hồng
+tilde_after_text,7,Tilde sau Chữ trong ảnh
 crotch_focus,0,Trọng tâm đũng quần
 censored_text,0,Chữ đã kiểm duyệt
+text_messaging,0,Chữ trong ảnh messaging
 wall_of_text,0,Bức tường chữ trong ảnh
 yellow_text,0,Chữ vàng
+chaldea_logo,0,Chaldea logo
+logo_parody,0,Logo Tranh chế
+repeated_text,7,Repeated Chữ trong ảnh
+camera_flash,0,Máy ảnh flash
 purple_text,7,Chữ tím
 creature_focus,0,Trọng tâm sinh vật
+character_signature,0,Nhân vật Chữ ký
 traditional_chinese_text,0,Chữ Trung Quốc truyền thống
 hearts_around_text,7,Trái tim quanh chữ trong ảnh
+trio_focus,7,Bộ ba focus
 text_on_tank_top,7,Chữ trong ảnh trên áo ba lỗ
+trinity_general_school_logo,0,Trinity general Học đường logo
+bad_perspective,0,Bad Phối cảnh
+rhodes_island_logo_(arknights),0,Rhodes Đảo logo (arknights)
 intersex_focus,7,Trọng tâm liên giới tính
+monster_focus,0,Quái vật focus
+bold_text,7,Bold Chữ trong ảnh
+deviantart_logo,0,Deviantart logo
+portuguese_text,0,Portuguese Chữ trong ảnh
+ambiguous_focus,7,Mơ hồ focus
+bluesky_logo,0,Bluesky logo
+vulva_close-up,7,Âm hộ close-up
 italian_text,0,Chữ Ý
 thigh_focus,0,Trọng tâm đùi
+facebook_logo,0,Facebook logo
 company_logo,0,Logo công ty
 writing_text,7,Đang viết chữ trong ảnh
 weapon_focus,0,Trọng tâm vũ khí
 orange_text,7,Chữ cam
+pectoral_focus,0,Pectoral focus
+text_message,7,Chữ trong ảnh message
 bust_cup,0,Cốc bán thân
+latin_text,0,Latin Chữ trong ảnh
 sky_focus,0,Trọng tâm bầu trời
 camera_around_neck,0,Máy ảnh quanh cổ
 pussy_focus,0,Trọng tâm âm hộ
 text_print,7,Họa tiết chữ
 gynomorph_focus,7,Trọng tâm dạng cái
+camera_hud,7,Máy ảnh hud
+fisheye_lens,7,Ống kính mắt cá lens
+furaffinity_logo,7,Furaffinity logo
 flower_focus,0,Trọng tâm hoa
+rhine_lab_logo,0,Rhine lab logo
+non-circular_lens_flare,0,Non-circular lens flare
 brown_text,7,Chữ nâu
 plant_focus,0,Trọng tâm cây cảnh
+censored_by_text,0,Đã kiểm duyệt by Chữ trong ảnh
+impregnation_view,7,Impregnation Góc nhìn
 dark_text,7,Chữ sẫm
+youtube_logo,0,Youtube logo
+fanbox_logo,0,Fanbox logo
+gehenna_academy_logo,0,Gehenna academy logo
+waterline_view,7,Waterline Góc nhìn
+security_camera,0,Security Máy ảnh
+highlighted_text,7,Highlighted Chữ trong ảnh
+superman_logo,0,Superman logo
+dripping_text,7,Nhỏ giọt Chữ trong ảnh
 multicolored_text,0,Chữ nhiều màu
+text_header,7,Chữ trong ảnh header
+nerv_logo,0,Nerv logo
 macro_focus,7,Trọng tâm phóng to
+focus_lines,7,Focus đường nét
+dvd_logo,0,Dvd logo
+soft_focus,0,Soft focus
+upward_angle_frieren_drawing_(meme),0,Upward Góc máy frieren drawing (meme)
+rear-view_mirror,0,Rear-view Cái gương
+rear_focus,7,Rear focus
+miyoushe_watermark,0,Miyoushe Dấu bản quyền
+steppee_focus,0,Steppee focus
 text_on_bottomwear,7,Chữ trong ảnh trên trang phục thân dưới
 hidden_camera,0,Máy ảnh được che
 gradient_text,0,Chữ chuyển sắc
 text_tattoo,0,Hình xăm chữ
+alternating_focus,7,Alternating focus
+abydos_high_school_logo,0,Abydos high Học đường logo
 greek_text,0,Chữ Hy Lạp
+indonesian_text,0,Indonesian Chữ trong ảnh
+atmospheric_perspective,0,Atmospheric Phối cảnh
 hoof_focus,7,Trọng tâm móng guốc
 camera_phone,0,Điện thoại máy ảnh
 text_on_collar,7,Chữ trong ảnh trên vòng cổ
+bust_chart,0,Bust chart
+alpha_signature,0,Alpha Chữ ký
 rainbow_text,0,Chữ cầu vồng
+ko-fi_logo,0,Ko-fi logo
 balls_focus,7,Trọng tâm tinh hoàn
+tiktok_logo,0,Tiktok logo
 curved_text,7,Chữ cong
+vietnamese_text,0,Vietnamese Chữ trong ảnh
+mirrored_text,0,Mirrored Chữ trong ảnh
 young_focus,7,Trọng tâm trẻ
+finnish_text,0,Finnish Chữ trong ảnh
+heavy_lens_flare,0,Heavy lens flare
 perspective_shot,7,Cắt cảnh phối cảnh
+tumblr_logo,0,Tumblr logo
 phone_view,7,Góc nhìn điện thoại
+penguin_logistics_logo,0,Cánh cụt logistics logo
 heart_in_signature,7,Trái tim trong chữ ký
 character_watermark,0,Dấu bản quyền nhân vật
+foreground_text,0,Foreground Chữ trong ảnh
+gumroad_logo,0,Gumroad logo
 monotone_text,7,Chữ một tông
+x_logo,7,X logo
 character_logo,0,Logo nhân vật
 view,7,Góc nhìn
+multilingual_text,0,Multilingual Chữ trong ảnh
+heart_before_text,7,Trái tim before Chữ trong ảnh
 text_drop_shadow,7,Bóng chữ giọt
+escaping_text,7,Escaping Chữ trong ảnh
 mountain_focus,0,Trọng tâm núi
+through_painting,0,Through painting
+playstation_logo,0,Playstation logo
 logo_print,0,Họa tiết biểu tượng
 andromorph_focus,7,Trọng tâm dạng đực
+digital_camera,0,Digital Máy ảnh
+mihuashi_logo,0,Mihuashi logo
 multi_view,7,Nhiều góc nhìn
+nasa_logo,0,Nasa logo
+griffin_&_kryuger_logo,0,Griffin & kryuger logo
+text_with_emanata,7,Chữ trong ảnh với emanata
+bowser_logo,0,Bowser logo
+ukrainian_text,0,Ukrainian Chữ trong ảnh
+cervix_view,7,Cervix Góc nhìn
+bottom_view,7,Bottom Góc nhìn
 translucent_text,7,Chữ bán trong suốt
 cloud_focus,0,Trọng tâm đám mây
 side-view_mirror,0,Cái gương lệch bên góc nhìn
 bust_(sculpture),0,Bán thân
+forced_perspective,0,Bị ép buộc Phối cảnh
+twitch_logo,0,Twitch logo
 book_focus,0,Trọng tâm sách
+single-lens_reflex_camera,0,Single-lens reflex Máy ảnh
 text_in_heart,7,Chữ trong ảnh trong trái tim
+arabic_text,0,Arabic Chữ trong ảnh
+family_portrait,0,Family Chân dung
+red_winter_federal_academy_logo,0,Red Mùa đông federal academy logo
+camera_overlay,7,Máy ảnh overlay
+sunrise_stance,0,Bình minh stance
+pixel_text,0,Pixel Chữ trong ảnh
 text_on_swimwear,7,Chữ trong ảnh trên đồ bơi
+polish_text,0,Polish Chữ trong ảnh
+discord_logo,0,Discord logo
 stomach_focus,0,Trọng tâm bụng
+under_surface_view,7,Bên dưới surface Góc nhìn
+close_up_panel,7,Close lên panel
+swedish_text,0,Swedish Chữ trong ảnh
+stylized_text,7,Stylized Chữ trong ảnh
+high_school_girls_posing_for_google_street_view_(meme),0,High Học đường girls posing for google Đường phố Góc nhìn (meme)
+404_logo_(girls'_frontline),0,404 logo (girls' frontline)
+bilibili_logo,0,Bilibili logo
 background_text,7,Chữ nền
+fixed-point_camera,0,Fixed-point Máy ảnh
+homicipher_text,0,Homicipher Chữ trong ảnh
+artstation_logo,0,Artstation logo
+cinderella_bust,0,Cinderella bust
 back_view_in_reflection,0,Góc nhìn lưng trong ảnh phản chiếu
+uterus_view,7,Uterus Góc nhìn
 text_on_crop_top,7,Chữ trong ảnh trên áo croptop
 tree_focus,0,Trọng tâm cây
+kjerag_logo,0,Kjerag logo
+reunion_logo_(arknights),0,Reunion logo (arknights)
+dollhouse_view,0,Dollhouse Góc nhìn
 phone_camera,7,Máy ảnh điện thoại
 pride_color_text,7,Chữ màu tự hào
+kessoku_band_logo,0,Kessoku Dải băng logo
 light_text,7,Chữ nhạt
+kazimierz_logo,0,Kazimierz logo
 text_on_top_of_text,7,Chữ trong ảnh trên áo chữ trong ảnh
 text_on_diaper,7,Chữ trong ảnh trên tã lót
+explicit_text,7,Explicit Chữ trong ảnh
 text_border,7,Viền ảnh chữ
 weibo_logo,7,Logo Weibo
+adult_focus,7,Adult focus
 tan_text,7,Chữ nâu rám nắng
 spanking_focus,7,Đét trọng tâm
 text_on_sign,7,Chữ trong ảnh trên bảng hiệu
+fatui_logo,0,Fatui logo
+polaroid_camera,0,Polaroid Máy ảnh
 white_text_border,7,Viền ảnh chữ trắng
+text_on_hotpants,7,Chữ trong ảnh on hotpants
+scenic_view,7,Scenic Góc nhìn
 white_text_outline,7,Đường viền chữ trắng
 fake_text,0,Chữ giả
 perspective_text,7,Chữ phối cảnh
+windows_logo,0,Cửa sổ logo
+endfield_industries_logo,0,Endfield industries logo
+degradation_text,7,Degradation Chữ trong ảnh
+camera_shake,7,Máy ảnh shake
+movie_camera,0,Movie Máy ảnh
+heart_font_signature,7,Trái tim font Chữ ký
+newgrounds_logo,0,Newgrounds logo
+ursus_logo,0,Ursus logo
+hebrew_text,0,Hebrew Chữ trong ảnh
 neck_focus,0,Trọng tâm cổ
+kanji_focus,0,Kanji focus
 fruit_focus,0,Trọng tâm trái cây
+wildhunt_art_academy_logo,0,Wildhunt art academy logo
+panorama,0,Panorama
 black_text_border,7,Viền ảnh chữ đen
 pecs_focus,7,Trọng tâm cơ ngực
+heart_after_signature,7,Trái tim sau Chữ ký
 text_on_mug,7,Chữ trong ảnh trên cốc có quai
+super_smash_bros._logo,0,Super smash bros. logo
 alternate_view,0,Góc nhìn khác
+backwards_text,0,Backwards Chữ trong ảnh
+colored_text_highlight,0,Colored Chữ trong ảnh highlight
+blu-ray_logo,0,Blu-ray logo
 bulge_focus,7,Trọng tâm chỗ lùm lùm
+aperture_logo,7,Aperture logo
+death_focus,7,Death focus
+reddit_logo,0,Reddit logo
+penetration_close-up,7,Thâm nhập close-up
 two_tone_text,7,Chữ hai tông
 upskirt_view,7,Góc nhìn ảnh hớ váy
+underlined_text,7,Underlined Chữ trong ảnh
+twin-lens_reflex_camera,0,Twin-lens reflex Máy ảnh
+perspective-incorrect_texturing,7,Perspective-incorrect texturing
+camera_feed,0,Máy ảnh feed
+overwatch_logo,0,Overwatch logo
+filler_text,0,Filler Chữ trong ảnh
+dutch_text,0,Dutch Chữ trong ảnh
+text_on_jockstrap,7,Chữ trong ảnh on jockstrap
+video_game_logo,7,Video game logo
+camera_pov,0,Máy ảnh Góc nhìn thứ nhất
+contact_lens,0,Contact lens
+extreme_close-up,7,Extreme close-up
+schale_logo,0,Schale logo
 text_on_balloon,7,Chữ trong ảnh trên bóng bay
+lofter_logo,0,Lofter logo
 text_on_collar_tag,7,Chữ trong ảnh trên nhãn cổ áo
 cum_on_camera,7,Tinh dịch trên máy ảnh
+social_media_composition,0,Social media composition
+wet_lens,0,Ướt lens
+butt_close-up,7,Mông close-up
+self_portrait,7,Self Chân dung
+artist_watermark,7,Artist Dấu bản quyền
+caught_on_camera,7,Caught on Máy ảnh
 diaper_focus,7,Trọng tâm tã lót
+ambiguous_text,7,Mơ hồ Chữ trong ảnh
+pred_focus,7,Pred focus
+out_of_focus,7,Out of focus
 text_on_butt,7,Chữ trong ảnh trên mông
 text_markings,7,Vằn chữ
 younger_focus,7,Trọng tâm nhỏ tuổi hơn
 metal_band_text,0,Chữ dải băng kim loại
+text_on_bib,7,Chữ trong ảnh on bib
+xiaohongshu_watermark,0,Xiaohongshu Dấu bản quyền
+text_on_jersey,7,Chữ trong ảnh on jersey
+highlander_railway_academy_logo,0,Highlander railway academy logo
+text_with_iconography,7,Chữ trong ảnh với iconography
+tagalog_text,0,Tagalog Chữ trong ảnh
+distorted_text,7,Distorted Chữ trong ảnh
 text_on_container,7,Chữ trong ảnh trên vật chứa
+extruded_text,7,Extruded Chữ trong ảnh
 suggestive_text,7,Chữ gợi cảm
+xiaohongshu_logo,0,Xiaohongshu logo
 text_on_wall,7,Chữ trong ảnh trên bức tường
+front-quarter_view,7,Front-quarter Góc nhìn
+criss-crossed_composition,0,Criss-crossed composition
+xbox_logo,0,Xbox logo
 tv_camera,0,Máy ảnh ti vi
 text_with_star,7,Chữ trong ảnh kèm ngôi sao
+keysmash_text,7,Keysmash Chữ trong ảnh
+rear-quarter_view,7,Rear-quarter Góc nhìn
 black_text_outline,7,Đường viền chữ đen
+bellows_camera,0,Bellows Máy ảnh
 interior_view,7,Góc nhìn bên trong
 teal_text,7,Chữ xanh cổ vịt
+upside-down_text,0,Upside-down Chữ trong ảnh
 fullbody_suit,7,Bộ đồ toàn thân
+filipino_text,0,Filipino Chữ trong ảnh
+mojibake_text,0,Mojibake Chữ trong ảnh
+underside_view,7,Underside Góc nhìn
+itch.io_logo,0,Itch.io logo
+it's_all_a_matter_of_angle_(meme),0,It's all a matter of Góc máy (meme)
 text_censor,7,Kiểm duyệt chữ
+lungmen_logo,0,Lungmen logo
 logo_on_topwear,7,Logo trên trang phục thân trên
+pip_focus,7,Pip focus
+replaced_text,7,Replaced Chữ trong ảnh
 angle,7,Góc máy
+animated_text,7,Animated Chữ trong ảnh
 text_on_pillow,7,Chữ trong ảnh trên gối
 glistening_text,7,Chữ bóng nhẫy
+illegible_text,0,Illegible Chữ trong ảnh
 heart_between_text,7,Trái tim giữa chữ trong ảnh
+mygo!!!!!_logo_(bang_dream!),0,Mygo!!!!! logo (bang dream!)
+fantia_logo,0,Fantia logo
+gibberish_text,0,Gibberish Chữ trong ảnh
+upward_angle,7,Upward Góc máy
 big_text,7,Chữ to
 glowing_text,7,Chữ phát sáng
 text_in_background,7,Chữ trong ảnh trong nền
 text_on_handwear,7,Chữ trong ảnh trên găng tay
+taur_focus,7,Taur focus
 disposable_camera,0,Máy ảnh dùng một lần
 text_on_latex,7,Chữ trong ảnh trên latex
+arousal_focus,7,Arousal focus
+bilibili_watermark,0,Bilibili Dấu bản quyền
 hidden_text,7,Chữ trong ảnh được che
+google_street_view,0,Google Đường phố Góc nhìn
+diegetic_signature,7,Diegetic Chữ ký
+after_frame_focus,7,Sau frame focus
+blurry_text,0,Mờ nhòe Chữ trong ảnh
+lobotomy_corporation_logo,0,Lobotomy corporation logo
 blurred_text,7,Chữ mờ
 vertical_text,0,Chữ dọc
+early_modern_english_text,0,Early Hiện đại english Chữ trong ảnh
+e621_logo,7,E621 logo
+perspective-incorrect_plaid,7,Perspective-incorrect Kẻ caro
+underwater_view,7,Dưới nước Góc nhìn
 text_on_harness,7,Chữ trong ảnh trên đai buộc
+black_text_box,7,Black Chữ trong ảnh Cái hộp
 submissive_focus,7,Trọng tâm nhượng bộ
+rotating_view,0,Rotating Góc nhìn
+lens,7,Lens
+prts_logo_(arknights),0,Prts logo (arknights)
+telegram_logo,0,Telegram logo
+heart_before_signature,7,Trái tim before Chữ ký
+action_camera,0,Action Máy ảnh
+white_text_box,7,White Chữ trong ảnh Cái hộp
+herm_focus,7,Herm focus
+future_signature_(idolmaster),0,Future Chữ ký (idolmaster)
 micro_focus,7,Trọng tâm rất nhỏ
+outside_view,7,Bên ngoài Góc nhìn
 group_portrait,7,Ảnh chân dung nhóm
+sos_brigade_logo,0,Sos brigade logo
 star_in_signature,7,Ngôi sao trong chữ ký
 text_on_legwear,7,Chữ trong ảnh trên trang phục chân
 text_on_briefs,7,Chữ trong ảnh trên quần lót tam giác
+wind_chime_focus,0,Gió chime focus
+bowser_logo_thong,7,Bowser logo Quần lót dây
+pixelated_text,7,Pixelated Chữ trong ảnh
 purple_text_border,7,Viền ảnh chữ tím
 bubble_text,7,Chữ bọt khí
+pinyin_text,0,Pinyin Chữ trong ảnh
+switch_logo,7,Switch logo
+fullbody_straitjacket,7,Fullbody straitjacket
+pred_pov,7,Pred Góc nhìn thứ nhất
+danish_text,0,Danish Chữ trong ảnh
+time_signature,0,Time Chữ ký
+underflowing_text,7,Underflowing Chữ trong ảnh
+malay_text,0,Malay Chữ trong ảnh
+find_the_dream_view_(project_sekai),0,Find Giấc mơ Góc nhìn (project sekai)
+vgen_logo,0,Vgen logo
+nintendo_logo,7,Nintendo logo
+red_lens,7,Red lens
 prey_focus,7,Trọng tâm con mồi
+warped_text,7,Warped Chữ trong ảnh
+blacksteel_worldwide_logo,0,Blacksteel worldwide logo
+null_focus,0,Null focus
+czech_text,0,Czech Chữ trong ảnh
+creative_signature,0,Creative Chữ ký
 band_logo,7,Logo dải băng
 text_on_pasties,7,Chữ trong ảnh trên miếng che núm vú
+playboy_bunny_logo,7,Playboy bunny logo
+skland_watermark,0,Skland Dấu bản quyền
+putting_in_contact_lens,0,Putting trong contact lens
 outline_text,7,Chữ đường viền
+sex_toy_focus,7,Quan hệ tình dục toy focus
 text_on_armwear,7,Chữ trong ảnh trên đồ che cánh tay
+text_box_prompt,7,Chữ trong ảnh Cái hộp prompt
+hungarian_text,0,Hungarian Chữ trong ảnh
+game_logo,7,Game logo
+archaic_japanese_text,0,Archaic Nhật Bản Chữ trong ảnh
+faux_text,0,Faux Chữ trong ảnh
+monster_energy_logo,7,Quái vật Năng lượng logo
 focus_(horizon),0,Trọng tâm
+showing_baby_to_a_supermarket_camera_(meme),0,Showing baby to a supermarket Máy ảnh (meme)
 blue_text_border,7,Viền ảnh chữ xanh dương
+minmatar_logo_(eve_online),0,Minmatar logo (eve online)
+yellow_text_box,7,Yellow Chữ trong ảnh Cái hộp
+laterano_logo,0,Laterano logo
+color_coded_text_box,7,Color coded Chữ trong ảnh Cái hộp
+source_filmmaker_logo,7,Source filmmaker logo
+tengwar_text,0,Tengwar Chữ trong ảnh
 text_only,7,Chỉ có chữ trong ảnh
+blue_text_box,7,Blue Chữ trong ảnh Cái hộp
+star_after_text,7,Ngôi sao sau Chữ trong ảnh
+perspective-incorrect_topwear,7,Perspective-incorrect Trang phục thân trên
+victoria_logo,0,Victoria logo
+instant_camera,7,Instant Máy ảnh
+gyakkou_no_lens_flare_(project_sekai),0,Gyakkou không có lens flare (project sekai)
+n64_logo,7,N64 logo
+yellow_lens,7,Yellow lens
+dokkiri_camera,0,Dokkiri Máy ảnh
 apple_logo,0,Logo táo
+nirvana_logo,7,Nirvana logo
+digimon_focus,0,Digimon focus
 circle_logo,0,Logo hình tròn
+batman_logo,7,Batman logo
+iberia_logo,0,Iberia logo
 pride_color_logo,7,Logo màu tự hào
 text_on_coffee_mug,7,Chữ trong ảnh trên cốc có quai cà phê
+sega_logo,7,Sega logo
+scottish_english_text,0,Scottish english Chữ trong ảnh
+boosty_logo,0,Boosty logo
+perspective-incorrect_bottomwear,7,Perspective-incorrect Trang phục thân dưới
+college_logo,7,College logo
 ornament_focus,0,Trọng tâm đồ trang trí
+colored_contact_lens,0,Colored contact lens
+patreon_logo_censor,0,Patreon logo censor
 snout_focus,7,Trọng tâm mõm
+blue_lens,7,Blue lens
 oral_focus,7,Trọng tâm bằng miệng
 obscured_text,7,Chữ bị che
+redacted_text,7,Redacted Chữ trong ảnh
 red_text_border,7,Viền ảnh chữ đỏ
+recaptcha_logo,0,Recaptcha logo
 alternate_angle,7,Góc máy khác
 translucent_logo,7,Logo bán trong suốt
 gold_text,7,Chữ vàng kim
+abyssal_hunters_logo,0,Abyssal hunters logo
+babel_logo_(arknights),0,Babel logo (arknights)
+hindi_text,0,Hindi Chữ trong ảnh
+portrait_graffiti,7,Chân dung graffiti
+plot_focus,7,Plot focus
+under_view,7,Bên dưới Góc nhìn
+arius_branch_school_logo,0,Arius Cành cây Học đường logo
 dark_text_border,7,Viền ảnh chữ sẫm
+pawprint_in_signature,7,Pawprint trong Chữ ký
+valkyrie_police_academy_logo,0,Valkyrie Cảnh sát academy logo
+close-up_bubbles,7,Close-up Bọt khí
+focus_sash,0,Focus Đai vải
+cantonese_text,0,Cantonese Chữ trong ảnh
+game_boy_logo,7,Game boy logo
 text_on_helmet,7,Chữ trong ảnh trên mũ bảo hiểm
+adidas_logo,7,Adidas logo
+portal_amputated_bodyparts_in_view,7,Portal amputated bodyparts trong Góc nhìn
 text_on_thigh_highs,7,Chữ trong ảnh trên tất cao đùi
+close_view,7,Close Góc nhìn
 logo_censor,7,Kiểm duyệt biểu tượng
+pink_lens,7,Pink lens
+italic_text,7,Italic Chữ trong ảnh
+spider-man_logo,0,Spider-man logo
+anamorphic_lens_flare,7,Anamorphic lens flare
 text_on_cup,7,Chữ trong ảnh trên cốc
+upside_down_text,7,Upside xuống Chữ trong ảnh
+photo_date_watermark,0,Ảnh chụp date Dấu bản quyền
+zoom_lens,0,Phóng to lens
+pink_text_box,7,Pink Chữ trong ảnh Cái hộp
 red_text_outline,7,Đường viền chữ đỏ
 painted_text,7,Chữ vẽ họa tiết
+unobtrusive_watermark,7,Unobtrusive Dấu bản quyền
+vault-tec_logo,7,Vault-tec logo
+starfox_logo,7,Starfox logo
+pinterest_logo,0,Pinterest logo
+camera_flash_overexposure,0,Máy ảnh flash overexposure
+downward_angle,7,Downward Góc máy
 window_view,7,Góc nhìn cửa sổ
+cum_text,7,Tinh dịch Chữ trong ảnh
+turkish_text,0,Turkish Chữ trong ảnh
+stereographic_panorama,7,Stereographic panorama
 hearts_around_signature,7,Trái tim quanh chữ ký
 older_focus,7,Trọng tâm lớn tuổi hơn
+text_outside_panel,7,Chữ trong ảnh Bên ngoài panel
 text_on_object,7,Chữ trong ảnh trên vật thể
 red_army_logo_(eddsworld),0,Logo lục quân đỏ
+rear_view_mirror,7,Rear Góc nhìn Cái gương
+violence_focus,7,Violence focus
 name_in_text,7,Tên trong chữ trong ảnh
+circled_text,7,Circled Chữ trong ảnh
+pride_color_artist_logo,7,Tự hào color artist logo
+atari_logo,7,Atari logo
+bust_statue,7,Bust statue
+nintendo_switch_logo,0,Nintendo switch logo
 text_on_box,7,Chữ trong ảnh trên cái hộp
+dreamcast_logo,7,Dreamcast logo
+rabbit_house_logo,0,Thỏ house logo
+fantasy_text,0,Fantasy Chữ trong ảnh
+aerial_view,7,Aerial Góc nhìn
+bottom_focus,7,Bottom focus
+translucent_text_box,7,Bán trong suốt Chữ trong ảnh Cái hộp
+vsf_logo,0,Vsf logo
+doorbell_camera,7,Doorbell Máy ảnh
+abstract_text,7,Abstract Chữ trong ảnh
+black_lens,7,Black lens
 sample_text,7,Chữ mẫu
+serbo-croatian_text,0,Serbo-croatian Chữ trong ảnh
+kazakh_text,0,Kazakh Chữ trong ảnh
+green_text_box,7,Green Chữ trong ảnh Cái hộp
+gravitational_lens,0,Gravitational lens
+shanhaijing_secondary_school_logo,0,Shanhaijing secondary Học đường logo
+orange_lens,7,Orange lens
 focus_viewfinder,0,Ống ngắm trọng tâm
+beretta_de_camera,0,Beretta de Máy ảnh
 pink_text_border,7,Viền ảnh chữ hồng
+vkontakte_logo,0,Vkontakte logo
 side_view_mirror,7,Cái gương lệch bên góc nhìn
+balls_close-up,7,Tinh hoàn close-up
 antique_camera,0,Máy ảnh cổ
+25_perspective_box_exercise,0,25 Phối cảnh Cái hộp exercise
+off_camera,7,Off Máy ảnh
+enjoying_view,7,Enjoying Góc nhìn
+irish_text,0,Irish Chữ trong ảnh
+itaku_logo,7,Itaku logo
+overhead_view,7,Overhead Góc nhìn
+british_english_text,0,British english Chữ trong ảnh
+detached_lens,0,Detached lens
+illegible_signature,7,Illegible Chữ ký
 sheath_focus,7,Trọng tâm bao dương vật
 logo_background,7,Nền biểu tượng
+text_box_drop_shadow,7,Chữ trong ảnh Cái hộp Giọt Bóng đổ
+resolution_comparison_(meme),0,Resolution comparison (meme)
+medic_logo_(arknights),0,Medic logo (arknights)
+green_lens,7,Green lens
+star_before_text,7,Ngôi sao before Chữ trong ảnh
 camera_lights,7,Đèn máy ảnh
+star_after_signature,7,Ngôi sao sau Chữ ký
+confusing_perspective,7,Confusing Phối cảnh
+rotated_text,7,Rotated Chữ trong ảnh
+contact_lens_case,0,Contact lens Bao đựng
+romanian_text,0,Romanian Chữ trong ảnh
 green_text_border,7,Viền ảnh chữ xanh lá
 pokemon_logo,7,Logo Pokémon
 background_focus,7,Trọng tâm nền
+text_input_box,7,Chữ trong ảnh input Cái hộp
 small_text,7,Chữ nhỏ
+bowser_logo_jockstrap,7,Bowser logo jockstrap
+imp-print_text,7,Imp-print Chữ trong ảnh
+star_bokeh,7,Ngôi sao bokeh
+huge_resolution,7,Huge resolution
+mongolian_text,0,Mongolian Chữ trong ảnh
+forehead_touch_perspective_(meme),0,Trán touch Phối cảnh (meme)
+360_panorama,0,360 panorama
+extreme_perspective,7,Extreme Phối cảnh
+pornhub_logo,7,Pornhub logo
 heart_in_logo,7,Trái tim trong logo
+panning_camera,0,Panning Máy ảnh
+minnan_text,0,Minnan Chữ trong ảnh
+text_color_change,7,Chữ trong ảnh color change
 text_on_onesie,7,Chữ trong ảnh trên bộ liền thân
 text_on_weapon,0,Chữ trong ảnh trên vũ khí
+self-portrait_(object),0,Self-portrait (object)
+perspective_speech_bubble,7,Phối cảnh speech Bọt khí
 larger_focus,7,Trọng tâm to hơn
+imperial_logo_(star_wars),0,Imperial logo (star wars)

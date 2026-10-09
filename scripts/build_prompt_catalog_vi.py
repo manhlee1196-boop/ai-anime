@@ -3,8 +3,8 @@
 The output follows the existing SAA-compatible format:
 ``tag,category,translation`` with no header and no comma in the translation.
 The requested groups use real Vietnamese translations from
-``danbooru_e621_merged_vi_vn.csv``. For ``99_khac.csv``, missing translations
-receive a deterministic machine-style fallback: known words use the local
+``danbooru_e621_merged_vi_vn.csv``. Every remaining tag in the selected groups
+receives a deterministic machine-style fallback: known words use the local
 Vietnamese glossary and underscores are converted to spaces.
 
 Run from the repository root:
@@ -43,9 +43,9 @@ SELECTED_GROUPS = (
     "99_khac",
 )
 
-# The fallback group is deliberately complete: tags without a curated translation
+# Every requested output group is complete: tags without a curated translation
 # receive an automatic label with underscores converted to spaces.
-MACHINE_TRANSLATION_GROUPS = frozenset({"99_khac"})
+MACHINE_TRANSLATION_GROUPS = frozenset(SELECTED_GROUPS)
 
 _MACHINE_WORD_OVERRIDES = {
     "after": "sau",
@@ -294,9 +294,9 @@ def _readme(manifest: dict) -> str:
         "# File dịch tiếng Việt cho catalog prompt",
         "",
         "Định dạng SAA-compatible: `tag,category,translation`, không header, UTF-8",
-        "không BOM, xuống dòng LF. Các nhóm thông thường chỉ ghi bản dịch thật.",
-        "Riêng `99_khac.csv`, tag thiếu bản dịch thật nhận nhãn dịch máy dự phòng; dấu `_`",
-        "được đổi thành khoảng trắng, từ chưa biết được giữ nguyên để không bịa nghĩa.",
+        "không BOM, xuống dòng LF. Mọi tag trong 12 nhóm được chọn đều có nhãn.",
+        "Tag thiếu bản dịch thật nhận nhãn dịch máy dự phòng; dấu `_` được đổi thành",
+        "khoảng trắng, từ chưa biết được giữ nguyên để không bịa nghĩa.",
         "",
         "| File | Tổng dòng | Dịch thật | Dịch máy | Tag nguồn | Chưa có bản dịch thật |",
         "| --- | ---: | ---: | ---: | ---: | ---: |",

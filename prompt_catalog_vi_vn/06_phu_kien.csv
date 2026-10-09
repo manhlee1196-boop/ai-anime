@@ -171,6 +171,7 @@ yellow_necktie,0,Cà vạt vàng
 frilled_hairband,0,Băng đô nhún xếp
 animal_ear_piercing,0,Xâu khuyên tai động vật
 eye_mask,0,Mặt nạ che mắt
+thighlet,0,Thighlet
 aqua_necktie,0,Cà vạt xanh ngọc
 sailor_hat,0,Mũ thủy thủ
 unworn_eyewear,0,Kính không mặc
@@ -190,21 +191,25 @@ bead_necklace,0,Vòng cổ hạt
 fox_mask,0,Mặt nạ cáo
 animal_hat,0,Mũ động vật
 round_glasses,7,Kính tròn
+headscarf,0,Headscarf
 heart_earrings,0,Khuyên tai trái tim
 neck_ring,0,Nhẫn cổ
 backwards_hat,0,Đội mũ ngược
 tail_bow,0,Nơ buộc đuôi
 yellow_bowtie,0,Nơ cổ vàng
+oil-paper_umbrella,0,Oil-paper Cái ô
 striped_bowtie,0,Nơ cổ kẻ sọc
 black_scarf,0,Khăn quàng đen
 grey_hat,0,Mũ màu xám
 furgonomic_piercing,7,Khuyên furgonomic
+digit_ring,7,Digit Nhẫn
 blue_choker,0,Vòng cổ xanh dương
 holding_bow_(weapon),0,Cầm nơ
 lolita_hairband,0,Băng đô lolita
 leg_ribbon,0,Ruy băng chân
 nipple_ring,7,Nhẫn núm vú
 pink_hairband,0,Băng đô hồng
+aiming,0,Aiming
 green_bowtie,0,Nơ cổ xanh lá
 headwear_only,7,Chỉ mặc phụ kiện đội đầu
 aqua_bow,0,Nơ xanh ngọc
@@ -228,7 +233,9 @@ tail_ribbon,0,Ruy băng buộc đuôi
 chain_necklace,0,Vòng cổ dây xích
 polka_dot_bow,0,Nơ chấm bi
 hat_only,7,Chỉ đội mũ
+o-ring_top,0,O-ring top
 traditional_bowtie,0,Nơ cổ truyền thống
+garrison_cap,0,Garrison cap
 short_necktie,0,Cà vạt ngắn
 mini_top_hat,0,Mũ chóp cao nhỏ
 gold_necklace,0,Vòng cổ vàng kim
@@ -253,10 +260,12 @@ pink_necktie,0,Cà vạt hồng
 arm_ribbon,0,Ruy băng cánh tay
 glasses_only,7,Chỉ đeo kính mắt
 brown_bow,0,Nơ nâu
+nipple_barbell,7,Nipple Thanh thẳng
 red_belt,0,Thắt lưng đỏ
 adjusting_headwear,0,Đang chỉnh phụ kiện đội đầu
 thigh_belt,0,Thắt lưng đùi
 waist_bow,0,Nơ eo
+jester_cap,0,Jester cap
 rimless_eyewear,0,Kính không gọng
 diagonal-striped_necktie,0,Cà vạt chéo kẻ sọc
 frilled_hat,0,Mũ nhún xếp
@@ -265,16 +274,20 @@ purple_hairband,0,Băng đô tím
 pink_scarf,0,Khăn quàng hồng
 bow-shaped_hair,0,Tóc hình nơ
 heart-shaped_eyewear,0,Kính hình trái tim
+shopping_bag,0,Shopping Túi
 blue_belt,0,Thắt lưng xanh dương
 wizard_hat,0,Mũ phù thủy nam
 large_bow,0,Nơ lớn
+o-ring_choker,0,O-ring Vòng cổ choker
 heart_necklace,0,Vòng cổ trái tim
+gas_mask,0,Gas Mặt nạ
 rectangular_eyewear,0,Kính gọng chữ nhật
 fake_ears,7,Tai giả
 toe_ring,0,Nhẫn chân
 septum_ring,7,Nhẫn vách mũi
 ring_(jewelry),7,Nhẫn
 tail_ring,0,Vòng đuôi
+prince_albert_piercing,7,Prince albert Khuyên xỏ
 holding_mask,0,Cầm mặt nạ
 heart_choker,0,Vòng cổ trái tim
 yellow_scarf,0,Khăn quàng vàng
@@ -283,6 +296,7 @@ plaid_scarf,0,Khăn quàng kẻ caro
 diagonal-striped_bow,0,Nơ chéo kẻ sọc
 tie_clip,0,Kẹp cà vạt
 tail_jewelry,7,Trang sức đuôi
+o-ring_thigh_strap,0,O-ring thigh Dây đeo
 multiple_earrings,0,Nhiều khuyên tai
 horn_ribbon,0,Ruy băng sừng
 pirate_hat,0,Mũ cướp biển
@@ -290,6 +304,7 @@ green_scarf,0,Khăn quàng xanh lá
 striped_scarf,0,Khăn quàng kẻ sọc
 sphere_earrings,0,Khuyên tai hình cầu
 goggles_on_headwear,0,Kính bảo hộ trên phụ kiện đội đầu
+\||/,0,Ký hiệu \||/
 party_hat,0,Mũ tiệc
 chef_hat,0,Mũ đầu bếp
 paper_fan,0,Quạt giấy
@@ -302,7 +317,10 @@ orange_hat,0,Mũ màu cam
 mask_pull,0,Đang kéo mặt nạ
 purple_choker,0,Vòng cổ tím
 orange_necktie,0,Cà vạt cam
+backwards_baseball_cap,7,Backwards Bóng chày cap
+domino_mask,0,Domino Mặt nạ
 brown_scarf,0,Khăn quàng nâu
+opaque_glasses,0,Opaque Kính mắt
 striped_ribbon,0,Ruy băng kẻ sọc
 flower_earrings,0,Khuyên tai hoa
 unworn_mask,0,Mặt nạ không mặc
@@ -312,6 +330,7 @@ horn_ring,0,Vòng sừng
 pink_bag,0,Túi hồng
 pendant_choker,0,Vòng cổ mặt dây chuyền
 black_headwear,7,Phụ kiện đầu đen
+electric_fan,0,Electric fan
 orange-tinted_eyewear,0,Kính nhuộm màu cam
 white_mask,0,Mặt nạ trắng
 orange_bowtie,0,Nơ cổ cam
@@ -321,7 +340,9 @@ wrist_ribbon,0,Ruy băng cổ tay
 red-tinted_eyewear,0,Kính nhuộm màu đỏ
 sunglasses_on_head,7,Kính râm trên đầu
 large_hat,0,Mũ lớn
+ring_gag,0,Nhẫn Nhét miệng
 folded_fan,0,Quạt gấp lại
+surgical_mask,0,Surgical Mặt nạ
 paper_bag,0,Túi giấy
 skull_mask,0,Mặt nạ đầu lâu
 vulva_piercing,7,Khuyên âm hộ
@@ -337,9 +358,11 @@ animal_ear_headwear,0,Phụ kiện đầu tai động vật
 single_hair_ring,0,Một vòng tóc
 hair_tie_in_mouth,0,Cà vạt tóc trong miệng
 white-framed_eyewear,0,Kính khung trắng
+bag_charm,0,Túi charm
 yellow-framed_eyewear,0,Kính khung vàng
 yellow_belt,0,Thắt lưng vàng
 blue_bag,0,Túi xanh dương
+nightcap,0,Nightcap
 crescent_earrings,0,Khuyên tai hình lưỡi liềm
 clitoris_piercing,7,Khuyên âm vật
 brown_ribbon,0,Ruy băng nâu
@@ -366,8 +389,12 @@ looking_over_eyewear,0,Nhìn qua kính mắt
 feather_earrings,0,Khuyên tai lông vũ
 sleep_mask,0,Mặt nạ ngủ
 purple-tinted_eyewear,0,Kính nhuộm màu tím
+frenum_piercing,7,Frenum Khuyên xỏ
 pink-tinted_eyewear,0,Kính nhuộm màu hồng
+utility_belt,0,Utility Thắt lưng
+fighting_ring,7,Fighting Nhẫn
 blue-framed_eyewear,0,Kính khung xanh dương
+ring_light_reflection,0,Nhẫn Nhạt Ảnh phản chiếu
 ribbon_bondage,0,Trói buộc ruy băng
 diagonal-striped_bowtie,0,Nơ cổ chéo kẻ sọc
 horned_headwear,0,Phụ kiện đầu có sừng
@@ -380,7 +407,9 @@ ladder_piercing,7,Khuyên cái thang
 grey_necktie,0,Cà vạt xám
 studded_belt,0,Thắt lưng đính đinh
 yellow_bag,0,Túi vàng
+shako_cap,0,Shako cap
 grey_belt,0,Thắt lưng xám
+o-ring_bottom,0,O-ring bottom
 print_bow,0,Nơ họa tiết
 green_choker,0,Vòng cổ xanh lá
 linked_piercing,0,Khuyên được nối
@@ -393,11 +422,14 @@ cat_ear_hairband,0,Băng đô tai mèo
 bow_legwear,0,Đồ che chân nơ
 brown_necktie,0,Cà vạt nâu
 fur_scarf,0,Khăn quàng lông thú
+duffel_bag,0,Duffel Túi
 frilled_ribbon,0,Ruy băng nhún xếp
 pink-framed_eyewear,0,Kính khung hồng
 orange_scarf,0,Khăn quàng cam
 pillbox_hat,0,Mũ hộp nhỏ
+over-rim_eyewear,0,Over-rim Kính mắt
 grey_scarf,0,Khăn quàng xám
+magnifying_glass,0,Magnifying Thủy tinh
 horn_bow,0,Nơ sừng
 eyewear_strap,0,Dây đeo kính
 black_jewelry,7,Trang sức màu đen
@@ -408,6 +440,7 @@ horn_hairband,0,Băng đô sừng
 loose_bowtie,0,Nơ cổ rộng
 black_necklace,7,Vòng cổ đen
 star_necklace,0,Vòng cổ ngôi sao
+tooth_necklace,0,Tooth Vòng cổ
 bone_mask,7,Mặt nạ xương
 ankle_ribbon,0,Ruy băng cổ chân
 open_belt,0,Thắt lưng mở
@@ -418,16 +451,22 @@ animal_bag,0,Túi động vật
 green_headwear,7,Phụ kiện đầu xanh lá
 ribbon-trimmed_collar,0,Cổ áo ruy băng viền
 chest_bow,0,Nơ ngực
+magatama_necklace,0,Magatama Vòng cổ
 thumb_ring,0,Nhẫn ngón cái
 winged_hat,0,Mũ có cánh
+enpera,0,Enpera
 hand_on_eyewear,0,Bàn tay trên kính mắt
 bow_(music),0,Nơ
 school_hat,0,Mũ học đường
+tricorne,0,Tricorne
+snakebite_piercing,7,Snakebite Khuyên xỏ
 bow_earrings,0,Khuyên tai nơ
 eyebrow_ring,7,Nhẫn lông mày
 yellow_choker,0,Vòng cổ vàng
 key_necklace,0,Vòng cổ chìa khóa
+hoop_ear_ring,7,Hoop ear Nhẫn
 red_mask,0,Mặt nạ đỏ
+middle_ring,0,Middle Nhẫn
 plaid_hat,0,Mũ kẻ caro
 porkpie_hat,0,Mũ porkpie
 leg_belt,0,Thắt lưng chân
@@ -438,6 +477,7 @@ lip_ring,0,Nhẫn môi
 star_brooch,0,Trâm cài ngôi sao
 two-tone_hairband,0,Băng đô hai tông
 bucket_hat,0,Mũ xô
+bridge_piercing,0,Bridge Khuyên xỏ
 wrist_bow,0,Nơ cổ tay
 thigh_ribbon,0,Ruy băng đùi
 furgonomic_headwear,7,Phụ kiện đầu nửa người nửa thú
@@ -449,6 +489,7 @@ multicolored_bow,0,Nơ nhiều màu
 brown_bowtie,0,Nơ cổ nâu
 black_eyewear,7,Kính đen
 carrot_necklace,0,Vòng cổ cà rốt
+oni_mask,0,Oni Mặt nạ
 leather_belt,0,Thắt lưng da
 diving_mask,0,Mặt nạ lặn
 alternate_headwear,0,Phụ kiện đầu khác
@@ -457,10 +498,13 @@ drawing_bow,0,Đang vẽ nơ
 brown-framed_eyewear,0,Kính khung nâu
 green_bag,0,Túi xanh lá
 hard_hat,0,Mũ bảo hộ
+trash_bag,0,Trash Túi
+labret_piercing,0,Labret Khuyên xỏ
 grey_hairband,0,Băng đô xám
 white_umbrella,0,Cái ô trắng
 necktie_grab,0,Nắm cà vạt
 green-framed_eyewear,0,Kính khung xanh lá
+inner_tube,7,Inner Dạng ống
 yellow-tinted_eyewear,0,Kính nhuộm màu vàng
 pearl_bracelet,0,Vòng tay ngọc trai
 grey_ribbon,0,Ruy băng xám
@@ -484,11 +528,14 @@ jewelry_only,7,Chỉ mặc trang sức
 studded_bracelet,0,Vòng tay đính đinh
 purse,7,Túi cầm tay
 checkered_necktie,0,Cà vạt kẻ ca-rô
+bolo_tie,0,Bolo tie
 two-tone_bowtie,0,Nơ cổ hai tông
 lace_choker,0,Vòng cổ ren
+blindfold_mask,0,Băng bịt mắt Mặt nạ
 hands_on_headwear,0,Bàn tay trên phụ kiện đội đầu
 cross_tie,0,Cà vạt chữ thập
 unworn_bag,0,Túi không mặc
+o-ring_belt,0,O-ring Thắt lưng
 white_headwear,7,Phụ kiện đầu trắng
 animal_mask,7,Mặt nạ động vật
 orange_belt,0,Thắt lưng cam
@@ -505,7 +552,9 @@ high-waist_belt,0,Thắt lưng eo cao
 black_umbrella,0,Cái ô đen
 flower_brooch,0,Trâm cài hoa
 holding_ribbon,0,Cầm ruy băng
+condom_belt,0,Bao cao su Thắt lưng
 food-themed_earrings,0,Khuyên tai chủ đề thức ăn
+square-end_necktie,0,Square-end Cà vạt
 bowl_hat,0,Mũ hình bát
 pussy_piercing,0,Khuyên âm hộ
 text_on_headwear,7,Chữ trong ảnh trên phụ kiện đội đầu
@@ -519,17 +568,21 @@ crystal_earrings,0,Khuyên tai pha lê
 flower_choker,0,Vòng cổ hoa
 huge_bow,0,Nơ khổng lồ
 brown_headwear,7,Phụ kiện đầu nâu
+labia_piercing,0,Labia Khuyên xỏ
 spiked_ear_piercing,0,Xâu khuyên tai có gai
 ribbon_in_mouth,0,Ruy băng trong miệng
 key_earrings,0,Khuyên tai chìa khóa
 lace-trimmed_choker,0,Vòng cổ ren viền
 ninja_mask,0,Mặt nạ ninja
+coke-bottle_glasses,0,Coke-bottle Kính mắt
 two-tone_headwear,0,Phụ kiện đầu hai tông
 beaded_jewelry,7,Trang sức hạt cườm
 no_mask,0,Không có mặt nạ
 chastity_belt,0,Đai cấm dục
+messenger_bag,0,Messenger Túi
 flower_accessory,7,Phụ kiện hoa
 adjusting_necktie,0,Đang chỉnh cà vạt
+these_aren't_my_glasses,7,These aren't my Kính mắt
 polka_dot_headwear,0,Phụ kiện đầu chấm bi
 horn_piercing,0,Khuyên sừng
 bowler_hat,0,Mũ bowler
@@ -540,45 +593,60 @@ hat_over_eyes,0,Mũ phía trên mắt
 horned_mask,0,Mặt nạ có sừng
 green-tinted_eyewear,0,Kính nhuộm màu xanh lá
 sheath_piercing,7,Khuyên bao dương vật
+boater_hat,0,Boater Mũ
 two-sided_headwear,0,Phụ kiện đầu mặt hai
 shell_necklace,0,Vòng cổ vỏ
 text_on_hat,7,Chữ trong ảnh trên mũ
 print_headwear,0,Phụ kiện đầu họa tiết
 gold_ear_ring,7,Nhẫn tai vàng kim
+potara_earrings,0,Potara Khuyên tai
+clitoral_piercing,0,Clitoral Khuyên xỏ
 red_bow_tie,7,Cà vạt nơ đỏ
 nurse_hat,7,Mũ y tá
+ammunition_belt,0,Ammunition Thắt lưng
 bean_bag,0,Túi đậu
 red_eyewear,7,Kính đỏ
 bow_in_front,7,Nơ trong phía trước
 gold_piercing,0,Khuyên vàng kim
 long_ribbon,0,Ruy băng dài
 cross_choker,0,Vòng cổ chữ thập
+aviator_sunglasses,0,Aviator Kính râm
 floating_scarf,0,Khăn quàng lơ lửng
+noh_mask,0,Noh Mặt nạ
+pom_pom_beanie,0,Pom pom Mũ len
+wrestling_mask,0,Wrestling Mặt nạ
 waist_ribbon,0,Ruy băng eo
+bag_of_chips,0,Túi of chips
 hat_tip,0,Vành mũ
 hat_on_back,0,Đang đội mũ ngả về sau
 studded_choker,0,Vòng cổ đính đinh
 glasses_on_head,7,Kính mắt trên đầu
 lipstick_ring,0,Nhẫn son môi
 purple_headwear,7,Phụ kiện đầu tím
+grocery_bag,0,Grocery Túi
+magatama_earrings,0,Magatama Khuyên tai
 chin_piercing,0,Khuyên cằm
 grey_bowtie,0,Nơ cổ xám
 two-tone_necktie,0,Cà vạt hai tông
 black_tie_(suit),7,Cà vạt đen
 scarf_over_mouth,0,Khăn quàng phía trên miệng
+bicorne,0,Bicorne
 umbrella_over_shoulder,0,Cái ô phía trên vai
 aqua_hairband,0,Băng đô xanh ngọc
 peach_hat_ornament,0,Đồ trang trí mũ đào
 hat_with_ears,0,Mũ kèm tai
 side-tie_swimwear,7,Đồ bơi cà vạt lệch bên
 skull_necklace,0,Vòng cổ đầu lâu
+screencap_background,7,Screencap background
 hat_over_one_eye,0,Mũ phía trên một con mắt
 crescent_necklace,0,Vòng cổ hình lưỡi liềm
 scrotum_piercing,0,Khuyên bìu
 mismatched_earrings,0,Khuyên tai lệch đôi
 grey_choker,0,Vòng cổ xám
 fin_piercing,0,Khuyên vây
+aviator_cap,0,Aviator cap
 pink_umbrella,0,Cái ô hồng
+sideways_hat,0,Sideways Mũ
 flower_bracelet,0,Vòng tay hoa
 purple-framed_eyewear,0,Kính khung tím
 ball_ring,7,Nhẫn quả bóng
@@ -594,24 +662,32 @@ blood_bag,0,Túi máu
 print_necktie,0,Cà vạt họa tiết
 multicolored_scarf,0,Khăn quàng nhiều màu
 hat_tassel,0,Tua rua trên mũ
+wrestling_ring,0,Wrestling Nhẫn
+gimp_mask,0,Gimp Mặt nạ
+medial_ringed_humanoid_penis,7,Phía trong ringed Dạng người Dương vật
 snake_earrings,0,Khuyên tai rắn
 holding_necklace,0,Cầm vòng cổ
+martial_arts_belt,0,Martial arts Thắt lưng
 leaf_hat_ornament,0,Đồ trang trí mũ chiếc lá
 ankle_bow,0,Nơ cổ chân
 sports_mask,7,Mặt nạ thể thao
 bird_mask,0,Mặt nạ chim
 cat_bag,0,Túi mèo
 diamond-shaped_earrings,0,Khuyên tai hình thoi
+balaclava,0,Balaclava
+mitre,0,Mitre
 spiked_belt,0,Thắt lưng có gai
 multicolored_necktie,0,Cà vạt nhiều màu
 tulip_hat,0,Mũ tulip
 gold_belt,0,Thắt lưng vàng kim
 penis_ribbon,0,Ruy băng dương vật
 anchor_necklace,0,Vòng cổ cái neo
+pastry_bag,0,Pastry Túi
 star-shaped_eyewear,0,Kính hình ngôi sao
 cow_ear_hairband,0,Băng đô tai bò
 grey_bag,0,Túi xám
 bean_bag_chair,0,Ghế đậu túi
+gift_bag,0,Quà tặng Túi
 diving_mask_on_head,0,Mặt nạ lặn trên đầu
 horn_accessory,7,Phụ kiện sừng
 pom_pom_earrings,0,Khuyên tai quả bông
@@ -620,6 +696,7 @@ skull_accessory,7,Phụ kiện đầu lâu
 unworn_backpack,0,Ba lô không mặc
 circular_barbell_piercing,7,Khuyên thanh thẳng hình tròn
 striped_hat,0,Mũ kẻ sọc
+fanning,0,Fanning
 ribbon-trimmed_headwear,0,Phụ kiện đầu ruy băng viền
 wing_piercing,0,Khuyên cánh
 vertical-striped_headwear,0,Phụ kiện đầu dọc kẻ sọc
@@ -640,14 +717,19 @@ collar_ring,7,Nhẫn cổ áo
 ornate_ring,0,Nhẫn cầu kỳ
 wrist_belt,0,Thắt lưng cổ tay
 anchor_choker,0,Vòng cổ cái neo
+ski_goggles,0,Ski Kính bảo hộ
 pride_color_accessory,7,Phụ kiện màu tự hào
 floating_neckwear,0,Phụ kiện cổ lơ lửng
+masquerade_mask,0,Masquerade Mặt nạ
+beaded_necklace,7,Beaded Vòng cổ
 flower_hairband,0,Băng đô hoa
 rice_hat,0,Mũ cơm
 hair_ring,7,Nhẫn tóc
 pup_mask,7,Mặt nạ con non
 long_scarf,0,Khăn quàng dài
+oxygen_mask,0,Oxygen Mặt nạ
 purple_bag,0,Túi tím
+guiche_piercing,7,Guiche Khuyên xỏ
 plaid_ribbon,0,Ruy băng kẻ caro
 checkered_bow,0,Nơ kẻ ca-rô
 yellow_headwear,7,Phụ kiện đầu vàng
@@ -659,11 +741,13 @@ spiked_cock_ring,0,Nhẫn dương vật có gai
 yellow_visor_cap,0,Mũ lưỡi trai có lưới chắn vàng
 vulva_ring,7,Nhẫn âm hộ
 starfish_(accessory),7,Sao biển
+pill_earrings,0,Pill Khuyên tai
 broken_mask,0,Mặt nạ bị gãy
 cum_on_eyewear,0,Tinh dịch trên kính mắt
 punching_bag,0,Đấm túi
 undone_neck_ribbon,0,Caravat nơ cổ chưa cài
 furgonomic_hat,7,Mũ nửa người nửa thú
+o-ring_harness,0,O-ring Đai buộc
 back_ribbon,0,Ruy băng lưng
 holding_headwear,7,Cầm phụ kiện đội đầu
 winged_bag,0,Túi có cánh
@@ -678,10 +762,13 @@ butterfly_brooch,0,Trâm cài bươm bướm
 holding_hat,7,Cầm mũ
 butterfly_earrings,0,Khuyên tai bươm bướm
 black_bracelet,7,Vòng tay đen
+sam_browne_belt,0,Sam browne Thắt lưng
 grey_headwear,7,Phụ kiện đầu xám
 cat_choker,0,Vòng cổ mèo
 hand_on_own_hat,0,Bàn tay trên mũ của mình
+sleeping_bag,0,Đang ngủ Túi
 horned_hat,0,Mũ có sừng
+dangle_earrings,0,Dangle Khuyên tai
 bow_(anatomy),7,Nơ
 heart_hat_ornament,0,Đồ trang trí mũ trái tim
 green_eyewear,7,Kính xanh lá
@@ -691,19 +778,28 @@ adjusting_scarf,0,Đang chỉnh khăn quàng
 multicolored_bowtie,0,Nơ cổ nhiều màu
 naked_scarf,0,Khăn quàng trần
 swim_goggles,0,Kính bảo hộ bơi
+bowed_string_instrument,7,Bowed string Nhạc cụ
 multicolored_ribbon,0,Ruy băng nhiều màu
+safety_glasses,0,Safety Kính mắt
 unworn_jewelry,0,Trang sức không mặc
+side_up_ring,0,Bên lên Nhẫn
 yellow_mask,0,Mặt nạ vàng
 stud_piercing,7,Khuyên khuyên nụ
+female_service_cap,0,Giới tính nữ service cap
+heterochromatic_eyewear,0,Heterochromatic Kính mắt
 teardrop-framed_glasses,0,Kính giọt nước khung
+box_tie,0,Cái hộp tie
 ribbon-trimmed_capelet,0,Áo choàng ngắn ruy băng viền
 bag_over_head,0,Túi phía trên đầu
 pumpkin_hat,0,Mũ bí ngô
 hat_bell,0,Chuông mũ
+clitoral_hood_piercing,7,Clitoral Mũ trùm Khuyên xỏ
 unworn_scarf,0,Khăn quàng không mặc
+black_beanie,7,Black Mũ len
 ring_of_light_(blue_archive),0,Nhẫn nhạt
 coin_purse,0,Túi cầm tay đồng xu
 polka_dot_bowtie,0,Nơ cổ chấm bi
+vr_headset,7,Vr Tai nghe
 thigh_bow,0,Nơ đùi
 leaf_earrings,0,Khuyên tai chiếc lá
 holding_eyewear,7,Cầm kính mắt
@@ -719,20 +815,35 @@ mask_lift,0,Nhấc mặt nạ
 big_glasses,7,Kính to
 triangular_eyewear,0,Kính hình tam giác
 green_glasses,7,Kính xanh lá
+holding_pastry_bag,0,Đang cầm pastry Túi
 bell_earrings,0,Khuyên tai chuông
 sun_earrings,0,Khuyên tai mặt trời
+o-ring_collar,0,O-ring Vòng cổ
+horseshoe_hat_ornament,0,Horseshoe Mũ Đồ trang trí
 checkered_ribbon,0,Ruy băng kẻ ca-rô
+knit_hat,0,Knit Mũ
 two_tone_hat,7,Mũ hai tông
 aqua_scarf,0,Khăn quàng xanh ngọc
 mini_chef_hat,0,Mũ đầu bếp siêu ngắn
 torn_hat,0,Mũ bị rách
+hockey_mask,0,Hockey Mặt nạ
+tooth_earrings,0,Tooth Khuyên tai
+aviator_goggles,0,Aviator Kính bảo hộ
+tengu_mask,0,Tengu Mặt nạ
+phrygian_cap,0,Phrygian cap
 beanie_only,7,Chỉ có mũ len
+pin_accessory,7,Pin Phụ kiện
 surface_piercing,7,Khuyên bề mặt
 chain_jewelry,7,Trang sức dây xích
+hanafuda_earrings,0,Hanafuda Khuyên tai
+captive_bead_ring,0,Captive Hạt Nhẫn
 tool_belt,0,Thắt lưng dụng cụ
+z-ring,0,Z-ring
 print_scarf,0,Khăn quàng họa tiết
 goggles_only,7,Chỉ đeo kính bảo hộ
 bird_hat_ornament,0,Đồ trang trí mũ chim
+mega_ring,0,Mega Nhẫn
+mortarboard,0,Mortarboard
 weapon_bag,0,Túi vũ khí
 unworn_goggles,0,Kính bảo hộ không mặc
 yellow_umbrella,0,Cái ô vàng
@@ -753,9 +864,12 @@ silver_earrings,0,Khuyên tai bạc
 red_visor_cap,0,Mũ lưỡi trai có lưới chắn đỏ
 tribal_jewelry,7,Trang sức văn hoá bộ lạc
 chastity_piercing,0,Khuyên trinh tiết
+ceiling_fan,0,Ceiling fan
 religious_headwear,7,Phụ kiện đầu tôn giáo
 pattern_headwear,7,Phụ kiện đầu hoa văn
+ai_ai_gasa,0,Ai ai gasa
 orange_goggles,0,Kính bảo hộ cam
+neck_warmer,0,Neck warmer
 character_mask,0,Mặt nạ nhân vật
 removing_eyewear,0,Đang cởi kính mắt
 pattern_scarf,7,Khăn quàng hoa văn
@@ -764,22 +878,30 @@ belt_bag,0,Túi thắt lưng
 silver_hairband,0,Băng đô bạc
 latex_mask,0,Mặt nạ cao su
 mini_witch_hat,0,Mũ phù thủy siêu ngắn
+ankh_necklace,0,Ankh Vòng cổ
 cum_on_glasses,7,Tinh dịch trên kính mắt
 anal_piercing,7,Khuyên hậu môn
 cracked_mask,0,Mặt nạ nứt
+gift_bow,7,Quà tặng Nơ
+plague_doctor_mask,0,Plague Bác sĩ Mặt nạ
 key_ring,0,Nhẫn chìa khóa
 hat_pin,0,Ghim mũ
 chain_belt,0,Thắt lưng dây xích
 silver_bracelet,0,Vòng tay bạc
+harem_jewelry,7,Harem Trang sức
 musical_note_earrings,0,Khuyên tai nốt nhạc âm nhạc
 orange-framed_eyewear,0,Kính khung cam
 tinted_glasses,7,Kính nhuộm màu
 grape_hat_ornament,0,Đồ trang trí mũ nho
 lace-trimmed_headwear,0,Phụ kiện đầu ren viền
+kamina_shades,0,Kamina Bóng râm
+tote_bag,0,Tote Túi
 boxing_ring,0,Nhẫn quyền Anh
 gradient_ribbon,0,Ruy băng chuyển sắc
 blue_eyewear,7,Kính xanh dương
+straw_hat_pirates,0,Straw Mũ Cướp biển
 unworn_bowtie,0,Nơ cổ không mặc
+planetary_ring,0,Planetary Nhẫn
 print_ribbon,0,Ruy băng họa tiết
 striped_belt,0,Thắt lưng kẻ sọc
 bear_bag,0,Túi gấu
@@ -791,12 +913,17 @@ holding_ring,0,Cầm nhẫn
 red_goggles,0,Kính bảo hộ đỏ
 polka_dot_hairband,0,Băng đô chấm bi
 unworn_hairband,0,Băng đô không mặc
+3d_glasses,0,Hình ảnh 3D Kính mắt
 anchor_earrings,0,Khuyên tai cái neo
+pon_de_ring,0,Pon de Nhẫn
 silver_jewelry,0,Trang sức màu bạc
 necktie_only,7,Chỉ thắt cà vạt
+nontraditional_witch_hat,0,Nontraditional Phù thủy Mũ
 aqua_choker,0,Vòng cổ xanh ngọc
 belt_bondage,0,Trói buộc thắt lưng
 whale_hat,0,Mũ cá voi
+conical_hat,0,Conical Mũ
+labia_ring,0,Labia Nhẫn
 back-tie_swimwear,7,Đồ bơi cà vạt lưng
 print_hairband,0,Băng đô họa tiết
 skull_belt,0,Thắt lưng đầu lâu
@@ -811,18 +938,25 @@ bow_tie_only,7,Chỉ thắt cà vạt nơ
 ribbon_between_breasts,0,Ruy băng giữa ngực
 gold_headwear,0,Phụ kiện đầu vàng kim
 chain_bracelet,0,Vòng tay dây xích
+in_bag,0,Trong Túi
+pinky_ring,0,Pinky Nhẫn
+pixel_sunglasses,0,Pixel Kính râm
+portal_ring,7,Portal Nhẫn
 yellow_eyewear,7,Kính vàng
 aqua-framed_eyewear,0,Kính khung xanh ngọc
 scarf_bow,0,Nơ khăn quàng
 fur-trimmed_choker,0,Vòng cổ lông thú viền
 cherry_earrings,0,Khuyên tai hoa anh đào
+helix_piercing,0,Helix Khuyên xỏ
 bone_necklace,0,Vòng cổ xương
+earflap_beanie,0,Earflap Mũ len
 pom_pom_hat_ornament,0,Đồ trang trí mũ quả bông quả bông
 rectangular_earrings,0,Khuyên tai hình chữ nhật
 green_umbrella,0,Cái ô xanh lá
 pink_glasses,7,Kính hồng
 ear_accessory,7,Phụ kiện tai
 ribbon-trimmed_bow,0,Nơ ruy băng viền
+swimming_goggles,7,Swimming Kính bảo hộ
 beak_mask,0,Mặt nạ mỏ
 feather_necklace,0,Vòng cổ lông vũ
 orange_bag,0,Túi cam
@@ -831,6 +965,9 @@ heart_ring_choker,0,Vòng cổ trái tim hình nhẫn
 striped_choker,0,Vòng cổ kẻ sọc
 sailor_cap,7,Mũ thủy thủ
 body_jewelry,0,Trang sức cơ thể
+planted_umbrella,0,Planted Cái ô
+propeller_hat,0,Propeller Mũ
+ring_box,0,Nhẫn Cái hộp
 waist_bag,0,Túi eo
 text_on_baseball_cap,7,Chữ trong ảnh trên mũ lưỡi trai
 nostril_piercing,0,Khuyên lỗ mũi
@@ -840,30 +977,40 @@ pendant_earrings,0,Khuyên tai mặt dây chuyền
 crystal_necklace,0,Vòng cổ pha lê
 gradient_necktie,0,Cà vạt chuyển sắc
 bottle_cap,0,Mũ cái chai
+collarbone_piercing,0,Xương quai xanh Khuyên xỏ
 lace-trimmed_bow,0,Nơ ren viền
 green_mask,0,Mặt nạ xanh lá
+decorated_bow,7,Decorated Nơ
+under_umbrella,0,Bên dưới Cái ô
 red_jewelry,7,Trang sức màu đỏ
+beaded_bracelet,7,Beaded Vòng tay
 silver_ring,0,Nhẫn bạc
 purple_eyewear,7,Kính tím
 butterfly_necklace,0,Vòng cổ bươm bướm
+championship_belt,0,Championship Thắt lưng
+conveyor_belt,0,Conveyor Thắt lưng
 multiple_hat_bows,0,Nơ mũ nhiều
 undone_bowtie,0,Nơ cổ chưa cài
 grey_mask,0,Mặt nạ xám
 glistening_jewelry,7,Trang sức bóng nhẫy
 multicolored_headwear,7,Phụ kiện đầu nhiều màu
 mushroom_cap,7,Mũ nấm
+ring-con,0,Ring-con
 nipple_ring_pull,7,Kéo vòng núm vú
 transformation_brooch_(sailor_moon),0,Trâm cài sự biến đổi
 chain_earrings,0,Khuyên tai dây xích
 big_hat,7,Mũ to
 arm_bow,0,Nơ cánh tay
 eyes_visible_through_eyewear,0,Mắt nhìn thấy được xuyên qua kính mắt
+asian_conical_hat,7,Châu Á conical Mũ
 open_bag,0,Túi mở
 ribbon-trimmed_hairband,0,Băng đô ruy băng viền
+seat_belt,7,Seat Thắt lưng
 large_ribbon,0,Ruy băng lớn
 vertical-striped_necktie,0,Cà vạt dọc kẻ sọc
 holding_glasses,7,Cầm kính mắt
 planet_earrings,0,Khuyên tai hành tinh
+string_bow,7,String Nơ
 crescent_choker,0,Vòng cổ hình lưỡi liềm
 lightning_bolt_earrings,0,Khuyên tai bu lông sấm sét
 mushroom_hat,0,Mũ nấm
@@ -871,6 +1018,7 @@ skull_brooch,0,Trâm cài đầu lâu
 naked_necktie,0,Cà vạt trần
 bracelet_only,7,Chỉ có vòng tay
 accessories_only,7,Chỉ có phụ kiện
+crossbody_bag,0,Crossbody Túi
 eyewear_lift,0,Nhấc kính mắt
 ring_(sonic),0,Nhẫn
 backpack_basket,0,Cái rổ ba lô
@@ -878,9 +1026,11 @@ waist_accessory,7,Phụ kiện eo
 nostril_ring,7,Nhẫn lỗ mũi
 adjusting_goggles,0,Đang chỉnh kính bảo hộ
 hair_through_hat,7,Tóc xuyên qua mũ
+headwear_with_attached_mittens,0,Phụ kiện đội đầu với attached mittens
 pearl_choker,0,Vòng cổ ngọc trai
 umbrella_octopus,0,Bạch tuộc cái ô
 welding_mask,0,Mặt nạ hàn
+oscillating_fan,7,Oscillating fan
 red_necklace,7,Vòng cổ đỏ
 bell_bow,0,Nơ chuông
 covered_piercing,0,Khuyên được che
@@ -888,18 +1038,26 @@ blue_glasses,7,Kính xanh dương
 fellatio_under_mask,0,Quan hệ bằng miệng bên dưới mặt nạ
 hat_loss,0,Sự mất mũ
 checkered_hat,0,Mũ kẻ ca-rô
+hand_fan_writing,0,Hand fan Chữ viết
 tail_bag,7,Túi đuôi
 necktie_in_mouth,0,Cà vạt trong miệng
 food-themed_hat,0,Mũ chủ đề thức ăn
+ko-omote_mask,0,Ko-omote Mặt nạ
 necktie_pull,7,Đang kéo cà vạt
+bow_camisole,0,Nơ Áo hai dây
+backwards_cap,7,Backwards cap
+partially_opaque_glasses,0,Partially opaque Kính mắt
 industrial_piercing_ladder,7,Thang khuyên industrial
 pattern_necktie,7,Cà vạt hoa văn
 vertical-striped_scarf,0,Khăn quàng dọc kẻ sọc
 holding_goggles,0,Cầm kính bảo hộ
 belly_piercing,7,Khuyên bụng
 heart_glasses,7,Kính trái tim
+glasses_askew,7,Kính mắt askew
+cracked_kawaii_mask,0,Nứt kawaii Mặt nạ
 feather_fan,0,Quạt lông vũ
 transparent_bag,0,Túi trong suốt
+wide_brim_hat,7,Wide brim Mũ
 ribbon_baton,0,Cái gậy ruy băng
 cross_ear_piercing,7,Xâu khuyên tai chữ thập
 neck-tie_swimwear,7,Đồ bơi cà vạt cổ
@@ -910,13 +1068,19 @@ chest_ribbon,0,Ruy băng ngực
 ring_(hardware),7,Nhẫn
 polka_dot_necktie,0,Cà vạt chấm bi
 metal_belt,0,Thắt lưng kim loại
+glans_piercing,7,Quy đầu Khuyên xỏ
 piercing_outline,7,Đường viền khuyên
 rabbit_mask,0,Mặt nạ thỏ
 fox_hat,0,Mũ cáo
 unworn_belt,0,Thắt lưng không mặc
+handheld_electric_fan,0,Handheld electric fan
 butterfly_choker,0,Vòng cổ bươm bướm
 frilly_accessory,7,Phụ kiện nhún diềm
 asymmetrical_eyewear,0,Kính bất đối xứng
+anti-eyebrow_piercing,0,Anti-eyebrow Khuyên xỏ
+black_sunglasses,7,Black Kính râm
+eevee_backpack,0,Eevee Ba lô
+ring_on_every_finger,0,Nhẫn on every finger
 pride_color_piercing,7,Khuyên màu tự hào
 penguin_hat_(mawaru_penguindrum),0,Mũ cánh cụt
 snowflake_earrings,0,Khuyên tai bông tuyết
@@ -924,6 +1088,7 @@ broken_glasses,7,Kính bị gãy
 front-tie_swimwear,7,Đồ bơi cà vạt phía trước
 blue_bow_tie,7,Cà vạt nơ xanh dương
 tassel_choker,0,Vòng cổ chuỗi tua
+fish_hook_piercing,7,Cá hook Khuyên xỏ
 anchor_hat_ornament,0,Đồ trang trí mũ cái neo
 head_bow,7,Nơ đầu
 torn_ribbon,0,Ruy băng bị rách
@@ -937,40 +1102,59 @@ checkered_bowtie,0,Nơ cổ kẻ ca-rô
 polka_dot_scarf,0,Khăn quàng chấm bi
 putting_on_jewelry,0,Đang đeo trang sức
 bear_hat,0,Mũ gấu
+cavalier_hat,0,Cavalier Mũ
 areola_piercing,0,Khuyên quầng vú
 arm_scarf,0,Khăn quàng cánh tay
+saigyouji_yuyuko's_fan_design,0,Saigyouji yuyuko's fan design
 feather_ear_ring,7,Nhẫn tai lông vũ
+saddle_bag,7,Saddle Túi
+ring_(identity)_(project_moon),0,Nhẫn (identity) (project moon)
+guan_hat,0,Guan Mũ
 character_bag,0,Túi nhân vật
 purple_bow_tie,7,Cà vạt nơ tím
 stump_cap,7,Mũ gốc cây
 pink_necklace,7,Vòng cổ hồng
 field_cap,0,Mũ cánh đồng
+jack-o'-lantern_hat_ornament,0,Jack-o'-lantern Mũ Đồ trang trí
 holding_unworn_scarf,0,Cầm khăn quàng không mặc
 diamond_necklace,0,Vòng cổ hình thoi
 no_hairband,0,Không có băng đô
 head_accessory,7,Phụ kiện đầu
+headwear_switch,0,Phụ kiện đội đầu switch
 metal_mask,0,Mặt nạ kim loại
 hat_tug,0,Đang kéo mũ
 necklace_between_breasts,0,Vòng cổ giữa ngực
+trucker_hat,7,Trucker Mũ
 gold_ribbon,0,Ruy băng vàng kim
+ribbon_bar,0,Ruy băng bar
 single_nipple_piercing,0,Khuyên núm vú một chiếc
+award_ribbon,0,Award Ruy băng
 two-tone_choker,0,Vòng cổ hai tông
 paper_hat,0,Mũ giấy
 gold_accessory,7,Phụ kiện vàng kim
 frog_hat,0,Mũ ếch
 no_hair_bow,0,Không có nơ buộc tóc
+spike_piercing,0,Spike Khuyên xỏ
 rabbit_earrings,0,Khuyên tai thỏ
 crooked_eyewear,0,Kính vẹo
 black_top_hat,7,Mũ chóp cao đen
 latex_headwear,7,Phụ kiện đầu cao su
+harness_ring_gag,7,Đai buộc Nhẫn Nhét miệng
 removing_mask,0,Đang cởi mặt nạ
 bow_(stringed_instrument),7,Nơ
 purple_glasses,7,Kính tím
 blue_jewelry,7,Trang sức màu xanh dương
+aviator_glasses,0,Aviator Kính mắt
+ammo_belt,7,Ammo Thắt lưng
 spade_earrings,0,Khuyên tai hình cái xẻng
 diagonal-striped_ribbon,0,Ruy băng chéo kẻ sọc
+shark_tooth_necklace,7,Cá mập tooth Vòng cổ
+tipping_hat,7,Tipping Mũ
 rabbit_hat_ornament,0,Đồ trang trí mũ thỏ
+groucho_glasses,0,Groucho Kính mắt
+sabotaged_condom,0,Sabotaged Bao cao su
 putting_on_headwear,0,Đang mặc phụ kiện đội đầu
+dss_choker,0,Dss Vòng cổ choker
 fur_bracelet,0,Vòng tay lông thú
 headphones_over_headwear,0,Tai nghe chụp đầu phía trên phụ kiện đội đầu
 rabbit_ear_headwear,0,Phụ kiện đầu tai thỏ
@@ -980,7 +1164,10 @@ hat_under_hood,0,Mũ bên dưới mũ trùm
 lace-trimmed_ribbon,0,Ruy băng ren viền
 bow_in_back,7,Nơ trong lưng
 stone_mask_(jojo),0,Mặt nạ đá
+x-ray_glasses,0,X-ray Kính mắt
+side_labret_piercing,0,Bên labret Khuyên xỏ
 tail_bracelet,7,Vòng tay đuôi
+lucha_libre_mask,7,Lucha libre Mặt nạ
 gold_cock_ring,7,Nhẫn dương vật vàng kim
 suit_and_tie,7,Bộ vest và cà vạt
 star_bracelet,0,Vòng tay ngôi sao
@@ -992,21 +1179,29 @@ holding_hairband,0,Cầm băng đô
 bow_button,0,Cúc áo nơ
 holding_hair_tie,0,Cầm cà vạt tóc
 strawberry_earrings,0,Khuyên tai dâu tây
+novelty_glasses,0,Novelty Kính mắt
 pink_visor_cap,0,Mũ lưỡi trai có lưới chắn hồng
+new_mask_of_hope,0,New Mặt nạ of hope
+umbrella_gun,0,Cái ô Súng
 mini_santa_hat,0,Mũ ông già Noel siêu ngắn
 metal_bracelet,0,Vòng tay kim loại
 borrowed_accessory,0,Phụ kiện mượn
 frilly_hairband,7,Băng đô nhún diềm
 ears_under_headwear,0,Tai bên dưới phụ kiện đội đầu
+improvised_umbrella,0,Improvised Cái ô
 unworn_swim_cap,0,Mũ bơi không mặc
 flat_top_chef_hat,0,Mũ đầu bếp phẳng áo
 multicolored_jewelry,7,Trang sức nhiều màu
+fan_screaming_at_madison_beer_(meme),0,Fan screaming at madison Bia (meme)
 piercing_bondage,7,Trói buộc khuyên
 orange_eyewear,7,Kính cam
 neck_piercing,0,Khuyên cổ
 tribal_necklace,7,Vòng cổ văn hoá bộ lạc
 leather_headwear,7,Phụ kiện đầu da
+crosswise_nipple_piercing,7,Crosswise nipple Khuyên xỏ
 holding_sunglasses,7,Cầm kính râm
+luchador_mask,0,Luchador Mặt nạ
+picture_hat,0,Picture Mũ
 belt_only,7,Chỉ thắt lưng
 transformation_ring,7,Nhẫn sự biến đổi
 inverted_cross_earrings,0,Khuyên tai đảo ngược chữ thập
@@ -1015,6 +1210,7 @@ chain_accessory,7,Phụ kiện dây xích
 character_hat,0,Mũ nhân vật
 glistening_eyewear,7,Kính bóng nhẫy
 mask_off,7,Cởi mặt nạ
+quadrilateral_nipple_piercing,7,Quadrilateral nipple Khuyên xỏ
 tan_hat,7,Mũ màu nâu rám nắng
 skull-shaped_hat,0,Mũ hình đầu lâu
 hand_on_hat,7,Bàn tay trên mũ
@@ -1022,13 +1218,16 @@ necktie_between_pectorals,0,Cà vạt giữa cơ ngực
 brown_mask,0,Mặt nạ nâu
 gold_ear_piercing,7,Xâu khuyên tai vàng kim
 necktie_around_wrists,0,Cà vạt quanh cổ tay
+teat_piercing,7,Teat Khuyên xỏ
 silver_choker,0,Vòng cổ bạc
 two_tone_headwear,7,Phụ kiện đầu hai tông
 pinstripe_hat,0,Mũ sọc chỉ
 adjusting_glasses,7,Đang chỉnh kính mắt
+christina_piercing,7,Christina Khuyên xỏ
 glasses_off,7,Cởi kính mắt
 plaid_hairband,0,Băng đô kẻ caro
 cow_hat,0,Mũ bò
+piercing_hole,0,Khuyên xỏ hole
 diamond_earrings,0,Khuyên tai hình thoi
 crown_bow,0,Nơ vương miện
 ribbon_legwear,0,Đồ che chân ruy băng
@@ -1036,6 +1235,7 @@ fruit_earrings,0,Khuyên tai trái cây
 eyewear_around_neck,0,Kính mắt quanh cổ
 triangle_necklace,0,Vòng cổ hình tam giác
 hand_on_belt,0,Bàn tay trên thắt lưng
+pentagram_necklace,0,Pentagram Vòng cổ
 black_baseball_cap,7,Mũ bóng chày màu đen
 key_choker,0,Vòng cổ chìa khóa
 flower_ring,0,Nhẫn hoa
@@ -1048,9 +1248,11 @@ floating_hat,0,Mũ lơ lửng
 crown_earrings,0,Khuyên tai vương miện
 see-through_headwear,0,Phụ kiện đội đầu xuyên thấu
 penguin_hat,0,Mũ cánh cụt
+o-ring_swimwear,7,O-ring Đồ bơi
 no_earrings,0,Không có khuyên tai
 brown_eyewear,7,Kính nâu
 hands_on_eyewear,0,Bàn tay trên kính mắt
+jade_bracelet,0,Jade Vòng tay
 scarf_pull,0,Đang kéo khăn quàng
 fin_ring,7,Nhẫn vây
 mask_transformation,7,Sự biến đổi mặt nạ
@@ -1059,21 +1261,29 @@ black_piercing,7,Khuyên đen
 glowing_earrings,0,Khuyên tai phát sáng
 bird_hat,0,Mũ chim
 naked_belt,0,Thắt lưng trần
+d-ring,7,D-ring
+jack-o'-lantern_earrings,0,Jack-o'-lantern Khuyên tai
 bat_mask,0,Mặt nạ dơi
 leaf_fan,0,Quạt chiếc lá
 rabbit_bag,0,Túi thỏ
 leg_piercing,0,Khuyên chân
 grey_glasses,7,Kính xám
+red_ribbon_army,0,Red Ruy băng Lục quân
 gym_bag,7,Túi thể dục
 character_backpack,0,Ba lô nhân vật
 large_earrings,0,Khuyên tai lớn
 pussy_jewelry,0,Trang sức âm hộ
+gag_mask,7,Nhét miệng Mặt nạ
+hyottoko_mask,0,Hyottoko Mặt nạ
 tail_ring_(piercing),7,Vòng đuôi
+magician_hat,7,Magician Mũ
 chest_piercing,0,Khuyên ngực
 bear_ear_hairband,0,Băng đô tai gấu
 yellow_glasses,7,Kính vàng
+clutch_purse,0,Clutch Túi cầm tay
 boar_mask,0,Mặt nạ lợn rừng
 lace_hairband,0,Băng đô ren
+thorn_ring_(deltarune),0,Thorn Nhẫn (deltarune)
 frilled_necktie,0,Cà vạt nhún xếp
 torn_bow,0,Nơ bị rách
 choker_jewel,0,Đá quý vòng cổ
@@ -1081,6 +1291,7 @@ ankle_belt,0,Thắt lưng cổ chân
 maid_hat,7,Mũ hầu gái
 chain_piercing,7,Khuyên dây xích
 eyewear_in_mouth,0,Kính mắt trong miệng
+insulated_delivery_bag,0,Insulated delivery Túi
 cable_tie,0,Cà vạt cáp
 unworn_ribbon,0,Ruy băng không mặc
 small_glasses,7,Kính nhỏ
@@ -1089,9 +1300,12 @@ frilled_bracelet,0,Vòng tay nhún xếp
 bow_on_head,7,Nơ trên đầu
 pink_hair_bow,7,Nơ tóc hồng
 untied_ribbon,0,Ruy băng cởi dây
+lorum_piercing,0,Lorum Khuyên xỏ
 gold_tail_ring,7,Nhẫn đuôi vàng kim
+affinity_sunglasses_(blue_archive),0,Affinity Kính râm (blue archive)
 torn_necktie,0,Cà vạt bị rách
 oversized_hat,0,Mũ quá khổ
+semi-circular_eyewear,0,Semi-circular Kính mắt
 heart_accessory,7,Phụ kiện trái tim
 holding_belt,0,Cầm thắt lưng
 cock_ring_behind_knot,7,Nhẫn dương vật phía sau nút thắt
@@ -1103,54 +1317,70 @@ glowing_mask,0,Mặt nạ phát sáng
 cum_on_mask,0,Tinh dịch trên mặt nạ
 horse_mask,0,Mặt nạ ngựa
 cross_hat_ornament,0,Đồ trang trí mũ chữ thập
+belt_charm,0,Thắt lưng charm
 food-themed_necklace,0,Vòng cổ chủ đề thức ăn
 frill_piercing,7,Khuyên diềm xếp
 bell_piercing,0,Khuyên chuông
 multicolored_accessory,7,Phụ kiện nhiều màu
 coin_mask,0,Mặt nạ đồng xu
+angelbite_piercing,7,Angelbite Khuyên xỏ
 pride_color_jewelry,7,Trang sức màu tự hào
 bow_print,0,Họa tiết nơ
 hair_jewelry,0,Trang sức tóc
 beak_piercing,7,Khuyên mỏ
 red_baseball_cap,7,Mũ bóng chày màu đỏ
 white_necklace,7,Vòng cổ trắng
+heart_sunglasses,7,Trái tim Kính râm
 hair_scarf,0,Khăn quàng tóc
 panda_hat,0,Mũ gấu trúc
 character_hat_ornament,0,Đồ trang trí mũ nhân vật
 pom_hat,7,Mũ quả bông
+hch_piercing,7,Hch Khuyên xỏ
 print_umbrella,0,Cái ô họa tiết
 horn_ring_(piercing),7,Vòng sừng
 red_hair_bow,7,Nơ tóc đỏ
+labia_majora_piercing,7,Labia majora Khuyên xỏ
 argyle_scarf,0,Khăn quàng kẻ quả thoi
+bullet_earrings,0,Bullet Khuyên tai
 baseball_cap_only,7,Chỉ đội mũ lưỡi trai
 idol_heart_brooch_(precure),0,Trâm cài trái tim thần tượng
 latex_choker,0,Vòng cổ cao su
+knocker_piercing,7,Knocker Khuyên xỏ
+glowstick_bracelet,7,Thanh phát sáng Vòng tay
 gag_under_mask,0,Nhét miệng bên dưới mặt nạ
 dildo_mask,7,Mặt nạ dương vật giả
 silver_belt,0,Thắt lưng bạc
 sun_necklace,0,Vòng cổ mặt trời
 red_cross_tie,0,Cà vạt chữ thập đỏ
 argyle_hat,0,Mũ kẻ quả thoi
+holy_ring,0,Holy Nhẫn
 belt_bow,0,Nơ thắt lưng
 gold_bowtie,0,Nơ cổ vàng kim
 transparent_fan,0,Quạt trong suốt
 cum_on_headwear,0,Tinh dịch trên phụ kiện đội đầu
 eyebrows_visible_through_hat,0,Lông mày nhìn thấy được xuyên qua mũ
+war_fan,0,War fan
 green_bow_tie,7,Cà vạt nơ xanh lá
 gold_bow,0,Nơ vàng kim
 holding_down_headwear,0,Cầm xuống phụ kiện đội đầu
 food-themed_hat_ornament,0,Đồ trang trí mũ chủ đề thức ăn
 holly_hat_ornament,0,Đồ trang trí mũ cây nhựa xanh
 black_cross_tie,0,Cà vạt chữ thập đen
+boonie_hat,0,Boonie Mũ
+cat_o-ring,0,Mèo o-ring
 glowing_jewelry,0,Trang sức phát sáng
 no_choker,0,Không có vòng cổ choker
 four-leaf_clover_earrings,0,Khuyên tai cỏ bốn lá
+clown_mask,0,Clown Mặt nạ
 star_glasses,7,Kính ngôi sao
+sideways_baseball_cap,7,Sideways Bóng chày cap
 print_bag,0,Túi họa tiết
 squid_hat,0,Mũ mực
 gold_nose_ring,7,Nhẫn mũi vàng kim
 gradient_bow,0,Nơ chuyển sắc
+jingle_bell_earrings,0,Jingle Chuông Khuyên tai
 spiral_glasses,7,Kính xoắn ốc
+sports_sunglasses,0,Thể thao Kính râm
 green_jewelry,7,Trang sức màu xanh lá
 yellow_goggles,7,Kính bảo hộ vàng
 print_mask,0,Mặt nạ họa tiết
@@ -1158,6 +1388,7 @@ bell_choker,7,Vòng cổ chuông
 yellow_bracelet,7,Vòng tay vàng
 feather_accessory,7,Phụ kiện lông vũ
 pseudo_scarf,7,Khăn quàng giả
+mini_shako_cap,0,Siêu ngắn shako cap
 butterfly_mask,0,Mặt nạ bươm bướm
 pattern_bow,7,Nơ hoa văn
 heart_ring,0,Nhẫn trái tim
@@ -1166,34 +1397,52 @@ gold_mask,0,Mặt nạ vàng kim
 grey_umbrella,0,Cái ô xám
 spotted_bow,0,Nơ có đốm
 orange_umbrella,0,Cái ô cam
+grey_beanie,7,Grey Mũ len
 frilled_bowtie,0,Nơ cổ nhún xếp
+fatal_fury_cap,0,Fatal fury cap
 multicolored_bracelet,7,Vòng tay nhiều màu
+safety_pin_piercing,0,Safety pin Khuyên xỏ
+chip_bag,7,Chip Túi
 ofuda_earrings,0,Khuyên tai bùa ofuda
 eye_on_hat,0,Mắt trên mũ
 winged_headwear,0,Phụ kiện đầu có cánh
+o-ring_legwear,0,O-ring Trang phục chân
+harness_ring,7,Đai buộc Nhẫn
 blue_baseball_cap,7,Mũ bóng chày màu xanh dương
+engagement_ring,7,Engagement Nhẫn
 glasses_day,0,Ngày kính
+bow_thigh_highs,7,Nơ thigh highs
 tall_hat,0,Mũ cao
 purple_jewelry,7,Trang sức màu tím
+palutena_bow_(kid_icarus),0,Palutena Nơ (kid icarus)
 red_cap,7,Mũ màu đỏ
 backpack_only,7,Chỉ có ba lô
 vertical-striped_bow,0,Nơ dọc kẻ sọc
 lemon_earrings,0,Khuyên tai chanh
 adjusting_bowtie,0,Đang chỉnh nơ cổ
+labia_minora_piercing,7,Labia minora Khuyên xỏ
 penis_under_mask,0,Dương vật bên dưới mặt nạ
 gingham_bow,0,Nơ kẻ ô vuông
+harmony_scarf,0,Harmony Khăn quàng
+bullet_necklace,0,Bullet Vòng cổ
+red_sunglasses,7,Red Kính râm
 torn_hair_ribbon,0,Ruy băng buộc tóc bị rách
+fan_speaking,0,Fan speaking
 pointy_hat,7,Mũ nhọn
 no_scarf,0,Không có khăn quàng
 fish_hat,0,Mũ cá
 hat_writing,0,Viết lên mũ
 holding_ribbon_baton,0,Cầm cái gậy ruy băng
 hat_basket,0,Cái rổ mũ
+orange_beanie,7,Orange Mũ len
+amos'_bow_(genshin_impact),0,Amos' Nơ (genshin impact)
 eyewear_view,0,Góc nhìn kính
+duellist's_cap_(tier_6),0,Duellist's cap (tier 6)
 goggles_on_face,7,Kính bảo hộ trên khuôn mặt
 camouflage_scarf,0,Khăn quàng rằn ri
 orange_glasses,7,Kính cam
 adjusting_mask,0,Đang chỉnh mặt nạ
+o-ring_arm_strap,0,O-ring arm Dây đeo
 paper_bag_mask,7,Mặt nạ giấy túi
 monotone_headwear,7,Phụ kiện đầu một tông
 breast_piercing,0,Khuyên ngực
@@ -1210,24 +1459,35 @@ nipple_piercing_outline,7,Đường viền khuyên núm vú
 monkey_mask,0,Mặt nạ khỉ
 fan_to_mouth,0,Quạt tới miệng
 aqua_bag,0,Túi xanh ngọc
+shampoo_hat,0,Shampoo Mũ
 big_bow,7,Nơ to
+catcher's_mask,0,Catcher's Mặt nạ
+dilation_belt,0,Dilation Thắt lưng
+fez_hat,0,Fez Mũ
 onion_rings,0,Nhẫn hành tây
 blue_bracelet,7,Vòng tay xanh dương
 grey_piercing,7,Khuyên xám
+ribbon_restrained,7,Ruy băng Bị giữ chặt
 headwear_writing,0,Viết lên phụ kiện đội đầu
 food-themed_bag,0,Túi chủ đề thức ăn
+night_vision_goggles,7,Ban đêm vision Kính bảo hộ
 leather_choker,0,Vòng cổ da
 double_bowtie,0,Nơ cổ kép
 nose_ring_pull,7,Kéo vòng mũi
+low-tied_hair_rings,0,Low-tied Tóc Nhẫn
 bag_on_head,0,Túi trên đầu
 holding_unworn_necktie,0,Cầm cà vạt không mặc
 energy_ring,0,Nhẫn năng lượng
+shackle_piercing,0,Shackle Khuyên xỏ
 scarf_on_head,0,Khăn quàng trên đầu
+drawstring_bag,0,Drawstring Túi
 large_belt,0,Thắt lưng lớn
 purple_necklace,7,Vòng cổ tím
 glistening_glasses,7,Kính bóng nhẫy
 head_jewelry,7,Trang sức đầu
 cum_on_hat,7,Tinh dịch trên mũ
+obi_bow,0,Đai obi Nơ
+dock_piercing,7,Dock Khuyên xỏ
 ribbon-trimmed_hood,0,Mũ trùm ruy băng viền
 bat_earrings,0,Khuyên tai dơi
 waist_belt,7,Thắt lưng eo
@@ -1238,6 +1498,8 @@ tying_necktie,0,Đang buộc cà vạt
 earrings_only,7,Chỉ đeo khuyên tai
 spiked_hat,0,Mũ có gai
 print_fan,0,Quạt họa tiết
+iv_bag,7,Iv Túi
+graduation_cap,7,Graduation cap
 cross_ear_ring,7,Nhẫn tai chữ thập
 pattern_accessory,7,Phụ kiện hoa văn
 diamond_ring,0,Nhẫn hình thoi
@@ -1251,6 +1513,7 @@ gem_hat_ornament,0,Đồ trang trí mũ đá quý
 unworn_earring,0,Khuyên tai không mặc
 multicolored_umbrella,0,Cái ô nhiều màu
 round_bag,0,Túi tròn
+index_ring,0,Index Nhẫn
 neck_accessory,7,Phụ kiện cổ
 sword_earrings,0,Khuyên tai kiếm
 fan_over_face,0,Quạt phía trên khuôn mặt
@@ -1270,16 +1533,20 @@ polka_dot_umbrella,0,Cái ô chấm bi
 silver_piercing,7,Khuyên bạc
 cuff_bracelet,7,Vòng tay ống tay
 sheath_ring,7,Nhẫn bao dương vật
+pink_sunglasses,7,Pink Kính râm
 blue_cap,7,Mũ màu xanh dương
 genital_jewelry,7,Trang sức sinh dục
 finger_on_eyewear,0,Ngón tay trên kính mắt
 holding_purse,7,Cầm túi cầm tay
 bag_bow,0,Nơ túi
+umbrella_stand,0,Cái ô stand
 winter_hat,7,Mũ mùa đông
+eggshell_hat,0,Eggshell Mũ
 pink_bracelet,7,Vòng tay hồng
 inverted_cross_necklace,0,Vòng cổ đảo ngược chữ thập
 blue_backpack,7,Ba lô xanh dương
 removing_hat,0,Đang cởi mũ
+fish_hook_earrings,0,Cá hook Khuyên tai
 x-shaped_eyewear,0,Kính hình chữ X
 snowflake_choker,0,Vòng cổ bông tuyết
 heart_ring_top,0,Áo vòng trái tim
@@ -1289,33 +1556,46 @@ yellow_bow_tie,7,Cà vạt nơ vàng
 blue_ear_ring,7,Nhẫn tai xanh dương
 two-tone_umbrella,0,Cái ô hai tông
 umbrella_tassel,0,Chùm tua rua cái ô
+o-ring_belly_chain,0,O-ring Bụng Dây chuyền
+zhuang_hat,0,Zhuang Mũ
+life_ring,7,Life Nhẫn
 arm_ring,7,Nhẫn cánh tay
+jewelry_box,0,Trang sức Cái hộp
 snow_on_headwear,0,Tuyết trên phụ kiện đội đầu
 snowflake_hat_ornament,0,Đồ trang trí mũ bông tuyết
 black_ear_piercing,7,Xâu khuyên tai đen
 waist_brooch,0,Trâm cài eo
+bullet_belt,7,Bullet Thắt lưng
 wolf_mask,0,Mặt nạ sói
 alternate_eyewear,0,Kính khác
 multicolored_choker,0,Vòng cổ nhiều màu
 sparkle_earrings,0,Khuyên tai ánh lấp lánh
 neck_bow_(anatomy),7,Nơ cổ
+vch_piercing,7,Vch Khuyên xỏ
 diving_mask_around_neck,0,Mặt nạ lặn quanh cổ
 bow_collar,7,Cổ áo nơ
 pumpkin_mask,0,Mặt nạ bí ngô
 hand_on_goggles,0,Bàn tay trên kính bảo hộ
 bracelet_girls,0,Cô gái vòng tay
 torn_umbrella,0,Cái ô bị rách
+trapper_hat,0,Trapper Mũ
 arm_accessory,7,Phụ kiện cánh tay
 pinstripe_bow,0,Nơ sọc chỉ
 hand_on_mask,0,Bàn tay trên mặt nạ
 dice_necklace,0,Vòng cổ xúc xắc
+mjolnir_necklace,7,Mjolnir Vòng cổ
+on_swim_ring,7,On swim Nhẫn
 leg_bracelet,7,Vòng tay chân
+string_choker,0,String Vòng cổ choker
 dimple_piercing,0,Khuyên lúm đồng tiền
 monotone_hat,7,Mũ một tông
 heart_bracelet,0,Vòng tay trái tim
 arm_piercing,0,Khuyên cánh tay
 ear_jewelry,7,Trang sức tai
+conveyor_belt_sushi,0,Conveyor Thắt lưng sushi
+deerstalker_hat,7,Deerstalker Mũ
 see-through_bow,0,Nơ xuyên thấu
+yin_yang_earrings,0,Yin yang Khuyên tai
 bag_on_lap,0,Túi trên đùi
 studded_hair_tie,7,Cột tóc đính đinh
 snowflake_necklace,0,Vòng cổ bông tuyết
@@ -1325,8 +1605,10 @@ heart_jewelry,7,Trang sức trái tim
 hat_band,7,Dải băng mũ
 broken_umbrella,0,Cái ô bị gãy
 star_accessory,7,Phụ kiện ngôi sao
+frenulum_piercing,0,Frenulum Khuyên xỏ
 green_necklace,7,Vòng cổ xanh lá
 eyebrow_through_hat,7,Lông mày xuyên qua mũ
+ring_vibrator,7,Nhẫn Đồ chơi rung
 tiger_ear_hairband,0,Băng đô tai hổ
 diamond_brooch,0,Trâm cài hình thoi
 diamond_choker,0,Vòng cổ hình thoi
@@ -1334,6 +1616,7 @@ diamond-shaped_brooch,0,Trâm cài hình thoi
 green_bracelet,7,Vòng tay xanh lá
 umbrella_flower,0,Hoa cái ô
 holding_blood_bag,0,Cầm túi máu
+elden_ring_(object),0,Elden Nhẫn (object)
 long_belt,0,Thắt lưng dài
 shell_brooch,0,Trâm cài vỏ
 spotted_accessory,7,Phụ kiện có đốm
@@ -1345,8 +1628,10 @@ dog_hat,0,Mũ chó
 bead_belt,0,Thắt lưng hạt
 heart_hair_accessory,7,Phụ kiện tóc trái tim
 crown_hat_ornament,0,Đồ trang trí mũ vương miện
+green_beanie,7,Green Mũ len
 flower_as_hat,0,Hoa thay mũ
 necklace_in_mouth,0,Vòng cổ trong miệng
+deviruchi_hat,0,Deviruchi Mũ
 torn_mask,0,Mặt nạ bị rách
 finger_ribbon,0,Ruy băng ngón tay
 antler_jewelry,7,Trang sức gạc hươu
@@ -1361,38 +1646,62 @@ flower_in_hat,0,Hoa trong mũ
 mask_on_hat,0,Mặt nạ trên mũ
 lock_necklace,0,Vòng cổ lọn tóc
 eye_piercing,0,Khuyên mắt
+trailblazer's_hat_(honkai:_star_rail),0,Trailblazer's Mũ (honkai: ngôi sao rail)
 yellow_necklace,7,Vòng cổ vàng
 chinese_hat,0,Mũ Trung Quốc
 studded_hairband,0,Băng đô đính đinh
+star_sunglasses,7,Ngôi sao Kính râm
+swimming_cap,7,Swimming cap
 two-sided_ribbon,0,Ruy băng mặt hai
+eyewear_switch,0,Kính mắt switch
 chastity_belt_only,7,Chỉ thắt đai cấm dục
+tusk_ring,7,Tusk Nhẫn
 breast_bow,7,Nơ ngực
 pearl_ear_ring,7,Nhẫn tai ngọc trai
+aphrodisiac_mask,7,Aphrodisiac Mặt nạ
 winged_hair_tie,0,Cột tóc có cánh
+elf_hat,0,Tiên Mũ
 arm_jewelry,7,Trang sức cánh tay
+multicolor-tinted_eyewear,0,Multicolor-tinted Kính mắt
 wing_earrings,0,Khuyên tai cánh
 white_bow_tie,7,Cà vạt nơ trắng
+landsknecht_hat,0,Landsknecht Mũ
+string_tie,0,String tie
+accessory_tan,0,Phụ kiện nâu rám
+shower_cap,0,Shower cap
+tragus_piercing,0,Tragus Khuyên xỏ
 cow_print_hairband,0,Băng đô họa tiết bò
+safety_goggles,7,Safety Kính bảo hộ
 dog_mask,0,Mặt nạ chó
 green_backpack,7,Ba lô xanh lá
 multicolored_necklace,7,Vòng cổ nhiều màu
 hat_on_penis,7,Mũ trên dương vật
 purple_ear_piercing,7,Xâu khuyên tai tím
+enema_bag,7,Enema Túi
+tie-dye,0,Tie-dye
 skull_ring,0,Nhẫn đầu lâu
+umbrella_riding,0,Cái ô riding
 butterfly_ring,0,Nhẫn bươm bướm
 umbrella_ribbon,0,Ruy băng cái ô
 summer_hat,7,Mũ mùa hè
 green_piercing,7,Khuyên xanh lá
+inhibitor_ring,7,Inhibitor Nhẫn
 hairband_only,7,Chỉ có băng đô
 snorkel_mask,0,Mặt nạ ống thở
 hair_tie_on_wrist,0,Cà vạt tóc trên cổ tay
 inverted_cross_piercing,7,Khuyên đảo ngược chữ thập
+fourchette_piercing,7,Fourchette Khuyên xỏ
+hennin,0,Hennin
 animal-themed_umbrella,0,Cái ô chủ đề động vật
 bracelet_(marking),7,Vòng tay
 necktie_on_head,0,Cà vạt trên đầu
 half-moon_glasses,7,Kính mặt trăng một nửa
 wolf_hat,0,Mũ sói
+hexagonal_eyewear,0,Hexagonal Kính mắt
+balisong,0,Balisong
+red_beanie,7,Red Mũ len
 penis_ring_(piercing),7,Nhẫn dương vật
+anaglyph,0,Anaglyph
 hair_bow_(anatomy),7,Nơ buộc tóc
 bell_hair_tie,7,Cột tóc chuông
 heart_hairband,0,Băng đô trái tim
@@ -1400,14 +1709,18 @@ furgonomic_eyewear,7,Kính nửa người nửa thú
 brown_umbrella,0,Cái ô nâu
 bow_only,7,Chỉ có nơ
 body_bag,0,Túi cơ thể
+clip_accessory,7,Clip Phụ kiện
 pearl_hairband,0,Băng đô ngọc trai
 black_cap,7,Mũ màu đen
 leaf_bracelet,0,Vòng tay chiếc lá
 leaf_belt,0,Thắt lưng chiếc lá
+purple_sunglasses,7,Purple Kính râm
 argyle_necktie,0,Cà vạt kẻ quả thoi
 leather_bag,0,Túi da
 blue_hair_tie,7,Cột tóc xanh dương
+slouch_hat,0,Slouch Mũ
 dice_earrings,0,Khuyên tai xúc xắc
+zip_tie,7,Zip tie
 floating_ribbon,0,Ruy băng lơ lửng
 palm_leaf_fan,0,Quạt chiếc lá cọ
 pouch_purse,7,Túi cầm tay túi con
@@ -1415,10 +1728,13 @@ swim_ring_with_face,7,Vòng bơi kèm khuôn mặt
 smoke_ring,0,Nhẫn khói
 bow_hat,7,Mũ nơ
 pseudo_hat,7,Mũ giả
+detective_hat,7,Detective Mũ
 dog_ear_hairband,0,Băng đô tai chó
 hollow_mask,0,Mặt nạ trũng
 glistening_headwear,7,Phụ kiện đầu bóng nhẫy
 lantern_earrings,0,Khuyên tai đèn lồng
+millennium_ring,0,Millennium Nhẫn
+transformative_mask,7,Transformative Mặt nạ
 gold_ring_piercing,7,Khuyên vòng vàng kim
 umbrella_hair_ornament,0,Phụ kiện tóc cái ô
 cross_brooch,0,Trâm cài chữ thập
@@ -1431,14 +1747,20 @@ blue_piercing,7,Khuyên xanh dương
 blue_hair_bow,7,Nơ tóc xanh dương
 silver_ear_ring,7,Nhẫn tai bạc
 inverted_cross_ear_piercing,7,Xâu khuyên tai đảo ngược chữ thập
+cleaning_eyewear,0,Cleaning Kính mắt
 star_piercing,0,Khuyên ngôi sao
 grey-tinted_eyewear,0,Kính nhuộm màu xám
 furgonomic_baseball_cap,7,Mũ bóng chày nửa người nửa thú
 object_belt,0,Thắt lưng vật thể
+from_hat_trick,0,Từ Mũ trick
+in_swim_ring,7,Trong swim Nhẫn
 dog_tag_necklace,7,Vòng cổ nhãn chó
 flower-shaped_eyewear,0,Kính hình hoa
+cock_ring_vibrator,7,Cock Nhẫn Đồ chơi rung
 fan_tail,7,Đuôi quạt
 blue_goggles,7,Kính bảo hộ xanh dương
+rebreather_bag,7,Rebreather Túi
+choker_snapping,7,Vòng cổ choker snapping
 multiple_ear_ring,7,Nhẫn tai nhiều
 leaf_hat,0,Mũ chiếc lá
 brown_backpack,7,Ba lô nâu
@@ -1449,22 +1771,35 @@ clock_necklace,0,Vòng cổ đồng hồ
 mini_party_hat,0,Mũ tiệc siêu ngắn
 two_tone_scarf,7,Khăn quàng hai tông
 brown_glasses,7,Kính nâu
+forward_helix_piercing,7,Forward helix Khuyên xỏ
+thorn_ring,7,Thorn Nhẫn
 mask_with_sex_toy,7,Mặt nạ kèm đồ chơi tình dục
 grey_goggles,7,Kính bảo hộ xám
 pink_hair_tie,7,Cột tóc hồng
 black_backpack,7,Ba lô đen
+pierced_hat,0,Pierced Mũ
 cat_necklace,0,Vòng cổ mèo
 fur_hairband,0,Băng đô lông thú
 heart_ribbon,0,Ruy băng trái tim
 rabbit_brooch,0,Trâm cài thỏ
 nipple_piercing_pull,7,Kéo khuyên núm vú
+skullcap,0,Skullcap
 feather_hat,7,Mũ lông vũ
 gold_nipple_piercing,7,Khuyên núm vú vàng kim
 money_fan,0,Quạt tiền
 metal_chastity_belt,7,Thắt lưng trinh tiết kim loại
+o-ring_suspenders,0,O-ring Dây treo quần
 band_accessory,7,Phụ kiện dải băng
+tie_fighter,0,Tie fighter
+uchiwa_fan,7,Uchiwa fan
 unworn_ring,0,Nhẫn không mặc
+tomato_mask,0,Tomato Mặt nạ
 glowing_necklace,0,Vòng cổ phát sáng
+expressive_mask,7,Expressive Mặt nạ
+tongue_out_piercing,7,Lưỡi out Khuyên xỏ
+glowstick_necklace,7,Thanh phát sáng Vòng cổ
+sequential_piercings,0,Sequential Khuyên xỏ
+sling_bag,7,Sling Túi
 polka_dot_hat,0,Mũ chấm bi
 matching_accessory,0,Phụ kiện đồng bộ
 choker_pull,0,Đang kéo vòng cổ choker
@@ -1474,81 +1809,121 @@ blue_pup_mask,7,Mặt nạ con non xanh dương
 skull_ear_ring,7,Nhẫn tai đầu lâu
 mask_on_belt,0,Mặt nạ trên thắt lưng
 gear_hat_ornament,0,Đồ trang trí mũ bánh răng
+seashell_necklace,7,Seashell Vòng cổ
+blue_beanie,7,Blue Mũ len
 hat_chain,0,Dây chuyền mũ
 grey_jewelry,7,Trang sức màu xám
 four-leaf_clover_necklace,0,Vòng cổ cỏ ba lá chiếc lá bốn
 cherry_hat_ornament,0,Đồ trang trí mũ hoa anh đào
 crown_hat,0,Mũ vương miện
+ring_light,0,Nhẫn Nhạt
 bat_necklace,0,Vòng cổ dơi
 adjusting_earrings,0,Đang chỉnh khuyên tai
 umbrella_bow,0,Nơ cái ô
 musical_note_necklace,0,Vòng cổ nốt nhạc âm nhạc
+mazepynka,0,Mazepynka
 single_bracelet,0,Một vòng tay
 leg_ring,7,Nhẫn chân
+furry_specific_accessory,7,Furry specific Phụ kiện
 leg_accessory,7,Phụ kiện chân
 plaid_headwear,7,Phụ kiện đầu kẻ caro
 glowing_glasses,0,Kính phát sáng
 two_tone_eyewear,7,Kính hai tông
 flower_on_hat,7,Hoa trên mũ
 brown_bracelet,0,Vòng tay nâu
+power_ring_(green_lantern),0,Sức mạnh Nhẫn (green lantern)
 goggles_around_breasts,0,Kính bảo hộ quanh ngực
+fan_designs,7,Fan designs
 glistening_piercing,7,Khuyên bóng nhẫy
+reflective_eyewear,0,Reflective Kính mắt
 black_ear_ring,7,Nhẫn tai đen
 ribbed_hat,0,Mũ sống dọc
 penguin_earrings,0,Khuyên tai cánh cụt
+looking_for_glasses,0,Looking for Kính mắt
+ribbon_of_saint_george,0,Ruy băng of saint george
+recruitment_bag_(arknights),0,Recruitment Túi (arknights)
 welding_goggles,0,Kính bảo hộ hàn
 umbrella_drink,7,Đồ uống cái ô
+pokeball_necklace,7,Pokeball Vòng cổ
 cake-shaped_hat,0,Mũ hình bánh ngọt
+ring_pop,0,Nhẫn pop
+sumo_ring,0,Sumo Nhẫn
 fish_earrings,0,Khuyên tai cá
+partially_opaque_sunglasses,0,Partially opaque Kính râm
+pentacle_necklace,7,Pentacle Vòng cổ
 fake_ears_hairband,7,Băng đô tai giả
+glistening_sunglasses,7,Lấp lánh Kính râm
 antler_accessory,7,Phụ kiện gạc hươu
+usb_necklace,7,Usb Vòng cổ
+hand_on_another's_hat,0,Hand on another's Mũ
 carrot_earrings,0,Khuyên tai cà rốt
 eyewear_pull,0,Đang kéo kính mắt
+shared_improvised_umbrella,0,Shared improvised Cái ô
 syringe_earrings,0,Khuyên tai ống tiêm
+millennium_necklace,0,Millennium Vòng cổ
 ribbon-trimmed_bloomers,0,Quần phồng ruy băng viền
 pride_color_bracelet,7,Vòng tay màu tự hào
 two-sided_bow,0,Nơ mặt hai
+dermal_piercing,0,Dermal Khuyên xỏ
 torn_belt,0,Thắt lưng bị rách
 checkered_belt,0,Thắt lưng kẻ ca-rô
 heart_ring_strap,0,Dây đeo vòng trái tim
+snapback_hat,7,Snapback Mũ
 nipple_tie,7,Cà vạt núm vú
 two-tone_eyewear,0,Kính hai tông
 goggles_on_eyes,0,Kính bảo hộ trên mắt
 glow_bracelet,7,Vòng tay phát sáng
 sash_bow,0,Nơ dải thắt
+patio_umbrella,0,Patio Cái ô
 wing_ring,7,Nhẫn cánh
 see-through_scarf,0,Khăn quàng xuyên thấu
 snowflake_brooch,0,Trâm cài bông tuyết
+jotaro's_hat,7,Jotaro's Mũ
 eyebrows_visible_through_mask,0,Lông mày nhìn thấy được xuyên qua mặt nạ
+fan_comic,7,Fan Truyện tranh
 foreskin_piercing,7,Khuyên bao quy đầu
 hair_behind_eyewear,0,Tóc phía sau kính mắt
+mario_hat,0,Mario Mũ
 see-through_ribbon,0,Ruy băng xuyên thấu
+in_hat,0,Trong Mũ
 back_piercing,0,Khuyên lưng
 witch_hat_only,7,Chỉ đội mũ phù thủy
+dunce_cap,0,Dunce cap
 removing_necktie,0,Đang cởi cà vạt
 front_bow,0,Nơ phía trước
+flight_goggles,7,Flight Kính bảo hộ
 brown_goggles,7,Kính bảo hộ nâu
 bell_ear_ring,7,Nhẫn tai chuông
+cloche_hat,0,Cloche Mũ
 hat_over_hat,0,Mũ phía trên mũ
 piercing_fetish,7,Sở thích khuyên
 hat_ring,0,Nhẫn mũ
+bow_babydoll,0,Nơ babydoll
 cat_hat_ornament,0,Đồ trang trí mũ mèo
 mouth_mask_under_chin,0,Khẩu trang bên dưới cằm
+jeweled_hat,0,Jeweled Mũ
 tentacle_ring,7,Nhẫn xúc tu
 glowing_bracelet,0,Vòng tay phát sáng
 bow_headwear,7,Phụ kiện đầu nơ
+ankh_earrings,0,Ankh Khuyên tai
 mouse_hat,0,Mũ chuột
 heart_bow,7,Nơ trái tim
+bladeless_fan,0,Bladeless fan
 mini_eyewear,0,Kính siêu ngắn
 brown_cowboy_hat,7,Mũ cao bồi màu nâu
 striped_umbrella,0,Cái ô kẻ sọc
+maga_hat,0,Maga Mũ
+udder_piercing,7,Udder Khuyên xỏ
 camo_headwear,7,Phụ kiện đầu rằn ri
+transformative_necklace,7,Transformative Vòng cổ
 necktie_overhang,0,Vạt thừa cà vạt
+blue_sunglasses,7,Blue Kính râm
 bead_hairband,0,Băng đô hạt
 gold_nipple_ring,7,Nhẫn núm vú vàng kim
 putting_on_earrings,0,Đang mặc khuyên tai
 strawberry_hat_ornament,0,Đồ trang trí mũ dâu tây
 orange_visor_cap,0,Mũ lưỡi trai có lưới chắn cam
+tooth_ring,7,Tooth Nhẫn
 horn_cap,7,Mũ sừng
 blood_on_eyewear,0,Máu trên kính mắt
 bow_on_wing,0,Nơ trên cánh
@@ -1559,16 +1934,23 @@ necktie_aside,0,Kéo cà vạt sang bên
 hat_over_hood,0,Mũ phía trên mũ trùm
 spiked_necklace,0,Vòng cổ có gai
 sun_hat_ornament,0,Đồ trang trí mũ mặt trời
+ring_toss,0,Nhẫn toss
+pacifier_necklace,7,Pacifier Vòng cổ
+vibrating_cock_ring,7,Vibrating cock Nhẫn
+flight_attendant_hat,0,Flight attendant Mũ
 eye_brooch,0,Trâm cài mắt
 two-sided_scarf,0,Khăn quàng mặt hai
 broken_necklace,0,Vòng cổ bị gãy
 dildo_under_mask,0,Dương vật giả bên dưới mặt nạ
 pig_mask,0,Mặt nạ lợn
 wing-shaped_bow,0,Nơ hình cánh
+capotain,0,Capotain
 belt_ribbon,0,Ruy băng thắt lưng
 finger_piercing,0,Khuyên ngón tay
 opera_glasses,0,Kính ô-pê-ra
+blue-ringed_octopus,0,Blue-ringed Bạch tuộc
 bone_accessory,7,Phụ kiện xương
+portal_mask,7,Portal Mặt nạ
 camo_hat,7,Mũ rằn ri
 spiked_piercing,7,Khuyên có gai
 antler_ring,0,Nhẫn gạc hươu
@@ -1578,7 +1960,10 @@ plaid_belt,0,Thắt lưng kẻ caro
 white_bracelet,7,Vòng tay trắng
 red_piercing,7,Khuyên đỏ
 lace_ribbon,0,Ruy băng ren
+bandanna_scarf,7,Bandanna Khăn quàng
 argyle_hairband,0,Băng đô kẻ quả thoi
+friendship_bracelet,0,Friendship Vòng tay
+jack-o'-lantern_brooch,0,Jack-o'-lantern Trâm cài
 cross-laced_hairband,0,Băng đô chữ thập buộc dây
 purple_hair_tie,7,Cột tóc tím
 diagonal-striped_hat,0,Mũ chéo kẻ sọc
@@ -1590,11 +1975,15 @@ aqua_umbrella,0,Cái ô xanh ngọc
 grey_bracelet,7,Vòng tay xám
 tiger_mask_(object),0,Mặt nạ hổ
 lace-trimmed_umbrella,0,Cái ô ren viền
+keaton_mask,0,Keaton Mặt nạ
 spiked_headwear,7,Phụ kiện đầu có gai
 emblem_ring,0,Nhẫn huy hiệu
+yellow_sunglasses,7,Yellow Kính râm
 red_accessory,7,Phụ kiện đỏ
 torn_bowtie,0,Nơ cổ bị rách
 musical_note_hat_ornament,0,Đồ trang trí mũ nốt nhạc âm nhạc
+orange_sunglasses,7,Orange Kính râm
+ice_bag,0,Băng Túi
 gradient_neck_ribbon,0,Ruy băng cổ chuyển sắc
 purple_top_hat,7,Mũ chóp cao tím
 fruit_hat,0,Mũ trái cây
@@ -1607,13 +1996,17 @@ wing_ribbon,0,Ruy băng cánh
 bear_mask,0,Mặt nạ gấu
 steampunk_goggles,7,Kính bảo hộ steampunk
 heart_ring_(hardware),7,Nhẫn trái tim
+heart_ring_bottom,0,Trái tim Nhẫn bottom
 pink_piercing,7,Khuyên hồng
 red_bow_ribbon,7,Ruy băng nơ đỏ
 feather_jewelry,7,Trang sức lông vũ
 prehensile_ribbon,7,Ruy băng có khả năng quấn
+hamburger_hat,0,Hamburger Mũ
 rainbow_bracelet,7,Vòng tay cầu vồng
+angels_of_delusion_kfc_bag,0,Thiên thần of delusion kfc Túi
 bow_topwear,7,Áo nơ
 desk_fan,7,Quạt bàn làm việc
+padlocked_choker,0,Padlocked Vòng cổ choker
 mini_hair_bow,0,Nơ tóc siêu ngắn
 nipple_ribbon,0,Ruy băng núm vú
 shoulder_bow,0,Nơ vai
@@ -1622,55 +2015,78 @@ silver_bow_(kid_icarus),0,Nơ bạc
 ribbon-trimmed_choker,0,Vòng cổ ruy băng viền
 chain_necktie,0,Cà vạt dây xích
 belly_on_head,7,Bụng trên đầu
+trunk_piercing,7,Trunk Khuyên xỏ
 red_ear_ring,7,Nhẫn tai đỏ
 print_choker,0,Vòng cổ họa tiết
+hi-hat,0,Hi-hat
+star_o-ring,0,Ngôi sao o-ring
 ankle_ring,0,Nhẫn cổ chân
+majora's_mask_(item),7,Majora's Mặt nạ (item)
 gold_toe_ring,7,Nhẫn ngón chân vàng kim
 hat_veil,0,Màn che mặt mũ
 beard_ring,7,Nhẫn râu
 pink_accessory,7,Phụ kiện hồng
+soshite_ima_ribbon_wo_musunde_(project_sekai),0,Soshite ima Ruy băng wo musunde (project sekai)
 vertical-striped_ribbon,0,Ruy băng dọc kẻ sọc
 police_cap,7,Mũ cảnh sát
 two_tone_necktie,7,Cà vạt hai tông
 biker_cap,7,Mũ mô tô
+choice_scarf,0,Choice Khăn quàng
 tactical_belt,7,Thắt lưng chiến thuật
 cat_eye_glasses,7,Kính mắt mèo
 tassel_necklace,0,Vòng cổ chuỗi tua
 star_hair_accessory,7,Phụ kiện tóc ngôi sao
+henshin_belt_gavv,0,Henshin Thắt lưng gavv
 bow_headband,0,Băng đô nơ
+what's_in_my_bag,0,What's trong my Túi
 mask_around_one_ear,0,Mặt nạ quanh một cái tai
 fan_print,0,Họa tiết quạt
 torn_choker,0,Vòng cổ choker bị rách
 torn_bag,0,Túi bị rách
+reverse_prince_albert_piercing,7,Ngược prince albert Khuyên xỏ
 green_baseball_cap,7,Mũ bóng chày màu xanh lá
+fogged_glasses,0,Fogged Kính mắt
 glow_ring,7,Nhẫn phát sáng
 necktie_over_shoulder,0,Cà vạt phía trên vai
+urinary_drainage_bag,0,Urinary drainage Túi
 eyes_visible_through_headwear,0,Mắt nhìn thấy được xuyên qua phụ kiện đội đầu
+conductor_hat,7,Conductor Mũ
+adjusting_another's_eyewear,0,Adjusting another's Kính mắt
 cat_brooch,0,Trâm cài mèo
+triangle_o-ring,0,Hình tam giác o-ring
 holding_earrings,0,Cầm khuyên tai
 spade_brooch,0,Trâm cài hình cái xẻng
+hat_flaps,0,Mũ flaps
 tiger_hat,0,Mũ hổ
 pink_backpack,7,Ba lô hồng
 purple_piercing,7,Khuyên tím
+hand_on_another's_headwear,0,Hand on another's Phụ kiện đội đầu
 ribbon_hair,0,Tóc ruy băng
 mask_on_shoulder,0,Mặt nạ trên vai
 candle_on_headwear,0,Nến trên phụ kiện đội đầu
 wrist_jewelry,7,Trang sức cổ tay
 argyle_bowtie,0,Nơ cổ kẻ quả thoi
+tusk_jewelry,7,Tusk Trang sức
 white_baseball_cap,7,Mũ bóng chày màu trắng
 holding_backpack,7,Cầm ba lô
 stomach_piercing,0,Khuyên bụng
 purple_pup_mask,7,Mặt nạ con non tím
 leather_mask,0,Mặt nạ da
+pom_gift_bow,7,Pom Quà tặng Nơ
+fishing_hat,7,Fishing Mũ
 hat_on_chest,0,Mũ trên ngực
+pentagram_earrings,0,Pentagram Khuyên tai
 ribbon_on_penis,7,Ruy băng trên dương vật
 gem_belt,0,Thắt lưng đá quý
+red_beret,7,Red Mũ beret
 sheep_hat,0,Mũ cừu
 quilted_headwear,0,Phụ kiện đầu bông chần
 see-through_hat,0,Mũ xuyên thấu
 rabbit-shaped_eyewear,0,Kính hình thỏ
 teardrop_necklace,0,Vòng cổ giọt nước
+okina_mask,0,Okina Mặt nạ
 plaid_bag,0,Túi kẻ caro
+ribbon_cable,0,Ruy băng Cáp
 rainbow_choker,0,Vòng cổ cầu vồng
 dragon_hat,0,Mũ rồng
 glasses_chain,7,Dây chuyền kính
@@ -1679,11 +2095,19 @@ camouflage_bag,0,Túi rằn ri
 antennae_piercing,7,Khuyên ăng-ten
 red_hair_accessory,7,Phụ kiện tóc đỏ
 headwear_through_crown,0,Phụ kiện đội đầu xuyên qua vương miện
+umbrella_corporation_logo,0,Cái ô corporation logo
+scramble_fan_festa!_(project_sekai),0,Scramble fan festa! (project sekai)
+sharing_scarf,7,Sharing Khăn quàng
+pointy_sunglasses,7,Pointy Kính râm
 pearl_belt,0,Thắt lưng ngọc trai
 brown_jewelry,7,Trang sức màu nâu
+o-ring_necktie,0,O-ring Cà vạt
+venus_symbol_earrings,0,Venus Biểu tượng Khuyên tai
 grey_ear_piercing,7,Xâu khuyên tai xám
 ball_jewelry,7,Trang sức quả bóng
 necktie_in_pocket,0,Cà vạt trong túi áo
+gauge_piercing,7,Gauge Khuyên xỏ
+white_sunglasses,7,White Kính râm
 blood_on_hat,0,Máu trên mũ
 black_pup_mask,7,Mặt nạ con non đen
 yellow_ear_ring,7,Nhẫn tai vàng
@@ -1692,9 +2116,12 @@ slit_piercing,7,Khuyên xẻ tà
 lightning_bolt_necklace,0,Vòng cổ bu lông sấm sét
 pumpkin_brooch,0,Trâm cài bí ngô
 multicolored_mask,0,Mặt nạ nhiều màu
+furgonomic_beanie,7,Furgonomic Mũ len
 green_goggles,7,Kính bảo hộ xanh lá
 green_ear_ring,7,Nhẫn tai xanh lá
 removing_headwear,0,Đang cởi phụ kiện đội đầu
+amethyst_necklace,7,Amethyst Vòng cổ
+black_beret,7,Black Mũ beret
 chain_hairband,0,Băng đô dây xích
 beret_only,7,Chỉ có mũ beret
 arrow_earrings,0,Khuyên tai mũi tên
@@ -1706,8 +2133,11 @@ bow_necklace,0,Vòng cổ nơ
 hat_on_tail,0,Mũ trên đuôi
 belt_chain,7,Dây chuyền thắt lưng
 top_hat_only,7,Chỉ đội mũ chóp cao
+purple_beanie,7,Purple Mũ len
 sitting_on_bean_bag,7,Đang ngồi trên túi đậu
+miao_hat,0,Miao Mũ
 yellow_ring,7,Nhẫn vàng
+birthday_glasses,0,Birthday Kính mắt
 print_belt,0,Thắt lưng họa tiết
 animal_scarf,0,Khăn quàng động vật
 lace-trimmed_bowtie,0,Nơ cổ ren viền
@@ -1715,18 +2145,25 @@ tie_only,7,Chỉ thắt cà vạt
 penis_hat,7,Mũ dương vật
 animal_earrings,0,Khuyên tai động vật
 clover_earrings,0,Khuyên tai cỏ ba lá
+power_ring,7,Sức mạnh Nhẫn
 fur-trimmed_scarf,0,Khăn quàng lông thú viền
 fish_hat_ornament,0,Đồ trang trí mũ cá
 shoulder_necklace,0,Vòng cổ vai
 fang_necklace,7,Vòng cổ nanh
 asymmetrical_mask,0,Mặt nạ bất đối xứng
+string_bowtie,0,String Nơ cổ
+string_bow_tie,7,String Nơ tie
 wing_jewelry,7,Trang sức cánh
 magic_hat,7,Mũ phép thuật
+wrestling_belt,7,Wrestling Thắt lưng
 brown_necklace,7,Vòng cổ nâu
 blue_accessory,7,Phụ kiện xanh dương
 floral_print_bow,0,Nơ họa tiết thêu hoa
+opaque_sunglasses,0,Opaque Kính râm
 gold_hair_ring,7,Vòng tóc vàng kim
+pink_beret,7,Pink Mũ beret
 fan_between_breasts,0,Quạt giữa ngực
+belt_restraints,7,Thắt lưng Dụng cụ trói
 black_hair_bow,7,Nơ tóc đen
 black_ring,7,Nhẫn đen
 dragon_mask,0,Mặt nạ rồng
@@ -1735,19 +2172,30 @@ feather_choker,0,Vòng cổ lông vũ
 wool_headwear,7,Phụ kiện đầu len
 wing_umbrella,0,Cái ô cánh
 strawberry_brooch,0,Trâm cài dâu tây
+deku_mask,0,Deku Mặt nạ
 shrimp_tie,0,Cà vạt tôm
 pumpkin_earrings,0,Khuyên tai bí ngô
+goblin_mask,0,Goblin Mặt nạ
+mistletoe_bow,7,Mistletoe Nơ
+pork_pie_hat,7,Pork Bánh nhân Mũ
 lock_earrings,0,Khuyên tai lọn tóc
 shared_hat,0,Mũ dùng chung
 adjusting_belt,0,Đang chỉnh thắt lưng
 bone_piercing,7,Khuyên xương
+ziploc_bag,0,Ziploc Túi
+lensless_glasses,0,Lensless Kính mắt
+ring_sidelocks,0,Nhẫn Tóc mai
 pulling_tie,7,Đang kéo cà vạt
 wool_hat,7,Mũ len
+icing_bag,7,Icing Túi
 spotted_headwear,7,Phụ kiện đầu có đốm
+pink_beanie,7,Pink Mũ len
 gingham_necktie,0,Cà vạt kẻ ô vuông
 green_cap,7,Mũ màu xanh lá
 eyeball_hat_ornament,0,Đồ trang trí mũ mắt cầu
+clitoral_hood_ring,7,Clitoral Mũ trùm Nhẫn
 cat_eye-framed_eyewear,0,Kính mắt mèo khung
+sherpa_hat,7,Sherpa Mũ
 lotus_earrings,0,Khuyên tai sen
 purple_ear_ring,7,Nhẫn tai tím
 undone_tie,7,Cà vạt chưa cài
@@ -1765,6 +2213,7 @@ hat_over_eye,7,Mũ phía trên mắt
 big_bow_tie,7,Cà vạt nơ to
 adjusting_hat,7,Đang chỉnh mũ
 hand_glasses,0,Kính bàn tay
+square_academic_cap,7,Square academic cap
 text_on_necktie,7,Chữ trong ảnh trên cà vạt
 gold_hair_tie,0,Cột tóc vàng kim
 broken_goggles,0,Kính bảo hộ bị gãy
@@ -1774,18 +2223,30 @@ torn_headwear,7,Phụ kiện đội đầu bị rách
 yellow_hair_tie,7,Cột tóc vàng
 frilled_bag,0,Túi nhún xếp
 rabbit_bow,0,Nơ thỏ
+gun_belt,7,Súng Thắt lưng
+hypnosis_earrings,0,Hypnosis Khuyên tai
 leather_bracelet,7,Vòng tay da
 wolf_brooch,0,Trâm cài sói
 glistening_necklace,7,Vòng cổ bóng nhẫy
 green_visor_cap,0,Mũ lưỡi trai có lưới chắn xanh lá
 matching_earrings,0,Khuyên tai đồng bộ
 moon_necklace,7,Vòng cổ mặt trăng
+urethral_piercing,7,Urethral Khuyên xỏ
+golf_bag,0,Golf Túi
+belt_slit,0,Thắt lưng slit
+supplicant_mask,0,Supplicant Mặt nạ
+anti-magic_mask_(tensura),0,Anti-magic Mặt nạ (tensura)
+protective_eyewear,7,Protective Kính mắt
 tattoo_choker,0,Vòng cổ hình xăm
+fan_mohawk,7,Fan mohawk
+round_sunglasses,7,Round Kính râm
 heart_ear_piercing,7,Xâu khuyên tai trái tim
 heart_belt,7,Thắt lưng trái tim
 oversized_eyewear,0,Kính quá khổ
+torii_earrings,0,Torii Khuyên tai
 flower_umbrella,0,Cái ô hoa
 dark_eyewear,7,Kính sẫm
+rabbit_o-ring,0,Thỏ o-ring
 candy_bag,7,Túi kẹo
 black_accessory,7,Phụ kiện đen
 adjusting_neck_ribbon,0,Đang chỉnh ruy băng cổ
@@ -1794,9 +2255,13 @@ checkered_bracelet,0,Vòng tay kẻ ca-rô
 ghost_mask,0,Mặt nạ ma
 frog_mask,0,Mặt nạ ếch
 lace_bow,0,Nơ ren
+snap_my_choker_(phrase),0,Cúc bấm my Vòng cổ choker (phrase)
 card_in_hat,0,Thẻ trong mũ
 cube_earrings,0,Khuyên tai khối lập phương
 grey_ear_ring,7,Nhẫn tai xám
+light_bow_shekinah,0,Nhạt Nơ shekinah
+intravenous_bag,7,Intravenous Túi
+mage_hat,7,Mage Mũ
 raccoon_hat,0,Mũ gấu mèo
 cum_on_goggles,0,Tinh dịch trên kính bảo hộ
 padlock_necklace,7,Vòng cổ ổ khóa
@@ -1804,18 +2269,25 @@ elephant_hat,0,Mũ voi
 tail_fan,7,Quạt đuôi
 musical_note_brooch,0,Trâm cài nốt nhạc âm nhạc
 white_piercing,7,Khuyên trắng
+campaign_hat,0,Campaign Mũ
 discarded_hat,7,Mũ đã bỏ đi
+monroe_piercing,7,Monroe Khuyên xỏ
 monotone_necktie,7,Cà vạt một tông
 choker_bell,7,Chuông vòng cổ
 two_tone_bow,7,Nơ hai tông
 floral_bow,0,Nơ thêu hoa
 anal_ring,7,Nhẫn hậu môn
+brimmed_hat,7,Brimmed Mũ
+kendo_mask,0,Kendo Mặt nạ
 spade_piercing,0,Khuyên hình cái xẻng
 jellyfish_earrings,0,Khuyên tai sứa
 large_glasses,7,Kính lớn
 vertical-striped_hat,0,Mũ dọc kẻ sọc
+karate_belt,7,Karate Thắt lưng
+patrol_cap,7,Patrol cap
 bone_earrings,0,Khuyên tai xương
 monotone_eyewear,7,Kính một tông
+white_beanie,7,White Mũ len
 no_ribbon,0,Không có ruy băng
 no_necktie,0,Không có cà vạt
 strawberry_hat,0,Mũ dâu tây
@@ -1823,13 +2295,21 @@ cross-laced_headwear,0,Phụ kiện đầu chữ thập buộc dây
 beer_hat,0,Mũ bia
 two_tone_mask,7,Mặt nạ hai tông
 shell_hat,7,Mũ vỏ
+green_sunglasses,7,Green Kính râm
+yellow_beanie,7,Yellow Mũ len
+violin_bow,7,Violin Nơ
+shuriken_earrings,0,Shuriken Khuyên tai
 fur_hair_tie,0,Cột tóc lông thú
 number_glasses,0,Kính chữ số
+hat_launch,0,Mũ launch
+x_hat_ornament,0,X Mũ Đồ trang trí
 cow_mask,0,Mặt nạ bò
 offering_umbrella,0,Đưa cho cái ô
+wheel_earring,0,Wheel earring
 pride_color_necklace,7,Vòng cổ màu tự hào
 chastity_ring,7,Nhẫn trinh tiết
 glistening_mask,7,Mặt nạ bóng nhẫy
+mask_of_truth,0,Mặt nạ of truth
 chicken_mask,0,Mặt nạ gà
 gear_earrings,0,Khuyên tai bánh răng
 green_ear_piercing,7,Xâu khuyên tai xanh lá
@@ -1840,14 +2320,19 @@ text_on_jewelry,7,Chữ trong ảnh trên trang sức
 donut_bracelet,0,Vòng tay bánh donut
 golden_ring,7,Nhẫn màu vàng
 penis_earrings,0,Khuyên tai dương vật
+hutou_hat,0,Hutou Mũ
+tinfoil_hat,0,Tinfoil Mũ
 cherry_necklace,0,Vòng cổ hoa anh đào
 pinstripe_ribbon,0,Ruy băng sọc chỉ
 hat_over_one_ear,0,Mũ phía trên một cái tai
+furry-specific_jewelry,7,Furry-specific Trang sức
 orange_bow_tie,7,Cà vạt nơ cam
 heart_headwear,7,Phụ kiện đầu trái tim
 vertical-striped_bowtie,0,Nơ cổ dọc kẻ sọc
 gold_horn_ring,7,Nhẫn sừng vàng kim
 gold_chastity_belt,7,Thắt lưng trinh tiết vàng kim
+knit_scarf,0,Knit Khăn quàng
+razor_blade_earrings,0,Razor blade Khuyên tai
 scarf_tying,0,Buộc khăn quàng
 pumpkin_hat_ornament,0,Đồ trang trí mũ bí ngô
 yellow_hair_bow,7,Nơ tóc vàng
@@ -1857,64 +2342,89 @@ ribbon_censor,0,Kiểm duyệt ruy băng
 wet_hat,0,Mũ ướt
 glistening_ear_ring,7,Nhẫn tai bóng nhẫy
 bow_background,0,Nền nơ
+glasses_case,0,Kính mắt Bao đựng
+gas_mask_canister,0,Gas Mặt nạ canister
 food_bag,7,Túi thức ăn
 bat_hat_ornament,0,Đồ trang trí mũ dơi
+transformative_accessory,7,Transformative Phụ kiện
 leaf_necklace,0,Vòng cổ chiếc lá
 horse_earrings,0,Khuyên tai ngựa
+tunnel_piercing,7,Tunnel Khuyên xỏ
 yellow_backpack,7,Ba lô vàng
+dahliabite_piercing,7,Dahliabite Khuyên xỏ
 shoulder_ribbon,0,Ruy băng vai
+m43_field_cap,0,M43 Cánh đồng cap
 bag_behind_back,0,Túi phía sau lưng
 yellow_accessory,7,Phụ kiện vàng
 orange_pup_mask,7,Mặt nạ con non cam
+flotation_belt,0,Flotation Thắt lưng
 pride_color_headwear,7,Phụ kiện đầu màu tự hào
 shell_hat_ornament,0,Đồ trang trí mũ vỏ
+jack-o'-lantern_hat,0,Jack-o'-lantern Mũ
 dark_belt,7,Thắt lưng sẫm
 dolphin_earrings,0,Khuyên tai cá heo
 back_double_bow,0,Nơ lưng kép
 rainbow_ribbon,0,Ruy băng cầu vồng
 drawn_bow,0,Nơ vẽ
 gradient_bowtie,0,Nơ cổ chuyển sắc
+half-rim_glasses,7,Half-rim Kính mắt
 flower_bow,7,Nơ hoa
 teal_headwear,7,Phụ kiện đầu xanh cổ vịt
 purple_hair_bow,7,Nơ tóc tím
 strawberry_bag,0,Túi dâu tây
 fur-trimmed_belt,0,Thắt lưng lông thú viền
 bag_accessory,7,Phụ kiện túi
+mega_stone_necklace,7,Mega stone Vòng cổ
 no_goggles,0,Không có kính bảo hộ
 black_hair_accessory,7,Phụ kiện tóc đen
 tentacle_piercing,0,Khuyên xúc tu
 gem_necklace,7,Vòng cổ đá quý
 backpack_on_one_shoulder,0,Ba lô trên một vai
+ribbon-trimmed_babydoll,0,Ribbon-trimmed babydoll
 monotone_glasses,7,Kính một tông
+pill_ring,0,Pill Nhẫn
 octopus_earrings,0,Khuyên tai bạch tuộc
 sword_necklace,0,Vòng cổ kiếm
 multicolored_glasses,7,Kính nhiều màu
 two_tone_top_hat,7,Mũ chóp cao hai tông
+carnival_mask,0,Carnival Mặt nạ
 clitoris_piercing_pull,7,Kéo khuyên âm vật
 gold_chain_jewelry,7,Trang sức dây xích màu vàng kim
 frill_ring,7,Nhẫn diềm xếp
+outer_ring_excavations_(eve_online),0,Outer Nhẫn excavations (eve online)
 diagonal-striped_headwear,0,Phụ kiện đầu chéo kẻ sọc
+noah_hat_(ragnarok_online),0,Noah Mũ (ragnarok online)
 monotone_scarf,7,Khăn quàng một tông
 orange_jewelry,7,Trang sức màu cam
+australian_hat,7,Australian Mũ
 mouse_mask,0,Mặt nạ chuột
+transguiche_piercing,7,Transguiche Khuyên xỏ
+drama_mask,7,Drama Mặt nạ
+jewelry_glint,7,Trang sức glint
 text_on_choker,7,Chữ trong ảnh trên vòng cổ choker
 ribbon-trimmed_wrist_cuffs,0,Ống bọc cổ tay cổ tay ruy băng viền
 leg_jewelry,7,Trang sức chân
 two_tone_baseball_cap,7,Mũ bóng chày hai tông
 mysterious_mask_(fate),0,Mặt nạ bí ẩn
+ventilation_fan,0,Ventilation fan
 pouch_piercing,7,Khuyên túi con
 multicolored_bow_tie,7,Cà vạt nơ nhiều màu
 rabbit_ear_hat,0,Mũ tai thỏ
 ring_of_fire,0,Nhẫn lửa
+horseshoe_necklace,0,Horseshoe Vòng cổ
 food-themed_choker,0,Vòng cổ chủ đề thức ăn
 star_ear_ring,7,Nhẫn tai ngôi sao
 shark_hat,0,Mũ cá mập
+fierce_deity_mask_(zelda),0,Fierce deity Mặt nạ (zelda)
 heart_hat,7,Mũ trái tim
 planet_necklace,0,Vòng cổ hành tinh
 vagina_piercing,7,Khuyên âm đạo
 mane_accessory,7,Phụ kiện bờm
+pimp_hat,7,Pimp Mũ
 purse_over_shoulder,7,Túi cầm tay phía trên vai
+zun_hat,0,Zun Mũ
 neck_jewelry,7,Trang sức cổ
+soyombo_earrings,0,Soyombo Khuyên tai
 two_tone_jewelry,7,Trang sức hai tông
 frog_hat_ornament,0,Đồ trang trí mũ ếch
 untied_bow_tie,7,Cà vạt nơ cởi dây
@@ -1925,16 +2435,24 @@ braided_scarf,0,Khăn quàng tết
 multicolored_baseball_cap,7,Mũ bóng chày nhiều màu
 multicolored_bag,0,Túi nhiều màu
 hat_off,7,Cởi mũ
+hat_branch,0,Mũ Cành cây
 carrying_bag,7,Mang theo túi
+guy_fawkes_mask,0,Guy fawkes Mặt nạ
 paw_earrings,0,Khuyên tai chân thú
 paw_ring,7,Nhẫn chân thú
+den-o_belt,0,Den-o Thắt lưng
+bearskin_cap,0,Bearskin cap
 bell_bracelet,7,Vòng tay chuông
 white_hair_tie,7,Cột tóc trắng
 white_pup_mask,7,Mặt nạ con non trắng
 rainbow_scarf,0,Khăn quàng cầu vồng
+load-bearing_piercing,0,Load-bearing Khuyên xỏ
+grabbing_another's_necktie,0,Grabbing another's Cà vạt
+tortoiseshell-framed_eyewear,0,Tortoiseshell-framed Kính mắt
 hand_on_umbrella,0,Bàn tay trên cái ô
 linked_ear_piercing,7,Xâu khuyên tai được nối
 holding_bracelet,0,Cầm vòng tay
+multicolored_sunglasses,7,Multicolored Kính râm
 army_hat,7,Mũ lục quân
 egg_earrings,0,Khuyên tai trứng
 yellow_ear_piercing,7,Xâu khuyên tai vàng
@@ -1946,17 +2464,21 @@ wrist_accessory,7,Phụ kiện cổ tay
 undone_cross_tie,0,Cà vạt chữ thập chưa cài
 transparent_bow,0,Nơ trong suốt
 mask_(anatomy),7,Mặt nạ
+umbrella_sword,0,Cái ô Kiếm
 hat_on_horn,0,Mũ trên sừng
+clavicle_piercing,7,Clavicle Khuyên xỏ
 rainbow-tinted_eyewear,0,Kính nhuộm màu cầu vồng
 polka_dot_bag,0,Túi chấm bi
 monotone_belt,7,Thắt lưng một tông
 goggles_around_arm,0,Kính bảo hộ quanh cánh tay
+on_bean_bag,7,On Đậu Túi
 american_flag_hat,0,Mũ hình cờ Mỹ
 gold_eyewear,7,Kính vàng kim
 fur-trimmed_bow,0,Nơ lông thú viền
 clock_hat_ornament,0,Đồ trang trí mũ đồng hồ
 open_hat,0,Mũ mở
 pride_color_tail_accessory,7,Phụ kiện đuôi màu tự hào
+spiderbite_piercing,7,Spiderbite Khuyên xỏ
 thigh_ring,7,Nhẫn đùi
 stone_mask,0,Mặt nạ đá
 food-themed_brooch,0,Trâm cài chủ đề thức ăn
@@ -1964,11 +2486,17 @@ green_pup_mask,7,Mặt nạ con non xanh lá
 glowing_piercing,7,Khuyên phát sáng
 magic_ring,7,Nhẫn phép thuật
 glasses_in_mouth,7,Kính mắt trong miệng
+backpack_vacuum_cleaner,0,Ba lô vacuum cleaner
+holding_shopping_bag,7,Đang cầm shopping Túi
+brown_beanie,7,Nâu Mũ len
+hiking_backpack,0,Hiking Ba lô
 bow_of_light,0,Nơ nhạt
 transparent_ribbon,0,Ruy băng trong suốt
 red_top_hat,7,Mũ chóp cao đỏ
+fan_meeting,0,Fan meeting
 matching_ring,0,Nhẫn đồng bộ
 eyewear_visible_through_hair,0,Kính mắt nhìn thấy được xuyên qua tóc
+perineum_piercing,0,Tầng sinh môn Khuyên xỏ
 holding_scarf,7,Cầm khăn quàng
 lifting_glasses,7,Đang nhấc kính mắt
 side-tie_legwear,0,Đồ che chân cà vạt lệch bên
@@ -1978,14 +2506,19 @@ horizontal-striped_belt,0,Thắt lưng ngang kẻ sọc
 two_tone_ribbon,7,Ruy băng hai tông
 glowing_ring,7,Nhẫn phát sáng
 wide_belt,0,Thắt lưng rộng
+computer_fan,0,Computer fan
 teal_hat,7,Mũ màu xanh cổ vịt
+harness_belt,0,Đai buộc Thắt lưng
 orange_necklace,7,Vòng cổ cam
 monotone_accessory,7,Phụ kiện một tông
 adjusting_tie,7,Đang chỉnh cà vạt
+popcorn_bag,7,Popcorn Túi
 throwing_hat,0,Đang ném mũ
 blue_top_hat,7,Mũ chóp cao xanh dương
 cross_bracelet,0,Vòng tay chữ thập
 rainbow_bow,0,Nơ cầu vồng
+string_hair_bow,7,String Tóc Nơ
+bottle_cap_challenge,0,Cái chai cap challenge
 blue_bow_ribbon,7,Ruy băng nơ xanh dương
 ribbon_print,0,Họa tiết ruy băng
 cow_print_bowtie,0,Nơ cổ họa tiết bò
@@ -1993,14 +2526,17 @@ spiked_hair_tie,7,Cột tóc có gai
 ankle_jewelry,7,Trang sức cổ chân
 studded_necklace,7,Vòng cổ đính đinh
 grape_earrings,0,Khuyên tai nho
+shooting_star_hat_ornament,0,Shooting ngôi sao Mũ Đồ trang trí
 rainbow_jewelry,7,Trang sức màu cầu vồng
 cum_in_headwear,0,Tinh dịch trong phụ kiện đội đầu
+magic_hat-trick,7,Ma thuật hat-trick
 mushroom_earrings,0,Khuyên tai nấm
 bag_over_shoulder,7,Túi phía trên vai
 pride_color_hat,7,Mũ màu tự hào
 two_tone_necklace,7,Vòng cổ hai tông
 finger_to_eyewear,0,Ngón tay tới kính mắt
 sun_hat_only,7,Chỉ đội mũ mặt trời
+crest_piercing,7,Crest Khuyên xỏ
 skull_bow,7,Nơ đầu lâu
 print_accessory,7,Phụ kiện họa tiết
 print_paper_fan,0,Quạt giấy họa tiết
@@ -2009,29 +2545,40 @@ hood_bow,0,Nơ mũ trùm
 neck_belt,7,Thắt lưng cổ
 fire_belt,7,Thắt lưng lửa
 letter_earrings,0,Khuyên tai bức thư
+cervix_piercing,7,Cervix Khuyên xỏ
+safety_pin_earring,0,Safety pin earring
 plaid_umbrella,0,Cái ô kẻ caro
 animal_hairband,0,Băng đô động vật
 horse_ear_hairband,0,Băng đô tai ngựa
+abdominal_piercing,7,Abdominal Khuyên xỏ
 spiked_mask,0,Mặt nạ có gai
 snowman_earrings,0,Khuyên tai người tuyết
 bow_swimwear,7,Đồ bơi nơ
 hair_bow_only,7,Chỉ có nơ buộc tóc
+silk_dancing,7,Lụa Đang nhảy múa
 mini_bowtie,0,Nơ cổ siêu ngắn
 grey_backpack,7,Ba lô xám
 multicolored_tail_accessory,7,Phụ kiện đuôi nhiều màu
 large_bag,0,Túi lớn
 syringe_necklace,0,Vòng cổ ống tiêm
+wide_brimmed_hat,7,Wide brimmed Mũ
+dydoe_piercing,7,Dydoe Khuyên xỏ
+donald_duck_sailor_hat,0,Donald Vịt Thủy thủ Mũ
 hat_buckle,7,Khóa mũ
 hat_on_lap,0,Mũ trên đùi
+prolapse_piercing,7,Prolapse Khuyên xỏ
 spotted_hat,7,Mũ có đốm
+ankh_piercing,7,Ankh Khuyên xỏ
 party_hat_only,7,Chỉ đội mũ tiệc
 broom_ribbon,0,Ruy băng cây chổi
 white_ear_piercing,7,Xâu khuyên tai trắng
 umbrella_on_arm,0,Cái ô trên cánh tay
 belt_grab,0,Nắm thắt lưng
 floral_print_ribbon,0,Ruy băng họa tiết thêu hoa
+great_eagle_bow,7,Great Đại bàng Nơ
 pinstripe_bowtie,0,Nơ cổ sọc chỉ
 eyewear_in_pocket,0,Kính mắt trong túi áo
+anmin_dreamingribbon_(project_sekai),0,Anmin dreamingribbon (project sekai)
 star_ring,0,Nhẫn ngôi sao
 brown_bow_tie,7,Cà vạt nơ nâu
 orange_bracelet,7,Vòng tay cam
@@ -2044,24 +2591,35 @@ crotch_ribbon,0,Ruy băng đũng quần
 bow_eyepatch,0,Miếng bịt mắt nơ
 heart_eyewear,7,Kính trái tim
 belt_snap,7,Cúc bấm thắt lưng
+beaded_choker,7,Beaded Vòng cổ choker
 reindeer_hat,0,Mũ tuần lộc
 yellow_baseball_cap,7,Mũ bóng chày màu vàng
 glasses_on_floor,7,Kính mắt trên sàn nhà
+safety_belt,0,Safety Thắt lưng
 sunglasses_down,7,Kính râm hướng xuống
 shrimp_hat,0,Mũ tôm
 cock_ring_snap,7,Cúc bấm vòng dương vật
 checkered_bag,0,Túi kẻ ca-rô
 folding_umbrella,0,Đang gấp cái ô
 mud_mask,7,Mặt nạ bùn
+suspender_belt,7,Suspender Thắt lưng
 coffee_bag,0,Túi cà phê
+the_one_ring,0,một Nhẫn
 purple_backpack,7,Ba lô tím
+persim_scarf,7,Persim Khăn quàng
 holding_handbag,7,Cầm túi xách
 floral_print_hat,0,Mũ họa tiết thêu hoa
+potara_ear_ring,7,Potara ear Nhẫn
 side_cap,7,Mũ lệch bên
+heterochromatic_glasses,7,Heterochromatic Kính mắt
+seashell_bracelet,0,Seashell Vòng tay
 green_hair_bow,7,Nơ tóc xanh lá
+inner_conch_piercing,0,Inner conch Khuyên xỏ
+playing_card_earrings,0,Đang chơi Thẻ Khuyên tai
 spade_choker,0,Vòng cổ hình cái xẻng
 shell_bracelet,0,Vòng tay vỏ
 eyelid_piercing,0,Khuyên mí mắt
+accessories_switch,0,Accessories switch
 oversized_belt,0,Thắt lưng quá khổ
 pink_baseball_cap,7,Mũ bóng chày màu hồng
 white_top_hat,7,Mũ chóp cao trắng
@@ -2069,35 +2627,50 @@ tentacle_jewelry,7,Trang sức xúc tu
 sunglasses_on_hat,7,Kính râm trên mũ
 tying_ribbon,0,Đang buộc ruy băng
 piercing_(action),0,Khuyên xỏ
+sunglasses_lift,7,Kính râm lift
+horseshoe_earrings,0,Horseshoe Khuyên tai
 bear_earrings,0,Khuyên tai gấu
 tentacle_mask,7,Mặt nạ xúc tu
 eyeball_earrings,0,Khuyên tai mắt cầu
+yellow_trying_expressive_glasses_(meme),0,Yellow trying expressive Kính mắt (meme)
 rope_bracelet,0,Vòng tay dây thừng
 convenient_necklace,0,Vòng cổ tiện ích
 blue_ring,0,Nhẫn xanh dương
 grey_bow_tie,7,Cà vạt nơ xám
 argyle_choker,0,Vòng cổ kẻ quả thoi
+mask_gag,7,Mặt nạ Nhét miệng
 snake_mask,0,Mặt nạ rắn
+octoleet_goggles_(splatoon),0,Octoleet Kính bảo hộ (splatoon)
+neck_ribbon_tug,0,Neck Ruy băng tug
 cable_tie_around_wrist,0,Cà vạt cáp quanh cổ tay
 translucent_headwear,7,Phụ kiện đầu bán trong suốt
 ancient_egyptian_hat,0,Mũ Ai Cập cổ đại
 hexagon_earrings,0,Khuyên tai lục giác
 bone_hair_accessory,7,Phụ kiện tóc xương
+ring_binder,7,Nhẫn binder
 star_belt_buckle,0,Khóa thắt lưng ngôi sao
+inner_labia_piercing,7,Inner labia Khuyên xỏ
 gold_belt_buckle,7,Khóa thắt lưng vàng kim
 lightning_bolt_piercing,0,Khuyên bu lông sấm sét
 multicolored_goggles,7,Kính bảo hộ nhiều màu
+beauty_mask,0,Beauty Mặt nạ
 pom_pom_brooch,0,Trâm cài quả bông quả bông
 two-sided_umbrella,0,Cái ô mặt hai
+tadpole_hat,0,Tadpole Mũ
 text_on_belt,7,Chữ trong ảnh trên thắt lưng
 two_tone_bracelet,7,Vòng tay hai tông
 santa_bag,7,Túi ông già Noel
 belt_on_penis,7,Thắt lưng trên dương vật
 bow_lingerie,7,Đồ lót nữ nơ
 chicken_hat,0,Mũ gà
+pokeball_piercing,7,Pokeball Khuyên xỏ
+princess_albertina_piercing,7,Princess albertina Khuyên xỏ
 lion_mask,0,Mặt nạ sư tử
+holding_another's_hat,0,Đang cầm another's Mũ
 studded_ring,7,Nhẫn đính đinh
+grenade_belt,7,Grenade Thắt lưng
 purple_goggles,7,Kính bảo hộ tím
+snack_bag,0,Snack Túi
 anus_piercing,0,Khuyên hậu môn
 mushroom_hat_ornament,0,Đồ trang trí mũ nấm
 two_tone_belt,7,Thắt lưng hai tông
@@ -2106,43 +2679,64 @@ glistening_bracelet,7,Vòng tay bóng nhẫy
 necklace_between_pecs,0,Vòng cổ giữa cơ ngực
 text_on_toe_ring,7,Chữ trong ảnh trên nhẫn chân
 choker_(marking),7,Vòng cổ choker
+isabella_piercing,7,Isabella Khuyên xỏ
 naked_jewelry,0,Trang sức trần
+pork_pie_sailor_hat,0,Pork Bánh nhân Thủy thủ Mũ
 character_ear_piercing,0,Xâu khuyên tai nhân vật
 mane_tie,7,Cà vạt bờm
+spider_web_necklace,0,Nhện web Vòng cổ
 blue_hair_accessory,7,Phụ kiện tóc xanh dương
 nipple_bow,7,Nơ núm vú
 panda_bag,0,Túi gấu trúc
 side-tie_bottomwear,7,Đồ mặc dưới cà vạt lệch bên
 drink_bag,0,Túi đồ uống
+playing_card_hat_ornament,0,Đang chơi Thẻ Mũ Đồ trang trí
+your_tie_is_crooked,0,Your tie is crooked
 nose_jewelry,7,Trang sức mũi
+half_blindfold_mask,0,Half Băng bịt mắt Mặt nạ
+fart_mask,7,Fart Mặt nạ
 umbrella_sky,0,Bầu trời cái ô
 ear_tie,7,Cà vạt tai
 frame_bag,7,Túi khung hình
+hafada_piercing,7,Hafada Khuyên xỏ
+kiss_lock_purse,0,Hôn Lọn tóc Túi cầm tay
 bird_brooch,0,Trâm cài chim
 magical_cock_ring,7,Nhẫn dương vật kỳ diệu
 coin_belt,7,Thắt lưng đồng xu
 navy_hat,7,Mũ màu xanh navy
+banded_ribbon,7,Banded Ruy băng
 oversized_backpack,0,Ba lô quá khổ
 quilted_bag,0,Túi bông chần
 sunglasses_removed,7,Kính râm đã tháo ra
 hoof_piercing,7,Khuyên móng guốc
 bear_necklace,0,Vòng cổ gấu
+travel_bag,7,Travel Túi
 rider_belt_(kabuto),0,Thắt lưng người cưỡi
+modern_recurve_bow,0,Hiện đại recurve Nơ
+eyewear_glint,7,Kính mắt glint
 mask_up,0,Kéo mặt nạ lên
 impossible_necktie,0,Cà vạt bất khả thi
 pointed_hat,7,Mũ nhọn
 clover_hat_ornament,0,Đồ trang trí mũ cỏ ba lá
 rainbow_necklace,7,Vòng cổ cầu vồng
+d-shaped_nipple_piercing,7,D-shaped nipple Khuyên xỏ
 green_lantern_ring,7,Nhẫn đèn lồng xanh lá
 thigh_jewelry,7,Trang sức đùi
 green_ring,7,Nhẫn xanh lá
 capelet_bow,0,Nơ áo choàng ngắn
 bow_armwear,7,Đồ che tay nơ
 frilly_choker,7,Vòng cổ nhún diềm
+surgical_cap,0,Surgical cap
 candy_earrings,0,Khuyên tai kẹo
+equilibrium_umbrella,0,Equilibrium Cái ô
+x-shaped_earrings,0,X-shaped Khuyên tai
+cloacal_piercing,7,Cloacal Khuyên xỏ
 ring_(ensemble_stars!),0,Nhẫn
 ring_on_horn,7,Nhẫn trên sừng
+transscrotal_piercing,7,Transscrotal Khuyên xỏ
 star_print_hat,7,Mũ họa tiết ngôi sao
+wintam_ribbon_bondage_(meme),0,Wintam Ruy băng Trói buộc (meme)
+freddy_mask_(fnaf),7,Freddy Mặt nạ (fnaf)
 monotone_choker,7,Vòng cổ một tông
 silver_ear_piercing,7,Xâu khuyên tai bạc
 black_spiked_bracelet,7,Vòng tay có gai đen
@@ -2150,54 +2744,83 @@ coin_hat_ornament,0,Đồ trang trí mũ đồng xu
 gingham_ribbon,0,Ruy băng kẻ ô vuông
 hair_fan,0,Quạt tóc
 bunny_ear_hat,7,Mũ tai thỏ
+alien_sunglasses,0,Người ngoài hành tinh Kính râm
 necktie_on_mouth,0,Cà vạt trên miệng
+hollowed_headwear,0,Hollowed Phụ kiện đội đầu
 wreath_bow,7,Nơ vòng hoa
 carrot_hat_ornament,0,Đồ trang trí mũ cà rốt
 starfish_earrings,0,Khuyên tai sao biển
+forced_piercing,7,Bị ép buộc Khuyên xỏ
 head_wings_through_headwear,0,Cánh trên đầu xuyên qua phụ kiện đội đầu
 spade_necklace,0,Vòng cổ hình cái xẻng
 cross-laced_choker,0,Vòng cổ chữ thập buộc dây
+sentai_ring,0,Sentai Nhẫn
 official_alternate_eyewear,0,Kính chính thức khác
+two_tone_beanie,7,Hai tone Mũ len
 hat_print,0,Họa tiết mũ
 butt_bow,7,Nơ mông
 bow_on_ear,7,Nơ trên tai
+oral_and_nasal_mask,7,Bằng miệng và nasal Mặt nạ
 rainbow_ear_ring,7,Nhẫn tai cầu vồng
+string_belt,0,String Thắt lưng
+fleshlight_mask,7,Fleshlight Mặt nạ
 mask_on_breasts,0,Mặt nạ trên ngực
 multicolored_hair_accessory,7,Phụ kiện tóc nhiều màu
 fruit_brooch,0,Trâm cài trái cây
+accessory_connection,0,Phụ kiện connection
 wing_accessory,7,Phụ kiện cánh
 finger_on_hat,0,Ngón tay trên mũ
+noose_necktie,0,Noose Cà vạt
 hunting_cap,7,Mũ săn mồi
 bird_earrings,0,Khuyên tai chim
+suitcase_piercing,7,Suitcase Khuyên xỏ
+sharktooth_necklace,7,Sharktooth Vòng cổ
 medial_ring_piercing,7,Khuyên vòng phía trong
 triangle_piercing,7,Khuyên hình tam giác
+triforce_necklace,0,Triforce Vòng cổ
 purple_accessory,7,Phụ kiện tím
+mega_stone_piercing,7,Mega stone Khuyên xỏ
 navel_jewelry,7,Trang sức rốn
 print_eyewear,0,Kính họa tiết
 hat_on_face,0,Mũ trên khuôn mặt
 hat_covering_eyes,7,Mắt mũ che
 ladybug_brooch,0,Trâm cài bọ rùa
 stud_ear_ring,7,Nhẫn tai khuyên nụ
+cocked_bow,7,Cocked Nơ
 hairband_ribbon,0,Ruy băng đô
 red_ear_piercing,7,Xâu khuyên tai đỏ
 red_fan,0,Quạt đỏ
+limbal_ring,7,Limbal Nhẫn
 monotone_hair_accessory,7,Phụ kiện tóc một tông
 pink_goggles,7,Kính bảo hộ hồng
 white_goggles,7,Kính bảo hộ trắng
+piercing_glint,7,Khuyên xỏ glint
+piercing_gaze,7,Khuyên xỏ gaze
+green_beret,7,Green Mũ beret
+ear_piercing_gun,0,Ear Khuyên xỏ Súng
 glistening_goggles,7,Kính bảo hộ bóng nhẫy
 glistening_choker,7,Vòng cổ bóng nhẫy
 mini_bag,0,Túi siêu ngắn
 gingham_hairband,0,Băng đô kẻ ô vuông
 chastity_cage-belt,0,Thắt lưng lồng trinh tiết
 crescent_belt_buckle,0,Khóa thắt lưng hình lưỡi liềm
+square_o-ring,0,Square o-ring
+station_necklace,0,Station Vòng cổ
 bowtie_in_mouth,0,Nơ cổ trong miệng
 symbol_on_accessory,7,Biểu tượng trên phụ kiện
 yellow_belt_buckle,7,Khóa thắt lưng vàng
+octagonal_eyewear,0,Octagonal Kính mắt
+hoop_bracelet,0,Hoop Vòng tay
+burping_up_glasses,7,Burping lên Kính mắt
+poke_ball_earrings,0,Poke Quả bóng Khuyên tai
 butterfly_on_hat,0,Bươm bướm trên mũ
+snapped_choker,7,Snapped Vòng cổ choker
 bell_hat,7,Mũ chuông
+bandit_mask,7,Bandit Mặt nạ
 no_bowtie,0,Không có nơ cổ
 chandelier_earrings,0,Khuyên tai đèn chùm
 panda_mask,0,Mặt nạ gấu trúc
+condom_earrings,0,Bao cao su Khuyên tai
 ribbon_around_head,0,Ruy băng quanh đầu
 belt_tail,0,Đuôi thắt lưng
 fish_bag,0,Túi cá
@@ -2206,6 +2829,7 @@ grey_baseball_cap,7,Mũ bóng chày màu xám
 purple_baseball_cap,7,Mũ bóng chày màu tím
 grey_ring,7,Nhẫn xám
 green_cross_tie,0,Cà vạt chữ thập xanh lá
+time_breaker_mask,0,Time breaker Mặt nạ
 frilly_headwear,7,Phụ kiện đầu nhún diềm
 fur-trimmed_fan,0,Quạt lông thú viền
 magic_necklace,7,Vòng cổ phép thuật
@@ -2213,14 +2837,24 @@ pride_color_hair_accessory,7,Phụ kiện tóc màu tự hào
 metal_ring,7,Nhẫn kim loại
 owl_hat,0,Mũ cú mèo
 christmas_tree_earrings,0,Khuyên tai cây Giáng sinh
+caninebite_piercing,7,Caninebite Khuyên xỏ
 strawberry_necklace,0,Vòng cổ dâu tây
 mouth_mask_over_eyes,0,Khẩu trang phía trên mắt
 choker_removed,0,Vòng cổ choker đã tháo ra
+kivat_belt,0,Kivat Thắt lưng
+bow_legged,7,Nơ legged
 bow_sticker,0,Nhãn dán nơ
 glowing_accessory,7,Phụ kiện phát sáng
 bone_jewelry,7,Trang sức xương
+goron_mask_(zelda),0,Goron Mặt nạ (zelda)
+play_piercing,7,Play Khuyên xỏ
+glans_ring,7,Quy đầu Nhẫn
+beaded_belt,7,Beaded Thắt lưng
 pearl_ring,0,Nhẫn ngọc trai
+dangle_ear_piercing,7,Dangle ear Khuyên xỏ
 single_ear_ring,7,Nhẫn tai một chiếc
+duty_belt,7,Duty Thắt lưng
+brown_sunglasses,7,Nâu Kính râm
 tan_scarf,7,Khăn quàng nâu rám nắng
 brown_hair_tie,7,Cột tóc nâu
 green_accessory,7,Phụ kiện xanh lá
@@ -2229,79 +2863,126 @@ bag_of_holding,7,Túi đang cầm
 teal_necktie,7,Cà vạt xanh cổ vịt
 broken_belt,7,Thắt lưng bị gãy
 glistening_belt,7,Thắt lưng bóng nhẫy
+sapphire_necklace,7,Sapphire Vòng cổ
+pentagram_ear_ring,7,Pentagram ear Nhẫn
 eyebrows_through_hat,7,Lông mày xuyên qua mũ
 urine_bag,7,Túi nước tiểu
+fly_earrings,0,Fly Khuyên tai
+unwrap_me_body_bow,0,Unwrap me body Nơ
 hip_bag,7,Túi hông
+ribbon-trimmed_sash,0,Ribbon-trimmed Đai vải
 green_nose_ring,7,Nhẫn mũi xanh lá
+undoing_own_necktie,0,Undoing own Cà vạt
 skull_hat,7,Mũ đầu lâu
 convenient_ribbon,0,Ruy băng tiện ích
+zora_mask_(zelda),0,Zora Mặt nạ (zelda)
 umbrella_hat,7,Mũ cái ô
+bodymod_necklace,7,Bodymod Vòng cổ
 bondage_ring,7,Nhẫn trói buộc
 frilly_bow,7,Nơ nhún diềm
 feathered_cap,7,Mũ có lông vũ
 chain_choker,0,Vòng cổ dây xích
 orange_piercing,7,Khuyên cam
+tongue_piercing_gag,0,Lưỡi Khuyên xỏ Nhét miệng
 cock_ring_collar,7,Cổ áo vòng dương vật
+ranger_hat,7,Ranger Mũ
+kamen_no_watashi_ni_sayonara_wo_(project_sekai),0,Kamen không có watashi ni sayonara wo (project sekai)
 facial_hair_through_mask,0,Râu xuyên qua mặt nạ
+leash_belt,0,Dây dắt Thắt lưng
+taking_off_glasses,7,Taking off Kính mắt
 text_on_beanie,7,Chữ trong ảnh trên mũ len
 police_belt,7,Thắt lưng cảnh sát
 butterfly_bow,0,Nơ bươm bướm
 butterfly_bowtie,0,Nơ cổ bươm bướm
 see-through_necktie,0,Cà vạt xuyên thấu
+in_backpack,7,Trong Ba lô
+box_fan,7,Cái hộp fan
+cord_choker,0,Cord Vòng cổ choker
 piercing_eyes,7,Mắt khuyên
 crotch_bow,7,Nơ đũng quần
+on_umbrella,0,On Cái ô
 looking_over_glasses,7,Nhìn qua kính mắt
+tie_pilot,0,Tie Phi công
+tie_tab,0,Tie tab
+non-furgonomic_headwear,7,Non-furgonomic Phụ kiện đội đầu
+engineer_cap,7,Engineer cap
 pink_ear_ring,7,Nhẫn tai hồng
+saline_bag,0,Saline Túi
 logo_on_hat,7,Logo trên mũ
 pink_pup_mask,7,Mặt nạ con non hồng
 grey_ring_piercing,7,Khuyên vòng xám
 pride_color_belt,7,Thắt lưng màu tự hào
+gas_mask_face,7,Gas Mặt nạ face
 cat_belt_buckle,0,Khóa thắt lưng mèo
 umbrella_print,0,Họa tiết cái ô
 monotone_bow,7,Nơ một tông
+ribbon-trimmed_ascot,0,Ribbon-trimmed Khăn ascot
+scrotal_ring,7,Scrotal Nhẫn
 putting_on_mask,0,Đang mặc mặt nạ
 hat_on_ear,7,Mũ trên tai
+emerald_necklace,7,Emerald Vòng cổ
 ring_nipple_piercing,7,Khuyên núm vú vòng
 gold_hat,0,Mũ màu vàng kim
 bag_of_cookies,0,Túi bánh quy
 coin_bag,7,Túi đồng xu
 diving_mask_removed,0,Mặt nạ lặn đã tháo ra
 studded_hat,0,Mũ đính đinh
+rogatywka,0,Rogatywka
+dangle_accessory,7,Dangle Phụ kiện
+ring_fit_trainee_(female)_(cosplay),0,Nhẫn fit trainee (female) (cosplay)
 snake_bracelet,0,Vòng tay rắn
 snake_ring,0,Nhẫn rắn
+peter_parker's_glasses_(meme),0,Peter parker's Kính mắt (meme)
 whale_earrings,0,Khuyên tai cá voi
 tail_scarf,7,Khăn quàng đuôi
 black_purse,7,Túi cầm tay đen
 crow_mask,0,Mặt nạ quạ
+ultra_bracelet,0,Ultra Vòng tay
+venus_symbol_necklace,0,Venus Biểu tượng Vòng cổ
+legendary_bow_(small_bow)_(tate_no_yuusha_no_nariagari),0,Legendary Nơ (small bow) (tate không có yuusha không có nariagari)
 kissing_through_mask,0,Đang hôn xuyên qua mặt nạ
 feather_hairband,0,Băng đô lông vũ
 lace_headwear,0,Phụ kiện đầu ren
 heart-shaped_hat,0,Mũ hình trái tim
+fan_dance,7,Fan dance
+propeller_hat_and_lollipop_dog_(meme),0,Propeller Mũ và Kẹo mút Chó (meme)
 furgonomic_accessory,7,Phụ kiện nửa người nửa thú
 front_backpack,0,Ba lô phía trước
+collaborative_boob_hat,7,Collaborative boob Mũ
+pokeball_ear_piercing,7,Pokeball ear Khuyên xỏ
 sunflower_earring,0,Khuyên tai hướng dương
 monotone_mask,7,Mặt nạ một tông
 neck_scarf,7,Khăn quàng cổ
+beach_bag,0,Bãi biển Túi
 pink_hair_ribbon,7,Ruy băng tóc hồng
+military_beret,7,Quân đội Mũ beret
 energy_bow_(weapon),0,Nơ năng lượng
 gold_septum_ring,7,Nhẫn vách mũi vàng kim
+candy_cane_earrings,0,Kẹo cane Khuyên tai
 wing_cap,0,Mũ cánh
 aqua_mask,0,Mặt nạ xanh ngọc
+message_(fromsoftware),0,Message (fromsoftware)
+two_tone_sunglasses,7,Hai tone Kính râm
 floral_print_scarf,0,Khăn quàng họa tiết thêu hoa
 cum_in_hat,7,Tinh dịch trong mũ
 green_hair_accessory,7,Phụ kiện tóc xanh lá
 green_nose_piercing,7,Khuyên mũi xanh lá
 backpack_strap,7,Dây đeo ba lô
+mao_cap,0,Mao cap
 ring_on_finger,7,Nhẫn trên ngón tay
+re-tie_friendship_(project_sekai),0,Re-tie friendship (project sekai)
 bone_hat_ornament,0,Đồ trang trí mũ xương
 facial_bow,7,Nơ trên mặt
 checkered_choker,0,Vòng cổ kẻ ca-rô
 belt_choker,7,Vòng cổ thắt lưng
 heart_shaped_choker,0,Vòng cổ hình trái tim
 character_brooch,0,Trâm cài nhân vật
+hat_string,0,Mũ string
 belt_on_tail,7,Thắt lưng trên đuôi
 long_hat,7,Mũ dài
 blush_visible_through_mask,0,Đỏ mặt nhìn thấy được xuyên qua mặt nạ
+ribbon-trimmed_camisole,0,Ribbon-trimmed Áo hai dây
+ribbon_gag,7,Ruy băng Nhét miệng
 ribbon_collar,7,Cổ áo ruy băng
 tongue_piercing_pull,7,Kéo khuyên lưỡi
 ribbon_in_hair,7,Ruy băng trong tóc
@@ -2311,19 +2992,24 @@ grey_chastity_belt,7,Thắt lưng trinh tiết xám
 green_nose_jewelry,7,Trang sức mũi màu xanh lá
 cum_on_face_mask,7,Tinh dịch trên mặt nạ che mặt
 wizard_ring,0,Nhẫn phù thủy nam
+tako-san_wiener_earrings,0,Tako-san wiener Khuyên tai
 two_tone_choker,7,Vòng cổ hai tông
+foggy_glasses,7,Foggy Kính mắt
 gold_accessories,7,Phụ kiện vàng kim
 foot_jewelry,0,Trang sức bàn chân
 camouflage_hairband,0,Băng đô rằn ri
 glowing_bow_(weapon),0,Nơ phát sáng
+rotary_fan,7,Rotary fan
 white_bow_(anatomy),7,Nơ trắng
 pink_bow_(anatomy),7,Nơ hồng
 banana_earrings,0,Khuyên tai chuối
 gill_piercing,7,Khuyên mang
+ruby_necklace,7,Ruby Vòng cổ
 christmas_tree_hat,0,Mũ cây thông Noel
 plaid_choker,0,Vòng cổ kẻ caro
 cone_hat,7,Mũ nón nhọn
 monotone_jewelry,7,Trang sức một tông
+pool_ring,7,Pool Nhẫn
 studded_cock_ring,7,Nhẫn dương vật đính đinh
 vine_belt,0,Thắt lưng dây leo
 pseudo_mask,7,Mặt nạ giả
@@ -2332,48 +3018,67 @@ neck_ribbon_removed,0,Ruy băng cổ đã tháo ra
 necktie_print,0,Họa tiết cà vạt
 big_nipple_ring,7,Nhẫn núm vú to
 spiked_tail_ring,7,Nhẫn đuôi có gai
+veiled_hat,7,Veiled Mũ
 no_necklace,0,Không có vòng cổ
 grey_hair_tie,7,Cột tóc xám
 ring_choker,7,Vòng cổ vòng
 pinstripe_necktie,0,Cà vạt sọc chỉ
+o-ring_loincloth,7,O-ring loincloth
 pink_ear_piercing,7,Xâu khuyên tai hồng
 beak_ring,7,Nhẫn mỏ
 rabbit_necklace,0,Vòng cổ thỏ
 hat_theft,0,Trộm mũ
 raccoon_mask,0,Mặt nạ gấu mèo
+tickle_belt,7,Tickle Thắt lưng
 hypnotic_mask,7,Mặt nạ bị thôi miên
+scary_shiny_glasses,7,Scary shiny Kính mắt
 belt_pull,0,Đang kéo thắt lưng
 double_boob_hat,7,Mũ ngực kép
+hexagram_earrings,0,Hexagram Khuyên tai
 two_tone_bow_tie,7,Cà vạt nơ hai tông
 bottomwear_ring,7,Nhẫn đồ mặc dưới
 penguin_bag,0,Túi cánh cụt
+boston_bag,0,Boston Túi
 horn_belt,0,Thắt lưng sừng
+shark_sleeping_bag,0,Cá mập Đang ngủ Túi
+full_mask,0,Full Mặt nạ
 holly_earrings,0,Khuyên tai cây nhựa xanh
+side-tie_loincloth,0,Side-tie loincloth
 brown_pup_mask,7,Mặt nạ con non nâu
 discarded_headwear,7,Phụ kiện đội đầu đã bỏ đi
 pride_color_bow,7,Nơ màu tự hào
 oversized_headwear,7,Phụ kiện đầu quá khổ
 diagonal-striped_scarf,0,Khăn quàng chéo kẻ sọc
 brooch_removed,0,Trâm cài đã tháo ra
+big_sunglasses,7,Lớn Kính râm
 rainbow_belt,0,Thắt lưng cầu vồng
 two_tone_bow_(anatomy),7,Nơ hai tông
+ruby_ring,7,Ruby Nhẫn
 two_tone_goggles,7,Kính bảo hộ hai tông
 bow_bottomwear,7,Đồ mặc dưới nơ
+speed_bag,7,Speed Túi
 bear_hat_ornament,0,Đồ trang trí mũ gấu
 animal-themed_eyewear,0,Kính chủ đề động vật
+lower_lip_piercing,7,Lower lip Khuyên xỏ
 medical_bag,7,Túi y tế
+blue_beret,7,Blue Mũ beret
+oguri_cap_(umamusume)_(cosplay),0,Oguri cap (umamusume) (cosplay)
 braided_ribbon,7,Ruy băng tết
+taped_on_glasses,7,Taped on Kính mắt
 weight_belt,0,Thắt lưng cân nặng
 magenta_bowtie,7,Nơ cổ hồng cánh sen
+dagoth_ur's_mask,0,Dagoth ur's Mặt nạ
 finger_bow,0,Nơ ngón tay
 hair_over_hairband,0,Tóc phía trên băng đô
 pink_ring,7,Nhẫn hồng
 pink_cross_tie,0,Cà vạt chữ thập hồng
+chikuma_mask,0,Chikuma Mặt nạ
 ribbon_around_arm,0,Ruy băng quanh cánh tay
 pointed_mask,0,Mặt nạ nhọn
 metal_cock_ring,7,Nhẫn dương vật kim loại
 butt_hat,7,Mũ mông
 crotch_piercing,7,Khuyên đũng quần
+pokemon_trainer_hat,7,Pokemon trainer Mũ
 ear_hat,7,Mũ tai
 scarf_over_breasts,0,Khăn quàng phía trên ngực
 removing_belt,0,Đang cởi thắt lưng
@@ -2386,8 +3091,12 @@ leg_bag,7,Túi chân
 ghost_hat_ornament,0,Đồ trang trí mũ ma
 red_purse,7,Túi cầm tay đỏ
 eyewear_on_animal,0,Kính mắt trên động vật
+outer_labia_piercing,7,Outer labia Khuyên xỏ
+hospital_bracelet,7,Hospital Vòng tay
 frilled_hair_tie,0,Cột tóc nhún xếp
+transformative_hat,7,Transformative Mũ
 transparent-framed_eyewear,0,Kính trong suốt khung
+trophy_necklace,7,Trophy Vòng cổ
 holly_bow,7,Nơ cây nhựa xanh
 pulling_mask,7,Đang kéo mặt nạ
 purple_visor_cap,0,Mũ lưỡi trai có lưới chắn tím
@@ -2402,8 +3111,10 @@ star_headwear,7,Phụ kiện đầu ngôi sao
 sentient_scarf,0,Khăn quàng có tri giác
 envelope_earrings,0,Khuyên tai phong bì
 rainbow_earrings,0,Khuyên tai cầu vồng
+anime_glasses,7,Anime Kính mắt
 ofuda_on_hat,0,Bùa ofuda trên mũ
 holding_tie,7,Cầm cà vạt
+postman_hat,7,Postman Mũ
 eyeball_bracelet,0,Vòng tay mắt cầu
 red_ring,7,Nhẫn đỏ
 glistening_accessory,7,Phụ kiện bóng nhẫy
@@ -2411,12 +3122,17 @@ belt_necktie,0,Cà vạt thắt lưng
 headband_ribbon,0,Ruy băng đô
 hat_hug,0,Ôm mũ
 flower_head_accessory,7,Phụ kiện đầu hoa
+swastika_necklace,0,Swastika Vòng cổ
 cube_hat_ornament,0,Đồ trang trí mũ khối lập phương
+speedo_ring,7,Speedo Nhẫn
+vacuum_bag,0,Vacuum Túi
+pentagonal_nipple_piercing,7,Pentagonal nipple Khuyên xỏ
 fish_necklace,0,Vòng cổ cá
 double_ear_ring,7,Nhẫn tai kép
 fur_bag,0,Túi lông thú
 tail_choker,7,Vòng cổ đuôi
 cross-laced_bag,0,Túi chữ thập buộc dây
+wearable_sleeping_bag,0,Wearable Đang ngủ Túi
 floral_print_headwear,0,Phụ kiện đầu họa tiết thêu hoa
 light_jewelry,7,Trang sức nhạt
 ribbon_tie,7,Cà vạt ruy băng
@@ -2424,43 +3140,64 @@ striped_accessory,7,Phụ kiện kẻ sọc
 polka_dot_choker,0,Vòng cổ chấm bi
 tan_jewelry,7,Trang sức màu nâu rám nắng
 beard_bow,0,Nơ râu
+rook_piercing,0,Rook Khuyên xỏ
 bow_on_horn,7,Nơ trên sừng
+olympic_shooting_glasses,0,Olympic shooting Kính mắt
 bow_(knot),7,Nơ
 pride_color_baseball_cap,7,Mũ bóng chày màu tự hào
 head_bag,7,Túi đầu
+heart_brooch_holder,0,Trái tim Trâm cài holder
 rainbow_hat,7,Mũ màu cầu vồng
+fan_dancing,0,Fan Đang nhảy múa
+fan_colored,7,Fan colored
+prayer_ribbon,0,Prayer Ruy băng
 necktie_headband,7,Băng đô cà vạt
+raven_bow_(genshin_impact),0,Raven Nơ (genshin impact)
+paperclip_earrings,0,Paperclip Khuyên tai
 see-through_hairband,0,Băng đô xuyên thấu
 duck_hat,0,Mũ vịt
 holding_opera_glasses,0,Cầm kính ô-pê-ra
 tribal_mask,7,Mặt nạ văn hoá bộ lạc
 teal_jewelry,7,Trang sức màu xanh cổ vịt
+hoopa_ring,7,Hoopa Nhẫn
 adjusting_sunglasses,7,Đang chỉnh kính râm
+horn-rim_eyewear,0,Horn-rim Kính mắt
 belly_bow,7,Nơ bụng
 horse_hat,0,Mũ ngựa
 goat_mask,0,Mặt nạ dê
 shoulder_piercing,7,Khuyên vai
+folding_fan_design,0,Folding fan design
 winter_cap,7,Mũ len mùa đông
 scarf_belt,0,Thắt lưng khăn quàng
 looking_over_sunglasses,7,Nhìn qua kính râm
 long_necklace,0,Vòng cổ dài
 blue_ribbon_stripe,7,Sọc ruy băng xanh dương
 skull_piercing,7,Khuyên đầu lâu
+peace_symbol_necklace,7,Peace Biểu tượng Vòng cổ
 star_bow,7,Nơ ngôi sao
 yellow_cap,7,Mũ màu vàng
+tan_beanie,7,Nâu rám Mũ len
 gorilla_mask,0,Mặt nạ khỉ đột
 capelet_belt,0,Thắt lưng áo choàng ngắn
+yumihike_shiro_no_sekai_de_(project_sekai),0,Yumihike shiro không có sekai de (project sekai)
 ribbon-trimmed_tube_top,0,Áo dạng ống ruy băng viền
 whisker_ring,7,Nhẫn râu mép
 gradient_belt,0,Thắt lưng chuyển sắc
+dimensional_ring,7,Dimensional Nhẫn
 staring_bird_mask,7,Nhìn chằm chằm mặt nạ chim
 floating_ring,7,Nhẫn lơ lửng
 brown_top_hat,7,Mũ chóp cao nâu
+criss-cross_ribbon,0,Criss-cross Ruy băng
 tail-tie_swimwear,7,Đồ bơi cà vạt đuôi
 tag_earrings,0,Khuyên tai nhãn
+flappy_hat,0,Flappy Mũ
 silver_ribbon,0,Ruy băng bạc
+diamond_o-ring,0,Diamond o-ring
 broken_bow,0,Nơ bị gãy
+ixa_belt,0,Ixa Thắt lưng
 leaf_brooch,0,Trâm cài chiếc lá
+lesbian_flag_scarf,0,Lesbian Hình cờ Khăn quàng
+improvised_cock_ring,7,Improvised cock Nhẫn
 orange_backpack,7,Ba lô cam
 beard_ribbon,0,Ruy băng râu
 bow_in_eye,0,Nơ trong mắt
@@ -2469,32 +3206,47 @@ animal-themed_ring,0,Nhẫn chủ đề động vật
 shell_choker,0,Vòng cổ vỏ
 raised_glasses,7,Kính dựng lên
 jewelry_star_bracelet,0,Vòng tay ngôi sao trang sức
+awareness_ribbon,7,Awareness Ruy băng
 see-through_choker,0,Vòng cổ choker xuyên thấu
+accessory_swap,7,Phụ kiện swap
 hexagon_brooch,0,Trâm cài lục giác
 reflection_in_glasses,7,Ảnh phản chiếu trong kính mắt
+mars_symbol_earrings,0,Mars Biểu tượng Khuyên tai
 mask_face,7,Khuôn mặt nạ
 heart-shaped_fan,0,Quạt hình trái tim
+vassal_fan_(demon_dragon_fan)_(tate_no_yuusha_no_nariagari),0,Vassal fan (demon Rồng fan) (tate không có yuusha không có nariagari)
+vassal_fan_(tate_no_yuusha_no_nariagari),0,Vassal fan (tate không có yuusha không có nariagari)
 ribbon_around_leg,7,Ruy băng quanh chân
+ribbon_spool,0,Ruy băng spool
 polka_dot_mask,0,Mặt nạ chấm bi
 cross_hair_accessory,7,Phụ kiện tóc chữ thập
 fishnet_choker,0,Vòng cổ lưới
 sparkle_hat_ornament,0,Đồ trang trí mũ ánh lấp lánh
 flag_ribbon,0,Ruy băng hình cờ
 flag_print_scarf,0,Khăn quàng họa tiết hình cờ
+new_year_glasses,7,New year Kính mắt
 new_piercing,7,Khuyên mới
 gradient_choker,0,Vòng cổ chuyển sắc
 flower_ear_accessory,7,Phụ kiện tai hoa
 flower_ear_piercing,7,Xâu khuyên tai hoa
+goldmask's_mask,0,Goldmask's Mặt nạ
 gold_navel_piercing,7,Khuyên rốn vàng kim
 monotone_ribbon,7,Ruy băng một tông
 unworn_choker,0,Vòng cổ không mặc
+muir_cap,7,Muir cap
 front-tie_topwear,7,Áo cà vạt phía trước
 straw_bag,0,Túi rơm
 bat_accessory,7,Phụ kiện dơi
 cloud_earrings,0,Khuyên tai đám mây
+musk_mask,7,Xạ hương Mặt nạ
 camouflage_belt,0,Thắt lưng rằn ri
+multicolored_beanie,7,Multicolored Mũ len
+ballistic_mask,7,Ballistic Mặt nạ
 black_cowboy_hat,7,Mũ cao bồi màu đen
+petal_earrings,0,Petal Khuyên tai
+plectrum_necklace,0,Plectrum Vòng cổ
 gold_neck_ring,7,Nhẫn cổ vàng kim
+swallow_bow,7,Swallow Nơ
 spiked_hair_accessory,7,Phụ kiện tóc có gai
 floral_bow_hair_ornament,0,Phụ kiện tóc nơ thêu hoa
 missing_accessory,7,Phụ kiện thiếu
@@ -2504,65 +3256,102 @@ donut_earrings,0,Khuyên tai bánh donut
 carrot_bag,0,Túi cà rốt
 bag_ribbon,0,Ruy băng túi
 ribbon-trimmed_cuffs,0,Ống bọc cổ tay ruy băng viền
+hat_box,0,Mũ Cái hộp
 mask_removed,7,Mặt nạ đã tháo ra
+belt_harness,7,Thắt lưng Đai buộc
 teal_glasses,7,Kính xanh cổ vịt
 teal_eyewear,7,Kính xanh cổ vịt
+hexagonal_glasses,7,Hexagonal Kính mắt
 pride_color_ribbon,7,Ruy băng màu tự hào
 see-through_bowtie,0,Nơ cổ xuyên thấu
 acorn_earrings,0,Khuyên tai quả sồi
 print_baseball_cap,7,Mũ bóng chày họa tiết
 basket_bag,0,Túi cái rổ
+lowering_glasses,7,Lowering Kính mắt
 rainbow_accessory,7,Phụ kiện cầu vồng
 thin_scarf,0,Khăn quàng mỏng
 bow_on_back,7,Nơ trên lưng
+bow_scabbard,0,Nơ scabbard
 angel_fangs_piercing,7,Khuyên nanh thiên thần
+tiger_mask_(character)_(cosplay),0,Hổ Mặt nạ (character) (cosplay)
+ignis_cap,0,Ignis cap
+waterful_ring-toss,0,Waterful ring-toss
+sternum_piercing,7,Sternum Khuyên xỏ
 pilot_goggles,7,Kính bảo hộ phi công
 leaf_accessory,7,Phụ kiện chiếc lá
 stone_mask_(zelda),0,Mặt nạ đá
+in_umbrella,0,Trong Cái ô
 anchor_bracelet,0,Vòng tay cái neo
+cloth_belt,7,Cloth Thắt lưng
+zipper_pull_tab_earrings,0,Khóa kéo Kéo tab Khuyên tai
 pig_hat,0,Mũ lợn
+puring_ring,0,Puring Nhẫn
 striped_glasses,0,Kính kẻ sọc
 skeletal_bracelet,0,Vòng tay hình bộ xương
 tiny_hat,7,Mũ rất nhỏ
 pumpkin_ear_ring,7,Nhẫn tai bí ngô
+pulled_from_hat,7,Pulled từ Mũ
+ultra_zero_bracelet,0,Ultra zero Vòng tay
 candy_bracelet,7,Vòng tay kẹo
 bear_brooch,0,Trâm cài gấu
+cabbie_hat,7,Cabbie Mũ
 wing-shaped_piercing,0,Khuyên hình cánh
 planet_ring,7,Nhẫn hành tinh
 monotone_piercing,7,Khuyên một tông
+cece_hat_(zelda),0,Cece Mũ (zelda)
+okame_mask,0,Okame Mặt nạ
 horned_hairband,7,Băng đô có sừng
 two_tone_backpack,7,Ba lô hai tông
 penis_necklace,7,Vòng cổ dương vật
+razor_blade_necklace,0,Razor blade Vòng cổ
+eyeball_beret,0,Nhãn cầu Mũ beret
 pearl_hat_ornament,0,Đồ trang trí mũ ngọc trai
 snowman_hat,0,Mũ người tuyết
+burger_hat,0,Burger Mũ
 metal_choker,0,Vòng cổ kim loại
 crystal_hat_ornament,0,Đồ trang trí mũ pha lê
 dolphin_hat_ornament,0,Đồ trang trí mũ cá heo
 dolphin_piercing,7,Khuyên cá heo
 hand_piercing,0,Khuyên bàn tay
+bull_ring,7,Bull Nhẫn
 ribbon-trimmed_bowtie,0,Nơ cổ ruy băng viền
+vertical_labret_piercing,7,Dọc labret Khuyên xỏ
 matching_accessories,7,Phụ kiện đồng bộ
 headwear_removed,7,Phụ kiện đội đầu đã tháo ra
+belt_loop,7,Thắt lưng loop
 ribbon_around_foot,0,Ruy băng quanh bàn chân
 ribbon_insertion,7,Đưa vào ruy băng
 ribbon_heart,7,Trái tim ruy băng
 hand_on_sunglasses,7,Bàn tay trên kính râm
 paper_bag_hat,7,Mũ giấy túi
+dolphinbite_piercing,7,Dolphinbite Khuyên xỏ
+veiled_umbrella,0,Veiled Cái ô
 teal_hairband,7,Băng đô xanh cổ vịt
+reflective_mask,0,Reflective Mặt nạ
 finger_to_headwear,0,Ngón tay tới phụ kiện đội đầu
 spade_hat_ornament,0,Đồ trang trí mũ hình cái xẻng
+dango_earrings,0,Dango Khuyên tai
+dangling_earring,0,Dangling earring
+o-ring_bandeau,0,O-ring bandeau
 magenta_ribbon_stripe,7,Sọc ruy băng hồng cánh sen
 holding_brooch,0,Cầm trâm cài
 green_ribbon_stripe,7,Sọc ruy băng xanh lá
+print_beanie,7,Họa tiết Mũ len
 penis_scarf,7,Khăn quàng dương vật
 swimwear_ring,7,Nhẫn đồ bơi
 two_tone_glasses,7,Kính hai tông
 gradient_umbrella,0,Cái ô chuyển sắc
 two_tone_piercing,7,Khuyên hai tông
 dark_jewelry,7,Trang sức sẫm
+oguri_cap_spacing_out,0,Oguri cap spacing out
+hooked_eyewear,7,Hooked Kính mắt
+hooped_ear_ring,7,Hooped ear Nhẫn
 checkered_headwear,7,Phụ kiện đầu kẻ ca-rô
 shared_piercing,7,Khuyên dùng chung
+love_live!_fan_fun_festival,0,Love live! fan fun festival
 huge_hat,7,Mũ khổng lồ
+fox_mask_(silent_hill)_(cosplay),0,Cáo Mặt nạ (silent hill) (cosplay)
+loki_mask,7,Loki Mặt nạ
 frame_handbag,0,Túi xách khung hình
 skull_belt_buckle,7,Khóa thắt lưng đầu lâu
 white_purse,7,Túi cầm tay trắng
@@ -2570,4 +3359,8 @@ white_ear_ring,7,Nhẫn tai trắng
 white_backpack,7,Ba lô trắng
 multicolored_backpack,7,Ba lô nhiều màu
 cock_ring_only,7,Chỉ có nhẫn dương vật
+champion_belt,7,Champion Thắt lưng
+birthday_cake_hat,0,Birthday Bánh ngọt Mũ
 furgonomic_jewelry,7,Trang sức nửa người nửa thú
+cleaning_glasses,7,Cleaning Kính mắt
+legendary_bow_(tate_no_yuusha_no_nariagari),0,Legendary Nơ (tate không có yuusha không có nariagari)

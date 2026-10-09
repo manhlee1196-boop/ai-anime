@@ -1,46 +1,268 @@
 monochrome,0,Đơn sắc
 comic,0,Truyện tranh
+chibi,0,Chibi
 sketch,0,Phác thảo
 chibi_only,0,Chỉ có chibi
 anime_coloring,0,Tô màu anime
+realistic,0,Realistic
+style_parody,0,Style Tranh chế
+chibi_inset,0,Chibi inset
 pixel_art,0,Tranh pixel
 3d,0,Hình ảnh 3D
+silent_comic,0,Silent Truyện tranh
 partially_colored,0,Được tô màu một phần
+retro_artstyle,0,Hoài cổ artstyle
+indian_style,0,Ấn Độ style
 lineart,0,Nét vẽ
 painting_(object),0,Bức tranh
+fake_screenshot,0,Fake screenshot
+official_style,0,Official style
 flat_color,0,Màu phẳng
 traditional_halo,0,Vầng hào quang truyền thống
+art_program_in_frame,0,Art program trong frame
+dakimakura,7,Dakimakura
+comic_panel,7,Truyện tranh panel
+screenshot_inset,0,Screenshot inset
+segmented_comic,0,Segmented Truyện tranh
+mp3_player,0,Mp3 player
 no_lineart,0,Không có nét vẽ
+realistic_feral,7,Realistic Động vật không nhân hóa
+faux_traditional_media,0,Faux traditional media
 sketchbook,0,Sổ phác thảo
+art_tools_in_frame,0,Art Dụng cụ trong frame
+screencap,7,Screencap
+faux_retro_artstyle,0,Faux Hoài cổ artstyle
+fine_art_parody,0,Fine art Tranh chế
+comic_sans,0,Truyện tranh sans
+manga_(object),0,Manga (object)
+traditional_nun,0,Traditional Nữ tu
+game_screenshot_inset,0,Game screenshot inset
 painting_(action),0,Bức tranh
+manga_cover,0,Manga Ảnh bìa
+official_art_inset,0,Official art inset
+style_emulation,7,Style emulation
+left-to-right_manga,0,Left-to-right manga
+art_nouveau,0,Art nouveau
+boned_meat,0,Boned Thịt
+4_panel_comic,7,4 panel Truyện tranh
+full_page_comic,0,Full page Truyện tranh
+traditional_youkai,0,Traditional youkai
+2_panel_comic,7,2 panel Truyện tranh
+comic_cover,0,Truyện tranh Ảnh bìa
+3_panel_comic,7,3 panel Truyện tranh
+vertical_scroll_comic,0,Dọc scroll Truyện tranh
 multiple_monochrome,0,Nhiều đơn sắc
+anime_nosebleed,7,Anime nosebleed
+sexualized_chibi,0,Sexualized chibi
 thick_lineart,0,Nét vẽ dày
 photorealistic,0,Phong cách ảnh chân thực
+art_brush,0,Art brush
+digital_clock,0,Digital Đồng hồ
+right-to-left_comic,0,Right-to-left Truyện tranh
+5_panel_comic,7,5 panel Truyện tranh
+box_art,0,Cái hộp art
+creating_art,7,Creating art
+abstract_art,7,Abstract art
+ai-generated_art_(topic),0,Ai-generated art (topic)
+6_panel_comic,7,6 panel Truyện tranh
+digital_hazard,0,Digital hazard
+digital_dissolve,0,Digital dissolve
 colored_lineart,0,Nét vẽ nhuộm màu
+watercolor_effect,0,Watercolor effect
+sprite_art,0,Sprite art
+anime_style,7,Anime style
 chibi_on_head,0,Chibi trên đầu
 painted_claws,7,Móng vuốt vẽ họa tiết
+3d_fluid_sim,7,Hình ảnh 3D fluid sim
+anime_screenshot_inset,0,Anime screenshot inset
+ink_wash_painting,0,Ink wash painting
+black_line_art,7,Black line art
+digital_thermometer,0,Digital thermometer
+digital_camouflage,0,Digital Rằn ri
+latte_art,0,Latte art
+7_panel_comic,7,7 panel Truyện tranh
+fleischer_style_toon,7,Fleischer style toon
+draw_this_in_your_style_challenge,0,Draw this trong your style challenge
 painted_balls,7,Tinh hoàn vẽ họa tiết
+art_shift,0,Art shift
+glitch_art,0,Glitch art
+on_style,7,On style
+traditional_elf,0,Traditional Tiên
+realistic_lighting,7,Realistic lighting
+wall_art,7,Wall art
+drawing_on_fourth_wall,0,Drawing on fourth wall
+fake_screencap,7,Fake screencap
+white_line_art,7,White line art
 painted_butt,7,Mông vẽ họa tiết
+sketch_inset,0,Phác thảo inset
+realistic_shading,7,Realistic shading
+blue_line_art,7,Blue line art
+screencap_redraw,7,Screencap redraw
+pixel_art_inset,0,Pixel art inset
+cover_sketch,0,Ảnh bìa Phác thảo
+story_in_picture,7,Story trong picture
+art_deco,0,Art deco
+unamused_friend_comic_(meme),0,Unamused friend Truyện tranh (meme)
 painting_fingernails,0,Đang vẽ móng tay
+fake_box_art,0,Fake Cái hộp art
+manga_style,7,Manga style
+8_panel_comic,7,8 panel Truyện tranh
+vent_art,7,Vent art
+ascii_art,0,Ascii art
+egyptian_art,0,Ai Cập art
+twitter_screenshot,0,Twitter screenshot
+simulated_traditional_(artwork),7,Simulated traditional (artwork)
+3d_print,7,Hình ảnh 3D Họa tiết
+style_crossover,7,Style Giao thoa tác phẩm
+red_line_art,7,Red line art
+small_comic,7,Nhỏ Truyện tranh
+art_gallery,0,Art gallery
+adaptation_comparison,0,Adaptation comparison
+digital_sketch,7,Digital Phác thảo
+jinki-style_restrained,0,Jinki-style Bị giữ chặt
+semi-realistic,7,Semi-realistic
+shaded_sketch,7,Shaded Phác thảo
+multiple_style_parody,0,Nhiều style Tranh chế
+retro_anime_style,7,Hoài cổ anime style
+dunhuang_style,0,Dunhuang style
+purple_line_art,7,Purple line art
+art_prompt,7,Art prompt
+lineart_zoom_layer,0,Nét vẽ Phóng to layer
+faux_3d,0,Faux Hình ảnh 3D
 painting_toenails,0,Đang vẽ móng chân
+9_panel_comic,7,9 panel Truyện tranh
+personal_art,7,Personal art
 cave_painting,7,Bức tranh hang động
+mini_comic,7,Siêu ngắn Truyện tranh
+rubber_hose_style,7,Rubber hose style
+pink_line_art,7,Pink line art
+capsces_digital_ink_(modeler),9,Capsces digital ink (modeler)
+different_artstyle,7,Different artstyle
+greek_painting_style,0,Hy Lạp painting style
+mosaic_art,0,Mosaic art
+pop_art,0,Pop art
+comic_panel_inset,0,Truyện tranh panel inset
+long_comic,7,Long Truyện tranh
+brown_line_art,7,Nâu line art
+hate_art,7,Hate art
+motivational_art,7,Motivational art
+ai_drawing_anime_characters_eating_ramen_(meme),0,Ai drawing anime nhân vật ăn ramen (meme)
+alternate_art_style,0,Khác art style
+green_line_art,7,Green line art
+personal_digital_assistant,0,Personal digital assistant
+art_deco_architecture,7,Art deco architecture
+art_vs_artist,0,Art vs artist
+traditional_harpy,0,Traditional harpy
+digital_camo,7,Digital Rằn ri
+short_comic,7,Ngắn Truyện tranh
 painted_stripes,7,Sọc vẽ họa tiết
+style_change,7,Style change
+on-model_vs_in_your_style_challenge,0,On-model vs trong your style challenge
+anime_figure,7,Anime Dáng người
+performance_art,7,Performance art
 painting_on_wall,7,Bức tranh trên bức tường
+art_progression,7,Art progression
+horizontal_comic,0,Horizontal Truyện tranh
+fine_art,0,Fine art
+digital_coloring,7,Digital coloring
+royale_style_(idolmaster),0,Royale style (idolmaster)
+semi-realistic_feral,7,Semi-realistic Động vật không nhân hóa
+pomni_(the_amazing_digital_circus)_(cosplay),0,Pomni (the amazing digital circus) (cosplay)
 painted_hooves,7,Vó vẽ họa tiết
+3d_effect,7,Hình ảnh 3D effect
+10_panel_comic,7,10 panel Truyện tranh
 egg_painting,0,Bức tranh trứng
+sailor_chibi_moon_(cosplay),0,Thủy thủ chibi Mặt trăng (cosplay)
+art_class,7,Art class
+jungle_style,0,Rừng rậm style
+art_supplies,0,Art supplies
+3d_mousepad,7,Hình ảnh 3D mousepad
+large_comic,7,Lớn Truyện tranh
+medium_comic,7,Vừa Truyện tranh
 brown_monochrome,7,Màu nâu đơn sắc
+medieval_style,7,Trung cổ style
+art_styles_image_response,0,Art styles image response
+sketch_animation,7,Phác thảo animation
+digital_pen,7,Digital Bút máy
 color_sketch,7,Bản phác thảo màu
+agnes_digital_(umamusume)_(cosplay),0,Agnes digital (umamusume) (cosplay)
+how_to_draw_manga_redraw_challenge_(meme),0,How to draw manga redraw challenge (meme)
+orange_line_art,7,Orange line art
 mostly_monochrome,7,Chủ yếu đơn sắc
+in_comic_sequence,7,Trong Truyện tranh sequence
+digital_rain,0,Digital Mưa
+euphrates_3d_(modeler),9,Euphrates Hình ảnh 3D (modeler)
+grey_line_art,7,Grey line art
+watercolor_tray,0,Watercolor Cái khay
+split_depth,0,Chia hai depth
+art_pack,7,Art pack
+what_has_art_done,7,What has art done
+full_render,7,Full render
 painted_markings,7,Vằn vẽ họa tiết
+multicolored_line_art,7,Multicolored line art
+2d_on_3d,7,2d on Hình ảnh 3D
+3d_printer,0,Hình ảnh 3D printer
+anime_girl_throwing_things_(meme),0,Anime girl Đang ném things (meme)
+2000s_anime_style,7,Năm 2000 anime style
+splash_art,7,Splash art
 blue_lineart,0,Nét vẽ xanh dương
+traditional_ninja,0,Traditional ninja
+traditional_animation,7,Traditional animation
+american_traditional,7,American traditional
+froggy_style,0,Froggy style
+art_comparison,7,Art comparison
+digital_world,7,Digital world
+realistic_hypnosis,7,Realistic hypnosis
 american_traditional_tattoo,0,Hình xăm truyền thống Mỹ
+art_tool_censor,0,Art tool censor
+line_art_only,7,Line art only
+painted_eggs,7,Painted Trứng
 pencil_sketch,7,Bản phác thảo bút chì
+cancelled_comic,7,Cancelled Truyện tranh
+clavia_digital_musical_instruments,0,Clavia digital musical Nhạc cụ
+voxel_art,0,Voxel art
+omni-directional_mobility_gear,7,Omni-directional mobility Bánh răng
+art_meme,7,Art meme
+comic_style,7,Truyện tranh style
+anniversary_art,7,Anniversary art
+anime_girl_hiding_from_a_terminator_(meme),0,Anime girl hiding từ a terminator (meme)
+yellow_line_art,7,Yellow line art
+omori_in_your_style_challenge,0,Omori trong your style challenge
 wall_painting,7,Bức tranh bức tường
+barrel_art,7,Barrel art
+art_dump,7,Art dump
+victorian_style,7,Thời Victoria style
+animated_sketch,7,Animated Phác thảo
 detailed_sketch,7,Bản phác thảo có chi tiết
 painting_claws,7,Đang vẽ móng vuốt
 torn_painting,0,Bức tranh bị rách
 tan_monochrome,7,Da rám nắng đơn sắc
+living_art,7,Living art
+11_panel_comic,7,11 panel Truyện tranh
+protest_art,7,Protest art
 clean_lineart,7,Nét vẽ sạch
+digital_display,7,Digital display
+digital_transformation,7,Digital Biến hình
+wheeze_comic_(meme),0,Wheeze Truyện tranh (meme)
 red_lineart,0,Nét vẽ đỏ
+domi_3d_(modeler),9,Domi Hình ảnh 3D (modeler)
+word_art,7,Word art
+anti-art_attachment,0,Anti-art attachment
+digital_watch,7,Digital watch
 detailed_painting,7,Bức tranh có chi tiết
+jax_(the_amazing_digital_circus)_(cosplay),0,Jax (the amazing digital circus) (cosplay)
+anime_reference,7,Anime reference
+art_studio,7,Art studio
+style_swap,7,Style swap
+shift_jis_art,0,Shift jis art
+digital_pastel_(artwork),7,Digital pastel (artwork)
+digital_inflation,7,Digital Phình to
 outline_with_lineart,0,Đường viền kèm nét vẽ
+stop_motion_style,7,Stop motion style
+12_panel_comic,7,12 panel Truyện tranh
+13_panel_comic,7,13 panel Truyện tranh
+comic_con,7,Truyện tranh con
+digital_color,7,Digital color
+traditional_japanese,7,Traditional Nhật Bản
+realistic_cum_volume,7,Realistic tinh dịch volume
+emo_art,0,Emo art
