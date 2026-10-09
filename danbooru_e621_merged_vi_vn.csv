@@ -1,6 +1,5 @@
 solo,0,Một nhân vật
 1girl,0,Một nhân vật nữ
-highres,5,Độ phân giải cao
 breasts,0,Ngực
 long_hair,0,Tóc dài
 looking_at_viewer,0,Nhìn người xem
@@ -10,14 +9,12 @@ open_mouth,0,Miệng mở
 simple_background,0,Nền đơn giản
 anthro,7,Động vật nhân hóa
 mammal,12,Động vật có vú
-hi_res,14,Độ phân giải cao
 shirt,0,Áo sơ mi
 short_hair,0,Tóc ngắn
 male,7,Giới tính nam
 female,7,Giới tính nữ
 tail,0,Đuôi
 blue_eyes,0,Mắt xanh dương
-absurdres,5,Độ phân giải cực cao
 genitals,7,Bộ phận sinh dục
 nipples,0,Núm vú
 white_background,0,Nền trắng
@@ -47,7 +44,6 @@ jewelry,0,Trang sức
 standing,0,Đang đứng
 bodily_fluids,7,Dịch cơ thể
 hair_between_eyes,0,Tóc giữa hai mắt
-digital_media_(artwork),14,Tranh kỹ thuật số
 animal_ears,0,Tai động vật
 sitting,0,Đang ngồi
 teeth,0,Răng
@@ -63,7 +59,6 @@ cleavage,0,Khe ngực
 jacket,0,Áo khoác
 thighhighs,0,Tất cao đùi
 clothed,7,Mặc quần áo
-absurd_res,14,Độ phân giải cực cao
 underwear,0,Đồ lót
 ribbon,0,Ruy băng
 white_shirt,0,Áo trắng
@@ -119,7 +114,6 @@ red_hair,0,Tóc đỏ
 heart,0,Trái tim
 canis,12,Họ chó
 speech_bubble,0,Bong bóng thoại
-translation_request,5,Yêu cầu dịch
 thick_thighs,0,Đùi đầy đặn
 anus,0,Hậu môn
 male/female,7,Nam và nữ
@@ -169,10 +163,8 @@ pointy_ears,0,Tai nhọn
 hairband,0,Băng đô
 dialogue,0,Lời thoại
 necktie,0,Cà vạt
-translated,5,Đã dịch
 pleated_skirt,0,Chân váy ly
 fingers,7,Ngón tay
-photoshop_(medium),5,Ảnh chỉnh bằng Photoshop
 multiple_boys,0,Nhiều nhân vật nam
 barefoot,0,Chân trần
 black_gloves,0,Găng tay đen
@@ -208,7 +200,6 @@ official_alternate_costume,0,Trang phục thay thế chính thức
 bottomwear,7,Trang phục thân dưới
 hand_up,0,Giơ tay
 muscular_male,0,Nam cơ bắp
-official_art,5,Tranh chính thức
 brown_body,7,Cơ thể nâu
 indoors,0,Trong nhà
 big_butt,7,Mông lớn
@@ -226,7 +217,6 @@ size_difference,0,Chênh lệch kích thước
 cum_inside,7,Xuất tinh bên trong
 pink_eyes,0,Mắt hồng
 black_thighhighs,0,Tất cao đùi đen
-1:1,14,Tỷ lệ 1:1
 dragon,0,Rồng
 oral,0,Quan hệ bằng miệng
 cloud,0,Mây
@@ -333,11 +323,9 @@ off_shoulder,0,Trễ vai
 kimono,0,Áo kimono
 rabbit,0,Thỏ
 white_thighhighs,0,Tất cao đùi trắng
-animated,5,Ảnh động
 bag,0,Túi
 nail_polish,0,Sơn móng
 scarf,0,Khăn quàng
-digital_drawing_(artwork),14,Tranh vẽ kỹ thuật số
 black_nose,0,Mũi đen
 kneeling,0,Đang quỳ
 black_fur,0,Lông đen
@@ -346,8 +334,6 @@ leotard,0,Đồ liền thân
 watermark,0,Dấu bản quyền
 from_side,0,Góc nhìn bên cạnh
 cape,0,Áo choàng
-commission,5,Tranh đặt hàng
-untranslatable_commentary,5,Chú thích không dịch được
 red_bow,0,Nơ đỏ
 bird,0,Chim
 rabbit_ears,0,Tai thỏ
@@ -363,7 +349,6 @@ bottomless,0,Không mặc quần
 reptile,12,Loài bò sát
 bound,0,Bị trói
 character_name,0,Tên nhân vật
-chinese_commentary,5,Chú thích tiếng Trung
 grey_fur,0,Lông xám
 leporid,12,Họ thỏ
 multicolored_fur,0,Lông nhiều màu
@@ -406,7 +391,6 @@ handwear,7,Găng tay
 hands_up,0,Giơ hai tay
 black_choker,0,Vòng cổ choker đen
 orange_body,7,Cơ thể cam
-shaded,14,Có đổ bóng
 black_pants,0,Quần màu đen
 glowing,0,Phát sáng
 multiple_views,0,Nhiều góc nhìn
@@ -433,7 +417,6 @@ black_hat,0,Mũ màu đen
 puffy_short_sleeves,0,Tay áo ngắn phồng
 upper_teeth_only,0,Chỉ thấy răng trên
 gynomorph,7,Nhân vật nữ có cơ quan sinh dục nam
-3d_(artwork),14,Tranh 3D
 bovid,12,Họ bò
 night,0,Ban đêm
 pantherine,12,Phân họ báo
@@ -493,13 +476,11 @@ mythological_equine,12,Ngựa thần thoại
 book,0,Sách
 window,0,Cửa sổ
 white_socks,0,Tất màu trắng
-variant_set,5,Bộ biến thể
 gradient_hair,0,Tóc chuyển sắc
 sparkle,0,Lấp lánh
 horse_girl,0,Cô gái ngựa
 canine_genitalia,7,Bộ phận sinh dục chó
 cat_tail,0,Đuôi mèo
-widescreen,14,Màn hình rộng
 black_bow,0,Nơ đen
 white_border,0,Viền trắng
 grass,0,Cỏ
@@ -548,7 +529,6 @@ all_fours,0,Tư thế chống bằng bốn chi
 femboy,7,Nhân vật nam nữ tính
 from_behind_position,7,Tư thế từ phía sau
 ascot,0,Khăn ascot
-16:9,14,Tỷ lệ 16:9
 huge_butt,7,Mông rất lớn
 black_shorts,0,Quần short màu đen
 fruit,0,Trái cây
@@ -557,7 +537,6 @@ submissive,7,Phục tùng
 dominant,7,Thống trị
 canine_penis,7,Dương vật chó
 seductive,7,Quyến rũ
-korean_commentary,5,Chú thích tiếng Hàn
 sash,0,Đai vải
 pov,0,Góc nhìn thứ nhất
 plaid_clothes,0,Quần áo kẻ caro
@@ -621,7 +600,6 @@ expressionless,0,Mặt không biểu cảm
 open_smile,7,Cười miệng mở
 raised_tail,7,Đuôi dựng lên
 bare_legs,0,Chân trần
-non-web_source,5,Nguồn ngoài web
 petals,0,Cánh hoa
 double_bun,0,Hai búi tóc
 hooves,0,Móng guốc
@@ -650,7 +628,6 @@ ring,0,Nhẫn
 leaf,0,Lá cây
 sandals,0,Dép xăng đan
 holding_food,0,Cầm thức ăn
-game_asset,5,Tài nguyên trò chơi
 cat_girl,0,Cô gái mèo
 topless,7,Để ngực trần
 equine_penis,7,Dương vật ngựa
@@ -658,13 +635,11 @@ black_bikini,0,Bikini đen
 zettai_ryouiki,0,Khoảng hở giữa tất cao đùi và váy
 skindentation,0,Vết hằn trên da
 demon,0,Quỷ
-short_playtime,14,Giờ chơi ngắn
 highleg,0,Cắt cao ở hông
 red_skirt,0,Chân váy đỏ
 inner_ear_fluff,7,Lông tơ trong tai
 eyeshadow,0,Phấn mắt
 pubes,7,Lông mu
-colored,14,Có màu
 nipple_piercing,0,Khuyên núm vú
 kneehighs,0,Tất cao đến gối
 thick_eyebrows,0,Lông mày rậm
@@ -690,9 +665,7 @@ gem,0,Đá quý
 freckles,0,Tàn nhang
 fish,0,Cá
 machine,0,Máy móc
-3:4,14,Tỷ lệ 3:4
 caprine,12,Họ dê
-partial_commentary,5,Chú thích một phần
 overweight_male,7,Nam thừa cân
 headphones,0,Tai nghe chụp đầu
 ^_^,0,Biểu cảm ^_^
@@ -732,7 +705,6 @@ moon,0,Mặt trăng
 fox_tail,0,Đuôi cáo
 rose,0,Hoa hồng
 crown,0,Vương miện
-url,14,Đường link
 nose_blush,0,Đỏ sống mũi
 beak,0,Mỏ
 breath,0,Hơi thở
@@ -808,7 +780,6 @@ female/female,7,Nữ và nữ
 electronics,7,Đồ điện tử
 short_dress,0,Váy ngắn
 cleavage_cutout,0,Lỗ cắt khoe khe ngực
-paid_reward_available,5,Có phần thưởng trả phí
 dildo,0,Dương vật giả
 spots,0,Đốm
 drill_hair,0,Tóc xoắn
@@ -833,7 +804,6 @@ crossed_legs,0,Bắt chéo chân
 oral_penetration,7,Thâm nhập bằng miệng
 underboob,0,Ngực lộ phía dưới
 standing_on_one_leg,0,Đứng một chân
-traditional_media,5,Chất liệu truyền thống
 no_bra,0,Không mặc áo ngực
 handjob,0,Thủ dâm bằng tay
 female_pubic_hair,0,Lông mu nữ
@@ -853,7 +823,6 @@ red_shirt,0,Áo đỏ
 pink_bow,0,Nơ hồng
 frilled_sleeves,0,Tay áo nhún xếp
 bestiality,0,Quan hệ với động vật
-copyright_request,5,Yêu cầu bản quyền
 holding_phone,0,Cầm điện thoại
 holding_cup,0,Cầm cốc
 mammal_humanoid,12,Động vật có vú dạng người
@@ -872,7 +841,6 @@ dipstick_tail,7,Đuôi cụt
 building,0,Tòa nhà
 from_below,0,Góc nhìn từ dưới
 magical_girl,0,Thiếu nữ phép thuật
-4:3,14,Tỷ lệ 4:3
 x_hair_ornament,0,Phụ kiện tóc chữ X
 holding_gun,0,Cầm súng
 cat,0,Mèo
@@ -885,7 +853,6 @@ frilled_skirt,0,Chân váy nhún xếp
 facial_piercing,7,Khuyên mặt
 true_fox,12,Cáo thật
 wolf_ears,0,Tai sói
-animated_gif,5,GIF động
 first_person_view,7,Góc nhìn thứ nhất
 own_hands_together,0,Chắp hai tay trước mặt
 undressing,0,Đang cởi quần áo
@@ -893,10 +860,8 @@ hyper_genitalia,7,Bộ phận sinh dục phóng đại
 armwear,7,Đồ che cánh tay
 human_on_anthro,7,Người với nhân vật nhân hóa
 red_bowtie,0,Nơ cổ đỏ
-full-length_portrait,14,Ảnh toàn thân
 no_panties,0,Không mặc quần lót
 threesome,0,Quan hệ ba người
-md5_mismatch,5,MD5 không khớp
 yellow_background,0,Nền vàng
 cross,0,Thập tự
 tiger,0,Hổ
@@ -913,17 +878,14 @@ hair_accessory,7,Phụ kiện tóc
 straddling,0,Ngồi dạng chân qua
 red_flower,0,Hoa đỏ
 arthropod,0,Động vật chân khớp
-skeb_commission,5,Tranh đặt trên Skeb
 steam,0,Hơi nước
 transformation,0,Biến hình
 red_background,0,Nền đỏ
 translucent,0,Bán trong suốt
 towel,0,Khăn tắm
-lowres,5,Độ phân giải thấp
 blue_ribbon,0,Ruy băng xanh dương
 leg_up,0,Giơ chân
 cutie_mark,0,Cutie mark
-large_variant_set,5,Bộ biến thể lớn
 gesture,7,Cử chỉ tay
 sneakers,0,Giày thể thao
 two-piece_swimsuit,7,Đồ bơi hai mảnh
@@ -959,13 +921,11 @@ mob_cap,0,Mũ trùm đầu
 cum_on_face,7,Tinh dịch trên mặt
 sex_from_behind,0,Quan hệ từ phía sau
 6+girls,0,Sáu nhân vật nữ trở lên
-japanese_text,14,Chữ tiếng Nhật
 cloudy_sky,0,Bầu trời nhiều mây
 nude_female,7,Nữ khỏa thân
 wavy_mouth,0,Miệng gợn sóng
 red_fur,0,Lông đỏ
 candy,0,Kẹo
-third-party_source,5,Nguồn bên thứ ba
 outside_border,0,Ngoài viền ảnh
 3boys,0,Ba nhân vật nam
 straight_hair,0,Tóc thẳng
@@ -987,7 +947,6 @@ armband,0,Băng tay
 facing_viewer,0,Đối diện người xem
 pink_fur,0,Lông hồng
 abdominal_bulge,7,Bụng phình
-second-party_source,5,Nguồn bên thứ hai
 skirt_lift,0,Tốc váy
 crossdressing,0,Trang phục chéo giới
 suspenders,0,Dây treo quần
@@ -998,7 +957,6 @@ long_tail,7,Đuôi dài
 pink_dress,0,Váy hồng
 juliet_sleeves,0,Tay áo phồng kiểu Juliet
 black_coat,0,Áo khoác màu đen
-alpha_channel,14,Kênh alpha
 nude_male,7,Nam khỏa thân
 clothed_anthro,7,Nhân vật nhân hóa mặc đồ
 white_shoes,0,Giày màu trắng
@@ -1017,7 +975,6 @@ cloak,0,Áo choàng
 foot_focus,0,Tập trung vào bàn chân
 head_wings,0,Cánh trên đầu
 nature,0,Thiên nhiên
-sound,5,Âm thanh
 monster,0,Quái vật
 blazer,0,Áo blazer
 snake,0,Rắn
@@ -1057,7 +1014,6 @@ brooch,0,Trâm cài
 polearm,0,Vũ khí cán dài
 gag,0,Nhét miệng
 red_nails,0,Móng tay đỏ
-scan,5,Ảnh scan
 young_male,7,Nam trẻ
 kissing,7,Đang hôn
 larger_female,0,Nữ to hơn
@@ -1111,7 +1067,6 @@ snow,0,Tuyết
 rabbit_tail,0,Đuôi thỏ
 katana,0,Kiếm katana
 knee_boots,0,Bốt cao đến gối
-mixed-language_commentary,5,Chú thích nhiều ngôn ngữ
 short_twintails,0,Tóc hai búi ngắn
 hat_ribbon,0,Ruy băng trên mũ
 white_sleeves,0,Tay áo trắng
@@ -1121,7 +1076,6 @@ side_braid,0,Bím tóc bên
 goat,0,Dê
 cum_drip,7,Tinh dịch nhỏ giọt
 star_(sky),0,Ngôi sao
-traditional_media_(artwork),14,Chất liệu truyền thống
 on_front,7,Ở phía trước
 flaccid,0,Không cương
 lion,0,Sư tử
@@ -1142,14 +1096,12 @@ two_tone_hair,7,Tóc hai tông màu
 butterfly,0,Bươm bướm
 buckle,0,Khóa
 grey_skirt,0,Chân váy xám
-character_request,5,Yêu cầu nhân vật
 single_thighhigh,0,Một tất cao đùi
 pegasus,0,Ngựa Pegasus
 chibi_only,0,Chỉ có chibi
 low_ponytail,0,Tóc đuôi ngựa thấp
 blue_necktie,0,Cà vạt xanh dương
 maid_apron,0,Tạp dề hầu gái
-revision,5,Bản chỉnh sửa
 purple_dress,0,Váy tím
 bouncing_breasts,0,Ngực nảy
 knees_up,0,Co gối
@@ -1165,7 +1117,6 @@ ribbon_trim,0,Viền ruy băng
 heart_eyes,7,Mắt hình trái tim
 anger_vein,0,Gân tức giận
 open_coat,0,Áo khoác mở
-black_and_white,14,Đen trắng
 toenails,0,Móng chân
 instrument,0,Nhạc cụ
 cropped_jacket,0,Áo khoác lửng
@@ -1176,7 +1127,6 @@ on_ground,0,Trên mặt đất
 striped_body,7,Cơ thể kẻ sọc
 shark,0,Cá mập
 monster_girl,0,Quái vật nữ
-3d_animation,14,Hoạt hình 3D
 bridal_gauntlets,0,Găng tay cô dâu
 nails,7,Móng tay
 blue_nails,0,Móng tay xanh dương
@@ -1282,7 +1232,6 @@ mouth_closed,7,Miệng ngậm
 ass_up,7,Mông hướng lên
 waist_apron,0,Tạp dề ngang eo
 abstract_background,0,Nền trừu tượng
-three-quarter_portrait,14,Ảnh chân dung ba phần tư
 dinosaur,0,Khủng long
 shortstack,0,Thấp và mũm mĩm
 arms_behind_head,0,Cánh tay phía sau đầu
@@ -1310,7 +1259,6 @@ hyper_breasts,7,Ngực phóng đại
 striped_thighhighs,0,Tất cao đùi kẻ sọc
 empty_eyes,0,Mắt trống rỗng
 interlocked_fingers,0,Các ngón tay đan vào nhau
-4:5,14,Tỷ lệ 4:5
 pregnant,0,Mang thai
 white_outline,0,Đường viền trắng
 yellow_shirt,0,Áo vàng
@@ -1352,7 +1300,6 @@ breast_press,0,Ép ngực
 flying,0,Đang bay
 starry_sky,0,Bầu trời đầy sao
 purple_shirt,0,Áo tím
-2d_animation,14,Hoạt hình 2D
 blue_flower,0,Hoa xanh dương
 hakama,0,Quần hakama
 purple_bow,0,Nơ tím
@@ -1447,7 +1394,6 @@ wolf_tail,0,Đuôi sói
 black_sleeves,0,Tay áo đen
 pattern_clothing,7,Quần áo có hoa văn
 hand_fan,0,Quạt cầm tay
-multiple_scenes,14,Nhiều cảnh
 pink_tongue,0,Lưỡi hồng
 striped_markings,7,Vằn kẻ sọc
 mustache,0,Ria mép
@@ -1491,13 +1437,10 @@ rabbit_girl,0,Cô gái thỏ
 blue_halo,0,Vầng hào quang xanh dương
 wolf_girl,0,Cô gái sói
 pastoral_dog,12,Chó chăn cừu
-2:3,14,Tỷ lệ 2:3
 clothed_female_nude_male,0,Nữ mặc đồ còn nam khỏa thân
 brown_pantyhose,0,Quần tất nâu
-no_sound,14,Không có âm thanh
 purple_skirt,0,Chân váy tím
 half_updo,0,Búi tóc một nửa
-bad_link,5,Đường link hỏng
 looking_ahead,0,Nhìn về phía trước
 toony,7,Phong cách hoạt hình
 chinese_text,0,Chữ Trung Quốc
@@ -1550,7 +1493,6 @@ white_tail,0,Đuôi trắng
 striped_tail,0,Đuôi kẻ sọc
 white_shorts,0,Quần short màu trắng
 female_on_top,7,Nữ ở phía trên
-source_filmmaker_(artwork),14,Nhà làm phim nguồn
 flat_chested,7,Ngực phẳng
 long_fingernails,0,Móng tay dài
 anime_coloring,0,Tô màu anime
@@ -1596,7 +1538,6 @@ orange_background,0,Nền cam
 double_penetration,0,Sự thâm nhập kép
 humor,7,Hài hước
 striped_panties,0,Quần lót kẻ sọc
-pinup,14,Tranh pinup
 pink_lips,0,Môi hồng
 holding_staff,0,Cầm gậy
 side_boob,7,Nghiêng lộ ngực
@@ -1632,7 +1573,6 @@ skin_tight,0,Bó sát da
 mountain,0,Núi
 blunt_ends,0,Đầu cắt bằng
 long_tongue,0,Lưỡi dài
-painting_(artwork),14,Tranh vẽ
 camel_toe,7,Lộ khe quần lót
 ear_covers,0,Miếng che tai
 arm_warmers,0,Ống giữ ấm cánh tay
@@ -1705,7 +1645,6 @@ sign,0,Bảng hiệu
 sailor_dress,0,Váy thủy thủ
 bandaged_arm,0,Cánh tay băng bó
 side-tie_panties,0,Quần lót buộc bên
-model_sheet,14,Bảng tạo hình nhân vật
 :q,0,Biểu cảm :q
 clothing_lift,7,Tốc quần áo
 shrug_(clothing),0,Áo choàng vai
@@ -1811,7 +1750,6 @@ pajamas,0,Đồ ngủ
 breastplate,0,Giáp ngực
 shield,0,Khiên
 torn_pantyhose,0,Quần tất bị rách
-4k,14,Độ phân giải 4K
 sun,0,Mặt trời
 falling_petals,0,Cánh hoa rơi
 glistening_eyes,7,Mắt bóng nhẫy
@@ -1830,7 +1768,6 @@ hoop_earrings,0,Khuyên tai vòng
 hanging_breasts,0,Ngực chảy xệ
 head_rest,0,Gối tựa đầu
 red_lips,0,Môi đỏ
-5:4,14,Tỷ lệ 5:4
 otter,0,Rái cá
 tailwag,7,Đuôi vẫy
 white_feathers,0,Lông vũ trắng
@@ -1913,7 +1850,6 @@ tracen_school_uniform,0,Đồng phục trường Tracen
 angel,0,Thiên thần
 fishnet_clothing,7,Trang phục lưới
 white_sweater,0,Áo len màu trắng
-digital_painting_(artwork),14,Tranh kỹ thuật số
 feline_humanoid,12,Dạng người mèo
 stairs,0,Cầu thang
 spear,0,Ngọn giáo
@@ -1924,7 +1860,6 @@ electricity,0,Dòng điện
 page_number,0,Chữ số trang
 anal_orgasm,7,Lên đỉnh hậu môn
 black_eyebrows,7,Lông mày đen
-9:16,14,Tỷ lệ 9:16
 2012,0,Năm 2012
 bow_tie,7,Cà vạt nơ
 heart_hands,0,Bàn tay trái tim
@@ -2029,7 +1964,6 @@ silhouette,0,Bóng
 toeless_legwear,0,Đồ che chân hở ngón chân
 skunk,0,Chồn hôi
 pinafore_dress,0,Váy yếm
-3:2,14,Tỷ lệ 3:2
 guitar,0,Đàn guitar
 sea,7,Biển
 bow_(weapon),0,Nơ
@@ -2046,7 +1980,6 @@ blue_shoes,0,Giày màu xanh dương
 shoulder_cutout,0,Lỗ cắt vai
 butterfly_hair_ornament,0,Phụ kiện tóc bươm bướm
 light_skin,7,Da nhạt
-frame_by_frame,14,Từng khung hình một
 east_asian_clothing,7,Trang phục Đông Á
 mouse_ears,0,Tai chuột
 crown_braid,0,Bím tóc vương miện
@@ -2082,7 +2015,6 @@ bench,0,Ghế dài
 striped_bikini,0,Bikini kẻ sọc
 species_transformation,7,Sự biến đổi loài
 adjusting_clothes,0,Đang chỉnh quần áo
-long_playtime,14,Giờ chơi dài
 unworn_hat,0,Mũ không mặc
 spaghetti_strap,0,Dây đeo dây mảnh
 pen,0,Bút máy
@@ -2191,7 +2123,6 @@ blue_hairband,0,Băng đô xanh dương
 grey_clothing,7,Trang phục màu xám
 black_tank_top,0,Áo hai dây đen
 tube_top,0,Áo dạng ống
-resolution_mismatch,5,Độ phân giải không khớp
 blue_leotard,0,Leotard xanh dương
 breast_pocket,0,Túi áo ngực
 pink_bikini,0,Bikini màu hồng
@@ -2224,7 +2155,6 @@ split-color_hair,0,Tóc chia màu
 multi_eye,7,Nhiều con mắt
 japanese_clothing,7,Trang phục Nhật Bản
 long_legs,0,Chân dài
-painting_(medium),5,Bức tranh
 black_lips,0,Môi đen
 classroom,0,Lớp học
 canine_vulva,7,Âm hộ chó
@@ -2241,9 +2171,6 @@ arms_tied,7,Cánh tay được buộc
 hand_on_belly,7,Bàn tay trên bụng
 cable,0,Cáp
 grabbing_another's_ass,0,Bóp mông người khác
-lighting,14,Ánh sáng
-flat_colors,14,Màu phẳng
-5:6,14,Tỷ lệ 5:6
 no_nose,0,Không có mũi
 deep_throat,7,Cổ họng sâu
 cum_on_tongue,0,Tinh dịch trên lưỡi
@@ -2318,7 +2245,6 @@ bikini_under_clothes,0,Đồ bơi bikini bên dưới quần áo
 forehead_jewel,0,Đá quý trán
 highleg_panties,0,Quần lót cắt cao
 prick_ears,7,Tai dựng đứng
-half-length_portrait,14,Ảnh chân dung nửa người
 yellow_clothing,7,Trang phục màu vàng
 cheerleader,0,Cổ động viên
 claw_pose,0,Tư thế vuốt
@@ -2333,7 +2259,6 @@ sleeve_cuffs,0,Ống bọc cổ tay áo
 yellow_dress,0,Váy vàng
 cowboy_hat,0,Mũ cao bồi
 red_boots,0,Bốt màu đỏ
-detailed,14,Có chi tiết
 tile_floor,0,Sàn nhà gạch
 folding_fan,0,Đang gấp quạt
 headdress,0,Đồ đội đầu
@@ -2403,8 +2328,6 @@ white_collar,0,Cổ áo màu trắng
 bottomless_male,7,Nam hở dưới
 toned_male,0,Nhân vật nam thon săn
 disposable_cup,0,Cốc dùng một lần
-bust_portrait,14,Ảnh chân dung bán thân
-photo_(medium),5,Ảnh chụp
 long_penis,7,Dương vật dài
 looking_afar,0,Nhìn xa xăm
 vines,0,Dây leo
@@ -2627,7 +2550,6 @@ mole_(marking),7,Nốt ruồi
 bird_wings,0,Cánh chim
 pink_theme,0,Chủ đề hồng
 aqua_necktie,0,Cà vạt xanh ngọc
-watercolor_(medium),5,Màu nước
 long_neck,0,Cổ dài
 black_text,7,Chữ đen
 backless_dress,0,Váy hở lưng
@@ -2799,7 +2721,6 @@ holding_own_hair,0,Cầm tóc của mình
 zebra,0,Ngựa vằn
 penis_jewelry,7,Trang sức dương vật
 female_orgasm,0,Lên đỉnh nữ
-6:5,14,Tỷ lệ 6:5
 see-through_sleeves,0,Tay áo xuyên thấu
 hooded_cloak,0,Áo choàng có mũ trùm
 brothers,0,Anh em trai
@@ -2973,7 +2894,6 @@ fully_clothed_anthro,7,Nhân thú mặc kín đồ
 cow_print_bikini,0,Bikini họa tiết bò
 leg_ribbon,0,Ruy băng chân
 nipple_ring,7,Nhẫn núm vú
-16:10,14,Tỷ lệ 16:10
 eye_scar,7,Sẹo ở mắt
 shark_girl,0,Cô gái cá mập
 black_stripes,7,Sọc đen
@@ -3059,7 +2979,6 @@ river,0,Sông
 cum_on_clothes,0,Tinh dịch trên quần áo
 blue_sleeves,0,Tay áo xanh dương
 glistening_skin,7,Da bóng nhẫy
-cropped,5,Lửng
 sex_toy_in_vagina,7,Đồ chơi tình dục trong âm đạo
 grey_thighhighs,0,Tất cao đùi xám
 flat_cap,0,Mũ lưỡi phẳng
@@ -3196,7 +3115,6 @@ male_penetrating_intersex,7,Giới tính nam thâm nhập liên giới tính
 number_tattoo,0,Hình xăm chữ số
 open_collar,0,Cổ áo mở
 white_penis,7,Dương vật trắng
-headshot_portrait,14,Ảnh chân dung đầu và vai
 earphones,0,Tai nghe nhét tai
 lion_ears,0,Tai sư tử
 dappled_sunlight,0,Nắng đốm
@@ -3225,7 +3143,6 @@ white_belly,7,Bụng trắng
 maple_leaf,0,Lá phong
 oceanic_dolphin,12,Cá heo đại dương
 white_neckerchief,0,Khăn quàng cổ trắng
-blue_and_white,14,Màu xanh dương và màu trắng
 waterfall,0,Thác nước
 black_flower,0,Hoa đen
 worm's-eye_view,7,Góc nhìn từ dưới lên
@@ -3286,7 +3203,6 @@ eyes_out_of_frame,0,Mắt nằm ngoài khung
 male_on_humanoid,7,Giới tính nam trên dạng người
 pantyhose_pull,0,Kéo quần tất
 cross_earrings,0,Khuyên tai chữ thập
-colored_sketch,14,Bản phác thảo có màu
 transparent,0,Trong suốt
 grey_vest,0,Áo ghi-lê màu xám
 no_eyes,0,Không có mắt
@@ -3579,7 +3495,6 @@ censored_genitalia,7,Bộ phận sinh dục đã kiểm duyệt
 open_hands,0,Bàn tay mở
 rimless_eyewear,0,Kính không gọng
 bovid_humanoid,12,Dạng người họ trâu bò
-5:3,14,Tỷ lệ 5:3
 open_hoodie,0,Áo hoodie mở
 latex_handwear,7,Đồ che tay cao su
 clothed_feral,7,Nhân vật bán thú mặc đồ
@@ -3598,7 +3513,6 @@ leg_hair,0,Lông chân
 question,7,Hỏi
 ringed_tail,7,Đuôi có khoanh
 holding_towel,0,Cầm khăn tắm
-5:8,14,Tỷ lệ 5:8
 flower_knot,0,Nút thắt hoa
 winking_at_viewer,7,Nháy mắt với người xem
 hair_pulled_back,0,Tóc kéo ngả về sau
@@ -3919,7 +3833,6 @@ single_hair_streak,0,Một lọn tóc màu khác
 riding_crop,0,Roi cưỡi ngựa
 asymmetrical_horns,0,Sừng bất đối xứng
 brown_eyebrows,7,Lông mày nâu
-colorized,5,Được tô màu
 anus_peek,0,Hậu môn lấp ló
 gynomorph_penetrating_male,7,Dạng cái thâm nhập nam
 glowing_markings,0,Vằn phát sáng
@@ -3967,7 +3880,6 @@ pattern_underwear,7,Đồ lót hoa văn
 animal_feet,0,Bàn chân động vật
 beach_towel,0,Khăn tắm bãi biển
 single_sleeve,0,Một tay áo
-flash,5,Nháy
 pirate_hat,0,Mũ cướp biển
 white_eyelashes,0,Lông mi trắng
 green_scarf,0,Khăn quàng xanh lá
@@ -3999,7 +3911,6 @@ pubic_hair_peek,0,Lông mu lấp ló
 anthro_penetrating_feral,7,Động vật nhân hóa thâm nhập động vật không nhân hóa
 thighhighs_under_boots,0,Tất cao đùi bên dưới ủng
 asymmetrical_footwear,0,Giày dép bất đối xứng
-2:1,14,Tỷ lệ 2:1
 mini_wings,0,Cánh siêu ngắn
 collar_tag,7,Nhãn cổ áo
 bat_pony,12,Ngựa Pony dơi
@@ -4060,7 +3971,6 @@ mechanical_wings,0,Cánh cơ khí
 orange_ears,7,Tai cam
 white_halo,0,Vầng hào quang trắng
 action_pose,7,Tư thế hành động
-3:5,14,Tỷ lệ 3:5
 brown_bottomwear,7,Đồ mặc dưới nâu
 grapes,0,Nho
 older_anthro,7,Nhân vật nhân hóa lớn tuổi hơn
@@ -4147,7 +4057,6 @@ holding_sex_toy,0,Cầm đồ chơi tình dục
 frilled_socks,0,Tất nhún xếp
 taut_shirt,0,Áo sơ mi căng chặt
 green_hoodie,0,Áo hoodie xanh lá
-sketch_page,14,Trang phác thảo
 blue_horn,7,Sừng xanh dương
 armpit_fetish,7,Sở thích nách
 leaf_print,0,Họa tiết chiếc lá
@@ -4305,7 +4214,6 @@ dress_pull,0,Kéo váy
 andromorph_penetrated,7,Nhân vật andromorph bị thâm nhập
 folded_fan,0,Quạt gấp lại
 holding_condom,0,Cầm bao cao su
-traditional_painting_(artwork),14,Tranh truyền thống
 orange_shorts,0,Quần short màu cam
 garreg_mach_monastery_uniform,0,Đồng phục tu viện Garreg Mach
 quad_tails,0,Bốn cái đuôi
@@ -4386,7 +4294,6 @@ carrot_hair_ornament,0,Phụ kiện tóc cà rốt
 two_tone_penis,7,Dương vật hai tông
 running_makeup,7,Trang điểm lem nhem
 butt_blush,7,Má hồng mông
-colored_pencil_(medium),5,Bút chì màu
 yellow_boots,0,Bốt màu vàng
 covered_face,0,Khuôn mặt được che
 clothed_animal,0,Động vật mặc đồ
@@ -4505,7 +4412,6 @@ neon_lights,0,Đèn neon
 black_garter_straps,0,Dây đeo dây giữ bít tất đen
 truck,0,Xe tải
 leather_topwear,7,Áo da
-1:2,14,Tỷ lệ 1:2
 no_pussy,0,Không có âm hộ
 yellow_horn,7,Sừng vàng
 table_lotus_position,7,Tư thế sen bàn
@@ -4623,7 +4529,6 @@ unworn_shirt,0,Áo sơ mi không mặc
 multiple_hairclips,0,Nhiều kẹp tóc
 open_robe,0,Áo choàng mở
 american_flag_bikini,0,Bikini hình cờ Mỹ
-incredibly_absurdres,5,Độ nét cực cao
 white_face,7,Khuôn mặt trắng
 checkered_skirt,0,Chân váy kẻ ca-rô
 holding_both_legs,7,Cầm cả hai chân
@@ -4677,7 +4582,6 @@ yellow_hoodie,0,Áo hoodie vàng
 lounge_chair,0,Ghế dài thư giãn
 gekkoukan_high_school_uniform,0,Đồng phục trường trung học phổ thông Gekkoukan
 tail_sex,0,Quan hệ bằng đuôi
-pen_(medium),5,Bút máy
 official_alternate_hair_color,0,Màu tóc phụ chính thức
 grey_horn,7,Sừng xám
 muscle_growth,0,Sự mọc cơ
@@ -4832,7 +4736,6 @@ green_markings,7,Vằn xanh lá
 partially_shaded_face,0,Mặt tô bóng một phần
 sleep_mask,0,Mặt nạ ngủ
 purple-tinted_eyewear,0,Kính nhuộm màu tím
-watercolor_(artwork),14,Màu nước
 hands_on_own_thighs,0,Bàn tay trên đùi của mình
 sleeves_pushed_up,0,Tay áo đẩy hướng lên
 reflection_focus,0,Trọng tâm hình phản chiếu
@@ -4895,7 +4798,6 @@ grey_horns,0,Sừng xám
 thin_tail,7,Đuôi mỏng
 blue_footwear,7,Giày dép xanh dương
 red_sky,0,Bầu trời đỏ
-pen_(artwork),14,Bút máy
 fur_coat,0,Áo khoác lông thú
 anthro_penetrating_humanoid,7,Động vật nhân hóa thâm nhập dạng người
 chinese_knot,0,Nút thắt Trung Quốc
@@ -5217,7 +5119,6 @@ pirate_costume,0,Trang phục cướp biển
 severed_head,0,Đầu bị cắt lìa
 hand_on_ground,0,Bàn tay trên mặt đất
 nurse_clothing,7,Trang phục y tá
-color_edit,14,Chỉnh sửa màu
 eyebrow_cut,0,Lông mày bị cắt
 shorts_down,7,Kéo quần short xuống
 striped_arms,7,Cánh tay kẻ sọc
@@ -5319,7 +5220,6 @@ human_to_feral,7,Người tới động vật không nhân hóa
 black_inner_ear,7,Tai mặt trong đen
 overweight_gynomorph,7,Nhân vật gynomorph thừa cân
 hand_tattoo,0,Hình xăm bàn tay
-11:8,14,Tỷ lệ 11:8
 star_necklace,0,Vòng cổ ngôi sao
 pattern_swimwear,7,Đồ bơi hoa văn
 ofuda_on_clothes,0,Bùa ofuda dán trên quần áo
@@ -5354,7 +5254,6 @@ pink_footwear,7,Giày dép hồng
 open_belt,0,Thắt lưng mở
 armpit_focus,0,Trọng tâm nách
 spoon_position,7,Tư thế thìa
-traditional_watercolor_(artwork),14,Màu nước truyền thống
 claw_(weapon),0,Móng vuốt
 gold_hairband,0,Băng đô vàng kim
 orange_bodysuit,0,Đồ liền thân cam
@@ -6024,7 +5923,6 @@ curtain_grab,0,Bóp rèm
 shared_scarf,0,Khăn quàng dùng chung
 hakama_shorts,0,Quần short quần hakama
 leaf_hair,7,Tóc chiếc lá
-stitched,5,Khâu
 orange_choker,0,Vòng cổ cam
 frilled_sailor_collar,0,Cổ áo thủy thủ nhún xếp
 brown_border,0,Viền ảnh nâu
@@ -6038,7 +5936,6 @@ brown_hoodie,0,Áo hoodie nâu
 foliage,0,Lá cây
 hair_through_headwear,0,Tóc xuyên qua phụ kiện đội đầu
 leather_pants,0,Quần da
-colored_pencil_(artwork),14,Bút chì màu
 muzzle_piercing,7,Khuyên mõm
 moose,0,Nai sừng tấm
 frilled_leotard,0,Leotard nhún xếp
@@ -6111,7 +6008,6 @@ energy_drink,0,Đồ uống năng lượng
 striped_hairband,0,Băng đô kẻ sọc
 rectangular_mouth,0,Miệng hình chữ nhật
 flower_necklace,0,Vòng cổ hoa
-7:4,14,Tỷ lệ 7:4
 latex_elbow_gloves,7,Găng tay khuỷu tay cao su
 jewelry_only,7,Chỉ mặc trang sức
 invisible_floor,0,Sàn nhà tàng hình
@@ -7267,7 +7163,6 @@ curtains_open,7,Rèm cửa mở
 high-waist_pantyhose,0,Quần tất eo cao
 wheat_field,0,Cánh đồng lúa mì
 penis_growth,0,Sự mọc dương vật
-4:7,14,Tỷ lệ 4:7
 horned_owl,0,Cú có sừng
 towel_around_waist,0,Khăn tắm quanh eo
 grey_vulva,7,Âm hộ xám
@@ -7358,7 +7253,6 @@ brown_sclera,0,Củng mạc nâu
 flower_bracelet,0,Vòng tay hoa
 translucent_penetration,7,Sự thâm nhập bán trong suốt
 single_bridal_gauntlet,0,Găng tay giáp cô dâu một chiếc
-figure_(medium),5,Dáng người
 half-skirt,0,Chân váy một nửa
 cum_on_wall,0,Tinh dịch trên bức tường
 dirty_clothing,7,Trang phục bẩn
@@ -7429,7 +7323,6 @@ print_shorts,0,Quần short họa tiết
 slit_penis,7,Dương vật xẻ tà
 no_irises,7,Không có mống mắt
 balls_blush,7,Má hồng tinh hoàn
-pastel_theme,14,Chủ đề màu pastel
 fast_food_uniform,0,Đồng phục Fast Food
 short_horn,7,Sừng ngắn
 sun_tattoo,0,Hình xăm mặt trời
@@ -8023,7 +7916,6 @@ cream_on_face,0,Màu kem trên khuôn mặt
 puppy,0,Chó con
 fur_boots,0,Bốt lông
 pride_color_accessory,7,Phụ kiện màu tự hào
-9:14,14,Tỷ lệ 9:14
 broccoli,0,Bông cải xanh
 unworn_bikini,0,Bikini không mặc
 pig_nose,0,Mũi lợn
@@ -8154,7 +8046,6 @@ shoes_removed,7,Giày đã tháo ra
 huge_knot,7,Nút thắt khổng lồ
 striped_leg_warmers,0,Băng giữ ấm chân kẻ sọc
 yellow_headwear,7,Phụ kiện đầu vàng
-dark_theme,14,Chủ đề sẫm
 purple_outline,0,Đường viền tím
 saliva_on_balls,7,Nước bọt trên tinh hoàn
 vibrator_in_thigh_strap,0,Đồ chơi rung trong đai đùi
@@ -8274,7 +8165,6 @@ yellow_armor,0,Giáp vàng
 ghost_girl,0,Cô gái ma
 checkered_dress,0,Váy kẻ ca-rô
 konohagakure_shinobi_uniform,0,Đồng phục Konohagakure Shinobi
-black_and_blue,14,Màu đen và màu xanh dương
 dildo_in_mouth,0,Dương vật giả trong miệng
 leather_footwear,0,Giày dép da
 penis_blush,7,Má hồng dương vật
@@ -8378,7 +8268,6 @@ holding_sketchbook,0,Cầm sổ phác thảo
 grey_robe,0,Áo choàng xám
 penis_on_pussy,0,Dương vật trên âm hộ
 aqua_pants,0,Quần màu xanh ngọc
-red_and_white,14,Màu đỏ và màu trắng
 butterfly_earrings,0,Khuyên tai bươm bướm
 blue_inner_ear_fluff,7,Lông tơ tai mặt trong xanh dương
 black_bracelet,7,Vòng tay đen
@@ -8398,7 +8287,6 @@ latex_underwear,0,Đồ lót cao su
 skull_symbol,7,Biểu tượng đầu lâu
 green_hood,0,Mũ trùm màu xanh lá
 mismatched_thighhighs,0,Tất cao đùi lệch đôi
-14:9,14,Tỷ lệ 14:9
 bulge_grab,7,Bóp chỗ lùm lùm
 two-tone_sleeves,0,Tay áo hai tông
 purple_tentacles,7,Xúc tu tím
@@ -8493,7 +8381,6 @@ broken_eyewear,0,Kính bị gãy
 tail_mane,7,Bờm đuôi
 lying_on_water,0,Đang nằm trên nước
 multi_mouth,7,Nhiều miệng
-purple_and_white,14,Màu tím và màu trắng
 orange_claws,7,Móng vuốt cam
 holding_dog,0,Cầm chó
 humanoid_penis_on_feral,7,Dương vật dạng người trên động vật không nhân hóa
@@ -8662,7 +8549,6 @@ holding_flower_pot,0,Cầm chậu hoa
 tentacle_tail,0,Đuôi xúc tu
 skeletal_wings,0,Cánh hình bộ xương
 small_feet,7,Bàn chân nhỏ
-black_and_grey,14,Màu đen và màu xám
 waffle,0,Bánh quế
 silver_dress,0,Váy bạc
 red_t-shirt,7,Áo thun đỏ
@@ -9105,7 +8991,6 @@ aqua_pupils,0,Đồng tử xanh ngọc
 cross-laced_cutout,0,Lỗ cắt chữ thập buộc dây
 darkened_skin,0,Da tối đi
 pussy_cutout,0,Lỗ cắt âm hộ
-1:3,14,Tỷ lệ 1:3
 bed_bondage,7,Trói buộc giường
 cutout_eyelashes,0,Lông mi mổ xẻ
 bodily_fluids_in_pussy,7,Dịch cơ thể trong âm hộ
@@ -9119,7 +9004,6 @@ no_symbol,0,Không có biểu tượng
 torn_hat,0,Mũ bị rách
 arm_across_chest,0,Cánh tay ngang qua ngực
 cum_on_fur,7,Tinh dịch trên lông thú
-pink_and_white,14,Màu hồng và màu trắng
 glowing_nose,7,Mũi phát sáng
 open_jumpsuit,0,Áo liền quần mở
 black_crown,0,Vương miện đen
@@ -9740,7 +9624,6 @@ toyogasaki_academy_school_uniform,0,Đồng phục học viện Toyogasaki
 holding_rabbit,0,Cầm thỏ
 cross_ornament,0,Đồ trang trí chữ thập
 boxing_ring,0,Nhẫn quyền Anh
-textless,14,Không có chữ
 gradient_ribbon,0,Ruy băng chuyển sắc
 raised_hips,7,Hông dựng lên
 blue_eyewear,7,Kính xanh dương
@@ -10089,7 +9972,6 @@ yellow_tuft,7,Túm lông vàng
 hollow_body,0,Cơ thể trũng
 fake_beard,0,Râu giả
 two-tone_capelet,0,Áo choàng ngắn hai tông
-3:1,14,Tỷ lệ 3:1
 belt_skirt,0,Chân váy thắt lưng
 double_thumbs_up,0,Ngón cái kép hướng lên
 pleated_shirt,0,Áo sơ mi xếp ly
@@ -10401,7 +10283,6 @@ vulva_shot,7,Cắt cảnh âm hộ
 dog_costume,0,Trang phục chó
 clothes_focus,0,Trọng tâm quần áo
 seishou_elementary_school_uniform,0,Đồng phục trường Seishou Elementary
-pastel_(medium),5,Màu pastel
 plaid_capelet,0,Áo choàng ngắn kẻ caro
 plaid_coat,0,Áo khoác kẻ caro
 eyebrow_scar,7,Sẹo lông mày
@@ -10415,7 +10296,6 @@ purple_eyeliner,0,Kẻ mắt tím
 royal_robe,0,Áo choàng hoàng gia
 pink_tube_top,0,Áo dạng ống màu hồng
 young_rimmed,7,Trẻ bị liếm hậu môn
-green_and_white,14,Màu xanh lá và màu trắng
 star_pendant,0,Mặt dây chuyền ngôi sao
 denim_topwear,7,Áo jean
 knot_grab,7,Bóp nút thắt
@@ -10517,7 +10397,6 @@ crystal_hair_ornament,0,Phụ kiện tóc pha lê
 leaf_arms,7,Cánh tay chiếc lá
 pokemon_day,0,Ngày Pokémon
 nostril_piercing,0,Khuyên lỗ mũi
-spine_(medium),5,Cột sống
 clothes_in_front,0,Quần áo trong phía trước
 bright_colors,7,Màu sáng
 blue_facial_hair,0,Tóc trên mặt màu xanh dương
@@ -10615,7 +10494,6 @@ leopard_cat,12,Mèo báo
 mechanical_spine,0,Cột sống cơ khí
 monkey_humanoid,12,Dạng người khỉ
 reverse_mouth_shot,7,Cắt cảnh miệng ngược
-light_theme,14,Chủ đề nhạt
 female_rimming_female,7,Giới tính nữ liếm hậu môn giới tính nữ
 big_balls_small_penis,7,Dương vật tinh hoàn to nhỏ
 elemental_dragon,0,Rồng nguyên tố
@@ -11239,7 +11117,6 @@ light_belly,7,Bụng nhạt
 sweaty_back,7,Lưng đầm mồ hôi
 industrial_piercing_ladder,7,Thang khuyên industrial
 print_coat,0,Áo khoác họa tiết
-brown_and_white,14,Màu nâu và màu trắng
 rope_marks,0,Dấu dây thừng
 pattern_necktie,7,Cà vạt hoa văn
 butt_in_face,7,Mông trong khuôn mặt
@@ -11408,7 +11285,6 @@ nami_junior_high_school_uniform,0,Đồng phục trường trung học cơ sở 
 grid_print,0,Họa tiết lưới
 rabbit_mask,0,Mặt nạ thỏ
 purple_arms,7,Cánh tay tím
-black_and_white_and_red,14,Màu đen và màu trắng và màu đỏ
 cum_in_pumpkin,7,Tinh dịch trong bí ngô
 gynomorph_feral,7,Nhân vật bán thú dạng cái
 diamond_print,0,Họa tiết hình thoi
@@ -12071,7 +11947,6 @@ gingham_dress,0,Váy kẻ ô vuông
 measuring_penis,7,Đang đo dương vật
 green_spikes,7,Gai nhọn xanh lá
 hand_mouth,0,Miệng bàn tay
-black_and_yellow,14,Màu đen và màu vàng
 red_hooves,7,Vó đỏ
 monotone_text,7,Chữ một tông
 quiff,0,Ngửa ra sau
@@ -12321,7 +12196,6 @@ mismatched_eyes,0,Mắt lệch đôi
 print_scrunchie,0,Dây buộc tóc họa tiết
 wavy_horn,7,Sừng gợn sóng
 aqua_headband,0,Băng đô xanh ngọc
-teal_theme,14,Chủ đề xanh cổ vịt
 silver_armor,0,Giáp bạc
 fruit_basket,0,Cái rổ trái cây
 sand_on_skin,0,Cát trên da
@@ -12965,13 +12839,11 @@ floating_head_creature,7,Sinh vật đầu lơ lửng
 knee_pulled_up,7,Đầu gối kéo hướng lên
 leaning_out_of_window,0,Tựa người thò ra cửa sổ
 crocodile_boy,0,Cậu trai cá sấu
-black_and_red,14,Màu đen và màu đỏ
 platform,7,Đế dày
 hands_on_eyewear,0,Bàn tay trên kính mắt
 breastless_leotard,0,Leotard không ngực
 striped_cardigan,0,Áo cardigan kẻ sọc
 polka_dot_shorts,0,Quần short chấm bi
-7:3,14,Tỷ lệ 7:3
 metallic,7,Màu ánh kim
 briefs_down,7,Quần lót tam giác hướng xuống
 stepping_on_viewer,0,Bước người xem
@@ -13176,7 +13048,6 @@ towel_on_arm,0,Khăn tắm trên cánh tay
 extra_horns,0,Thêm sừng
 yellow_armwear,7,Đồ che tay màu vàng
 slip_showing,0,Trượt hở lộ ra
-orange_and_white,14,Màu cam và màu trắng
 bright_eyes,7,Mắt sáng
 finger_on_chin,7,Ngón tay trên cằm
 pale_eyes,7,Mắt nhạt
@@ -13642,7 +13513,6 @@ pilot_uniform,0,Đồng phục phi công
 pubic_feathers,0,Lông vũ vùng kín
 panda_hat,0,Mũ gấu trúc
 ear_rub,7,Xoa tai
-1930,14,Năm 1930
 holding_coffee_cup,7,Cầm cốc cà phê
 unofficial_sailor_senshi_uniform,0,Đồng phục Unofficial Sailor Senshi
 smelling_armpit,0,Ngửi nách
@@ -14213,7 +14083,6 @@ thick_leg,7,Chân dày
 thors_military_academy_class_vii_uniform,0,Đồng phục Thors Military Academy Class Vii
 nippon_kyuuyaku_uniform,0,Đồng phục Nippon Kyuuyaku
 lightning_bolt_facial_mark,0,Dấu trên mặt bu lông sấm sét
-print_(medium),5,Họa tiết
 long_feet,7,Bàn chân dài
 object_behind_ear,0,Vật thể phía sau tai
 flower-trimmed_skirt,0,Chân váy hoa viền
@@ -14510,7 +14379,6 @@ food_in_stomach,7,Thức ăn trong bụng
 stuffed_cow,0,Bò nhồi bông
 fire_hair_ornament,0,Phụ kiện tóc lửa
 rainbow_socks,7,Tất màu cầu vồng
-6:13,14,Tỷ lệ 6:13
 kissing_ear,0,Hôn tai
 holding_finger,0,Cầm ngón tay
 resting_arm,7,Nghỉ trên cánh tay
@@ -15057,7 +14925,6 @@ purple_eyelashes,7,Lông mi tím
 torn_apron,0,Tạp dề bị rách
 monotone_tank_top,7,Áo hai dây một tông
 orange_mask,0,Mặt nạ cam
-yellow_and_white,14,Màu vàng và màu trắng
 hyper_foreskin,7,Bao quy đầu phóng đại
 chocolate_on_legs,0,Sô-cô-la trên đôi chân
 tying_necktie,0,Đang buộc cà vạt
@@ -15469,7 +15336,6 @@ twin_clothing_bows,7,Nơ quần áo đôi
 kirameki_high_school_uniform,0,Đồng phục trường trung học phổ thông Kirameki
 backless_gloves,7,Găng tay hở lưng
 magic_carpet,0,Thảm phép thuật
-blue_monochrome,14,Màu xanh dương đơn sắc
 high-heeled_mechanical_legs,0,Chân cao có gót cơ khí
 green_poncho,0,Áo poncho xanh lá
 fishnet_cutout,0,Lỗ cắt lưới
@@ -16007,7 +15873,6 @@ tied_to_tree,0,Trói vào cây
 badger_ears,0,Tai lửng
 black_and_orange,7,Màu đen và màu cam
 cybernetic_face,7,Khuôn mặt người máy cấy ghép
-pastel_(artwork),14,Màu pastel
 blue_toe_claws,7,Móng vuốt ngón chân xanh dương
 grey_seam_underwear,7,Đồ lót đường may màu xám
 grey_soles,7,Bàn chân xám
@@ -16751,7 +16616,6 @@ button_hair_ornament,0,Phụ kiện tóc cúc
 hair_bow_(anatomy),7,Nơ buộc tóc
 bear_cub,0,Con non gấu
 nun_veil,7,Màn che mặt nữ tu
-paper_cutout_(medium),5,Lỗ cắt giấy
 sports_bottle,0,Cái chai thể thao
 holding_mouth,7,Cầm miệng
 teal_eyebrows,7,Lông mày xanh cổ vịt
@@ -17537,7 +17401,6 @@ tucked_shirt,7,Áo sơ mi giắt vào trong
 butt_on_face,7,Mông trên khuôn mặt
 fringe-trimmed_cape,0,Áo choàng mái viền
 blue_finger_claws,7,Móng vuốt ngón tay xanh dương
-sketchbook_(artwork),14,Sổ phác thảo
 tail_wiggle,7,Đuôi lắc lư
 poking_nose,0,Đang chỉ vào mũi
 tail_on_leg,7,Đuôi trên chân
@@ -17573,7 +17436,6 @@ nipple_zipper,0,Khóa kéo núm vú
 dry_vaginal_orgasm,7,Lên đỉnh âm đạo khô
 alternate_wing_color,0,Màu cánh khác
 nevermore_academy_school_uniform,0,Đồng phục học viện Nevermore
-pink_monochrome,14,Màu hồng đơn sắc
 chocolate_bunny,7,Thỏ sô-cô-la
 rubbing_neck,0,Đang xoa cổ
 disembodied_arm,0,Cánh tay tách rời
@@ -17679,7 +17541,6 @@ cow_skull,0,Đầu lâu bò
 two_tone_headgear,7,Phụ kiện đội đầu hai tông
 adjusting_earrings,0,Đang chỉnh khuyên tai
 american_flag_background,0,Nền hình cờ Mỹ
-tan_theme,14,Chủ đề nâu rám nắng
 green_frill,7,Diềm xếp xanh lá
 umbrella_bow,0,Nơ cái ô
 wedding_suit,0,Bộ đồ cưới
@@ -18485,7 +18346,6 @@ lifting_animal,0,Đang nhấc động vật
 lace-trimmed_wrist_cuffs,0,Ống bọc cổ tay cổ tay ren viền
 red_panda_costume,0,Trang phục gấu trúc đỏ
 alternate_neckwear,0,Phụ kiện cổ khác
-twitter_banner,5,Biểu ngữ Twitter
 bomb_hair_ornament,0,Phụ kiện tóc bom
 vertical-striped_footwear,0,Giày dép dọc kẻ sọc
 antique_car,0,Ô tô cổ
@@ -18651,7 +18511,6 @@ smiley_face_hair_ornament,0,Phụ kiện tóc mặt mỉm cười
 stickers_on_object,7,Nhãn dán trên vật thể
 pointing_at_breasts,0,Chỉ vào ngực
 shield_hair_ornament,0,Phụ kiện tóc khiên
-hawaiian_text,14,Chữ Hawaii
 excessive_fluff,7,Lông tơ quá nhiều
 breast_bulge,7,Chỗ lùm lùm ngực
 red_leaves,7,Lá đỏ
@@ -18800,7 +18659,6 @@ two_tone_cape,7,Áo choàng hai tông
 orange_arm_warmers,0,Băng giữ ấm cánh tay cam
 detached_tail,0,Đuôi tách rời
 mismatched_facial_hair,0,Tóc trên mặt lệch đôi
-green_monochrome,14,Màu xanh lá đơn sắc
 holding_feral,7,Cầm động vật không nhân hóa
 blue_floor,7,Sàn nhà xanh dương
 black_rhinoceros,12,Tê giác đen
@@ -18957,7 +18815,6 @@ emblem_ring,0,Nhẫn huy hiệu
 stained_bra,0,Áo ngực vấy bẩn
 kitami_hokuryo_high_school_uniform,0,Đồng phục trường trung học phổ thông Kitami Hokuryo
 leaf_crown,7,Vương miện chiếc lá
-1974,14,Năm 1974
 riding_machine,0,Cưỡi máy móc
 red_accessory,7,Phụ kiện đỏ
 torn_bowtie,0,Nơ cổ bị rách
@@ -19841,7 +19698,6 @@ green_cheeks,7,Má xanh lá
 furgonomic_helmet,7,Mũ bảo hiểm nửa người nửa thú
 light-skinned_gynomorph,7,Nhân vật gynomorph da nhạt
 black_pup_mask,7,Mặt nạ con non đen
-red_monochrome,14,Màu đỏ đơn sắc
 panties_around_feet,0,Quần lót quanh bàn chân
 floating_jacket,0,Áo khoác lơ lửng
 yellow_ear_ring,7,Nhẫn tai vàng
@@ -20655,7 +20511,6 @@ green_uniform,7,Đồng phục màu xanh lá
 leg_over_shin,7,Chân phía trên cẳng chân
 stained_shirt,7,Áo sơ mi vấy bẩn
 lying_on_chair,7,Đang nằm trên ghế
-doll_(medium),5,Búp bê
 yellow_spines,7,Cột sống vàng
 removing_earbuds,0,Đang cởi tai nghe nhét tai
 mismatched_nipple_piercing,0,Khuyên núm vú lệch đôi
@@ -20919,7 +20774,6 @@ latex_mermaid,7,Nàng tiên cá cao su
 raised_shoulder,7,Vai dựng lên
 front-tie_shorts,0,Quần short cà vạt phía trước
 silver_tail,7,Đuôi bạc
-blue_and_grey,14,Màu xanh dương và màu xám
 leg_on_furniture,7,Chân trên đồ nội thất
 aqua_helmet,0,Mũ bảo hiểm màu xanh ngọc
 vulva_markings,7,Vằn âm hộ
@@ -21522,7 +21376,6 @@ sparkle_censor,0,Kiểm duyệt ánh lấp lánh
 body_fins,0,Vây cơ thể
 tattoo_on_thigh,7,Hình xăm trên đùi
 offering_umbrella,0,Đưa cho cái ô
-clay_(medium),5,Đất sét
 body_transformation,7,Sự biến đổi cơ thể
 blanket_only,7,Chỉ có chăn
 presenting_legs,0,Chân chĩa ra
@@ -21793,7 +21646,6 @@ hairy_thighs,7,Đùi nhiều lông
 cat_gloves,7,Găng tay mèo
 pumpkin_hat_ornament,0,Đồ trang trí mũ bí ngô
 genitals_through_zipper,7,Bộ phận sinh dục xuyên qua khóa kéo
-1910,14,Năm 1910
 fetish_gear,7,Bánh răng sở thích
 glistening_thong,7,Quần lót dây bóng nhẫy
 black_body_hair,7,Tóc cơ thể màu đen
@@ -21842,7 +21694,6 @@ bow_background,0,Nền nơ
 licking_boots,7,Đang liếm ủng
 vagina_on_penis,7,Âm đạo trên dương vật
 half-coat,0,Áo khoác một nửa
-1978,14,Năm 1978
 fish_hood,0,Mũ trùm cá
 face_in_anus,7,Khuôn mặt trong hậu môn
 stepping_on_tail,7,Bước đuôi
@@ -22065,7 +21916,6 @@ sitting_on_pokemon,0,Đang ngồi trên pokémon
 veiny_clitoris,7,Âm vật lộ gân
 paw_pendant,0,Mặt dây chuyền chân thú
 tearing_topwear,7,Đang xé trang phục thân trên
-purple_monochrome,14,Màu tím đơn sắc
 purple_onesie,7,Bộ liền thân tím
 sextuple_penetration,7,Sáu sự thâm nhập
 ladder_cutout,0,Lỗ cắt cái thang
@@ -22426,7 +22276,6 @@ feline_nose,7,Mũi mèo
 hands_on_wrists,7,Bàn tay trên cổ tay
 vagina_piercing,7,Khuyên âm đạo
 foot_in_pussy,7,Bàn chân trong âm hộ
-orange_monochrome,14,Màu cam đơn sắc
 lion_(macross_frontier),0,Sư tử
 spotted_hands,7,Bàn tay có đốm
 glowing_tree,0,Cây phát sáng
@@ -23255,10 +23104,7 @@ framed_pectorals,0,Cơ ngực khung
 quiff_(hairstyle),7,Ngửa ra sau
 letter_earrings,0,Khuyên tai bức thư
 cape_umbrella,0,Cái ô áo choàng
-1973,14,Năm 1973
 edwardian_clothing,7,Trang phục thời Edward
-1975,14,Năm 1975
-1984,14,Năm 1984
 head_on_back,0,Đầu trên lưng
 narrow_pupils,7,Đồng tử hẹp
 touching_knee,7,Chạm đầu gối
@@ -23268,7 +23114,6 @@ ears_tied,7,Tai được buộc
 bikini_crabs,7,Cua bikini
 standing_on_head,7,Đang đứng trên đầu
 standing_on_planet,7,Đang đứng trên hành tinh
-persian_text,14,Chữ Ba Tư
 duck_on_head,0,Vịt trên đầu
 skull_bulge,7,Chỗ lùm lùm đầu lâu
 christmas_cookies,7,Bánh quy Giáng sinh
@@ -23613,7 +23458,6 @@ adjusting_earphones,0,Đang chỉnh tai nghe nhét tai
 black_screen,7,Màn hình đen
 partially_clothed_andromorph,7,Nhân vật andromorph mặc đồ một phần
 white_earbuds,7,Tai nghe nhét tai trắng
-1908,14,Năm 1908
 curled_ears,7,Tai uốn xoăn
 rope_anklet,0,Vòng chân dây thừng
 heart-shaped_bottle,0,Cái chai hình trái tim
@@ -23765,7 +23609,6 @@ bandage_on_butt,7,Băng quấn trên mông
 holding_severed_head,7,Cầm đầu bị cắt lìa
 flower-trimmed_bikini,0,Bikini hoa viền
 pussy_juice_on_penis,0,Dịch âm hộ trên dương vật
-pixiv_banner,5,Biểu ngữ Pixiv
 discarded_briefs,7,Quần lót tam giác đã bỏ đi
 print_thong,7,Quần lót dây họa tiết
 medium,7,Vừa
@@ -23793,7 +23636,6 @@ humanoid_penetrating_intersex,7,Dạng người thâm nhập liên giới tính
 fluffy_feathers,7,Lông vũ lông xù
 cosmic_print,7,Họa tiết vũ trụ
 wing_flower,0,Hoa cánh
-neon_colors,14,Màu neon
 hexagons,7,Lục giác
 blood_on_pectorals,0,Máu trên cơ ngực
 human_fingering_feral,7,Người đút ngón tay vào động vật không nhân hóa
@@ -23847,7 +23689,6 @@ instrument_on_lap,0,Nhạc cụ trên đùi
 instrument_insertion,0,Đưa vào nhạc cụ
 multi_snout,7,Nhiều cái mõm
 stuffed_jellyfish,0,Sứa nhồi bông
-1980,14,Năm 1980
 spade_choker,0,Vòng cổ hình cái xẻng
 multicolored_eye_patch,7,Miếng vá mắt nhiều màu
 shell_bracelet,0,Vòng tay vỏ
@@ -24284,7 +24125,6 @@ rainbow_dress,0,Váy cầu vồng
 anus_piercing,0,Khuyên hậu môn
 cherry_blossom_background,0,Nền hoa nở hoa anh đào
 tail_on_pussy,7,Đuôi trên âm hộ
-1977,14,Năm 1977
 gradient_mane,7,Bờm chuyển sắc
 mushroom_hat_ornament,0,Đồ trang trí mũ nấm
 flower-trimmed_panties,0,Quần lót hoa viền
@@ -24897,7 +24737,6 @@ large_legs,7,Chân lớn
 aqua_car,0,Ô tô xanh ngọc
 blue_genitalia,7,Bộ phận sinh dục xanh dương
 multiple_screens,0,Nhiều màn hình
-trimmed,5,Viền
 brother_fingering_brother,7,Anh em trai đút ngón tay vào anh em trai
 tongue_focus,7,Trọng tâm lưỡi
 ball_on_finger,7,Quả bóng trên ngón tay
@@ -25180,7 +25019,6 @@ symbol_on_accessory,7,Biểu tượng trên phụ kiện
 penis_down,7,Dương vật hướng xuống
 penis_hold,0,Cái giữ dương vật
 feathered_dragon_humanoid,12,Dạng người rồng có lông vũ
-1907,14,Năm 1907
 foot_head,12,Đầu bàn chân
 yellow_belt_buckle,7,Khóa thắt lưng vàng
 rain_deer_(rain_world),12,Hươu mưa
@@ -25347,7 +25185,6 @@ chin_balls,7,Tinh hoàn cằm
 no_outlines,7,Không có đường viền
 cut_finger,0,Ngón tay bị cắt
 chinese_school_uniform,0,Đồng phục học đường Trung Quốc
-1959,14,Năm 1959
 fur-trimmed_fan,0,Quạt lông thú viền
 fingers_on_chin,0,Ngón tay trên cằm
 no_crown,0,Không có vương miện
@@ -25533,7 +25370,6 @@ hair_around_neck,0,Tóc quanh cổ
 pleated_collar,0,Cổ áo xếp ly
 precum_on_back,7,Dịch tiền xuất tinh trên lưng
 spiral_pattern,7,Hoa văn xoắn ốc
-1920,14,Năm 1920
 black_tail_stocking,7,Tất dài đuôi đen
 american_curl,12,Lọn tóc xoăn Mỹ
 owl_costume,0,Trang phục cú mèo
@@ -25962,10 +25798,8 @@ extra_eyebrows,0,Thêm lông mày
 holding_car,7,Cầm ô tô
 wet_sweater,0,Áo len ướt
 unusual_breasts,7,Ngực bất thường
-1982,14,Năm 1982
 plastic_body,7,Cơ thể nhựa
 curved_arms,7,Cánh tay cong
-1967,14,Năm 1967
 snow_balls,7,Tinh hoàn tuyết
 precum_in_clothing,7,Dịch tiền xuất tinh trong trang phục
 pastel_background,7,Nền màu pastel
@@ -26101,7 +25935,6 @@ rabbit_in_eyes,0,Thỏ trong mắt
 cum_from_tentacle,7,Tinh dịch từ xúc tu
 cable_in_mouth,0,Cáp trong miệng
 bra_and_panties,7,Áo ngực và quần lót
-1938,14,Năm 1938
 finger_kiss,0,Hôn ngón tay
 keyhole_bikini,7,Bikini lỗ khóa
 tail_in_slit,7,Đuôi trong xẻ tà
@@ -26189,7 +26022,6 @@ rainbow_pride_collar,7,Cổ áo tự hào màu cầu vồng
 feces_on_dildo,7,Phân trên dương vật giả
 mud_creature,12,Sinh vật bùn
 space_(diaper),7,Vũ trụ
-text-to-speech,14,Chữ trong ảnh tới nói
 leather_elbow_gloves,7,Găng tay khuỷu tay da
 striped_balloon,7,Bóng bay kẻ sọc
 paint_on_penis,7,Màu vẽ trên dương vật
@@ -26275,7 +26107,6 @@ black_striped_markings,7,Vằn kẻ sọc đen
 anus_tattoo,7,Hình xăm hậu môn
 black_stirrup_socks,7,Tất đai giữ màu đen
 floating_on_back,0,Lơ lửng trên lưng
-1909,14,Năm 1909
 green_balloon,7,Bóng bay xanh lá
 tail_scarf,7,Khăn quàng đuôi
 green_bed,7,Giường xanh lá
@@ -26432,7 +26263,6 @@ pup_gear,7,Bánh răng con non
 elemental_monkeys,7,Khỉ nguyên tố
 mouth_on_butt,7,Miệng trên mông
 frilly_sleeves,7,Tay áo nhún diềm
-purple_and_grey,14,Màu tím và màu xám
 collar_on_tail,7,Vòng cổ trên đuôi
 ear_vulva,7,Âm hộ tai
 purple_miniskirt,7,Chân váy ngắn tím
@@ -26450,7 +26280,6 @@ spread_open,7,Dạng ra mở
 arm_censor,7,Kiểm duyệt cánh tay
 breast_on_leg,7,Ngực trên chân
 gem_in_body,0,Đá quý trong cơ thể
-1916,14,Năm 1916
 gender_name,7,Tên giới tính
 planet_in_mouth,7,Hành tinh trong miệng
 urine_on_neck,7,Nước tiểu trên cổ
@@ -26583,7 +26412,6 @@ fake_food,0,Đồ ăn giả
 lube_in_pussy,7,Chất bôi trơn trong âm hộ
 blue_diaper_frill,7,Diềm xếp tã lót xanh dương
 feces_on_wall,7,Phân trên bức tường
-yellow_monochrome,14,Màu vàng đơn sắc
 feces_on_fingers,7,Phân trên ngón tay
 science_special_search_party_uniform,0,Đồng phục Science Special Search Party
 yellow_garter_belt,0,Dây treo tất vàng
@@ -27495,7 +27323,6 @@ black_bondage_gloves,7,Găng tay trói buộc màu đen
 penetrated_male_penetrating,7,Nhân vật nam chủ động thâm nhập bị thâm nhập
 erection_in_sheath,7,Cương cứng trong bao kiếm
 diagonal-striped_panties,0,Quần lót chéo kẻ sọc
-1912,14,Năm 1912
 spotted_bra,7,Áo ngực có đốm
 arm_holding,7,Cầm cánh tay
 vibrator_on_nipples,7,Đồ chơi rung trên núm vú
@@ -28025,7 +27852,6 @@ horn_bite,7,Cắn sừng
 wooden_frame,0,Khung hình bằng gỗ
 checkered_headband,0,Băng đô kẻ ca-rô
 genital_bondage,7,Trói buộc sinh dục
-1918,14,Năm 1918
 plant_dragon,12,Rồng cây cảnh
 hoodie_up,7,Kéo áo hoodie lên
 foot_on_sofa,7,Bàn chân trên ghế bành
@@ -28154,7 +27980,6 @@ helmet_with_visor,7,Mũ bảo hiểm kèm lưỡi trai
 horns_and_antennae,7,Sừng và ăng-ten
 black_bunny_(ensemble_stars!),0,Thỏ đen
 belly_bow,7,Nơ bụng
-1902,14,Năm 1902
 backless_coat,0,Áo khoác hở lưng
 horse_hat,0,Mũ ngựa
 suggestive_print_clothing,7,Trang phục họa tiết gợi cảm
@@ -28613,8 +28438,6 @@ bandage_on_eye,7,Băng quấn trên mắt
 ghost_(pac-man),12,Ma
 black_earbuds,7,Tai nghe nhét tai đen
 black_costume,7,Trang phục đen
-1904,14,Năm 1904
-1905,14,Năm 1905
 black_arm_wraps,7,Băng quấn cánh tay đen
 balls_in_pussy,7,Tinh hoàn trong âm hộ
 unworn_choker,0,Vòng cổ không mặc
@@ -28685,9 +28508,7 @@ russian_flag_bikini,7,Bikini hình cờ Nga
 balloon_humanoid,12,Dạng người bóng bay
 freckled_hand,7,Bàn tay có tàn nhang
 black_and_white_and_pink,7,Màu đen và màu trắng và màu hồng
-1900,14,Năm 1900
 asking_out,7,Đang hỏi thò ra
-1979,14,Năm 1979
 bandage_on_elbow,0,Băng quấn trên khuỷu tay
 black_cowboy_hat,7,Mũ cao bồi màu đen
 bandaged_belly,7,Bụng băng bó
@@ -29110,7 +28931,6 @@ holographic_horn,7,Sừng toàn ảnh
 swamp_dragon_(zerofox1000),12,Rồng đầm lầy
 dutch_national_soccer_team_uniform,0,Đồng phục đội tuyển bóng đá quốc gia Dutch
 cosmic_frill,7,Diềm xếp vũ trụ
-flower_(voicebank),5,Hoa
 sanc_kingdom_school_uniform,0,Đồng phục trường Sanc Kingdom
 spiked_ears,7,Tai có gai
 spiked_drink,7,Đồ uống có gai
@@ -29463,7 +29283,6 @@ glowing_cheeks,7,Má phát sáng
 mole_(romancing_saga_2),12,Nốt ruồi
 sleeping_on_ground,7,Đang ngủ trên mặt đất
 brown_spotted_body,7,Cơ thể có đốm nâu
-glitter_(medium),5,Kim tuyến
 glistening_robe,7,Áo choàng bóng nhẫy
 glistening_stomach,7,Bụng bóng nhẫy
 spotted_armwear,7,Đồ che tay có đốm
@@ -29525,8 +29344,6 @@ moths,7,Ngài
 one-piece_swimsuit_removed,7,Đồ bơi một mảnh đã tháo ra
 tied_towel,0,Khăn tắm được buộc
 skull_belt_buckle,7,Khóa thắt lưng đầu lâu
-1911,14,Năm 1911
-1901,14,Năm 1901
 puffy_wrist_cuffs,0,Ống bọc cổ tay cổ tay phồng
 one_shoulder_top,7,Áo vai một
 rabbit_ear_footwear,0,Giày dép tai thỏ
