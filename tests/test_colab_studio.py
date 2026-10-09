@@ -2494,6 +2494,7 @@ class UiResponsivenessTests(unittest.TestCase):
             "fn=update_keyword_tag_suggestions,",
             "fn=apply_keyword_tag_suggestion_ui,",
             "fn=apply_csv_tags,",
+            "fn=run_tag_check,",
         ):
             self.assertIn(anchor, self.source)
             block = self.block(anchor)

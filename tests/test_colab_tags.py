@@ -1019,3 +1019,131 @@ class VietnameseSearchIndexRound14Tests(unittest.TestCase):
         self.assertEqual(studio._normalize_tag_text_preserving_accents("Mắt_x  \n xanh"), "mắt x xanh")
         self.assertEqual(studio._normalize_tag_text_preserving_accents(None), "")
         self.assertEqual(studio._normalize_tag_text_preserving_accents("Mắt"), "mắt")
+
+
+class CatalogPromptCheckTests(unittest.TestCase):
+    """Nút 🧪 Kiểm tra thẻ với kho thẻ: đối chiếu thẻ trong prompt với kho CSV."""
+
+    def setUp(self):
+        self.rows = studio.parse_tag_csv(
+            'long_hair,0,100,"longhair,hair_long",Tóc dài\r\n'
+            'blue_eyes,0,50,,Mắt xanh dương\r\n'
+            'light_blue_eyes,0,35,,Mắt xanh dương nhạt\r\n'
+            '1girl,0,80,,Một nhân vật nữ\r\n'
+            'solo,0,10,"alone",Một mình\r\n'
+            'red_dress,0,40,,Váy đỏ\r\n'
+            'highres,5,1000,,Độ phân giải cao\r\n'
+        )
+
+    def check(self, text):
+        return studio.validate_prompt_tags(text, self.rows)
+
+    def test_exact_name_alias_label_and_exempt_tags(self):
+        total, results = self.check(
+            "1girl, long hair, LONG_HAIR, (red_dress:1.2), longhair, hair long, "
+            "tóc dài, một nhân vật, alone, masterpiece, best quality, perfect eyes, "
+            "BREAK, bad quality"
+        )
+        self.assertEqual(total, 14)
+        by_core = {
+            studio.normalize_csv_tag(studio.tag_core(tag)): (status, canonical)
+            for tag, status, canonical, _ in results
+        }
+        # Đúng tên thẻ: chấp nhận khác dấu cách/viết hoa và cú pháp trọng số.
+        # (Khóa đã chuẩn hoá: dấu gạch dưới → khoảng trắng, bỏ dấu tiếng Việt.)
+        self.assertEqual(by_core["1girl"], ("ok", "1girl"))
+        self.assertEqual(by_core["long hair"], ("ok", "long_hair"))
+        self.assertEqual(by_core["red dress"], ("ok", "red_dress"))
+        # Alias trong cột alias của CSV.
+        self.assertEqual(by_core["longhair"], ("alias", "long_hair"))
+        self.assertEqual(by_core["hair long"], ("alias", "long_hair"))
+        self.assertEqual(by_core["alone"], ("alias", "solo"))
+        # Nhãn tiếng Việt của một thẻ trong kho (từ điển trong mã được ưu tiên hơn cột CSV).
+        self.assertEqual(by_core["toc dai"], ("label", "long_hair"))
+        self.assertEqual(by_core["mot nhan vat"], ("label", "solo"))
+        # Thẻ chuẩn ngoài kho: chất lượng WAI v17, bộ negative, trigger LoRA, BREAK.
+        for exempt in ("masterpiece", "best quality", "perfect eyes", "break", "bad quality"):
+            self.assertEqual(by_core[exempt], ("known", None))
+        # LONG_HAIR trùng với long hair nên chỉ kiểm tra một lần.
+        self.assertEqual(len(results), 13)
+
+    def test_unknown_tags_get_suggestions(self):
+        _, results = self.check("long_hari, blue_eyee, mắt xanh, worst qualit, zzzqqq")
+        by_core = {
+            studio.normalize_csv_tag(studio.tag_core(tag)): (status, suggestions)
+            for tag, status, _, suggestions in results
+        }
+        # Gõ sai chính tả: đoán theo tên thẻ cùng ký tự đầu trong kho.
+        self.assertEqual(by_core["long hari"][0], "unknown")
+        self.assertIn("long_hair", by_core["long hari"][1])
+        self.assertEqual(by_core["blue eyee"][0], "unknown")
+        self.assertIn("blue_eyes", by_core["blue eyee"][1])
+        # Cụm tiếng Việt không khớp nguyên nhãn: tìm theo nhãn trong kho.
+        self.assertEqual(by_core["mat xanh"][0], "unknown")
+        self.assertEqual(by_core["mat xanh"][1][0], "blue_eyes")
+        # Gõ sai thẻ chuẩn ngoài kho: gợi ý đầu tiên là chính thẻ chuẩn đó
+        # (không phải tên thẻ nào trong CSV).
+        self.assertEqual(by_core["worst qualit"][0], "unknown")
+        self.assertEqual(by_core["worst qualit"][1][0], "worst quality")
+        # Không có gì gần: không bịa gợi ý.
+        self.assertEqual(by_core["zzzqqq"], ("unknown", ()))
+
+    def test_duplicates_and_empty_prompt(self):
+        total, results = self.check("solo, solo")
+        self.assertEqual((total, len(results)), (2, 1))
+        self.assertEqual(self.check("")[0], 0)
+        self.assertEqual(self.check(None), (0, []))
+
+    def test_report_groups_and_counts(self):
+        prompt_data = self.check("1girl, long_hari")
+        negative_data = self.check("bad quality, red_dres")
+        report = studio.format_tag_check_report(
+            prompt_data, negative_data, len(self.rows)
+        )
+        self.assertIn("🧪 Kiểm tra thẻ với kho thẻ", report)
+        self.assertIn(f"kho: {len(self.rows):,} thẻ", report)
+        self.assertIn("✅ **Đúng tên thẻ trong kho — 1:** `1girl`", report)
+        self.assertIn("`long_hari` → gợi ý: `long_hair`", report)
+        self.assertIn("ℹ️ **Thẻ chuẩn ngoài kho", report)
+        self.assertIn("`bad quality`", report)
+        self.assertIn("`red_dres` → gợi ý: `red_dress`", report)
+        self.assertIn("không có trong kho **không phải lỗi**", report)
+        clean = studio.format_tag_check_report(self.check("1girl"), self.check(""), len(self.rows))
+        self.assertIn("✅ Mọi thẻ trong hai ô", clean)
+
+    def test_run_tag_check_reads_catalog_and_reports_load_failure(self):
+        with patch.object(studio, "load_csv_tags", return_value=self.rows):
+            report = studio.run_tag_check("1girl, long hair", "bad quality")
+        self.assertIn("🧪 Kiểm tra thẻ với kho thẻ", report)
+        self.assertIn("✅ **Đúng tên thẻ trong kho — 2:** `1girl` · `long hair` → `long_hair`", report)
+        with patch.object(studio, "load_csv_tags", side_effect=ValueError("mạng lỗi")):
+            report = studio.run_tag_check("1girl", "")
+        self.assertIn("Chưa nạp được kho thẻ", report)
+        self.assertIn("Tìm / tải kho thẻ", report)
+
+    def test_real_catalog_check(self):
+        path = Path(__file__).resolve().parents[1] / studio.TAG_CSV_NAME
+        rows = studio.parse_tag_csv(path.read_bytes().decode("utf-8"))
+        _, results = studio.validate_prompt_tags(
+            "1girl, solo, long hair, masterpiece, best quality, perfect eyes, BREAK, "
+            "this_tag_does_not_exist_zzz",
+            rows,
+        )
+        statuses = {
+            studio.normalize_csv_tag(studio.tag_core(tag)): status
+            for tag, status, _, _ in results
+        }
+        self.assertEqual(statuses["1girl"], "ok")
+        self.assertEqual(statuses["solo"], "ok")
+        self.assertEqual(statuses["long hair"], "ok")
+        self.assertEqual(statuses["masterpiece"], "known")
+        self.assertEqual(statuses["best quality"], "known")
+        self.assertEqual(statuses["perfect eyes"], "known")
+        # Kho thật có đúng thẻ "break" (nghỉ giải lao) nhưng BREAK viết hoa là từ
+        # khóa SDXL nên vẫn phải báo "thẻ chuẩn ngoài kho", không phải "đúng tên thẻ".
+        self.assertEqual(statuses["break"], "known")
+        self.assertEqual(statuses["this tag does not exist zzz"], "unknown")
+        # Gõ sai chính tả trên kho thật vẫn gợi ý được thẻ đúng.
+        _, typo = studio.validate_prompt_tags("blue_eyee", rows)
+        self.assertEqual(typo[0][1], "unknown")
+        self.assertIn("blue_eyes", typo[0][3])

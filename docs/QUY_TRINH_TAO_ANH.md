@@ -31,11 +31,11 @@ Tài liệu này giải thích accordion **🧭 Quy trình chuẩn · khung prom
 > **Xác nhận bản đang chạy:** đầu trang có chip **"Bản dựng …"**. Mã giao diện nằm trong **ô 7**, nên sau khi lấy
 > notebook mới phải chạy lại ô 7 rồi ô 8 và ô 9; chỉ chạy lại ô 9 thì trình duyệt vẫn dùng mã cũ và sẽ vẫn thấy đơ.
 
-> **Nguyên tắc quan trọng:** cả ba nút trong accordion **chỉ ghi nội dung hiển thị** vào ô *Prompt gửi model*, ô *Negative gửi model* hoặc ô báo cáo. Không có thẻ nào được ghép ngầm khi bạn bấm tạo ảnh — bạn xem, sửa hoặc xóa trước khi tạo.
+> **Nguyên tắc quan trọng:** cả bốn nút trong accordion **chỉ ghi nội dung hiển thị** vào ô *Prompt gửi model*, ô *Negative gửi model* hoặc ô báo cáo. Không có thẻ nào được ghép ngầm khi bạn bấm tạo ảnh — bạn xem, sửa hoặc xóa trước khi tạo.
 
 ---
 
-## 1. Ba nút trong **🧭 Quy trình chuẩn**
+## 1. Bốn nút trong **🧭 Quy trình chuẩn**
 
 ### 1.1. Sắp xếp prompt theo thứ tự chuẩn
 Đọc prompt hiện tại, tách thành từng thẻ (phân tách bằng dấu phẩy), rồi:
@@ -103,6 +103,19 @@ Chỉ đọc và báo cáo, **không sửa gì**. Các mục được kiểm:
 | Thông số | steps **15–30**, CFG **5–7**, kích thước theo preset, hires strength **0.35–0.5** | Lệch khỏi khuyến nghị sẽ được nhắc |
 
 Số token là **ước lượng heuristic** (mỗi từ ≈ 1 token, cộng thêm cho `_`, số, dấu câu, từ dài) — đủ để cảnh báo vượt khối 75 token, không phải số token chính xác của tokenizer CLIP.
+
+### 1.4. 🧪 Kiểm tra thẻ với kho thẻ
+Đối chiếu từng thẻ trong hai ô *Prompt gửi model* và *Negative gửi model* với kho CSV Danbooru + e621 (cùng catalog đã xác minh SHA-256 với tab 🏷️ Kho thẻ). Chỉ đọc và báo cáo, **không sửa gì**. Kết quả chia theo nhóm:
+
+| Nhóm | Ý nghĩa |
+| --- | --- |
+| ✅ Đúng tên thẻ trong kho | Khớp tên thẻ chính trong CSV — chấp nhận khác dấu cách/viết hoa (`long hair` = `long_hair`); nếu khác tên chuẩn sẽ hiện `→ tên chuẩn` |
+| 🔀 Alias của thẻ trong kho | Khớp tên phụ ở cột alias của CSV — hợp lệ, nhưng nên viết tên thẻ chính tiếng Anh |
+| ℹ️ Nhãn tiếng Việt | Khớp nhãn/từ đồng nghĩa tiếng Việt của một thẻ — nên đổi sang tên thẻ chính (`tóc dài` → `long_hair`) |
+| ℹ️ Thẻ chuẩn ngoài kho | Thẻ chất lượng WAI v17 (`masterpiece, best quality`…), thẻ của 8 bộ negative, thẻ gợi ý sửa vùng, thẻ nhóm Chi tiết mắt & móng, trigger LoRA `perfect eyes`, từ khóa `BREAK`/`AND` — chính Studio đề xuất nên không cần có trong CSV |
+| ⚠️ Không có trong kho | Có thể là mô tả tự do (Illustrious vẫn đọc được) hoặc gõ sai chính tả — kèm gợi ý tên thẻ gần nhất (tìm trong kho trước, rồi so chuỗi trong các tên thẻ cùng ký tự đầu) |
+
+Thẻ trùng chỉ được kiểm tra một lần (🩺 Kiểm tra prompt & thông số đã báo riêng). Lần đầu bấm, Studio dựng index tên/alias của ~350k thẻ nên chạy trong hàng đợi và có thể chậm một nhịp; các lần sau chỉ đọc bộ nhớ.
 
 ---
 
