@@ -2,8 +2,10 @@
 
 The output follows the existing SAA-compatible format:
 ``tag,category,translation`` with no header and no comma in the translation.
-Only tags that have a real Vietnamese translation in
-``danbooru_e621_merged_vi_vn.csv`` are written; untranslated tags are omitted.
+The requested groups use real Vietnamese translations from
+``danbooru_e621_merged_vi_vn.csv``. For ``99_khac.csv``, missing translations
+receive a deterministic machine-style fallback: known words use the local
+Vietnamese glossary and underscores are converted to spaces.
 
 Run from the repository root:
     python scripts/build_prompt_catalog_vi.py
@@ -15,6 +17,7 @@ import argparse
 import csv
 import hashlib
 import json
+import re
 import shutil
 from collections import OrderedDict
 from pathlib import Path
@@ -40,11 +43,139 @@ SELECTED_GROUPS = (
     "99_khac",
 )
 
+# The fallback group is deliberately complete: tags without a curated translation
+# receive an automatic label with underscores converted to spaces.
+MACHINE_TRANSLATION_GROUPS = frozenset({"99_khac"})
 
-def _read_group_names(group_dir: Path, group_id: str) -> set[str]:
+_MACHINE_WORD_OVERRIDES = {
+    "after": "sau",
+    "against": "chống lại",
+    "ambiguous": "mơ hồ",
+    "anal": "hậu môn",
+    "and": "và",
+    "around": "xung quanh",
+    "back": "phía sau",
+    "big": "lớn",
+    "blood": "máu",
+    "brown": "nâu",
+    "character": "nhân vật",
+    "cum": "tinh dịch",
+    "double": "đôi",
+    "down": "xuống",
+    "eating": "ăn",
+    "emphasis": "nhấn mạnh",
+    "forced": "bị ép buộc",
+    "from": "từ",
+    "front": "phía trước",
+    "gold": "vàng",
+    "golden": "vàng",
+    "happy": "vui vẻ",
+    "head": "đầu",
+    "heart": "trái tim",
+    "human": "người",
+    "ice": "băng",
+    "imminent": "sắp xảy ra",
+    "in": "trong",
+    "inside": "bên trong",
+    "large": "lớn",
+    "lines": "đường nét",
+    "little": "nhỏ",
+    "magic": "ma thuật",
+    "many": "nhiều",
+    "multiple": "nhiều",
+    "no": "không có",
+    "one": "một",
+    "open": "mở",
+    "oral": "bằng miệng",
+    "over": "trên",
+    "peeing": "đi tiểu",
+    "playing": "đang chơi",
+    "power": "sức mạnh",
+    "public": "công cộng",
+    "reverse": "ngược",
+    "sex": "quan hệ tình dục",
+    "shaking": "run rẩy",
+    "side": "bên",
+    "single": "một",
+    "small": "nhỏ",
+    "star": "ngôi sao",
+    "straight": "thẳng",
+    "tan": "nâu rám",
+    "the": "",
+    "too": "quá",
+    "two": "hai",
+    "under": "bên dưới",
+    "up": "lên",
+    "vaginal": "âm đạo",
+    "with": "với",
+    "without": "không có",
+}
+
+
+def _read_group_rows(group_dir: Path, group_id: str) -> list[list[str]]:
     path = group_dir / f"{group_id}.csv"
     with path.open(encoding="utf-8", newline="") as source:
-        return {row[0] for row in csv.reader(source) if row}
+        return [row for row in csv.reader(source) if len(row) >= 2]
+
+
+def _machine_translation_tools(translation_rows: list[list[str]]) -> tuple[dict[str, str], object | None]:
+    """Load the local Vietnamese word rules used for automatic fallback labels.
+
+    The builder remains usable without importing the Studio module. When it is
+    available, its maintained word tables improve the automatic gloss; otherwise
+    the checked-in translation rows and the small common-word table still provide
+    a deterministic fallback.
+    """
+    words = dict(_MACHINE_WORD_OVERRIDES)
+    for row in translation_rows:
+        tag, _category, translation = row
+        if re.fullmatch(r"[A-Za-z0-9]+", tag):
+            words.setdefault(tag.casefold(), translation)
+
+    studio = None
+    try:
+        from colab import studio as studio_module
+
+        studio = studio_module
+        for table_name in ("_TAG_VI_WORDS", "_TAG_VI_COLORS", "_TAG_VI_COMPOSITE_HEADS", "TAG_VI_LABELS"):
+            for tag, translation in getattr(studio_module, table_name, {}).items():
+                if re.fullmatch(r"[A-Za-z0-9]+", tag):
+                    words.setdefault(tag.casefold(), str(translation).split("|", 1)[0])
+    except (ImportError, AttributeError):
+        pass
+    return words, studio
+
+
+def _machine_translate_tag(tag: str, category: str, words: dict[str, str], studio: object | None) -> str:
+    """Create a deterministic machine-style gloss and always remove underscores.
+
+    Curated labels remain preferred. For a missing tag, known English words use
+    the local Vietnamese glossary; unknown words/proper names are retained as
+    readable English, with ``_`` converted to a space instead of being left as an
+    untranslated opaque identifier.
+    """
+    if studio is not None:
+        label = studio.vietnamese_tag_label(tag, category)
+        if studio._is_translated_tag_label(label, category):
+            return _sanitize_machine_label(label)
+
+    pieces = []
+    for piece in re.split(r"_+", tag):
+        key = piece.casefold()
+        replacement = words.get(key)
+        if replacement is None and key.endswith("s") and len(key) > 3:
+            replacement = words.get(key[:-1])
+        pieces.append(replacement if replacement is not None else piece)
+    label = " ".join(pieces)
+    if not re.search(r"[A-Za-zÀ-ỹ]", label):
+        label = f"Ký hiệu {label}".strip()
+    return _sanitize_machine_label(label[:1].upper() + label[1:] if label else "Nhãn tự động")
+
+
+def _sanitize_machine_label(label: str) -> str:
+    label = re.sub(r"[\r\n]+", " ", str(label or ""))
+    label = label.replace(",", ";").replace("_", " ")
+    return re.sub(r"\s+", " ", label).strip() or "Nhãn tự động"
 
 
 def _write_csv(path: Path, rows: list[list[str]]) -> tuple[int, int, str]:
@@ -69,26 +200,58 @@ def build_group_translations(
         shutil.rmtree(temporary)
     temporary.mkdir(parents=True)
 
-    names_by_group = {
-        group_id: _read_group_names(group_dir, group_id)
+    source_rows_by_group = {
+        group_id: _read_group_rows(group_dir, group_id)
         for group_id in SELECTED_GROUPS
+    }
+    names_by_group = {
+        group_id: {row[0] for row in rows}
+        for group_id, rows in source_rows_by_group.items()
     }
     group_by_name = {
         name: group_id
         for group_id, names in names_by_group.items()
         for name in names
     }
+    translation_rows = []
     rows_by_group = OrderedDict((group_id, []) for group_id in SELECTED_GROUPS)
     with translation_path.open(encoding="utf-8", newline="") as source:
         for row in csv.reader(source):
             if len(row) != 3:
                 continue
+            translation_rows.append(row)
             group_id = group_by_name.get(row[0])
             if group_id is not None:
                 rows_by_group[group_id].append(row)
 
+    translation_by_tag = {row[0]: row for row in translation_rows}
+    machine_words, studio = _machine_translation_tools(translation_rows)
     groups = []
-    for group_id, rows in rows_by_group.items():
+    for group_id in SELECTED_GROUPS:
+        source_rows = source_rows_by_group[group_id]
+        real_rows = rows_by_group[group_id]
+        machine_count = 0
+        if group_id in MACHINE_TRANSLATION_GROUPS:
+            # Walk the canonical group order so autocomplete keeps the source
+            # popularity order while adding labels for every missing tag.
+            rows = []
+            for source_row in source_rows:
+                tag = source_row[0]
+                translated = translation_by_tag.get(tag)
+                if translated is None:
+                    translated = [
+                        tag,
+                        source_row[1],
+                        _machine_translate_tag(tag, source_row[1], machine_words, studio),
+                    ]
+                    machine_count += 1
+                else:
+                    # Keep the canonical tag/category, but apply the same SAA-safe
+                    # separator cleanup to curated labels in this fully normalized file.
+                    translated = [translated[0], translated[1], _sanitize_machine_label(translated[2])]
+                rows.append(translated)
+        else:
+            rows = real_rows
         path = temporary / f"{group_id}.csv"
         count, size, digest = _write_csv(path, rows)
         groups.append(
@@ -98,8 +261,10 @@ def build_group_translations(
                 "rows": count,
                 "bytes": size,
                 "sha256": digest,
-                "source_group_rows": len(names_by_group[group_id]),
-                "untranslated_rows": len(names_by_group[group_id]) - count,
+                "source_group_rows": len(source_rows),
+                "real_translated_rows": len(real_rows),
+                "machine_translated_rows": machine_count,
+                "untranslated_rows": len(source_rows) - len(real_rows),
             }
         )
 
@@ -110,6 +275,8 @@ def build_group_translations(
         "header": False,
         "selected_groups": list(SELECTED_GROUPS),
         "translated_rows": sum(group["rows"] for group in groups),
+        "real_translated_rows": sum(group["real_translated_rows"] for group in groups),
+        "machine_translated_rows": sum(group["machine_translated_rows"] for group in groups),
         "groups": groups,
     }
     (temporary / "manifest.json").write_text(
@@ -127,20 +294,24 @@ def _readme(manifest: dict) -> str:
         "# File dịch tiếng Việt cho catalog prompt",
         "",
         "Định dạng SAA-compatible: `tag,category,translation`, không header, UTF-8",
-        "không BOM, xuống dòng LF. Chỉ các tag có bản dịch thật được ghi; tag chưa",
-        "dịch bị bỏ qua, không bịa nhãn.",
+        "không BOM, xuống dòng LF. Các nhóm thông thường chỉ ghi bản dịch thật.",
+        "Riêng `99_khac.csv`, tag thiếu bản dịch thật nhận nhãn dịch máy dự phòng; dấu `_`",
+        "được đổi thành khoảng trắng, từ chưa biết được giữ nguyên để không bịa nghĩa.",
         "",
-        "| File | Dòng đã dịch | Tag nguồn | Chưa dịch |",
-        "| --- | ---: | ---: | ---: |",
+        "| File | Tổng dòng | Dịch thật | Dịch máy | Tag nguồn | Chưa có bản dịch thật |",
+        "| --- | ---: | ---: | ---: | ---: | ---: |",
     ]
     for group in manifest["groups"]:
         lines.append(
-            f"| `{group['file']}` | {group['rows']:,} | {group['source_group_rows']:,} | "
+            f"| `{group['file']}` | {group['rows']:,} | {group['real_translated_rows']:,} | "
+            f"{group['machine_translated_rows']:,} | {group['source_group_rows']:,} | "
             f"{group['untranslated_rows']:,} |"
         )
     lines += [
         "",
-        f"Tổng: **{manifest['translated_rows']:,} dòng dịch**.",
+        f"Tổng: **{manifest['translated_rows']:,} dòng** — "
+        f"{manifest['real_translated_rows']:,} dịch thật + "
+        f"{manifest['machine_translated_rows']:,} dịch máy.",
         "",
         "Tạo lại bằng:",
         "```bash",

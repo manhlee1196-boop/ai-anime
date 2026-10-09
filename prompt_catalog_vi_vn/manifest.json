@@ -17,7 +17,9 @@
     "13_vat_the",
     "99_khac"
   ],
-  "translated_rows": 29436,
+  "translated_rows": 64684,
+  "real_translated_rows": 29436,
+  "machine_translated_rows": 35248,
   "groups": [
     {
       "id": "01_chu_the",
@@ -26,6 +28,8 @@
       "bytes": 23400,
       "sha256": "03c5dde4588b7e9f9b6072c7f9c87b3e02133786b2b81ed488b2dc9f61f81352",
       "source_group_rows": 938,
+      "real_translated_rows": 472,
+      "machine_translated_rows": 0,
       "untranslated_rows": 466
     },
     {
@@ -35,6 +39,8 @@
       "bytes": 25777,
       "sha256": "dc63a45851ded27122d791983006214557b66b5a6f8d7034062776fff99f63f5",
       "source_group_rows": 5757,
+      "real_translated_rows": 684,
+      "machine_translated_rows": 0,
       "untranslated_rows": 5073
     },
     {
@@ -44,6 +50,8 @@
       "bytes": 263406,
       "sha256": "5cfeb218d885d010ec62536b9c87047bf645be4d10eb17259198d2052bda4b32",
       "source_group_rows": 7136,
+      "real_translated_rows": 5685,
+      "machine_translated_rows": 0,
       "untranslated_rows": 1451
     },
     {
@@ -53,6 +61,8 @@
       "bytes": 97748,
       "sha256": "e8b2ed0dbf1d717288ec1d65915c9bced668805ca0c17e6bb616f2787838a009",
       "source_group_rows": 3366,
+      "real_translated_rows": 2573,
+      "machine_translated_rows": 0,
       "untranslated_rows": 793
     },
     {
@@ -62,6 +72,8 @@
       "bytes": 299984,
       "sha256": "aa7ddae3c0579c4a3e227150acd5037a6a2a60a49801fbe406558e3b8e113eb2",
       "source_group_rows": 11540,
+      "real_translated_rows": 7719,
+      "machine_translated_rows": 0,
       "untranslated_rows": 3821
     },
     {
@@ -71,6 +83,8 @@
       "bytes": 42306,
       "sha256": "2a7bc565edb75682e9c2a57776558ecd5c5a33a20455a4c0cd8fd1d3f22ab7da",
       "source_group_rows": 2639,
+      "real_translated_rows": 1056,
+      "machine_translated_rows": 0,
       "untranslated_rows": 1583
     },
     {
@@ -80,6 +94,8 @@
       "bytes": 15340,
       "sha256": "260a4d772789ad0397667e4516df581b4c9cf45b59b8b54c5abdd55375fa3651",
       "source_group_rows": 1198,
+      "real_translated_rows": 441,
+      "machine_translated_rows": 0,
       "untranslated_rows": 757
     },
     {
@@ -89,6 +105,8 @@
       "bytes": 1776,
       "sha256": "9825e1d8ed8ac0b9f5abd468cb4419b1ffdf87e49d0425f111627eaa443e40ac",
       "source_group_rows": 268,
+      "real_translated_rows": 46,
+      "machine_translated_rows": 0,
       "untranslated_rows": 222
     },
     {
@@ -98,6 +116,8 @@
       "bytes": 59605,
       "sha256": "2957e227af3c24969690840fd1a506175eedb4ec0cca1c6e84c0de70532eb489",
       "source_group_rows": 3722,
+      "real_translated_rows": 1665,
+      "machine_translated_rows": 0,
       "untranslated_rows": 2057
     },
     {
@@ -107,6 +127,8 @@
       "bytes": 10066,
       "sha256": "9e16a5155ed59405a7b75b614740be58bf67263bf46623b41d88f79316a93def",
       "source_group_rows": 644,
+      "real_translated_rows": 255,
+      "machine_translated_rows": 0,
       "untranslated_rows": 389
     },
     {
@@ -116,15 +138,19 @@
       "bytes": 28074,
       "sha256": "9073c3f1d7815d558f47ca2c2edd4359abf312a9cf64cd8b46d7efa68cc24bae",
       "source_group_rows": 2082,
+      "real_translated_rows": 724,
+      "machine_translated_rows": 0,
       "untranslated_rows": 1358
     },
     {
       "id": "99_khac",
       "file": "99_khac.csv",
-      "rows": 8116,
-      "bytes": 307256,
-      "sha256": "e0121d2b25af845dd29ec4f34705b3c729b388e24ca4f5cc1026b0040f39f25d",
+      "rows": 43364,
+      "bytes": 1523084,
+      "sha256": "66b77106d1ee83eafaed863a6c7056a5569e2ad2e5694ae86273eda2df0b7b6e",
       "source_group_rows": 43364,
+      "real_translated_rows": 8116,
+      "machine_translated_rows": 35248,
       "untranslated_rows": 35248
     }
   ]
