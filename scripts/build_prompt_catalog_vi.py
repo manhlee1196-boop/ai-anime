@@ -37,6 +37,7 @@ SELECTED_GROUPS = (
     "11_anh_sang_mau_sac",
     "12_bo_cuc_ky_thuat",
     "13_vat_the",
+    "99_khac",
 )
 
 

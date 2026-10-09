@@ -14,9 +14,10 @@
     "10_phong_cach",
     "11_anh_sang_mau_sac",
     "12_bo_cuc_ky_thuat",
-    "13_vat_the"
+    "13_vat_the",
+    "99_khac"
   ],
-  "translated_rows": 21320,
+  "translated_rows": 29436,
   "groups": [
     {
       "id": "01_chu_the",
@@ -116,6 +117,15 @@
       "sha256": "9073c3f1d7815d558f47ca2c2edd4359abf312a9cf64cd8b46d7efa68cc24bae",
       "source_group_rows": 2082,
       "untranslated_rows": 1358
+    },
+    {
+      "id": "99_khac",
+      "file": "99_khac.csv",
+      "rows": 8116,
+      "bytes": 307256,
+      "sha256": "e0121d2b25af845dd29ec4f34705b3c729b388e24ca4f5cc1026b0040f39f25d",
+      "source_group_rows": 43364,
+      "untranslated_rows": 35248
     }
   ]
 }

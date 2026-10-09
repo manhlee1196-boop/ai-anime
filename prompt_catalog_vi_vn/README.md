@@ -17,8 +17,9 @@ dịch bị bỏ qua, không bịa nhãn.
 | `11_anh_sang_mau_sac.csv` | 1,665 | 3,722 | 2,057 |
 | `12_bo_cuc_ky_thuat.csv` | 255 | 644 | 389 |
 | `13_vat_the.csv` | 724 | 2,082 | 1,358 |
+| `99_khac.csv` | 8,116 | 43,364 | 35,248 |
 
-Tổng: **21,320 dòng dịch**.
+Tổng: **29,436 dòng dịch**.
 
 Tạo lại bằng:
 ```bash

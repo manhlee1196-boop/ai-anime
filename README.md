@@ -197,7 +197,7 @@ Cột thứ năm là chú giải hiển thị; nhãn dịch được lập chỉ
 
 Các tag cũng được chia thành các catalog con độc quyền trong thư mục `prompt_catalog/`: chủ thể, họa sĩ, tác phẩm/nhân vật, loài/lore, trang phục-quần áo, phụ kiện, ngoại hình, tư thế-biểu cảm, bối cảnh, phong cách, ánh sáng-màu sắc, bố cục-kỹ thuật, vật thể và `99_khac.csv`. Mỗi file con vẫn giữ 5 cột, không có header; tổng số dòng bằng file tổng và `manifest.json` ghi số dòng/hash từng nhóm. Tạo lại bằng `python scripts/split_prompt_catalog.py`.
 
-Các nhóm được yêu cầu (`01`, `04`–`13`, bỏ `02` họa sĩ, `03` tác phẩm/nhân vật và `99_khac`) có thêm bản dịch SAA-compatible trong `prompt_catalog_vi_vn/`: mỗi dòng là `tag,category,translation`, chỉ ghi tag có bản dịch thật. Hiện có **21.320 dòng dịch**; tạo lại bằng `python scripts/build_prompt_catalog_vi.py`.
+Các nhóm được yêu cầu (`01`, `04`–`13` và `99_khac`, bỏ `02` họa sĩ và `03` tác phẩm/nhân vật) có thêm bản dịch SAA-compatible trong `prompt_catalog_vi_vn/`: mỗi dòng là `tag,category,translation`, chỉ ghi tag có bản dịch thật. Hiện có **29.436 dòng dịch**; tạo lại bằng `python scripts/build_prompt_catalog_vi.py`.
 
 - Tìm quét toàn bộ 348.716 tag prompt bằng tiếng Việt hoặc English; dấu gạch dưới, gạch nối và khoảng trắng tương đương, có thể gõ tiếng Việt không dấu.
 - Ngay dưới ô **Prompt**, gõ từ khóa ở cuối prompt (ví dụ `mắt`/`eyes`, `tóc`/`hair`, `nơ`/`bow` hoặc `váy`/`dress`) để tìm tag **tiếng Anh** trực tiếp trong CSV đã được nạp lúc Studio khởi động. Gợi ý chỉ lấy từ catalog, chọn một dòng sẽ thay từ khóa cuối bằng tên thẻ canonical; không tự chèn khi bạn chưa chọn. CSV dùng chung với tab Kho thẻ và được xác minh SHA-256 trước khi dùng.
