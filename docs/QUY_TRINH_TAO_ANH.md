@@ -192,7 +192,7 @@ Chức năng gợi ý tag dưới ô Prompt được xây theo mô hình **Semi-
 | Chuột hoặc ↑↓ + Enter/Tab chọn, Esc đóng | Dropdown Gradio: chọn bằng chuột/phiếm, Enter áp dụng, Esc đóng |
 | `ctrl+↑` / `ctrl+↓` chỉnh trọng số tag hiện tại hoặc vùng bôi đen | `demo.load` gắn `PROMPT_TAG_WEIGHT_SHORTCUT_JS` bắt `Ctrl+↑/↓` trong ô prompt và kích hoạt hai nút `+0,1` / `−0,1`; `PROMPT_TAG_WEIGHT_SELECTION_JS` đánh dấu đoạn đang chọn bằng ký tự riêng `U+E000/U+E001` trước khi Python xử lý |
 | Logic trọng số giống ComfyUI/WebUI nhưng chi tiết có thể khác | `adjust_prompt_tag_weight` bước `0,1`, kẹp trong `0,1–2,0`, `1,0` thì gỡ `(tag:1.0)`; nếu không có bôi đen thì áp dụng cho cụm cuối prompt. Dấu phẩy **trong** ngoặc không tách cụm (`_prompt_weight_boundary()` và JS cùng quét theo độ sâu ngoặc), nên `(long_hair, blue_eyes:1.1)` được coi là một nhóm và bấm lại sẽ chỉnh đúng trọng số của nhóm |
-| File dịch để tìm theo ngôn ngữ khác (`data/danbooru_e621_merged_zh_cn.csv`, bộ nạp bỏ qua nhóm 1 và 8) | `danbooru_e621_merged_vi_vn.csv` ở thư mục gốc, sinh bằng `scripts/build_vietnamese_translate_file.py` từ đúng từ điển Studio đang dùng; cùng ba trường `tag,category,translation`, không header, UTF-8 không BOM, LF, trường dịch không chứa dấu phẩy (SAA `split(',', 3)` sẽ cắt mất phần sau). Test dựng lại tệp và so byte |
+| File dịch để tìm theo ngôn ngữ khác (`data/danbooru_e621_merged_zh_cn.csv`) | `danbooru_e621_merged_vi_vn.csv` ở thư mục gốc, sinh bằng `scripts/build_vietnamese_translate_file.py`; bỏ qua nhóm họa sĩ/tác phẩm/nhân vật `1/3/4/8/10/11`, các nhóm còn lại có nhãn thật hoặc nhãn dịch máy, cùng ba trường `tag,category,translation`, không header, UTF-8 không BOM, LF, trường dịch không chứa dấu phẩy (SAA `split(',', 3)` sẽ cắt mất phần sau). Test dựng lại tệp và so byte |
 
 Điểm khác biệt có chủ đích: Studio là Gradio trên Colab, không phải Electron, nên thao tác
 bàn phím được cài bằng `js` tiền xử lý + một listener gắn lúc tải trang; khi `js` bị chặn
@@ -201,9 +201,10 @@ thuần). Marker `U+E000/U+E001` chỉ tồn tại trong lần gọi đó và lu
 vào ô prompt, nên không bao giờ lọt vào prompt gửi model.
 
 File dịch là **lớp từ vựng, không phải dữ liệu sinh ảnh**: nhãn tiếng Việt không bao giờ được
-chèn vào prompt. Vì script và Studio cùng gọi `parse_tag_csv()` + `_is_translated_tag_label()`,
-một thẻ chỉ xuất hiện trong tệp khi nó thực sự có bản dịch trong Studio; `--check` (được test
-gọi) sẽ báo lỗi nếu ai đó sửa `TAG_VI_LABELS` mà quên tạo lại tệp. Nhãn mới trong từ điển luôn thắng cột chú giải đông lạnh của CSV
+chèn vào prompt. Script dùng `parse_tag_csv()` + `_is_translated_tag_label()` để ưu tiên nhãn thật;
+tag chưa có nhãn thật trong các nhóm được phép nhận dịch máy dự phòng, còn họa sĩ/tác phẩm/nhân vật
+bị bỏ qua. `--check` (được test gọi) sẽ báo lỗi nếu ai đó sửa từ điển hoặc quy tắc dịch mà quên tạo lại tệp.
+Nhãn mới trong từ điển luôn thắng cột chú giải đông lạnh của CSV
 (`_prefer_vietnamese_label`), và quy tắc ghép xếp danh từ bổ nghĩa theo trật tự tiếng Việt
 (`rabbit_ear_hat` → **Mũ tai thỏ**, nối màu bằng `màu` với nhóm trang phục: `black_bra` →
 **Áo ngực màu đen**). Bộ ghép có ba lớp từ vựng (2.964 mục cố định,
@@ -238,8 +239,8 @@ với người xem), và `_tag_vi_uniform_frame` chỉ nhường quy tắc ghép
 `_TAG_VI_WORDS` (như `dream`, `paradise`) không được biến tên học viện thành mô tả chung. Chuỗi `<x>_shaped_<head>` được ưu tiên
 thành “HEAD hình X” (`heart-shaped_pupils` → **Đồng tử hình trái tim**). Test chốt lại ba bất
 biến: không trùng khóa trong các dict từ điển, mọi tính từ trong `_TAG_VI_ADJECTIVE_MODIFIERS`
-phải có mặt trong `_TAG_VI_WORDS`, và không nhãn nào chứa dấu phẩy/xuống dòng. Tên họa sĩ/nhân vật/tác phẩm
-được giữ nguyên nên không có trong file dịch — SAA cũng bỏ qua đúng hai nhóm họa sĩ đó.
+phải có mặt trong `_TAG_VI_WORDS`, và không nhãn nào chứa dấu phẩy/xuống dòng. Tên họa sĩ/nhân vật/tác phẩm bị bỏ qua theo chủ trương của file dịch; các tag còn lại thiếu nhãn thật
+được dịch máy dự phòng và dấu `_` trong nhãn được đổi thành khoảng trắng.
 
 ## 6. Nguồn
 

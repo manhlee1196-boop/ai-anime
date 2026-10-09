@@ -298,17 +298,8 @@ theo đúng định dạng mà Semi-Auto Tag Complete của Character Select SAA
   Mỗi mục danh từ mới mở khóa cả họ thẻ nên độ phủ tăng nhanh hơn số từ phải viết tay.
 - Trường dịch **không chứa dấu phẩy**: bộ nạp JavaScript của SAA cắt dòng bằng `line.split(',', 3)`
   nên phần sau trường thứ ba bị bỏ; script tự đổi `,` thành `;`, bỏ nháy và làm phẳng xuống dòng.
-- Chỉ thẻ **có bản dịch thật** được ghi. Mục chưa dịch (`Chưa có bản dịch`), từ loại thuần
-  (`Tác phẩm`, `Nhân vật`, `Họa sĩ`) và tên họa sĩ (nhóm 1 và 8 — SAA bỏ qua khi nạp file dịch)
-  bị loại, nên tệp không chứa dòng vô nghĩa. Tên riêng được giữ nguyên theo chủ trương của repo.
-- Hiện tại: **29.436/348.716 tag prompt**, phủ **96,2%** trong 500 thẻ phổ biến nhất, **95,7%** trong 1.000, **92,1%** trong 2.000, **70,9%** trong 5.000 và **57,2%** trong 10.000 thẻ đầu. Theo
-  `python scripts/tag_vi_audit.py report` (chỉ đếm các danh mục dịch được 0/5/7/12/14, nên tên họa sĩ và
-  tên tác phẩm không bị tính vào mẫu số), độ phủ **số thẻ · lượt dùng** của từng nhóm là: **Ngoại hình**
-  5.989/8.714 · **68,7% / 99,2%**, **Trang phục & phụ kiện** 3.201/4.088 · **78,3% / 99,4%**, **Biểu cảm &
-  tư thế** 576/1.032 · 55,8% / 99,3%, **Bối cảnh & thiên nhiên** 784/1.760 · 44,5% / 98,3%, **Ánh sáng &
-  màu sắc** 862/1.722 · 50,1% / 96,0%, **Bố cục & kỹ thuật** 238/446 · 53,4% / **99,8%**. Sáu nhóm còn
-  **6.112** thẻ trống, chủ yếu là thẻ ký hiệu (`?`, `^^^`, `:<`, `0_0`) hoặc tên riêng — phần không dịch
-  được này giữ nguyên tiếng Anh theo chủ trương của repo, nên vẫn **không** phải bản dịch máy cho toàn bộ catalog.
+- Bỏ qua các nhóm tên riêng **họa sĩ, tác phẩm và nhân vật**: Danbooru `1/3/4`, e621 `8/10/11`. Các nhóm còn lại được ghi đầy đủ; nhãn có sẵn từ điển được giữ nguyên, tag thiếu nhãn nhận dịch máy dự phòng. Dấu `_` trong cột dịch được đổi thành khoảng trắng; từ riêng chưa biết được giữ nguyên để không bịa tên.
+- Hiện tại file có **82.654/348.716 tag prompt**: **29.436 bản dịch thật + 53.218 nhãn dịch máy**. Các tag bị bỏ qua là 266.062 tên họa sĩ/tác phẩm/nhân vật; file vẫn giữ thứ tự độ phổ biến của catalog nguồn.
 - Từ điển trong mã **luôn thắng** cột chú giải cũ của CSV (`_prefer_vietnamese_label`), nên thêm
   bản dịch vào `colab/studio.py` là Studio và file dịch nhận ngay — không phải tạo lại CSV 13,6 MB
   hay đổi `TAG_CSV_SHA256`.

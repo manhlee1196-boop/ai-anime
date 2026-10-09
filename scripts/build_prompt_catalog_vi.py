@@ -19,11 +19,14 @@ import hashlib
 import json
 import re
 import shutil
+import sys
 from collections import OrderedDict
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 DEFAULT_GROUP_DIR = ROOT / "prompt_catalog"
 DEFAULT_TRANSLATION = ROOT / "danbooru_e621_merged_vi_vn.csv"
 DEFAULT_OUTPUT = ROOT / "prompt_catalog_vi_vn"
@@ -46,6 +49,10 @@ SELECTED_GROUPS = (
 # Every requested output group is complete: tags without a curated translation
 # receive an automatic label with underscores converted to spaces.
 MACHINE_TRANSLATION_GROUPS = frozenset(SELECTED_GROUPS)
+
+_MACHINE_FALLBACK_LABELS = frozenset(
+    {"Chưa có bản dịch", "Họa sĩ", "Tác phẩm", "Nhân vật", "Người đóng góp", "Loài", "Lore", "Metadata"}
+)
 
 _MACHINE_WORD_OVERRIDES = {
     "after": "sau",
@@ -118,6 +125,39 @@ def _read_group_rows(group_dir: Path, group_id: str) -> list[list[str]]:
         return [row for row in csv.reader(source) if len(row) >= 2]
 
 
+def _is_real_machine_seed(label: str, _category: str) -> bool:
+    return bool(label and label not in _MACHINE_FALLBACK_LABELS)
+
+
+def _is_curated_source_label(tag: str, category: str, label: str) -> bool:
+    if not _is_real_machine_seed(label, category):
+        return False
+    return label.replace("_", " ").casefold() != tag.casefold()
+
+
+def _curated_tags_from_group(group_dir: Path, group_id: str, source_rows: list[list[str]]) -> set[str]:
+    """Find real labels using the same Studio dictionary as the root builder."""
+    if not source_rows:
+        return set()
+    try:
+        from colab import studio
+
+        parsed = studio.parse_tag_csv(
+            (group_dir / f"{group_id}.csv").read_text(encoding="utf-8")
+        )
+        return {
+            name
+            for name, category, _count, _index, _themes, label in parsed
+            if _is_curated_source_label(name, category, label)
+        }
+    except (ImportError, ValueError):
+        return {
+            row[0]
+            for row in source_rows
+            if len(row) >= 5 and _is_curated_source_label(row[0], row[1], row[4])
+        }
+
+
 def _machine_translation_tools(translation_rows: list[list[str]]) -> tuple[dict[str, str], object | None]:
     """Load the local Vietnamese word rules used for automatic fallback labels.
 
@@ -128,8 +168,11 @@ def _machine_translation_tools(translation_rows: list[list[str]]) -> tuple[dict[
     """
     words = dict(_MACHINE_WORD_OVERRIDES)
     for row in translation_rows:
-        tag, _category, translation = row
-        if re.fullmatch(r"[A-Za-z0-9]+", tag):
+        tag, category, translation = row
+        if (
+            re.fullmatch(r"[A-Za-z0-9]+", tag)
+            and _is_real_machine_seed(translation, category)
+        ):
             words.setdefault(tag.casefold(), translation)
 
     studio = None
@@ -174,8 +217,15 @@ def _machine_translate_tag(tag: str, category: str, words: dict[str, str], studi
 
 def _sanitize_machine_label(label: str) -> str:
     label = re.sub(r"[\r\n]+", " ", str(label or ""))
-    label = label.replace(",", ";").replace("_", " ")
-    return re.sub(r"\s+", " ", label).strip() or "Nhãn tự động"
+    label = label.replace(",", ";").replace('"', "'").replace("_", " ")
+    words = re.sub(r"\s+", " ", label).strip().split()
+    compact = []
+    for word in words:
+        if compact and word.casefold() == compact[-1].casefold():
+            continue
+        compact.append(word)
+    label = " ".join(compact)
+    return (label[:1].upper() + label[1:]) if label else "Nhãn tự động"
 
 
 def _write_csv(path: Path, rows: list[list[str]]) -> tuple[int, int, str]:
@@ -224,12 +274,31 @@ def build_group_translations(
             if group_id is not None:
                 rows_by_group[group_id].append(row)
 
-    translation_by_tag = {row[0]: row for row in translation_rows}
-    machine_words, studio = _machine_translation_tools(translation_rows)
+    # The root translate file may itself contain machine-generated rows. Curated
+    # status therefore comes from the original five-column source label, not from
+    # mere presence in ``translation_path``.
+    curated_tags_by_group = {
+        group_id: _curated_tags_from_group(
+            group_dir, group_id, source_rows_by_group[group_id]
+        )
+        for group_id in SELECTED_GROUPS
+    }
+    curated_translation_rows = [
+        row
+        for row in translation_rows
+        if group_by_name.get(row[0]) is not None
+        and row[0] in curated_tags_by_group[group_by_name[row[0]]]
+    ]
+    curated_by_tag = {row[0]: row for row in curated_translation_rows}
+    machine_words, studio = _machine_translation_tools(curated_translation_rows)
     groups = []
     for group_id in SELECTED_GROUPS:
         source_rows = source_rows_by_group[group_id]
-        real_rows = rows_by_group[group_id]
+        real_rows = [
+            curated_by_tag[row[0]]
+            for row in source_rows
+            if row[0] in curated_by_tag
+        ]
         machine_count = 0
         if group_id in MACHINE_TRANSLATION_GROUPS:
             # Walk the canonical group order so autocomplete keeps the source
@@ -237,7 +306,7 @@ def build_group_translations(
             rows = []
             for source_row in source_rows:
                 tag = source_row[0]
-                translated = translation_by_tag.get(tag)
+                translated = curated_by_tag.get(tag)
                 if translated is None:
                     translated = [
                         tag,

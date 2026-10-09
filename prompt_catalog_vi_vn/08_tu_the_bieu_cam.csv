@@ -125,7 +125,7 @@ stripper_pole,0,Stripper pole
 the_pose,0,Tư thế The Pose
 standing_split,0,Chẻ chân khi đứng
 fight,7,Fight
-streaming_tears,0,Nước mắt chảy ròng ròng
+streaming_tears,0,Nước mắt chảy ròng
 holding_shield,0,Cầm khiên
 broom_riding,0,Cưỡi chổi
 looking_at_phone,0,Nhìn điện thoại
@@ -152,7 +152,7 @@ sitting_on_chair,7,Đang ngồi trên ghế
 waves,0,Sóng
 sitting_on_ground,7,Đang ngồi trên mặt đất
 holding_partner,7,Cầm bạn tình
-holding_pom_poms,0,Đang cầm pom poms
+holding_pom_poms,0,Đang cầm quả bông quả bông
 holding_drink,0,Cầm đồ uống
 microphone_stand,0,Micro stand
 holding_butt,7,Cầm mông
@@ -165,10 +165,10 @@ holding_flag,0,Cầm hình cờ
 holding_clipboard,0,Cầm bảng kẹp giấy
 holding_game_controller,0,Đang cầm game Tay cầm chơi game
 reverse_suspended_congress,0,Ngược suspended congress
-ridiculous_fit,7,Ridiculous fit
+ridiculous_fit,7,Ridiculous dáng thể hình
 lying_on_ground,7,Đang nằm trên mặt đất
 action_pose,7,Tư thế hành động
-kiss_mark,7,Hôn mark
+kiss_mark,7,Hôn vệt
 facing_to_the_side,0,Facing to bên
 looking_down_at_viewer,7,Nhìn xuống người xem
 spandex,0,Spandex
@@ -197,7 +197,7 @@ dancer,0,Dancer
 holding_sign,0,Cầm bảng hiệu
 running_makeup,7,Trang điểm lem nhem
 butt_blush,7,Má hồng mông
-reverse_stand_and_carry_position,7,Ngược stand và carry position
+reverse_stand_and_carry_position,7,Ngược stand và carry vị thế
 holding_cat,0,Cầm mèo
 fellatio_gesture,0,Quan hệ bằng miệng Cử chỉ tay
 holding_gohei,0,Cầm gậy gohei
@@ -231,7 +231,7 @@ holding_head,7,Cầm đầu
 holding_whip,0,Đang cầm whip
 crazy_smile,0,Nụ cười điên loạn
 holding_cane,0,Đang cầm cane
-pink_blush,7,Má hồng hồng
+pink_blush,7,Má hồng
 holding_pillow,0,Cầm gối
 horseback_riding,0,Horseback riding
 hugging_from_behind,7,Ôm góc nhìn từ phía sau
@@ -245,7 +245,7 @@ running_bond,0,Đang chạy bond
 sidewalk,0,Vỉa hè
 walkie-talkie,0,Walkie-talkie
 false_smile,0,False Mỉm cười
-running_mascara,7,Đang chạy mascara
+running_mascara,7,Đang chạy Mascara
 axolotl,0,Kỳ giông axolotl
 looking_through,7,Looking through
 looking_at_food,0,Nhìn thức ăn
@@ -254,7 +254,7 @@ holding_weapon_behind_back,0,Cầm vũ khí phía sau lưng
 looking_down_at_partner,7,Nhìn xuống bạn tình
 surprise_kiss,0,Surprise Hôn
 looking_back_at_partner,7,Nhìn lại phía sau bạn tình
-bendy_straw,0,Bendy straw
+bendy_straw,0,Bendy rơm
 holding_unworn_helmet,0,Cầm mũ bảo hiểm không mặc
 lying_on_another,0,Đang nằm on another
 lyrics,0,Lyrics
@@ -338,8 +338,8 @@ holding_remote_control,0,Đang cầm remote control
 pocky_kiss,0,Pocky Hôn
 sitting_on_table,0,Đang ngồi trên bàn
 holding_suitcase,0,Đang cầm suitcase
-thoughtful_expression,7,Thoughtful expression
-tear_trough,7,Tear trough
+thoughtful_expression,7,Thoughtful Biểu cảm
+tear_trough,7,Giọt nước mắt trough
 holding_teapot,0,Đang cầm teapot
 holding_thigh,7,Cầm đùi
 step_pose,7,Step Tư thế
@@ -396,19 +396,19 @@ holding_shovel,0,Đang cầm shovel
 spoken_expression,0,Biểu cảm trong bóng thoại
 flying_kick,0,Đang bay kick
 lying_on_lap,0,Đang nằm trên đùi
-holding_musical_instrument,7,Đang cầm musical Nhạc cụ
+holding_musical_instrument,7,Đang cầm âm nhạc cụ
 facing_down,0,Facing xuống
 holding_spear,7,Cầm ngọn giáo
 holding_fish,0,Cầm cá
 holding_key,0,Cầm chìa khóa
 holding_pole,0,Đang cầm pole
 holding_plant,0,Cầm thực vật
-smug_expression,7,Vẻ mặt tự mãn expression
+smug_expression,7,Vẻ mặt tự mãn Biểu cảm
 multiple_riders,0,Nhiều Người cưỡi
 holding_toothbrush,0,Đang cầm toothbrush
 facing_up,0,Facing lên
 teardrop_tattoo,0,Xăm hình giọt nước
-single_tear,0,Một tear
+single_tear,0,Một giọt nước mắt
 holding_rope,0,Cầm dây thừng
 blushing_at_viewer,7,Đỏ mặt nhìn người xem
 holding_newspaper,0,Đang cầm newspaper
@@ -442,13 +442,13 @@ hugging_viewer,0,Ôm người xem
 holding_mace,0,Đang cầm mace
 dancewear,7,Dancewear
 sitting_on_bench,7,Đang ngồi trên ghế dài
-running_track,0,Đang chạy track
+running_track,0,Đang chạy điền kinh
 log_pose,0,Log Tư thế
 crying_laughing,7,Đang khóc Đang cười
 sitting_on_branch,0,Đang ngồi trên cành cây
 holding_pocky,0,Đang cầm pocky
 riding_dildo,7,Cưỡi dương vật giả
-holding_mini_person,0,Đang cầm Siêu ngắn person
+holding_mini_person,0,Đang cầm Siêu ngắn người
 kneeling_sex,7,Quỳ quan hệ tình dục
 holding_torch,0,Cầm đèn đuốc
 holding_reins,0,Đang cầm reins
@@ -473,7 +473,7 @@ holding_writing_utensil,7,Đang cầm Chữ viết utensil
 expressions,7,Biểu cảm
 looking_at_own_butt,7,Nhìn mông của mình
 cryptid,0,Cryptid
-expression_cutaway,7,Expression cutaway
+expression_cutaway,7,Biểu cảm cutaway
 holding_bell,0,Cầm chuông
 holding_surfboard,0,Đang cầm surfboard
 holding_handcuffs,0,Đang cầm handcuffs
@@ -482,11 +482,11 @@ holding_watering_can,0,Đang cầm watering Lon
 holding_bass_guitar,0,Đang cầm bass Đàn guitar
 holding_spring_onion,0,Đang cầm Mùa xuân Hành tây
 walking_away,0,Đang đi bộ quay ra xa
-choke_hold,0,Choke hold
-lying_and_blow_position,7,Đang nằm và blow position
+choke_hold,0,Choke Cái giữ
+lying_and_blow_position,7,Đang nằm và blow vị thế
 pose_imitation,0,Tư thế imitation
-smiling_at_each_other,7,Smiling at each other
-holding_another's_wrists,0,Đang cầm another's wrists
+smiling_at_each_other,7,Smiling at each người khác
+holding_another's_wrists,0,Đang cầm another's cổ tay
 holding_candle,0,Cầm nến
 holding_blanket,0,Cầm chăn
 mischievous_smile,7,Mischievous Mỉm cười
@@ -497,7 +497,7 @@ holding_milk_carton,0,Đang cầm Sữa carton
 holding_sketchbook,0,Cầm sổ phác thảo
 a-pose,0,A-pose
 holding_chainsaw,0,Đang cầm chainsaw
-little_red_riding_hood_(fairy_tale_character)_(cosplay),0,Nhỏ red riding Mũ trùm (fairy tale character) (cosplay)
+little_red_riding_hood_(fairy_tale_character)_(cosplay),0,Nhỏ đỏ riding Mũ trùm (fairy tale character) (cosplay)
 toothy_smile,7,Toothy Mỉm cười
 holding_baton,0,Cầm cái gậy
 holding_notepad,0,Đang cầm notepad
@@ -516,17 +516,17 @@ holding_flashlight,0,Cầm đèn pin
 sad_smile,0,Buồn Mỉm cười
 looking_down_at_genitalia,7,Nhìn xuống bộ phận sinh dục
 holding_hips,7,Cầm hông
-pained_expression,7,Pained expression
+pained_expression,7,Pained Biểu cảm
 riding_animal,0,Cưỡi động vật
 holding_flower_pot,0,Cầm chậu hoa
 holding_crowbar,0,Đang cầm crowbar
-kiss_mark_on_balls,7,Hôn mark on Tinh hoàn
+kiss_mark_on_balls,7,Hôn vệt on Tinh hoàn
 holding_pointer,0,Đang cầm pointer
 kneeling_on_bed,7,Đang quỳ trên giường
 looking_offscreen,7,Looking offscreen
 hugging_book,0,Ôm sách
 bestiality_kiss,7,Quan hệ với động vật Hôn
-relaxed_expression,7,Relaxed expression
+relaxed_expression,7,Relaxed Biểu cảm
 figure_four_sitting,0,Tư thế ngồi dáng người bốn
 holding_paddle,0,Đang cầm paddle
 creepy_smile,7,Nụ cười rợn người
@@ -595,19 +595,19 @@ looking_at_screen,0,Nhìn màn hình
 variable_fighter,0,Variable fighter
 holding_petal,0,Đang cầm petal
 holding_juice_box,0,Đang cầm Nước ép Cái hộp
-stone_walkway,0,Stone walkway
+stone_walkway,0,Đá walkway
 sitting_on_ball,0,Đang ngồi trên quả bóng
 striped_blush,0,Má hồng kẻ sọc
 looking_back_at_self,7,Looking phía sau at self
 holding_pregnancy_test,0,Đang cầm pregnancy test
 holding_bird,0,Cầm chim
 sitting_on_toilet,7,Đang ngồi trên bồn cầu
-expression_chart,0,Expression chart
+expression_chart,0,Biểu cảm chart
 crying_emoji,0,Đang khóc emoji
 running_away,7,Đang chạy quay ra xa
 cunnilingus_gesture,0,Kích thích âm hộ bằng miệng Cử chỉ tay
 holding_bone,0,Cầm xương
-deep_kiss,7,Deep Hôn
+deep_kiss,7,Sâu Hôn
 sitting_on_head,0,Đang ngồi trên đầu
 purple_blush,7,Má hồng tím
 facing_back,0,Hướng về phía lưng
@@ -617,7 +617,7 @@ holding_party_popper,0,Đang cầm Tiệc popper
 red_jumpsuit,0,Áo liền quần đỏ
 standing_over,0,Đang đứng trên
 holding_spray_can,0,Đang cầm spray Lon
-holding_chess_piece,0,Đang cầm chess piece
+holding_chess_piece,0,Đang cầm chess mảnh
 holding_another's_ankles,0,Đang cầm another's Cổ chân
 holding_rabbit,0,Cầm thỏ
 holding_lead_pipe,0,Đang cầm lead pipe
@@ -651,9 +651,9 @@ holding_stethoscope,0,Đang cầm stethoscope
 holding_table_tennis_paddle,0,Đang cầm Bàn Quần vợt paddle
 penetration_gesture,0,Thâm nhập Cử chỉ tay
 sitting_on_pillow,0,Đang ngồi trên gối
-pleased_expression,7,Pleased expression
+pleased_expression,7,Pleased Biểu cảm
 holding_wallet,0,Đang cầm wallet
-submission_hold,0,Submission hold
+submission_hold,0,Submission Cái giữ
 holding_grenade,0,Đang cầm grenade
 holding_crown,0,Cầm vương miện
 holding_headphones,0,Cầm tai nghe chụp đầu
@@ -661,7 +661,7 @@ standing_on_object,0,Đang đứng trên vật thể
 holding_paper_airplane,0,Đang cầm Giấy airplane
 looking_at_bulge,0,Nhìn phần phồng lên
 holding_mushroom,0,Cầm nấm
-holding_cooking_pot,0,Đang cầm cooking pot
+holding_cooking_pot,0,Đang cầm cooking chậu
 holding_trumpet,0,Đang cầm trumpet
 tear_(marking),7,Giọt nước mắt
 walkman,0,Walkman
@@ -678,12 +678,12 @@ sitting_split,0,Ngồi chia hai
 shaft_look,0,Shaft look
 holding_person,7,Cầm người
 holding_bento,0,Đang cầm bento
-tear_arcana_rod,0,Tear arcana rod
+tear_arcana_rod,0,Giọt nước mắt arcana rod
 looking_at_creature,0,Nhìn sinh vật
 holding_wrist,7,Cầm cổ tay
 holding_barcode_scanner,0,Đang cầm barcode scanner
 holding_cleaver,0,Đang cầm cleaver
-holding_own_leash,0,Đang cầm own Dây dắt
+holding_own_leash,0,Đang cầm của mình Dây dắt
 explosion_background,0,Nền vụ nổ
 inflatable_ride,7,Inflatable ride
 kissing_head,0,Hôn đầu
@@ -694,12 +694,12 @@ gendou_pose,0,Gendou Tư thế
 holding_earphones,0,Cầm tai nghe nhét tai
 sleeveless_jumpsuit,0,Áo liền quần không tay
 ice_crystal,0,Băng Pha lê
-tear_troughs,0,Tear troughs
+tear_troughs,0,Giọt nước mắt troughs
 single_paw_pose,0,Tư thế chân thú một chiếc
 holding_torpedo,0,Đang cầm torpedo
 holding_potion,0,Đang cầm potion
 holding_seashell,0,Đang cầm seashell
-holding_cleaning_tool,7,Đang cầm cleaning tool
+holding_cleaning_tool,7,Đang cầm cleaning dụng cụ
 holding_screwdriver,0,Đang cầm screwdriver
 double_biceps_pose,0,Đôi Cơ nhị đầu Tư thế
 dorsal_ridge,7,Dorsal Gờ
@@ -759,10 +759,10 @@ single_claw_pose,0,Tư thế móng vuốt một chiếc
 holding_drinking_straw,0,Cầm ống hút
 holding_rattle,0,Đang cầm rattle
 holding_stomach,0,Cầm bụng
-tactical_surface_fighter,0,Chiến thuật surface fighter
+tactical_surface_fighter,0,Chiến thuật bề mặt fighter
 cocky_smile,7,Cocky Mỉm cười
-fighting_over_boy,7,Fighting trên boy
-facing_each_other,7,Facing each other
+fighting_over_boy,7,Fighting trên nam
+facing_each_other,7,Facing each người khác
 crystal_shards,0,Pha lê shards
 pet_walking,0,Pet Đang đi bộ
 stifled_laugh,0,Stifled laugh
@@ -772,7 +772,7 @@ tears_of_desperation,7,Nước mắt of desperation
 holding_flamethrower,0,Đang cầm flamethrower
 holding_wreath,0,Cầm vòng hoa
 kneeling_position,7,Quỳ tư thế
-expression_avatar,7,Expression avatar
+expression_avatar,7,Biểu cảm avatar
 holding_lyre,0,Đang cầm lyre
 walkman_nw-s203f,0,Walkman nw-s203f
 pink_jumpsuit,0,Áo liền quần hồng
@@ -782,24 +782,24 @@ holding_energy_gun,0,Đang cầm Năng lượng Súng
 dance_studio,0,Dance studio
 holding_spork,0,Đang cầm spork
 holding_revolver,7,Đang cầm revolver
-kiss_mark_on_butt,7,Hôn mark on Mông
+kiss_mark_on_butt,7,Hôn vệt on Mông
 why_dis_ninja_look_so_mad_(meme),0,Why dis ninja look so mad (meme)
 black_tears,0,Nước mắt đen
 naoya_hitting_choso_without_looking_(meme),0,Naoya hitting choso không có looking (meme)
 riding_dragon,0,Cưỡi rồng
 amen_pose_(meme),0,Amen Tư thế (meme)
-uneven_footing,0,Uneven footing
+uneven_footing,0,Không đều footing
 standing_69_position,7,Đứng vị trí 69
 looking_sideways,7,Looking sideways
 holding_sewing_needle,0,Đang cầm sewing needle
 battle_standard,0,Battle standard
 blank_expression,7,Biểu cảm trống
-holding_picture_frame,0,Đang cầm picture frame
-lap_dance_position,7,Đùi dance position
+holding_picture_frame,0,Đang cầm picture Khung hình
+lap_dance_position,7,Đùi dance vị thế
 holding_cable,0,Cầm cáp
 holding_viewer,7,Cầm người xem
 sitting_in_window,0,Đang ngồi trong cửa sổ
-sound_wave,0,Sound Sóng
+sound_wave,0,Âm thanh Sóng
 money_gesture,0,Tiền Cử chỉ tay
 standing_in_doorway,7,Đang đứng trong doorway
 holding_bottomwear,7,Cầm trang phục thân dưới
@@ -807,7 +807,7 @@ walkies,7,Walkies
 holding_sickle,0,Đang cầm sickle
 holding_vial,0,Đang cầm vial
 kissing_while_cumming,7,Đang hôn while cumming
-toony_expression,7,Phong cách hoạt hình expression
+toony_expression,7,Phong cách hoạt hình Biểu cảm
 holding_cocktail_shaker,0,Đang cầm cocktail shaker
 side_sitting_split,0,Bên Đang ngồi Chia hai
 holding_both_knees,7,Cầm cả hai đầu gối
@@ -838,7 +838,7 @@ potty_dance,7,Potty dance
 indirect_kiss,0,Indirect Hôn
 holding_kettle,0,Đang cầm kettle
 crosslegged_pose,7,Crosslegged Tư thế
-dancer_(fire_emblem:_three_houses),0,Dancer (fire emblem: three houses)
+dancer_(fire_emblem:_three_houses),0,Dancer (fire emblem: ba houses)
 shy_smile,7,Shy Mỉm cười
 ridges,7,Gờ
 holding_console,7,Đang cầm console
@@ -846,9 +846,9 @@ holding_jug,0,Đang cầm jug
 kissing_pov,7,Hôn góc nhìn thứ nhất
 nervous_look,7,Lo lắng look
 standing_on_magic_circle,0,Đang đứng on ma thuật Hình tròn
-lunar_tear,0,Lunar tear
+lunar_tear,0,Lunar giọt nước mắt
 posed,7,Posed
-kissing_sound_effect,7,Đang hôn sound effect
+kissing_sound_effect,7,Đang hôn Âm thanh effect
 wavy_smile,7,Nụ cười gợn sóng
 sitting_on_fence,0,Đang ngồi trên hàng rào
 spitroast_kiss,7,Spitroast Hôn
@@ -862,7 +862,7 @@ holding_makeup_brush,0,Đang cầm Trang điểm brush
 holding_cue_stick,0,Đang cầm cue stick
 standing_on_person,0,Đang đứng trên người
 riding_motorcycle,0,Cưỡi xe máy
-holding_each_other,7,Đang cầm each other
+holding_each_other,7,Đang cầm each người khác
 neck_blush,0,Má hồng cổ
 water_fight,0,Nước fight
 leaning_on_weapon,0,Tựa người trên vũ khí
@@ -874,8 +874,8 @@ rejected_kiss,0,Rejected Hôn
 sitting_on_roof,0,Đang ngồi on roof
 lying_on_partner,7,Đang nằm trên bạn tình
 holding_manga,0,Đang cầm manga
-wavy_speech_bubble,7,Wavy speech Bọt khí
-kneeling_and_blow_position,7,Đang quỳ và blow position
+wavy_speech_bubble,7,Gợn sóng nói Bọt khí
+kneeling_and_blow_position,7,Đang quỳ và blow vị thế
 cheek_blush,7,Má hồng gò má
 holding_magazine_(weapon),0,Đang cầm magazine (weapon)
 passionate_kiss,7,Passionate Hôn
@@ -892,12 +892,12 @@ hoshino_ai's_pose,0,Hoshino ai's Tư thế
 holding_banner,0,Cầm biểu ngữ
 kiss_on_forehead,7,Hôn trên trán
 holding_ankle,7,Cầm cổ chân
-looking_at_another's_genitalia,7,Looking at another's genitalia
-pocky_kissing_viewer,0,Pocky Đang hôn viewer
+looking_at_another's_genitalia,7,Looking at another's bộ phận sinh dục
+pocky_kissing_viewer,0,Pocky Đang hôn người xem
 holding_instrument_case,0,Đang cầm Nhạc cụ Bao đựng
 cigarette_kiss,0,Thuốc lá Hôn
 holding_planet,0,Cầm hành tinh
-looking_past_viewer,0,Looking past viewer
+looking_past_viewer,0,Looking past người xem
 holding_lamp,0,Cầm đèn
 dance_floor,0,Dance Sàn nhà
 kiss_my_ass,7,Hôn my Mông
@@ -910,7 +910,7 @@ holding_snowman,0,Cầm người tuyết
 holding_toy_gun,0,Đang cầm toy Súng
 holding_tentacle,0,Cầm xúc tu
 holding_katana,7,Cầm kiếm katana
-embarrassed_expression,7,Ngượng ngùng expression
+embarrassed_expression,7,Ngượng ngùng Biểu cảm
 holding_omikuji,0,Đang cầm omikuji
 standing_anilingus,0,Đang đứng anilingus
 sitting_on_pumpkin,7,Đang ngồi trên bí ngô
@@ -922,7 +922,7 @@ holding_mp3_player,0,Đang cầm mp3 player
 holding_shotgun,7,Đang cầm shotgun
 kujo_jotaro's_pose,0,Kujo jotaro's Tư thế
 pushing_bicycle,0,Đang đẩy xe đạp
-wavy_ends,0,Wavy ends
+wavy_ends,0,Gợn sóng ends
 wide_smile,7,Nụ cười rộng
 shockwave,0,Shockwave
 panicked_look,7,Panicked look
@@ -959,7 +959,7 @@ holding_trowel,0,Đang cầm trowel
 holding_stopwatch,0,Đang cầm stopwatch
 holding_sunscreen,0,Đang cầm sunscreen
 holding_baton_(weapon),0,Cầm cái gậy
-reverse_dancer_position,7,Ngược dancer position
+reverse_dancer_position,7,Ngược dancer vị thế
 cheerleading_pose,7,Cheerleading Tư thế
 leaning_against_wall,7,Tựa vào bức tường
 yellow_blush,0,Má hồng vàng
@@ -971,7 +971,7 @@ looking_at_ass,0,Nhìn mông
 standing_double_penetration,0,Đứng sự thâm nhập kép
 walkway,0,Walkway
 rope_walking,0,Dây thừng Đang đi bộ
-excited_expression,7,Excited expression
+excited_expression,7,Excited Biểu cảm
 holding_tissue,0,Đang cầm tissue
 kiss_meter_(meme),0,Hôn meter (meme)
 sitting_on_car,7,Đang ngồi trên ô tô
@@ -983,7 +983,7 @@ holding_nunchaku,0,Đang cầm nunchaku
 ganbaru_pose,0,Ganbaru Tư thế
 tiptoe_kiss,0,Tiptoe Hôn
 jumping_spider,0,Đang nhảy Nhện
-innocent_expression,7,Innocent expression
+innocent_expression,7,Innocent Biểu cảm
 sadistic_smile,7,Sadistic Mỉm cười
 holding_coffee_mug,7,Cầm cốc có quai cà phê
 standing_on_chair,0,Đang đứng trên ghế
@@ -1009,17 +1009,17 @@ waiting_for_kiss,0,Waiting for Hôn
 holding_baby,7,Đang cầm baby
 holding_micro,7,Cầm rất nhỏ
 black_blush,7,Má hồng đen
-disgusted_expression,7,Disgusted expression
+disgusted_expression,7,Disgusted Biểu cảm
 sitting_on_back,7,Đang ngồi trên lưng
 holding_penetrable_sex_toy,7,Đang cầm penetrable quan hệ tình dục toy
 holding_kinchaku,0,Đang cầm kinchaku
 holding_helmet,7,Cầm mũ bảo hiểm
 holding_coffee_pot,0,Cầm chậu cà phê
 holding_apple,7,Cầm táo
-crying_aqua_(meme),0,Đang khóc aqua (meme)
+crying_aqua_(meme),0,Đang khóc xanh ngọc (meme)
 bending,7,Bending
 sex_gesture,7,Quan hệ tình dục Cử chỉ tay
-viewer_holding_weapon,0,Viewer Đang cầm Vũ khí
+viewer_holding_weapon,0,Người xem Đang cầm Vũ khí
 slight_blush,7,Slight Đỏ mặt
 kiss_on_butt,7,Hôn trên mông
 holding_tripod,0,Đang cầm tripod
@@ -1049,7 +1049,7 @@ holding_compact,0,Đang cầm compact
 head_ridge,7,Gờ đầu
 holding_gun_barrel,0,Đang cầm Súng barrel
 collaborative_gesture,7,Collaborative Cử chỉ tay
-holding_up_other_character,7,Đang cầm lên other nhân vật
+holding_up_other_character,7,Đang cầm lên người khác nhân vật
 upside-down_kiss,0,Upside-down Hôn
 sitting_on_torii,0,Đang ngồi on torii
 sitting_on_vehicle,7,Đang ngồi trên xe cộ
@@ -1072,9 +1072,9 @@ content_smile,7,Content Mỉm cười
 looking_at_computer,7,Looking at computer
 holding_tera_orb,0,Đang cầm tera orb
 holding_road_sign,0,Đang cầm road Bảng hiệu
-multi_head_kiss,7,Multi đầu Hôn
+multi_head_kiss,7,Nhiều đầu Hôn
 rider_kick,0,Người cưỡi kick
-facial_expression_training,0,Thuộc khuôn mặt expression Tập luyện
+facial_expression_training,0,Thuộc khuôn mặt Biểu cảm Tập luyện
 holding_lasso,0,Đang cầm lasso
 holding_bat,7,Cầm dơi
 ojou_laugh,7,Ojou laugh
@@ -1082,14 +1082,14 @@ holding_cd,0,Đang cầm cd
 after_fight,7,Sau fight
 standing_on_weapon,0,Đang đứng trên vũ khí
 holding_paws,7,Cầm bàn chân thú
-holding_go_stone,0,Đang cầm go stone
+holding_go_stone,0,Đang cầm go đá
 leaning_on_tree,7,Tựa người trên cây
 uncomfortable_pose,7,Uncomfortable Tư thế
 holding_tea_cup,7,Cầm cốc trà
 maboroshi_no_ginzuishou,0,Maboroshi không có ginzuishou
 holding_veil,0,Cầm màn che mặt
 crab_walk,7,Cua walk
-neck_kiss,7,Neck Hôn
+neck_kiss,7,Cổ Hôn
 holding_wig,0,Đang cầm wig
 accidental_kiss,0,Accidental Hôn
 teasing_look,7,Teasing look
@@ -1103,7 +1103,7 @@ collared_jumpsuit,0,Áo liền quần có cổ
 holding_turret,0,Đang cầm turret
 holding_onto_partner,7,Đang cầm lên bạn tình
 purple_jumpsuit,0,Áo liền quần tím
-anal_kiss_mark,7,Hậu môn Hôn mark
+anal_kiss_mark,7,Hậu môn Hôn vệt
 looking_at_pussy,0,Nhìn âm hộ
 holding_gag,0,Cầm nhét miệng
 you_look_lonely_(meme),0,You look lonely (meme)
@@ -1141,7 +1141,7 @@ em_wave_change_(mega_man),0,Em Sóng change (mega man)
 hooded_jumpsuit,0,Áo liền quần có mũ trùm
 reclining_pose,7,Reclining Tư thế
 leaning_on_furniture,7,Tựa người trên đồ nội thất
-zui_zui_dance,0,Zui zui dance
+zui_zui_dance,0,Zui dance
 holding_moon,0,Cầm mặt trăng
 standing_on_box,0,Đang đứng trên cái hộp
 goofy_smile,7,Goofy Mỉm cười
@@ -1161,7 +1161,7 @@ sitting_on_building,7,Đang ngồi trên tòa nhà
 group_kissing,7,Nhóm Đang hôn
 holding_alcohol,7,Cầm đồ uống có cồn
 thigh_blush,0,Má hồng đùi
-fighting_type_theme_(pokemon),0,Fighting type theme (pokemon)
+fighting_type_theme_(pokemon),0,Fighting type Chủ đề (pokemon)
 expressive,7,Expressive
 fox_shadow_puppet_kiss,0,Cáo Bóng đổ puppet Hôn
 lying_on_pillow,7,Đang nằm trên gối
@@ -1174,7 +1174,7 @@ cheeky_smile,7,Cheeky Mỉm cười
 holding_eyepatch,0,Cầm miếng che mắt
 holding_picnic_basket,0,Đang cầm picnic Cái rổ
 cake_sitting,7,Tư thế ngồi bánh ngọt
-holding_own_ankles,0,Đang cầm own Cổ chân
+holding_own_ankles,0,Đang cầm của mình Cổ chân
 looking_at_sex,7,Nhìn quan hệ tình dục
 holding_vehicle,7,Cầm xe cộ
 holding_pacifier,0,Đang cầm pacifier
@@ -1185,7 +1185,7 @@ holding_ski_pole,0,Đang cầm ski pole
 napkin_holder,0,Napkin holder
 holding_both_ankles,7,Đang cầm both Cổ chân
 holding_tambourine,0,Đang cầm tambourine
-gangsta_hold,0,Gangsta hold
+gangsta_hold,0,Gangsta Cái giữ
 holding_from_behind,7,Cầm góc nhìn từ phía sau
 hugging_balls,7,Ôm tinh hoàn
 crying_blood,7,Đang khóc máu
@@ -1206,7 +1206,7 @@ z-move_trainer_pose,0,Z-move trainer Tư thế
 poses,0,Tư thế
 holding_cheek,7,Cầm má
 bending_down,7,Bending xuống
-page_tear,0,Page tear
+page_tear,0,Trang giọt nước mắt
 sitting_on_armchair,7,Đang ngồi trên ghế bành
 anal_kiss,7,Hậu môn Hôn
 shikairo_days_dance_(meme),0,Shikairo Ban ngày dance (meme)
@@ -1232,8 +1232,8 @@ team_pose,7,Tư thế đội
 mikumikudance,0,Mikumikudance
 looking_confused,7,Nhìn bối rối
 standing_pee,7,Đang đứng pee
-holding_feather_duster,7,Đang cầm feather duster
-confident_expression,7,Confident expression
+holding_feather_duster,7,Đang cầm lông vũ duster
+confident_expression,7,Confident Biểu cảm
 holding_cube,0,Cầm khối lập phương
 sleepwalking,0,Sleepwalking
 holding_napkin,0,Đang cầm napkin
@@ -1248,7 +1248,7 @@ cd_walkman,0,Cd walkman
 ice_cream_stand,0,Băng Màu kem stand
 holding_together,0,Đang cầm together
 holding_shin,7,Cầm cẳng chân
-facing_away_from_viewer,7,Facing away từ viewer
+facing_away_from_viewer,7,Facing away từ người xem
 waveform,0,Waveform
 holding_pan,0,Đang cầm pan
 holding_assault_rifle,7,Đang cầm assault Súng trường
@@ -1280,14 +1280,14 @@ standing_at_attention,0,Đang đứng at attention
 holding_pocketwatch,7,Đang cầm pocketwatch
 holding_platter,7,Đang cầm platter
 tengu_pose,0,Tengu Tư thế
-dancer_position,7,Dancer position
+dancer_position,7,Dancer vị thế
 top/bottom_dynamic_annotated,0,Top/bottom dynamic annotated
 holding_mascot_head,0,Đang cầm mascot đầu
 holding_erection,7,Cầm cương cứng
 riding_roller_coaster,0,Riding roller coaster
-frozen_expression,7,Frozen expression
+frozen_expression,7,Frozen Biểu cảm
 holding_pitcher,0,Đang cầm pitcher
-holding_own_knot_root,7,Đang cầm own Nút thắt root
+holding_own_knot_root,7,Đang cầm của mình Nút thắt root
 kissing_thigh,0,Hôn đùi
 blush_symbol,7,Biểu tượng má hồng
 komaniya_express_(genshin_impact),0,Komaniya express (genshin impact)
@@ -1308,7 +1308,7 @@ hugging_partner,7,Ôm bạn tình
 holding_head_wreath,0,Cầm vòng hoa đầu
 kiss_from_behind,0,Hôn từ behind
 lying_upside-down,0,Đang nằm upside-down
-hurt_expression,7,Hurt expression
+hurt_expression,7,Hurt Biểu cảm
 unzipped_jumpsuit,7,Áo liền quần kéo khóa
 holding_tablet_pen,7,Cầm bút máy bảng vẽ
 running_on_liquid,0,Đang chạy trên dạng lỏng
@@ -1333,14 +1333,14 @@ holding_binder,0,Đang cầm binder
 uterus_pose,0,Uterus Tư thế
 hugging_during_sex,7,Hugging during quan hệ tình dục
 holding_halo,0,Cầm vầng hào quang
-kneeling_bodyguard_position,7,Đang quỳ bodyguard position
+kneeling_bodyguard_position,7,Đang quỳ bodyguard vị thế
 holding_flame,0,Cầm ngọn lửa
 smile_(e.g.o),0,Mỉm cười
 lying_on_top,7,Đang nằm trên áo
-looking_at_partner's_genitalia,7,Looking at partner's genitalia
+looking_at_partner's_genitalia,7,Looking at partner's bộ phận sinh dục
 grey_blush,7,Má hồng xám
 holding_cocktail,7,Cầm cocktail
-cure_black_pose,0,Cure black Tư thế
+cure_black_pose,0,Cure đen Tư thế
 holding_curling_iron,0,Đang cầm curling Sắt
 sitting_on_butt,7,Đang ngồi trên mông
 holding_holly,0,Cầm cây nhựa xanh
@@ -1349,13 +1349,13 @@ holding_soap,0,Cầm bọt xà phòng
 beak_hold,0,Cái giữ mỏ
 holding_vacuum_cleaner,0,Đang cầm vacuum cleaner
 forehead_blush,0,Má hồng trán
-babydoll_hold,0,Babydoll hold
+babydoll_hold,0,Babydoll Cái giữ
 nikke's_shooting_pose_(meme),0,Nikke's shooting Tư thế (meme)
 standalone_balls,7,Standalone Tinh hoàn
 holding_beer_mug,7,Cầm cốc có quai bia
 holding_cushion,0,Đang cầm cushion
 looking_down_at_butt,7,Nhìn xuống mông
-holding_game_boy,7,Đang cầm game boy
+holding_game_boy,7,Đang cầm game nam
 vendor_stand,7,Vendor stand
 myoukou_pose_(meme),0,Myoukou Tư thế (meme)
 kongou_pose,0,Kongou Tư thế
@@ -1381,15 +1381,15 @@ surprise_transformation,7,Surprise Biến hình
 holding_sarong,0,Đang cầm sarong
 holding_boomerang,0,Đang cầm boomerang
 holding_pie,7,Cầm bánh nhân
-mochi_mochi_dance,0,Mochi mochi dance
+mochi_mochi_dance,0,Mochi dance
 villain_pose,0,Villain Tư thế
 holding_kickboard,0,Đang cầm kickboard
-kiss_mark_covered,7,Hôn mark covered
+kiss_mark_covered,7,Hôn vệt được che
 jonathan_joestar's_pose,0,Jonathan joestar's Tư thế
 torn_jumpsuit,0,Áo liền quần bị rách
 blushy,7,Blushy
 sitting_on_planet,7,Đang ngồi trên hành tinh
-shy_expression,7,Shy expression
+shy_expression,7,Shy Biểu cảm
 dio_brando's_pose,0,Dio brando's Tư thế
 looking_at_doll,0,Nhìn búp bê
 holding_crutch,0,Đang cầm crutch
@@ -1417,12 +1417,12 @@ holding_battle_axe,7,Đang cầm battle Rìu
 holding_banana,7,Cầm chuối
 head_hold,0,Cái giữ đầu
 phone_stand,0,Điện thoại stand
-sleeper_hold,0,Sleeper hold
+sleeper_hold,0,Sleeper Cái giữ
 standing_on_sword,0,Đang đứng trên kiếm
 lychee,0,Lychee
 holding_lute,0,Đang cầm lute
 holding_board,0,Đang cầm board
-ಠ_ಠ,7,ಠ ಠ
+ಠ_ಠ,7,ಠ
 trying_not_to_laugh,7,Trying not to laugh
 candle_holder,7,Nến holder
 holding_kite,0,Đang cầm kite
@@ -1430,7 +1430,7 @@ facing_forward,7,Facing forward
 lycoris_challenge_(meme),0,Lycoris challenge (meme)
 tidal_wave,0,Tidal Sóng
 holding_detonator,0,Đang cầm detonator
-cure_white_pose,0,Cure white Tư thế
+cure_white_pose,0,Cure trắng Tư thế
 holding_poker_chip,0,Đang cầm poker chip
 holding_bong,0,Đang cầm bong
 walking_together,7,Đang đi bộ together
@@ -1439,7 +1439,7 @@ kirara_jump,0,Kirara jump
 leaning_hips,7,Tựa vào hông
 holding_hip,7,Cầm hông
 nervous_laugh,7,Lo lắng laugh
-holding_power_tool,7,Đang cầm sức mạnh tool
+holding_power_tool,7,Đang cầm sức mạnh dụng cụ
 riding_bike,7,Riding bike
 holding_award,7,Đang cầm award
 rider_gashat,0,Người cưỡi gashat
@@ -1459,19 +1459,19 @@ sitting_on_viewer,7,Đang ngồi trên người xem
 crooked_smile,0,Nụ cười lệch
 sitting_on_furniture,7,Đang ngồi trên đồ nội thất
 holding_floatie,0,Đang cầm floatie
-blue_crystal,7,Blue Pha lê
+blue_crystal,7,Xanh dương Pha lê
 sugar_lyric,0,Đường lyric
 crazy_laugh,0,Điên loạn laugh
 kiss_on_balls,7,Hôn trên tinh hoàn
 holding_paw,0,Cầm bàn chân thú
 selfie_pose,7,Ảnh tự chụp Tư thế
 kiss_request,7,Hôn request
-exotic_dancer,7,Exotic dancer
+exotic_dancer,7,Độc lạ dancer
 standing_on_bed,0,Đang đứng trên giường
 kiddie_ride,0,Kiddie ride
 lying_on_branch,0,Đang nằm trên cành cây
-pokemon_cry,7,Pokemon cry
-expression_35,0,Expression 35
+pokemon_cry,7,Pokémon cry
+expression_35,0,Biểu cảm 35
 holding_handlebar,0,Đang cầm handlebar
 holding_beam_saber,0,Đang cầm Chùm saber
 white_blush,7,Má hồng trắng
@@ -1479,7 +1479,7 @@ leaning_on_bed,7,Tựa người trên giường
 holding_parasol,7,Đang cầm parasol
 ridiculous_bulge,7,Ridiculous Phần phồng lên
 ridewatch,0,Ridewatch
-holding_lightning_bolt,0,Đang cầm Sấm sét bolt
+holding_lightning_bolt,0,Đang cầm Sấm sét bu lông
 holding_soda,7,Cầm nước ngọt
 frill_ridge,7,Gờ diềm xếp
 book_stand,0,Sách stand
@@ -1514,7 +1514,7 @@ floating_tears,0,Nước mắt lơ lửng
 holding_another's_head,7,Đang cầm another's đầu
 holding_anal_beads,7,Cầm hạt chuỗi hậu môn
 forced_to_top,7,Bị ép buộc tới áo
-holding_own_ankle,0,Đang cầm own Cổ chân
+holding_own_ankle,0,Đang cầm của mình Cổ chân
 sitting_on_swing,7,Đang ngồi trên cái đu
 blood_tears,7,Nước mắt máu
 holding_snout,7,Cầm mõm
@@ -1522,9 +1522,9 @@ waist_hold,0,Cái giữ eo
 running_water,7,Đang chạy Nước
 holding_glass_shard,0,Đang cầm Thủy tinh shard
 holding_present,7,Cầm xuất hiện
-holding_puzzle_piece,0,Đang cầm puzzle piece
+holding_puzzle_piece,0,Đang cầm puzzle mảnh
 crypters_(fate/grand_order),0,Crypters (fate/grand order)
-paw_holding,7,Paw Đang cầm
+paw_holding,7,Chân thú Đang cầm
 blush_(makeup),7,Đỏ mặt
 pinch_grip,0,Pinch grip
 holding_tenbou,0,Đang cầm tenbou
@@ -1537,7 +1537,7 @@ leaning_on_desk,7,Tựa người trên bàn làm việc
 looking_at_laptop,7,Looking at laptop
 holding_portrait,0,Cầm chân dung
 nelson_pose,7,Nelson Tư thế
-object_riding,0,Object riding
+object_riding,0,Vật thể riding
 crychic_(bang_dream!),0,Crychic (bang dream!)
 dramatic_pose,7,Dramatic Tư thế
 standing_footjob,0,Đang đứng footjob
@@ -1573,7 +1573,7 @@ holding_hood,0,Cầm mũ trùm
 sitting_on_robot,0,Đang ngồi trên người máy
 holding_teddy_bear,7,Cầm gấu bông
 standing_on_roof,0,Đang đứng on roof
-various_blushing_faces,0,Various blushing faces
+various_blushing_faces,0,Various blushing mặt
 holding_jockstrap,7,Đang cầm jockstrap
 holding_paint_roller,0,Đang cầm Màu vẽ roller
 dance_club,7,Dance club
@@ -1594,12 +1594,12 @@ crystal_carillon,0,Pha lê carillon
 striped_jumpsuit,0,Áo liền quần kẻ sọc
 holding_watermelon,7,Cầm dưa hấu
 tearing_bottomwear,7,Đang xé trang phục thân dưới
-huge_ass_lying_on_couch_pose_(meme),0,Huge Mông Đang nằm on Ghế sofa Tư thế (meme)
+huge_ass_lying_on_couch_pose_(meme),0,Khổng lồ Mông Đang nằm on Ghế sofa Tư thế (meme)
 cryptocurrency,0,Cryptocurrency
 sitting_on_mushroom,0,Đang ngồi trên nấm
 holding_stapler,0,Đang cầm stapler
 crystal_empire,7,Pha lê empire
-high_jump,0,High jump
+high_jump,0,Cao jump
 camera_hold_pose_(han-0v0),0,Tư thế máy ảnh cái giữ
 holding_rolling_pin,0,Đang cầm rolling pin
 string_jumpsuit,7,String Áo liền quần
@@ -1608,7 +1608,7 @@ holding_berry,7,Đang cầm berry
 jumper_cable,0,Jumper Cáp
 lying_on_bench,7,Đang nằm trên ghế dài
 holding_goblet,7,Đang cầm goblet
-expressive_sound_effect,7,Expressive sound effect
+expressive_sound_effect,7,Expressive Âm thanh effect
 holding_cotton_swab,0,Đang cầm cotton swab
 holding_carton,7,Đang cầm carton
 holding_bubble,0,Cầm bọt khí
@@ -1620,11 +1620,11 @@ lying_on_desk,7,Đang nằm trên bàn làm việc
 head_holding,7,Đầu Đang cầm
 plow_pose,7,Plow Tư thế
 looking_at_monitor,7,Looking at monitor
-new_wave_(idolmaster),0,New Sóng (idolmaster)
+new_wave_(idolmaster),0,Mới Sóng (idolmaster)
 holding_pouch,0,Cầm túi con
 holding_pool_toy,7,Đang cầm pool toy
 looking_from_above,7,Nhìn góc nhìn từ trên
-holding_shogi_piece,0,Đang cầm shogi piece
+holding_shogi_piece,0,Đang cầm shogi mảnh
 standing_front_split,0,Đang đứng phía trước Chia hai
 holding_feces,7,Cầm phân
 tears_of_rage,7,Nước mắt of rage
@@ -1645,7 +1645,7 @@ holding_hula_hoop,0,Đang cầm hula hoop
 pounce_pose,7,Pounce Tư thế
 handjob_gesture_(not_ok),0,Thủ dâm bằng tay Cử chỉ tay (not ok)
 holding_relay_baton,0,Đang cầm relay Cái gậy
-how_to_hold_x_(meme),0,How to hold x (meme)
+how_to_hold_x_(meme),0,How to Cái giữ x (meme)
 shimushu_pose,0,Shimushu Tư thế
 manly_tears,0,Manly Nước mắt
 leaning_on_doorway,7,Tựa người on doorway
@@ -1685,12 +1685,12 @@ nervous_tama-chan_pose,0,Lo lắng tama-chan Tư thế
 leaning_on_broom,0,Tựa người trên cây chổi
 holding_razor_blade,0,Đang cầm razor blade
 holding_macuahuitl,7,Đang cầm macuahuitl
-figure_four_standing,0,Dáng người four Đang đứng
+figure_four_standing,0,Dáng người bốn Đang đứng
 sitting_on_balloon,7,Đang ngồi trên bóng bay
 holding_switch,7,Đang cầm switch
 holding_rake,0,Đang cầm rake
 stop_gesture,7,Stop Cử chỉ tay
-kiss_mark_on_cheek,7,Hôn mark on Má
+kiss_mark_on_cheek,7,Hôn vệt on Má
 holding_headband,0,Cầm băng đô
 another_ship_dynamic_i_enjoy_(meme),0,Another Con tàu dynamic i enjoy (meme)
 holding_halberd,7,Đang cầm halberd
@@ -1700,7 +1700,7 @@ rib_ridge,7,Gờ xương sườn
 laughing_gas,7,Đang cười gas
 kneeling_in_water,7,Đang quỳ trong nước
 lyra_(pokemon)_(cosplay),0,Lyra (pokemon) (cosplay)
-holding_detached_steering_wheel,0,Đang cầm detached steering wheel
+holding_detached_steering_wheel,0,Đang cầm tách rời steering wheel
 subarashii_pose,0,Subarashii Tư thế
 dragon_rider,7,Rồng Người cưỡi
 loser_gesture,0,Loser Cử chỉ tay
@@ -1732,14 +1732,14 @@ holding_coffee,7,Cầm cà phê
 holding_lube,7,Cầm chất bôi trơn
 holding_neckerchief,0,Cầm khăn quàng cổ
 television_stand,7,Television stand
-holding_unworn_slippers,0,Đang cầm unworn slippers
+holding_unworn_slippers,0,Đang cầm không mặc slippers
 raspberry_kiss,7,Raspberry Hôn
 frottage_kiss,7,Frottage Hôn
 tied_jumpsuit,0,Áo liền quần được buộc
 leaning_on_rock,7,Tựa người trên tảng đá
 reze_dance,0,Reze dance
 riding_horse,7,Cưỡi ngựa
-expression_meme,7,Expression meme
+expression_meme,7,Biểu cảm Meme
 tears_of_embarrassment,7,Nước mắt of embarrassment
 walkman_e_series,0,Walkman e series
 sitting_on_weapon,0,Đang ngồi trên vũ khí
@@ -1791,12 +1791,12 @@ shinshun!_shishimai_robo_no_oshougatsu_show!_(project_sekai),0,Shinshun! shishim
 holding_own_balls,7,Cầm tinh hoàn của mình
 holding_moob,7,Đang cầm moob
 sitting_on_ledge,7,Đang ngồi on ledge
-blushing_girls_are_cute_(template),0,Blushing girls are cute (template)
+blushing_girls_are_cute_(template),0,Blushing nữ are dễ thương (template)
 but_you_can't_prove_it_(meme),0,But you can't prove it (meme)
 holding_bookmark,0,Đang cầm bookmark
 kagurabachi_pose_(meme),0,Kagurabachi Tư thế (meme)
 dancing_pallbearers_(meme),0,Đang nhảy múa pallbearers (meme)
-dynamic_lighting,7,Dynamic lighting
+dynamic_lighting,7,Dynamic Ánh sáng
 kneeling_on_chair,7,Đang quỳ trên ghế
 holding_hairpin,0,Cầm kẹp tóc
 holding_object_above_head,7,Cầm vật bên trên đầu
@@ -1818,18 +1818,18 @@ holding_statuette,0,Đang cầm statuette
 surprise_deepthroat,0,Surprise deepthroat
 running_ganger_(meme),0,Đang chạy ganger (meme)
 ready_to_fight,7,Ready to fight
-sarong_hold,0,Sarong hold
+sarong_hold,0,Sarong Cái giữ
 sitting_on_pokemon,0,Đang ngồi trên pokémon
 tearing_topwear,7,Đang xé trang phục thân trên
 heroic_pose,7,Heroic Tư thế
 fluffy_white_puppy_expressions_(meme),0,Biểu cảm lông xù chó con trắng
 kiss_22_title,0,Hôn 22 title
 surprise_cockslap,7,Surprise cockslap
-holding_unworn_chastity_cage,0,Đang cầm unworn chastity Lồng
+holding_unworn_chastity_cage,0,Đang cầm không mặc trinh tiết Lồng
 guided_kiss,0,Guided Hôn
 upside_down_kiss,7,Upside xuống Hôn
 messy_kiss,7,Rối Hôn
-crying_sound_effect,7,Đang khóc sound effect
+crying_sound_effect,7,Đang khóc Âm thanh effect
 ride_booker,0,Ride booker
 holding_ladder,0,Cầm thang
 holding_psp,7,Đang cầm psp
@@ -1842,7 +1842,7 @@ cum_from_kissing,7,Tinh dịch từ đang hôn
 standing_on_butt,7,Đang đứng trên mông
 brush_holder,0,Brush holder
 dancing_flower,0,Đang nhảy múa Hoa
-kiss_mark_on_thigh,7,Hôn mark on thigh
+kiss_mark_on_thigh,7,Hôn vệt on đùi
 lemonade_stand,7,Lemonade stand
 turtleneck_jumpsuit,0,Áo liền quần cổ lọ
 another_rider_(zi-o),0,Another Người cưỡi (zi-o)
@@ -1856,7 +1856,7 @@ holding_tank_shell,0,Đang cầm Áo ba lỗ Vỏ
 surprise_vore,7,Surprise Nuốt chửng
 hoof_blush,7,Má hồng móng guốc
 wave_motion_gun,0,Sóng motion Súng
-street_fighter_6_new_challenger_art_contest,0,Đường phố fighter 6 new challenger art contest
+street_fighter_6_new_challenger_art_contest,0,Đường phố fighter 6 mới challenger art contest
 first_kiss,7,First Hôn
 alexander_anderson's_pose,0,Alexander anderson's Tư thế
 akiman_pose,0,Akiman Tư thế
@@ -1864,7 +1864,7 @@ spoon_bending,0,Thìa bending
 kissing_ass,0,Hôn mông
 kill_me_dance,0,Kill me dance
 dragon_dance,0,Rồng dance
-expressive_object,0,Expressive object
+expressive_object,0,Expressive vật thể
 riding_shark,0,Cưỡi cá mập
 holding_another's_balls,7,Đang cầm another's Tinh hoàn
 flea-ridden,7,Flea-ridden
@@ -1876,7 +1876,7 @@ riding_rocket,0,Riding rocket
 bloody_tears,7,Nước mắt vấy máu
 lying_on_car,7,Đang nằm trên ô tô
 holding_bulb,0,Cầm bóng đèn
-holding_by_neck,7,Đang cầm by neck
+holding_by_neck,7,Đang cầm by cổ
 leaning_on_ball,0,Tựa người trên quả bóng
 looking_smug,7,Nhìn vẻ mặt tự mãn
 holding_perfume,0,Cầm nước hoa
@@ -1885,7 +1885,7 @@ standing_on_desk,0,Đang đứng trên bàn làm việc
 holding_sheep,0,Cầm cừu
 angry_kiss,7,Tức giận Hôn
 fire_dancing,7,Lửa Đang nhảy múa
-fighter_plane,7,Fighter plane
+fighter_plane,7,Fighter Máy bay
 scorpion_pose,0,Tư thế bọ cạp
 waterfall_tears,7,Nước mắt thác nước
 letter_pose,0,Tư thế bức thư
@@ -1897,7 +1897,7 @@ holding_ghost,0,Cầm ma
 holding_first_aid_kit,0,Đang cầm first aid kit
 holding_cassette_player,0,Đang cầm cassette player
 wig_stand,0,Wig stand
-she_holds_my_weakness_(meme),0,She holds my weakness (meme)
+she_holds_my_weakness_(meme),0,She Cái giữ my weakness (meme)
 kneeling_over_partner,7,Đang quỳ phía trên bạn tình
 diaper_lying_around,7,Tã lót Đang nằm xung quanh
 riding_moped,0,Riding moped
@@ -1913,13 +1913,13 @@ holding_strapon,7,Đang cầm strapon
 matching_pose,0,Tư thế đồng bộ
 penetrated_while_sitting,7,Penetrated while Đang ngồi
 rafiki_holding_simba_(meme),0,Rafiki Đang cầm simba (meme)
-roundtable_hold_(elden_ring),0,Roundtable hold (elden ring)
+roundtable_hold_(elden_ring),0,Roundtable Cái giữ (elden ring)
 blushlines,7,Blushlines
 holding_with_tentacle,0,Giữ bằng xúc tu
 holding_volleyball,7,Cầm bóng chuyền
 pencil_holder,7,Bút chì holder
-red_crystal,7,Red Pha lê
-lonely_lonely_dance_(meme),0,Lonely lonely dance (meme)
+red_crystal,7,Đỏ Pha lê
+lonely_lonely_dance_(meme),0,Lonely dance (meme)
 holding_pasteur_pipette,0,Đang cầm pasteur pipette
 holding_pineapple,0,Đang cầm pineapple
 leaning_on_elbows,7,Tựa người trên khuỷu tay
@@ -1954,26 +1954,26 @@ dance_on_the_galaxy_(idolmaster),0,Dance on galaxy (idolmaster)
 holding_computer_keyboard,0,Đang cầm computer keyboard
 expression_print,7,Họa tiết biểu cảm
 holding_dragon_ball,0,Cầm quả bóng rồng
-fearful_expression,7,Fearful expression
+fearful_expression,7,Fearful Biểu cảm
 hugging_ass,0,Ôm mông
 leaning_on_vehicle,7,Tựa người trên xe cộ
 fighting_back,7,Fighting phía sau
 lying_on_balloon,7,Đang nằm trên bóng bay
 fighting_game_ui,7,Fighting game ui
 fist_fight,0,Fist fight
-playful_expression,7,Playful expression
+playful_expression,7,Playful Biểu cảm
 holding_playing_card,7,Đang cầm đang chơi Thẻ
 holding_sledgehammer,0,Đang cầm sledgehammer
-holding_stone_tablet,0,Đang cầm stone Bảng vẽ
+holding_stone_tablet,0,Đang cầm đá Bảng vẽ
 holding_receipt,0,Đang cầm receipt
 looking_straight,7,Nhìn thẳng
-pink_crystals,7,Pink Pha lê
+pink_crystals,7,Hồng Pha lê
 holding_plunger,0,Đang cầm plunger
 cool_guys_don't_look_at_explosions,7,Cool guys don't look at Vụ nổ
 holding_leek,7,Đang cầm leek
 holding_headdress,0,Cầm đồ đội đầu
 female_holding_male,7,Giới tính nữ Đang cầm Giới tính nam
-holding_game_boy_color,7,Đang cầm game boy color
+holding_game_boy_color,7,Đang cầm game nam màu
 wave_rider,0,Sóng Người cưỡi
 princess_of_the_crystal_(cosplay),0,Princess of Pha lê (cosplay)
 coppertone_pose,7,Coppertone Tư thế
@@ -1989,14 +1989,14 @@ walking_on_wall,0,Đang đi bộ trên bức tường
 walking_in_line,0,Đang đi bộ trong line
 minasoko_ni_kage_wo_sagashite_(project_sekai),0,Minasoko ni kage wo sagashite (project sekai)
 expressionism,7,Expressionism
-exaggerated_expression,7,Exaggerated expression
-looking_at_internal_bulge,7,Nhìn chỗ lùm lùm bên trong
+exaggerated_expression,7,Exaggerated Biểu cảm
+looking_at_internal_bulge,7,Nhìn chỗ lùm bên trong
 lyn_(fire_emblem)_(cosplay),0,Lyn (fire emblem) (cosplay)
 holding_beer_bottle,7,Cầm cái chai bia
 catachan_jungle_fighter,0,Catachan Rừng rậm fighter
 judgemental_look,7,Judgemental look
 sitting_on_barrel,7,Đang ngồi on barrel
-tear_stain,0,Tear stain
+tear_stain,0,Giọt nước mắt stain
 crying_asagiri_aya_(meme),0,Đang khóc asagiri aya (meme)
 holding_missile,0,Đang cầm missile
 running_eyeliner,7,Đang chạy Kẻ mắt
@@ -2054,7 +2054,7 @@ armpit_blush,7,Má hồng nách
 fruit_stand,0,Trái cây stand
 holding_uvula,7,Đang cầm uvula
 holding_tape,0,Đang cầm tape
-kiss_mark_on_pussy,7,Hôn mark on Âm hộ
+kiss_mark_on_pussy,7,Hôn vệt on Âm hộ
 hugging_blanket,0,Ôm chăn
 lying_on_sand,7,Đang nằm trên cát
 sitting_on_towel,7,Đang ngồi trên khăn tắm
@@ -2070,7 +2070,7 @@ look_down,7,Look xuống
 teal_blush,7,Má hồng xanh cổ vịt
 flying_tears,7,Nước mắt bay
 mirrored_pose,7,Mirrored Tư thế
-tip_kissing,7,Tip Đang hôn
+tip_kissing,7,Đầu chóp Đang hôn
 dancers,7,Dancers
 let's_groove_dance_(meme),0,Let's groove dance (meme)
 fake_tears,0,Nước mắt giả
@@ -2078,7 +2078,7 @@ holding_railing,7,Cầm lan can
 cleansed_crystal_mirror,0,Cleansed Pha lê Cái gương
 jumpsuit_down,7,Áo liền quần hướng xuống
 kneeling_on_another,7,Đang quỳ on another
-hextech_gemstone,0,Hextech gemstone
+hextech_gemstone,0,Hextech đá quý
 waverider_crash,0,Waverider crash
 sitting_on_thigh,0,Đang ngồi trên đùi
 running_on_all_fours,7,Đang chạy trên tư thế chống bằng bốn chi
@@ -2091,9 +2091,9 @@ looking_at_tablet,7,Nhìn bảng vẽ
 angry_boss_with_happy_family_irasutoyas_(meme),0,Tức giận boss với vui vẻ family irasutoyas (meme)
 looking_at_clipboard,7,Nhìn bảng kẹp giấy
 leaning_on_chair,7,Tựa người trên ghế
-expression_bubble,7,Expression Bọt khí
+expression_bubble,7,Biểu cảm Bọt khí
 censored_kiss,0,Đã kiểm duyệt Hôn
-serious_expression,7,Nghiêm túc expression
+serious_expression,7,Nghiêm túc Biểu cảm
 spiral_blush,7,Má hồng xoắn ốc
 holding_bass,7,Đang cầm bass
 holding_cheeks,7,Cầm má
@@ -2111,10 +2111,10 @@ lyney_(genshin_impact)_(cosplay),0,Lyney (genshin impact) (cosplay)
 lynx_(constellation),0,Lynx (constellation)
 octopus_hold,0,Cái giữ bạch tuộc
 kamen_rider_double_(cosplay),0,Kamen Người cưỡi đôi (cosplay)
-involved_expression,7,Involved expression
-proud_expression,7,Proud expression
+involved_expression,7,Involved Biểu cảm
+proud_expression,7,Proud Biểu cảm
 asgore_running_over_dess_(meme),0,Asgore Đang chạy trên dess (meme)
-sadistic_expression,7,Sadistic expression
+sadistic_expression,7,Sadistic Biểu cảm
 holding_bar,7,Đang cầm bar
 holding_coffin,0,Đang cầm coffin
 holding_drawing_pen,7,Cầm đang vẽ bút máy
@@ -2133,9 +2133,9 @@ maitake_dance,0,Maitake dance
 kakushin-teki_metamorphose!,0,Kakushin-teki metamorphose!
 crystal_sword_(adventure_time),0,Pha lê Kiếm (adventure time)
 dunhuang_dance,0,Dunhuang dance
-holding_balance_scale,0,Đang cầm balance scale
+holding_balance_scale,0,Đang cầm balance vảy
 lick_kiss,7,Lick Hôn
-fierce_expression,7,Fierce expression
+fierce_expression,7,Fierce Biểu cảm
 holding_bun,0,Cầm búi tóc
 forced_dancing,7,Bị ép buộc Đang nhảy múa
 holding_dowsing_rod,0,Đang cầm dowsing rod
@@ -2186,10 +2186,10 @@ crystal_change_rod,0,Pha lê change rod
 holding_strawberry,7,Cầm dâu tây
 holding_tooth,0,Đang cầm tooth
 holding_upside_down,7,Đang cầm upside xuống
-hoof_holding,7,Hoof Đang cầm
+hoof_holding,7,Móng guốc Đang cầm
 lap_dance,0,Đùi dance
 kissing_pectoral,0,Hôn cơ ngực
-kiss_mark_on_tip,7,Hôn mark on tip
+kiss_mark_on_tip,7,Hôn vệt on đầu chóp
 standoff,7,Standoff
 ta-da_pose,0,Ta-da Tư thế
 tribadism_gesture,0,Tribadism Cử chỉ tay
@@ -2220,7 +2220,7 @@ holding_maraca,7,Đang cầm maraca
 sailor_mercury_pose,0,Thủy thủ mercury Tư thế
 crystal_apple,0,Pha lê Táo
 crystal_print,0,Họa tiết pha lê
-holding_unworn_armband,0,Đang cầm unworn Băng tay
+holding_unworn_armband,0,Đang cầm không mặc Băng tay
 meaning_of_a_kiss,0,Meaning of a Hôn
 chat_pose,7,Chat Tư thế
 dancing_arona_(meme),0,Đang nhảy múa arona (meme)
@@ -2229,31 +2229,31 @@ kissed_by_animal,0,Kissed by Động vật
 elite_throuple_kiss_(meme),0,Elite throuple Hôn (meme)
 slow_dancing,7,Slow Đang nhảy múa
 penetration_gesture_duo,0,Thâm nhập Cử chỉ tay Hai nhân vật
-rip_and_tear_(phrase),0,Rip và tear (phrase)
+rip_and_tear_(phrase),0,Rip và giọt nước mắt (phrase)
 angry_mob,7,Tức giận mob
 surprise_fingering,7,Surprise Kích thích bằng ngón tay
 sitting_under_tree,7,Đang ngồi bên dưới cây
-sitting_on_another's_knee,0,Đang ngồi on another's knee
+sitting_on_another's_knee,0,Đang ngồi on another's đầu gối
 leaning_on,7,Tựa người on
 holding_udders,7,Đang cầm udders
 holding_testicles,0,Cầm tinh hoàn
 holding_taser,0,Đang cầm taser
-holding_inner_tube,7,Đang cầm inner Dạng ống
+holding_inner_tube,7,Đang cầm mặt trong Dạng ống
 holding_handheld_metal_detector,0,Đang cầm handheld Kim loại detector
 holding_file,0,Đang cầm file
 yawning_tears,7,Yawning Nước mắt
 holding_coconut,7,Đang cầm coconut
 holding_baseball,7,Cầm bóng chày
 y-pose,0,Y-pose
-purple_crystal,7,Purple Pha lê
+purple_crystal,7,Tím Pha lê
 standing_in_line,7,Đang đứng trong line
 sheath_kiss,7,Bao kiếm Hôn
-prehensile_holding,7,Prehensile Đang cầm
+prehensile_holding,7,Có khả năng quấn Đang cầm
 potters_wheel_pose,0,Potters wheel Tư thế
-squatting_bunny_girl_pose_(han-0v0),0,Đang ngồi xổm bunny girl Tư thế (han-0v0)
+squatting_bunny_girl_pose_(han-0v0),0,Đang ngồi xổm thỏ nữ Tư thế (han-0v0)
 where_are_you_sitting_(meme),0,Where are you Đang ngồi (meme)
 dr._livesey_walk_(meme),0,Dr. livesey walk (meme)
-kiss_mark_on_neck,7,Hôn mark on neck
+kiss_mark_on_neck,7,Hôn vệt on cổ
 kissing_bulge,0,Hôn phần phồng lên
 holding_note,7,Cầm nốt nhạc
 holding_honeypot,0,Đang cầm honeypot
@@ -2280,7 +2280,7 @@ riding_bear,0,Cưỡi gấu
 amid_the_wavering_light_(project_sekai),0,Amid wavering Nhạt (project sekai)
 not_what_it_looks_like,7,Not what it looks like
 holding_chips_(food),7,Đang cầm chips (food)
-holding_both_shins,7,Đang cầm both shins
+holding_both_shins,7,Đang cầm both cẳng chân
 rat_dance_(meme),0,Chuột cống dance (meme)
 holding_eggshell,0,Đang cầm eggshell
 holding_ice_pick,0,Đang cầm băng pick
@@ -2297,7 +2297,7 @@ star_tears,0,Nước mắt ngôi sao
 standing_on_raft,0,Đang đứng on raft
 itsuka_senaka_awase_no_lyric_wo_(project_sekai),0,Itsuka senaka awase không có lyric wo (project sekai)
 walking_on_air,0,Đang đi bộ on air
-bun_huggers,7,Bun huggers
+bun_huggers,7,Búi tóc huggers
 soul_fighter_(league),0,Soul fighter (league)
 crypt,7,Crypt
 cure_happy_pose,0,Cure vui vẻ Tư thế
@@ -2329,7 +2329,7 @@ tree_pose,7,Tư thế cây
 back_bend,7,Phía sau bend
 squidward_looking_out_the_window_(meme),0,Squidward looking out Cửa sổ (meme)
 kissa_hasu_no_sora_(love_live!),0,Kissa hasu không có sora (love live!)
-lateral_surprise,7,Lateral surprise
+lateral_surprise,7,Ngoài surprise
 hugging_head,7,Ôm đầu
 sitting_on_rug,7,Đang ngồi on rug
 sitting_on_tombstone,0,Đang ngồi on tombstone
@@ -2338,11 +2338,11 @@ thinker_pose,7,Thinker Tư thế
 un_heavy_fighter_jet_(evangelion),0,Un heavy fighter jet (evangelion)
 pillar_men_pose,7,Pillar men Tư thế
 obscene_gesture,7,Obscene Cử chỉ tay
-awkward_expression,7,Awkward expression
+awkward_expression,7,Awkward Biểu cảm
 riding_on_head,7,Cưỡi đầu
 nyan-nyan_dance,0,Nyan-nyan dance
 guts_cosplayer_holding_giant_dragonslayer_(meme),0,Guts cosplayer Đang cầm Khổng lồ dragonslayer (meme)
-avgn_dancing_dot_mov_(meme),0,Avgn Đang nhảy múa dot mov (meme)
+avgn_dancing_dot_mov_(meme),0,Avgn Đang nhảy múa chấm mov (meme)
 maomao_evading_jinshi's_kiss_(meme),0,Maomao evading jinshi's Hôn (meme)
 anti-gravity_lean,0,Anti-gravity lean
 queen_never_cry_(meme),0,Queen never cry (meme)
@@ -2369,7 +2369,7 @@ holding_brain,0,Đang cầm brain
 holding_condom_wrapper,7,Đang cầm Bao cao su wrapper
 holding_foreskin,7,Cầm bao quy đầu
 holding_food_container,7,Đang cầm Thức ăn Vật chứa
-triple_kiss,7,Triple Hôn
+triple_kiss,7,Ba Hôn
 holding_milk_bottle,7,Cầm cái chai sữa
 holding_pec,7,Đang cầm pec
 holding_stack,7,Đang cầm stack
@@ -2377,8 +2377,8 @@ holding_speedo,7,Đang cầm speedo
 holding_saucepan,0,Đang cầm saucepan
 stomach_blush,0,Má hồng bụng
 holding_steering_wheel,7,Đang cầm steering wheel
-holding_video_camera,7,Đang cầm video Máy ảnh
-holding_zipper_pull_tab,0,Đang cầm Khóa kéo Kéo tab
+holding_video_camera,7,Đang cầm Video Máy ảnh
+holding_zipper_pull_tab,0,Đang cầm Khóa kéo tab
 laughing_tom_cruise_(meme),0,Đang cười tom cruise (meme)
 laughing_girls_(meme),0,Cười trước cô gái
 lean_male,7,Lean Giới tính nam
@@ -2388,7 +2388,7 @@ caught_kissing_doll_(onlymaljjong),0,Caught Đang hôn Búp bê (onlymaljjong)
 pie_fight,7,Bánh nhân fight
 stands,7,Stands
 standing_on_water,7,Đang đứng trên nước
-hunter_(little_red_riding_hood)_(cosplay),0,Hunter (little red riding hood) (cosplay)
+hunter_(little_red_riding_hood)_(cosplay),0,Hunter (little đỏ riding hood) (cosplay)
 looking_at_console,7,Looking at console
 looking_at_child,7,Nhìn trẻ em
 lookout,7,Lookout
@@ -2407,11 +2407,11 @@ holding_chocolate_bar,7,Đang cầm Sô-cô-la bar
 holding_both_calves,7,Cầm cả hai bắp chân
 foreskin_blush,7,Má hồng bao quy đầu
 surprise_rimming,7,Surprise rimming
-grandmother_(little_red_riding_hood)_(cosplay),0,Grandmother (little red riding hood) (cosplay)
+grandmother_(little_red_riding_hood)_(cosplay),0,Bà (little đỏ riding hood) (cosplay)
 kiss_on_neck,7,Hôn trên cổ
-floating_boy_chasing_running_boy_(meme),0,Lơ lửng boy chasing Đang chạy boy (meme)
+floating_boy_chasing_running_boy_(meme),0,Lơ lửng nam chasing Đang chạy nam (meme)
 fightstick,7,Fightstick
-crazed_expression,7,Crazed expression
+crazed_expression,7,Crazed Biểu cảm
 walking_in_water,7,Đang đi bộ trong nước
 first_kiss_(meme),0,First Hôn (meme)
 fire_dancer,7,Lửa dancer
@@ -2442,7 +2442,7 @@ lying_on_pokemon,0,Đang nằm trên pokémon
 lying_on_tree,7,Đang nằm trên cây
 holding_warhammer,7,Đang cầm warhammer
 holding_tuning_fork,7,Đang cầm tuning Dĩa
-getter_team_pose_(meme),0,Getter team Tư thế (meme)
+getter_team_pose_(meme),0,Getter đội Tư thế (meme)
 holding_measuring_tape,7,Đang cầm measuring tape
 holding_mallets_(music),0,Đang cầm mallets (music)
 holding_keytar,7,Đang cầm keytar
@@ -2505,7 +2505,7 @@ holding_own_neckwear,0,Cầm phụ kiện cổ của mình
 holding_fireball,7,Đang cầm fireball
 holding_curtain,7,Cầm rèm
 holding_burrito,7,Đang cầm burrito
-tentacle_holding_object,7,Tentacle Đang cầm object
+tentacle_holding_object,7,Xúc tu Đang cầm vật thể
 ressha_sentai_toqger_pose,0,Ressha sentai toqger Tư thế
 crystal_skull,0,Đầu lâu pha lê
 cryptozoology,7,Cryptozoology
@@ -2527,13 +2527,13 @@ standing_spitroast,7,Đang đứng spitroast
 stand_up,7,Stand lên
 aroused_smiling,7,Aroused smiling
 foreskin_kiss,7,Bao quy đầu Hôn
-gunslinger_girl_shooting_pose,0,Gunslinger girl shooting Tư thế
-kneepit_hold,0,Kneepit hold
-jumpsuit_partially_removed,0,Áo liền quần partially removed
-judo_hold,0,Judo hold
+gunslinger_girl_shooting_pose,0,Gunslinger nữ shooting Tư thế
+kneepit_hold,0,Kneepit Cái giữ
+jumpsuit_partially_removed,0,Áo liền quần một phần removed
+judo_hold,0,Judo Cái giữ
 cure_march_pose,0,Cure march Tư thế
 about_to_kiss,7,About to Hôn
-backwards_long_jump,0,Backwards long jump
+backwards_long_jump,0,Backwards dài jump
 anthro_kissing_male,7,Nhân vật nam hôn nhân hóa
 holding_accordion,0,Đang cầm accordion
 holding_arthropod_abdomen,7,Đang cầm Động vật chân khớp abdomen
@@ -2542,14 +2542,14 @@ holding_grapes,7,Cầm nho
 holding_media_case,7,Đang cầm media Bao đựng
 holding_sticker,0,Cầm nhãn dán
 holding_taco,7,Đang cầm taco
-lyric_speech_bubbles_(meme),0,Lyric speech Bọt khí (meme)
+lyric_speech_bubbles_(meme),0,Lyric nói bọt khí (meme)
 silence_gesture,7,Silence Cử chỉ tay
-woman_holding_gun_to_another_woman's_thigh_(meme),0,Woman Đang cầm Súng to another woman's thigh (meme)
+woman_holding_gun_to_another_woman's_thigh_(meme),0,Woman Đang cầm Súng to another woman's đùi (meme)
 looking_side,7,Nhìn lệch bên
 hula_dancing,7,Hula Đang nhảy múa
 angry_masturbation,7,Tức giận Thủ dâm
 looking_at_cloaca,7,Nhìn lỗ huyệt
-waver_velvet_(cosplay),0,Waver velvet (cosplay)
+waver_velvet_(cosplay),0,Waver nhung (cosplay)
 pussy_hold,0,Cái giữ âm hộ
 sitting_on_ass,0,Đang ngồi trên mông
 sitting_on_cock,7,Đang ngồi trên dương vật
@@ -2560,7 +2560,7 @@ walkman_b_series,0,Walkman b series
 hysterical_laughter,7,Hysterical laughter
 shinji_holding_a_mug_(meme),0,Shinji Đang cầm a Cốc có quai (meme)
 looking_at_bottle,7,Nhìn cái chai
-looking_at_own_crotch,7,Looking at own crotch
+looking_at_own_crotch,7,Looking at của mình đũng quần
 prostate_milking_gesture,0,Prostate milking Cử chỉ tay
 holding_sunflower,7,Cầm hướng dương
 holding_snowflake,0,Cầm bông tuyết
@@ -2574,7 +2574,7 @@ holding_jack-o'-lantern,7,Đang cầm jack-o'-lantern
 holding_guts,7,Đang cầm guts
 holding_head_down,7,Cầm đầu hướng xuống
 tharja's_good_smile_pose,0,Tharja's good Mỉm cười Tư thế
-green_crystal,7,Green Pha lê
+green_crystal,7,Xanh lá Pha lê
 holding_document,7,Đang cầm document
 holding_energy_drink,7,Cầm đồ uống năng lượng
 holding_bowgun,0,Đang cầm bowgun
@@ -2592,10 +2592,10 @@ teat_blush,7,Teat Đỏ mặt
 cryamore_condenser,0,Cryamore condenser
 crysknife,0,Crysknife
 poseidong_lube,7,Poseidong Chất bôi trơn
-religious_gesture,7,Religious Cử chỉ tay
+religious_gesture,7,Tôn giáo Cử chỉ tay
 blush_emoji,7,Đỏ mặt emoji
 ride_chemy_card,0,Ride chemy Thẻ
-scissor_hold,7,Scissor hold
+scissor_hold,7,Scissor Cái giữ
 ridged,7,Ridged
 ridge,7,Gờ
 tea_stand,0,Trà stand
@@ -2604,10 +2604,10 @@ kneeling_on_bench,7,Đang quỳ trên ghế dài
 expressions_of_your_wife_being_loved_practice,0,Biểu cảm of your wife being loved practice
 kissing_while_fingering,7,Đang hôn while Kích thích bằng ngón tay
 kissing_chin,0,Hôn cằm
-kiss_mark_on_forehead,7,Hôn mark on Trán
-kiss_mark_on_perineum,7,Hôn mark on Tầng sinh môn
+kiss_mark_on_forehead,7,Hôn vệt on Trán
+kiss_mark_on_perineum,7,Hôn vệt on Tầng sinh môn
 holding_cucumber,7,Đang cầm cucumber
-holding_game_boy_advance,7,Đang cầm game boy advance
+holding_game_boy_advance,7,Đang cầm game nam advance
 holding_frisbee,7,Đang cầm frisbee
 netero_heart_pose,0,Netero trái tim Tư thế
 holding_handles,7,Đang cầm handles
@@ -2622,8 +2622,8 @@ holding_too_many_things,0,Đang cầm quá nhiều things
 holding_toilet_paper,7,Đang cầm Bồn cầu Giấy
 lynxon,7,Lynxon
 lying_on_magic_circle,0,Đang nằm on ma thuật Hình tròn
-the_last_ride_(furious_7),0,last ride (furious 7)
-angry_prey,7,Tức giận prey
+the_last_ride_(furious_7),0,Last ride (furious 7)
+angry_prey,7,Tức giận con mồi
 looking_from_afar,7,Looking từ afar
 looking_down_at_pussy,7,Nhìn xuống âm hộ
 looking_at_picture,7,Looking at picture

@@ -48,73 +48,73 @@ digimon_(species),12,Loài Digimon
 legendary_pokemon,12,Pokémon huyền thoại
 incest_(lore),15,Incest (lore)
 eulipotyphlan,12,Bộ ăn sâu bọ
-sibling_(lore),15,Sibling (lore)
+sibling_(lore),15,Anh chị em (lore)
 mouse,12,Chuột nhắt
 generation_7_pokemon,12,Pokémon thế hệ 7
-parent_(lore),15,Parent (lore)
+parent_(lore),15,Cha mẹ (lore)
 insect,12,Côn trùng
 procyonid,12,Họ gấu mèo
 marsupial,12,Thú có túi
 pastoral_dog,12,Chó chăn cừu
 herding_dog,12,Chó chăn gia súc
 cattle,12,Gia súc
-parent_and_child_(lore),15,Parent và Trẻ em (lore)
+parent_and_child_(lore),15,Cha mẹ và Trẻ em (lore)
 werecreature,12,Người hóa thú
 trans_(lore),15,Trans (lore)
 sciurid,12,Họ sóc
 nordic_sled_dog,12,Chó kéo xe Bắc Âu
 werecanid,12,Người hóa chó sói
 felid_humanoid,12,Dạng người họ mèo
-generation_8_pokemon,12,Generation 8 pokemon
+generation_8_pokemon,12,Generation 8 Pokémon
 furred_scalie,12,Bò sát nhân hóa có lông
 musteline,12,Họ chồn
 rat,12,Chuột cống
 elemental_creature,12,Sinh vật nguyên tố
-sister_(lore),15,Sister (lore)
-brother_(lore),15,Brother (lore)
+sister_(lore),15,Chị em gái (lore)
+brother_(lore),15,Anh em trai (lore)
 hunting_dog,12,Chó săn mồi
 feline_humanoid,12,Dạng người mèo
 canid_demon,12,Họ chó Quỷ
 hellhound,12,Hellhound
-mythological_avian,12,Mythological Loài chim
+mythological_avian,12,Thần thoại Loài chim
 werecanine,12,Werecanine
 saurischian,12,Saurischian
-mother_(lore),15,Mother (lore)
+mother_(lore),15,Mẹ (lore)
 ursine,12,Gấu
 cat_humanoid,12,Dạng người mèo
 mephitid,12,Mephitid
 primate,12,Primate
 canid_humanoid,12,Dạng người họ chó
-animate_inanimate,12,Animate inanimate
+animate_inanimate,12,Animate vô tri
 canine_humanoid,12,Dạng người chó
-son_(lore),15,Son (lore)
+son_(lore),15,Con trai (lore)
 suine,12,Suine
 flora_fauna,12,Flora fauna
 ailurid,12,Ailurid
 horned_humanoid,12,Nhân vật có sừng
-parent_and_son_(lore),15,Parent và son (lore)
+parent_and_son_(lore),15,Cha mẹ và con trai (lore)
 tree_squirrel,12,Sóc cây
 suid,12,Suid
-mother_and_child_(lore),15,Mother và Trẻ em (lore)
+mother_and_child_(lore),15,Mẹ và Trẻ em (lore)
 trans_woman_(lore),15,Trans woman (lore)
 sus_(pig),12,Sus (pig)
 goo_creature,12,Sinh vật nhầy
 amphibian,12,Amphibian
 gryphon,12,Gryphon
-father_(lore),15,Father (lore)
+father_(lore),15,Cha (lore)
 raccoon_dog,12,Chó gấu mèo
-new_world_deer,12,New world Nai
+new_world_deer,12,Mới world Nai
 giant_panda,12,Gấu trúc khổng lồ
 spotted_hyena,12,Linh cẩu có đốm
 nonbinary_(lore),15,Nonbinary (lore)
 mollusk,12,Thân mềm
 spirit,12,Spirit
-generation_9_pokemon,12,Generation 9 pokemon
+generation_9_pokemon,12,Generation 9 Pokémon
 boss_monster_(undertale),12,Boss Quái vật (undertale)
 galliform,12,Galliform
 male_(lore),15,Giới tính nam (lore)
-unknown_species,12,Unknown species
-father_and_child_(lore),15,Father và Trẻ em (lore)
+unknown_species,12,Unknown loài
+father_and_child_(lore),15,Cha và Trẻ em (lore)
 phasianid,12,Phasianid
 passerine,12,Passerine
 oscine,12,Oscine
@@ -122,10 +122,10 @@ true_musteline,12,True Họ chồn
 bird_dog,12,Chó chim
 haplorhine,12,Haplorhine
 macropod,12,Macropod
-brother_and_sister_(lore),15,Brother và sister (lore)
+brother_and_sister_(lore),15,Anh em trai và Chị em gái (lore)
 koopa,12,Koopa
-daughter_(lore),15,Daughter (lore)
-parent_and_daughter_(lore),15,Parent và daughter (lore)
+daughter_(lore),15,Con gái (lore)
+parent_and_daughter_(lore),15,Cha mẹ và con gái (lore)
 toy_dog,12,Toy Chó
 demon_humanoid,12,Dạng người quỷ
 alien_humanoid,12,Dạng người ngoài hành tinh
@@ -144,17 +144,17 @@ female_(lore),15,Giới tính nữ (lore)
 toothed_whale,12,Cá voi có răng
 trans_man_(lore),15,Trans man (lore)
 brothers_(lore),15,Anh em trai (lore)
-mother_and_son_(lore),15,Mother và son (lore)
+mother_and_son_(lore),15,Mẹ và con trai (lore)
 sergal,12,Sergal
 dromaeosaurid,12,Dromaeosaurid
-american_opossum,12,American opossum
+american_opossum,12,Mỹ opossum
 sisters_(lore),15,Chị em gái (lore)
 oryctolagus,12,Oryctolagus
-father_and_son_(lore),15,Father và son (lore)
+father_and_son_(lore),15,Cha và con trai (lore)
 hymenopteran,12,Hymenopteran
 domestic_pig,12,Lợn nhà
 deity,12,Deity
-ambiguous_species,12,Mơ hồ species
+ambiguous_species,12,Mơ hồ loài
 wingless_dragon,12,Rồng không cánh
 accipitriform,12,Accipitriform
 changeling_(mlp),12,Changeling (mlp)
@@ -164,7 +164,7 @@ oceanic_dolphin,12,Cá heo đại dương
 molosser,12,Molosser
 ornithischian,12,Ornithischian
 wild_boar,12,Lợn rừng dã ngoại
-mother_and_daughter_(lore),15,Mother và daughter (lore)
+mother_and_daughter_(lore),15,Mẹ và con gái (lore)
 mammal_taur,12,Động vật có vú taur
 asinus,12,Asinus
 ground_squirrel,12,Sóc mặt đất
@@ -181,7 +181,7 @@ anseriform,12,Anseriform
 anatid,12,Anatid
 bovid_humanoid,12,Dạng người họ trâu bò
 twins_(lore),15,Đôi (lore)
-feathered_scalie,12,Feathered Nhân vật bò sát nhân hóa
+feathered_scalie,12,Có lông vũ Nhân vật bò sát nhân hóa
 cervine,12,Hươu
 food_creature,12,Sinh vật thức ăn
 robot_anthro,12,Nhân vật nhân hóa người máy
@@ -200,7 +200,7 @@ yokai,12,Yokai
 proboscidean,12,Proboscidean
 cephalopod_humanoid,12,Dạng người đầu chân vòng
 elephantid,12,Elephantid
-father_and_daughter_(lore),15,Father và daughter (lore)
+father_and_daughter_(lore),15,Cha và con gái (lore)
 dragon_humanoid,12,Dạng người rồng
 echidna,12,Echidna
 plant_humanoid,12,Dạng người cây cảnh
@@ -210,7 +210,7 @@ hylian,12,Hylian
 naga,12,Naga
 tyrannosaurid,12,Tyrannosaurid
 arthropod_humanoid,12,Dạng người chân khớp
-living_machine,12,Living Máy móc
+living_machine,12,Có sự sống Máy móc
 tyrannosaurus,12,Tyrannosaurus
 domestic_sheep,12,Cừu nhà
 mastiff,12,Mastiff
@@ -221,7 +221,7 @@ maned_wolf,12,Maned Sói
 domestic_rabbit,12,Thỏ nhà
 european_rabbit,12,European Thỏ
 bovine_humanoid,12,Dạng người bò
-living_inflatable,12,Living inflatable
+living_inflatable,12,Có sự sống inflatable
 sighthound,12,Sighthound
 winged_humanoid,12,Dạng người có cánh
 pinniped,12,Pinniped
@@ -240,7 +240,7 @@ ceratopsian,12,Ceratopsian
 wolf_humanoid,12,Dạng người sói
 coleoid,12,Coleoid
 cattle_humanoid,12,Gia súc Dạng người
-living_vehicle,12,Living Xe cộ
+living_vehicle,12,Có sự sống Xe cộ
 malo,12,Malo
 cattledog,12,Cattledog
 succubus,12,Succubus
@@ -250,9 +250,9 @@ waddling_head,12,Waddling đầu
 aquatic_dragon,12,Rồng dưới nước
 flying_wyvern,12,Wyvern bay
 fish_humanoid,12,Dạng người cá
-animated_skeleton,12,Animated Bộ xương
+animated_skeleton,12,Ảnh động Bộ xương
 owl_demon,12,Cú Quỷ
-living_plushie,12,Living plushie
+living_plushie,12,Có sự sống plushie
 equid_taur,12,Họ ngựa taur
 adult_(lore),15,Adult (lore)
 striped_skunk,12,Chồn hôi kẻ sọc
@@ -272,7 +272,7 @@ grizzly_bear,12,Grizzly Gấu
 dog_humanoid,12,Dạng người chó
 gynomorph_(lore),15,Nhân vật nữ có cơ quan sinh dục nam (lore)
 ornithopod,12,Ornithopod
-living_aircraft,12,Living aircraft
+living_aircraft,12,Có sự sống aircraft
 scent_hound,12,Scent hound
 goat_demon,12,Dê Quỷ
 ceratopsid,12,Ceratopsid
@@ -287,7 +287,7 @@ dragon_koopa,12,Rồng koopa
 xenarthran,12,Xenarthran
 octarian,12,Octarian
 avian_humanoid,12,Dạng người chim
-new_world_jay,12,New world jay
+new_world_jay,12,Mới world jay
 ambient_arthropod,12,Ambient Động vật chân khớp
 afrosoricid,12,Afrosoricid
 octopodiform,12,Octopodiform
@@ -304,7 +304,7 @@ fox_spirit,12,Cáo spirit
 common_hippopotamus,12,Common hippopotamus
 monstrous_humanoid,12,Dạng người quái dị
 hairless_cat,12,Mèo không lông
-pseudo_incest_(lore),15,Pseudo incest (lore)
+pseudo_incest_(lore),15,Giả incest (lore)
 mole_salamander,12,Nốt ruồi salamander
 draconequus,12,Draconequus
 equid_humanoid,12,Dạng người họ ngựa
@@ -338,7 +338,7 @@ raven,12,Raven
 echinoderm,12,Echinoderm
 dairy_cattle,12,Dairy Gia súc
 synth_(vader-san),12,Synth (vader-san)
-alaskan_malamute,12,Alaskan malamute
+alaskan_malamute,12,Alaskan chó malămut
 spider_humanoid,12,Dạng người nhện
 twincest_(lore),15,Twincest (lore)
 spinosaurid,12,Spinosaurid
@@ -348,7 +348,7 @@ adopted_(lore),15,Adopted (lore)
 kirin,12,Kirin
 felkin,12,Felkin
 chinchilla,12,Chinchilla
-fossil_pokemon,12,Fossil pokemon
+fossil_pokemon,12,Fossil Pokémon
 living_clothing,12,Trang phục có sự sống
 holstein_friesian_cattle,12,Holstein friesian Gia súc
 cousins_(lore),15,Cousins (lore)
@@ -365,15 +365,15 @@ skulldog_(species),12,Skulldog (species)
 asterozoan,12,Asterozoan
 vulpera,12,Vulpera
 andromorph_(lore),15,Nhân vật andromorph (lore)
-mythological_firebird,12,Mythological firebird
+mythological_firebird,12,Thần thoại firebird
 saluki,12,Saluki
 dragonborn_(dnd),12,Dragonborn (dnd)
 caninu,12,Caninu
 caprine_humanoid,12,Dạng người dê
 vombatiform,12,Vombatiform
-paradox_pokemon,12,Paradox pokemon
+paradox_pokemon,12,Paradox Pokémon
 fanged_wyvern,12,Fanged wyvern
-busty_boy_(lore),15,Busty boy (lore)
+busty_boy_(lore),15,Busty nam (lore)
 ambient_bird,12,Ambient Chim
 cnidarian,12,Cnidarian
 sciurid_humanoid,12,Dạng người sóc
@@ -384,11 +384,11 @@ samoyed,12,Samoyed
 digital_creature,12,Digital Sinh vật
 kig-yar,12,Kig-yar
 sea_eagle,12,Đại bàng biển
-recently_extinct_species,12,Recently Tuyệt chủng species
+recently_extinct_species,12,Recently Tuyệt chủng loài
 arctic_wolf,12,Arctic Sói
 decapod,12,Decapod
 fly_(animal),12,Fly (animal)
-living_candy,12,Living Kẹo
+living_candy,12,Có sự sống Kẹo
 sauropodomorph,12,Sauropodomorph
 megabat,12,Megabat
 silver_fox,12,Cáo bạc
@@ -435,14 +435,14 @@ microbat,12,Microbat
 angel_humanoid,12,Dạng người thiên thần
 red_wolf,12,Sói đỏ
 fungi_fauna,12,Fungi fauna
-hybrid_pokemon,12,Sinh vật lai pokemon
+hybrid_pokemon,12,Sinh vật lai Pokémon
 bobcat,12,Bobcat
-pine_marten,12,Pine marten
+pine_marten,12,Thông marten
 nephew_(lore),15,Nephew (lore)
 grandparent_(lore),15,Grandparent (lore)
-living_fruit,12,Living Trái cây
+living_fruit,12,Có sự sống Trái cây
 maleherm_(lore),15,Maleherm (lore)
-mythological_sphinx,12,Mythological sphinx
+mythological_sphinx,12,Thần thoại sphinx
 cypriniform,12,Cypriniform
 intersex_(lore),15,Liên giới tính (lore)
 canid_taur,12,Họ chó taur
@@ -456,7 +456,7 @@ galarian_form,12,Galarian form
 ocelot,12,Ocelot
 yangochiropteran,12,Yangochiropteran
 palico,12,Palico
-ancient_pokemon,12,Cổ đại pokemon
+ancient_pokemon,12,Cổ đại Pokémon
 dipodid,12,Dipodid
 anserine,12,Anserine
 ditto_(pokemon),12,Ditto (pokemon)
@@ -480,11 +480,11 @@ fire_creature,12,Sinh vật lửa
 minkmen_(one_piece),12,Minkmen (one piece)
 blood_elf,12,Máu Tiên
 bird_humanoid,12,Dạng người chim
-living_toy,12,Living toy
+living_toy,12,Có sự sống toy
 nardoragon,12,Nardoragon
 hypno_(pokemon),12,Hypno (pokemon)
 true_antelope,12,True Linh dương
-eurasian_red_squirrel,12,Eurasian red Sóc
+eurasian_red_squirrel,12,Eurasian đỏ Sóc
 larid,12,Larid
 thylacine,12,Thylacine
 tiger_humanoid,12,Dạng người hổ
@@ -530,7 +530,7 @@ allosauroid,12,Allosauroid
 urocyon,12,Urocyon
 snake_humanoid,12,Dạng người rắn
 beef_cattle,12,Beef Gia súc
-furred_kobold,12,Furred kobold
+furred_kobold,12,Có lông kobold
 spider_taur,12,Nhện taur
 ambient_butterfly,12,Ambient Bươm bướm
 peashooter_(pvz),12,Peashooter (pvz)
@@ -559,7 +559,7 @@ sloth,12,Con lười
 octopus_humanoid,12,Dạng người bạch tuộc
 sheep_humanoid,12,Dạng người cừu
 toad_(frog),12,Toad (frog)
-living_pinata,12,Living pinata
+living_pinata,12,Có sự sống pinata
 x-digimon,12,X-digimon
 vampire_bat,12,Dơi ma cà rồng
 gunsawian,12,Gunsawian
@@ -567,7 +567,7 @@ blattodean,12,Blattodean
 anthozoan,12,Anthozoan
 old_world_vulture,12,Cũ world vulture
 tenno,12,Tenno
-grandmother_(lore),15,Grandmother (lore)
+grandmother_(lore),15,Bà (lore)
 clydesdale,12,Clydesdale
 breegull,12,Breegull
 dasyurid,12,Dasyurid
@@ -579,7 +579,7 @@ grazing_antelope,12,Grazing Linh dương
 sunflower_(pvz),12,Hướng dương
 highland_cattle,12,Highland Gia súc
 corsac_fox,12,Corsac Cáo
-adopted_son_(lore),15,Adopted son (lore)
+adopted_son_(lore),15,Adopted con trai (lore)
 lizard_humanoid,12,Dạng người thằn lằn
 dire_wolf,12,Dire Sói
 patchwork_creature,12,Sinh vật chắp vá
@@ -592,18 +592,18 @@ rock_creature,12,Sinh vật tảng đá
 amur_carp,12,Amur carp
 asura,12,Asura
 wood_mouse,12,Chuột nhắt gỗ
-shadow_pokemon,12,Bóng đổ pokemon
+shadow_pokemon,12,Bóng đổ Pokémon
 shyguy,12,Shyguy
 creeper_(minecraft),12,Creeper (minecraft)
 tytonid,12,Tytonid
-adoptive_father_(lore),15,Adoptive father (lore)
+adoptive_father_(lore),15,Adoptive cha (lore)
 werefox,12,Werefox
-red_pandaren,12,Red pandaren
+red_pandaren,12,Đỏ pandaren
 tyto,12,Tyto
 saint_bernard,12,Saint bernard
 fox_taur,12,Cáo taur
 wildcat,12,Wildcat
-future_pokemon,12,Future pokemon
+future_pokemon,12,Future Pokémon
 lepidopteran_humanoid,12,Lepidopteran Dạng người
 small_molosser,12,Nhỏ molosser
 goat_humanoid,12,Dạng người dê
@@ -626,7 +626,7 @@ squid_humanoid,12,Dạng người mực
 ursid_humanoid,12,Ursid Dạng người
 sloth_bear,12,Gấu lười
 sphere_creature,12,Sinh vật hình cầu
-living_sex_doll,12,Living quan hệ tình dục Búp bê
+living_sex_doll,12,Có sự sống quan hệ tình dục Búp bê
 aardwolf,12,Aardwolf
 space_dragon_(metroid),12,Rồng vũ trụ
 agamid,12,Agamid
@@ -635,13 +635,13 @@ genderfluid_(lore),15,Genderfluid (lore)
 thomson's_gazelle,12,Thomson's gazelle
 philippine_eagle,12,Philippine Đại bàng
 blin_(tloz),12,Blin (tloz)
-beta_pokemon_(species),12,Beta pokemon (species)
+beta_pokemon_(species),12,Beta Pokémon (species)
 meloetta_(aria_form),12,Meloetta (aria form)
 tanuki_humanoid,12,Tanuki Dạng người
 grandson_(lore),15,Grandson (lore)
 altered_forme_giratina,12,Altered forme giratina
 cavalier_king_charles_spaniel,12,Cavalier king charles spaniel
-new_world_ground_cuckoo,12,New world ground cuckoo
+new_world_ground_cuckoo,12,Mới world mặt đất cuckoo
 toon_(dandy's_world),12,Toon (dandy's world)
 roadrunner,12,Roadrunner
 netherland_dwarf_rabbit,12,Netherland dwarf Thỏ
@@ -659,7 +659,7 @@ robot_feral,12,Nhân vật bán thú người máy
 domestic_goat,12,Dê nhà
 allosaurid,12,Allosaurid
 penis_creature,12,Sinh vật dương vật
-rough_collie,12,Rough collie
+rough_collie,12,Thô collie
 mamagen,12,Mamagen
 slime_(blob),12,Slime (blob)
 apex_build_koraidon,12,Apex build koraidon
@@ -670,7 +670,7 @@ chakat,12,Chakat
 flesh_creature,12,Flesh Sinh vật
 ruuhtian,12,Ruuhtian
 majin,12,Majin
-adoptive_sibling_(lore),15,Adoptive sibling (lore)
+adoptive_sibling_(lore),15,Adoptive Anh chị em (lore)
 american_red_fox,12,Cáo Mỹ đỏ
 seawing_(wof),12,Seawing (wof)
 flemish_giant,12,Flemish Khổng lồ
@@ -680,20 +680,20 @@ aardvark,12,Aardvark
 brute_wyvern,12,Brute wyvern
 smilodon,12,Smilodon
 equine_taur,12,Thuộc loài ngựa taur
-tasmanian_devil,12,Tasmanian devil
+tasmanian_devil,12,Tasmanian quỷ
 procyonid_humanoid,12,Dạng người họ gấu trúc
 mygalomorph,12,Mygalomorph
 lontra,12,Lontra
-north_american_river_otter,12,North american Sông Rái cá
+north_american_river_otter,12,North Mỹ Sông Rái cá
 hymenopteran_humanoid,12,Hymenopteran Dạng người
 raccoon_humanoid,12,Dạng người gấu mèo
 gorgon,12,Gorgon
 boinae,12,Boinae
 cactus_creature,12,Sinh vật xương rồng
 euplerid,12,Euplerid
-grandfather_(lore),15,Grandfather (lore)
+grandfather_(lore),15,Ông (lore)
 dilophosaurid,12,Dilophosaurid
-mythological_marine,12,Mythological marine
+mythological_marine,12,Thần thoại marine
 koopa_humanoid,12,Koopa Dạng người
 rat_humanoid,12,Dạng người chuột cống
 demigod,12,Demigod
@@ -705,7 +705,7 @@ betelgeusian,12,Betelgeusian
 feathered_snake,12,Rắn có lông vũ
 elateroid,12,Elateroid
 diamond_dog_(mlp),12,Chó hình thoi
-russian_blue,12,Nga blue
+russian_blue,12,Nga xanh dương
 starling_(kirby),12,Starling (kirby)
 bearded_vulture,12,Bearded vulture
 meles,12,Meles
@@ -743,8 +743,8 @@ furred_shark,12,Cá mập có lông
 hyenid_(species),12,Hyenid (species)
 living_mask,12,Mặt nạ có sự sống
 fossa,12,Fossa
-tailed_beast,12,Tailed beast
-mother_and_father_(lore),15,Mother và father (lore)
+tailed_beast,12,Có đuôi beast
+mother_and_father_(lore),15,Mẹ và cha (lore)
 ring-tailed_cat,12,Mèo đuôi vòng
 humanoid_merfolk,12,Dạng người merfolk
 mackerel_tabby,12,Mackerel tabby
@@ -755,17 +755,17 @@ cucujoid,12,Cucujoid
 zebroid,12,Zebroid
 bighorn_sheep,12,Bighorn Cừu
 troodon,12,Troodon
-new_world_monkey,12,New world Khỉ
+new_world_monkey,12,Mới world Khỉ
 crane_(bird),12,Crane (bird)
 colubrid,12,Colubrid
 macronarian,12,Macronarian
 zeti,12,Zeti
 moon_bear,12,Gấu mặt trăng
 prionailurus,12,Prionailurus
-grandmother_and_grandchild_(lore),15,Grandmother và grandchild (lore)
+grandmother_and_grandchild_(lore),15,Bà và grandchild (lore)
 cheshire_cat_(species),12,Cheshire Mèo (species)
 seikret,12,Seikret
-half_sister_(lore),15,Half sister (lore)
+half_sister_(lore),15,Một nửa Chị em gái (lore)
 triplets_(lore),15,Triplets (lore)
 lepi,12,Lepi
 dragon_(dnd),12,Rồng
@@ -773,7 +773,7 @@ egyptian_mau,12,Ai Cập mau
 flying_fox,12,Cáo bay
 ara_(genus),12,Ara (genus)
 legged_snake,12,Legged Rắn
-grandfather_and_grandchild_(lore),15,Grandfather và grandchild (lore)
+grandfather_and_grandchild_(lore),15,Ông và grandchild (lore)
 microraptor,12,Microraptor
 salmonid_(fish),12,Salmonid (fish)
 uncle_and_niece_(lore),15,Uncle và niece (lore)
@@ -782,18 +782,18 @@ ground_shark,12,Cá mập mặt đất
 mineral_humanoid,12,Mineral Dạng người
 couatl,12,Couatl
 giant_pacific_octopus,12,Khổng lồ pacific Bạch tuộc
-roswell_grey,12,Roswell grey
+roswell_grey,12,Roswell xám
 badnik,12,Badnik
 cockapoo,12,Cockapoo
 bamfear,12,Bamfear
-adoptive_mother_(lore),15,Adoptive mother (lore)
-adoptive_brother_(lore),15,Adoptive brother (lore)
-adopted_daughter_(lore),15,Adopted daughter (lore)
+adoptive_mother_(lore),15,Adoptive mẹ (lore)
+adoptive_brother_(lore),15,Adoptive Anh em trai (lore)
+adopted_daughter_(lore),15,Adopted con gái (lore)
 beast_(bloodborne),12,Beast (bloodborne)
 lizardman_(warhammer),12,Lizardman (warhammer)
-generation_10_pokemon,12,Generation 10 pokemon
+generation_10_pokemon,12,Generation 10 Pokémon
 robloxian,12,Robloxian
-gigantamax_pokemon,12,Gigantamax pokemon
+gigantamax_pokemon,12,Gigantamax Pokémon
 stepparent_(lore),15,Stepparent (lore)
 primitive_dog,12,Primitive Chó
 picid,12,Picid
@@ -823,17 +823,17 @@ gargomon,12,Gargomon
 australian_possum,12,Australian possum
 reformed_changeling,12,Reformed changeling
 xenomorph_queen,12,Xenomorph queen
-mythological_carbuncle,12,Mythological carbuncle
+mythological_carbuncle,12,Thần thoại carbuncle
 soul_(undertale),12,Soul (undertale)
 mind_flayer,12,Mind flayer
-low_key_toxtricity,12,Low Chìa khóa toxtricity
+low_key_toxtricity,12,Thấp Chìa khóa toxtricity
 thrush_(bird),12,Thrush (bird)
 mexican_wolf,12,Mexican Sói
 armorless_protogen,12,Armorless protogen
 honey_bee,12,Ong mật ong
 bee_humanoid,12,Dạng người ong
 abelisaurid,12,Abelisaurid
-mythological_golem,12,Mythological golem
+mythological_golem,12,Thần thoại golem
 ankylosaurian,12,Ankylosaurian
 weredog,12,Weredog
 characiform,12,Characiform
@@ -850,7 +850,7 @@ kubold_(atlyss),12,Kubold (atlyss)
 serrasalmid,12,Serrasalmid
 mudwing_(wof),12,Mudwing (wof)
 sekhmet_(pal),12,Sekhmet (pal)
-living_pool_toy,12,Living pool toy
+living_pool_toy,12,Có sự sống pool toy
 scavenger_(rain_world),12,Scavenger (rain world)
 dutch_angel_dragon,12,Dutch Thiên thần Rồng
 mustelid_humanoid,12,Dạng người họ chồn
@@ -887,7 +887,7 @@ japanese_kobold,12,Nhật Bản kobold
 ventrexian,12,Ventrexian
 mythological_fox,12,Cáo thần thoại
 nokuri,12,Nokuri
-cyan_yoshi,12,Cyan yoshi
+cyan_yoshi,12,Xanh lơ yoshi
 bat-eared_fox,12,Cáo tai dơi
 living_car,12,Ô tô có sự sống
 dipodomyine,12,Dipodomyine
@@ -907,7 +907,7 @@ compsognathid,12,Compsognathid
 brachypelma,12,Brachypelma
 skull_dog,12,Chó đầu lâu
 water_deer,12,Hươu nước
-grandfather_and_grandson_(lore),15,Grandfather và grandson (lore)
+grandfather_and_grandson_(lore),15,Ông và grandson (lore)
 origin_forme_giratina,12,Origin forme giratina
 nidoran♀,12,Nidoran♀
 bobtail_cat,12,Bobtail Mèo
@@ -994,7 +994,7 @@ fairy_dragon,12,Fairy Rồng
 gootraxian,12,Gootraxian
 chuki,12,Chuki
 shape_head,12,Shape đầu
-grandmother_and_grandson_(lore),15,Grandmother và grandson (lore)
+grandmother_and_grandson_(lore),15,Bà và grandson (lore)
 spectacled_bear,12,Spectacled Gấu
 xerneas_(active_mode),12,Xerneas (active mode)
 raypeople_(rayman),12,Raypeople (rayman)
@@ -1018,7 +1018,7 @@ lemurian,12,Lemurian
 irish_setter,12,Irish setter
 kryptonian,12,Kryptonian
 ambient_fly,12,Ambient fly
-honduran_white_bat,12,Honduran white Dơi
+honduran_white_bat,12,Honduran trắng Dơi
 wolf_taur,12,Sói taur
 atelid,12,Atelid
 inbred_(lore),15,Inbred (lore)
@@ -1033,7 +1033,7 @@ pteranodon,12,Pteranodon
 scarabaeid,12,Scarabaeid
 dorukolorukalai,12,Dorukolorukalai
 corn_snake,12,Rắn ngô
-living_bomb,12,Living Bom
+living_bomb,12,Có sự sống Bom
 faraden,12,Faraden
 bloodhound,12,Bloodhound
 catfolk,12,Catfolk
@@ -1070,7 +1070,7 @@ nidoran♂,12,Nidoran♂
 muppet,12,Muppet
 beluga,12,Beluga
 baleen_whale,12,Cá voi tấm sừng
-grandmother_and_granddaughter_(lore),15,Grandmother và granddaughter (lore)
+grandmother_and_granddaughter_(lore),15,Bà và granddaughter (lore)
 chickenhawk,12,Chickenhawk
 gieeg,12,Gieeg
 helodermatid,12,Helodermatid
@@ -1086,8 +1086,8 @@ fabric_creature,12,Fabric Sinh vật
 feline_taur,12,Loài mèo taur
 citra,12,Citra
 bucerotiform,12,Bucerotiform
-living_chess_piece,12,Living chess piece
-blacktip_reef_shark,12,Blacktip reef Cá mập
+living_chess_piece,12,Có sự sống chess mảnh
+blacktip_reef_shark,12,Blacktip rạn san hô Cá mập
 ethiopian_wolf,12,Ethiopian Sói
 kit_fox,12,Kit Cáo
 teddy_bear_(species),12,Gấu bông
@@ -1102,7 +1102,7 @@ kangaroo_rat,12,Chuột cống chuột túi
 gyroid,12,Gyroid
 ivalician_moogle,12,Ivalician moogle
 anas,12,Anas
-european_red_fox,12,European red Cáo
+european_red_fox,12,European đỏ Cáo
 meicrackmon,12,Meicrackmon
 ambient_starfish,12,Ambient Sao biển
 buteo,12,Buteo
@@ -1119,14 +1119,14 @@ bivalve,12,Bivalve
 fennec_humanoid,12,Dạng người cáo sa mạc
 suine_humanoid,12,Suine Dạng người
 eulipotyphlan_humanoid,12,Bộ ăn sâu bọ Dạng người
-american_akita,12,American akita
+american_akita,12,Mỹ akita
 shrew,12,Shrew
 slug_humanoid,12,Slug Dạng người
 weasel_humanoid,12,Dạng người chồn
 fancy_rat,12,Fancy Chuột cống
-living_train,12,Living train
+living_train,12,Có sự sống train
 pine_squirrel,12,Sóc thông
-half_brother_(lore),15,Half brother (lore)
+half_brother_(lore),15,Một nửa Anh em trai (lore)
 scalie_taur,12,Nhân vật bò sát nhân hóa taur
 kumiho,12,Kumiho
 centrosaurine,12,Centrosaurine
@@ -1140,7 +1140,7 @@ martian_(looney_tunes),12,Martian (looney tunes)
 bovine_taur,12,Họ bò taur
 aircraft_animal,12,Aircraft Động vật
 accidental_incest_(lore),15,Accidental incest (lore)
-teal_mask_ogerpon,12,Teal Mặt nạ ogerpon
+teal_mask_ogerpon,12,Xanh cổ vịt Mặt nạ ogerpon
 faunus,12,Faunus
 kermode_bear,12,Kermode Gấu
 deku_(tloz),12,Deku (tloz)
@@ -1159,7 +1159,7 @@ crystal_pony_(mlp),12,Ngựa Pony pha lê
 computer_virus_(species),12,Computer virus (species)
 luma,12,Luma
 unicorn_humanoid,12,Dạng người kỳ lân
-long_taur,12,Long taur
+long_taur,12,Dài taur
 lava_creature,12,Lava Sinh vật
 cum_creature,12,Tinh dịch Sinh vật
 fallow_deer,12,Fallow Nai
@@ -1194,16 +1194,16 @@ pachycephalosaurid,12,Pachycephalosaurid
 sea_goat,12,Dê biển
 ouginak,12,Ouginak
 demon_dragon,12,Rồng quỷ
-orange_yoshi,12,Orange yoshi
+orange_yoshi,12,Cam yoshi
 ice_creature,12,Băng Sinh vật
 colorpoint,12,Colorpoint
 kyubimon,12,Kyubimon
-american_cocker_spaniel,12,American cocker spaniel
+american_cocker_spaniel,12,Mỹ cocker spaniel
 tarantula_taur,12,Tarantula taur
 hero_of_many_battles_zacian,12,Hero of nhiều battles zacian
 mithra,12,Mithra
-adoptive_sister_(lore),15,Adoptive sister (lore)
-living_onahole,12,Living onahole
+adoptive_sister_(lore),15,Adoptive Chị em gái (lore)
+living_onahole,12,Có sự sống onahole
 kaisura,12,Kaisura
 gremlin,12,Gremlin
 owl_humanoid,12,Dạng người cú mèo
@@ -1231,9 +1231,9 @@ god_of_destruction,12,God of destruction
 norwegian_forest_cat,12,Norwegian Rừng Mèo
 ceratosaurid,12,Ceratosaurid
 polecat_(mustelid),12,Polecat (mustelid)
-black_yoshi,12,Black yoshi
+black_yoshi,12,Đen yoshi
 vulpin,12,Vulpin
-great_horned_owl,12,Great horned Cú
+great_horned_owl,12,Great có sừng Cú
 sasquatch,12,Sasquatch
 exo,12,Exo
 serval_humanoid,12,Serval Dạng người
@@ -1270,9 +1270,9 @@ faceless_(species),12,Không mặt
 stepfather_and_stepchild_(lore),15,Stepfather và stepchild (lore)
 werehyena,12,Werehyena
 reptile_taur,12,Loài bò sát taur
-pokemon_taur,12,Pokemon taur
+pokemon_taur,12,Pokémon taur
 caiman,12,Caiman
-living_statue,12,Living statue
+living_statue,12,Có sự sống statue
 oviraptorosaur,12,Oviraptorosaur
 nomu,12,Nomu
 milky_(gunsawian),12,Milky (gunsawian)
@@ -1303,22 +1303,22 @@ living_tank,12,Áo ba lỗ có sự sống
 istiophoriform,12,Istiophoriform
 blackgatomon,12,Blackgatomon
 goetia,12,Goetia
-living_fursuit,12,Living fursuit
+living_fursuit,12,Có sự sống fursuit
 t-virus_mutant_(resident_evil),12,T-virus mutant (resident evil)
 hell_knight,12,Hell Hiệp sĩ
 dazzi_(pal),12,Dazzi (pal)
-mythological_salamander,12,Mythological salamander
+mythological_salamander,12,Thần thoại salamander
 bio-android_(dragon_ball),12,Bio-android (dragon ball)
 stepbrother_(lore),15,Stepbrother (lore)
 sungazer_(lizard),12,Sungazer (lizard)
-sleep_paralysis_demon,12,Sleep paralysis Quỷ
+sleep_paralysis_demon,12,Ngủ paralysis Quỷ
 crustacean_humanoid,12,Crustacean Dạng người
 tamagotchi_(species),12,Tamagotchi (species)
 vortigaunt,12,Vortigaunt
-pink_birdo,12,Pink birdo
+pink_birdo,12,Hồng birdo
 friesian,12,Friesian
 mallkin,12,Mallkin
-south_american_fox,12,South american Cáo
+south_american_fox,12,South Mỹ Cáo
 jiralhanae,12,Jiralhanae
 incubator_(puella_magi),12,Incubator (puella magi)
 2channel_ascii_art_character,12,2channel ascii art nhân vật
@@ -1336,12 +1336,12 @@ gypsy_vanner,12,Gypsy vanner
 felid_demon,12,Họ mèo Quỷ
 khao_manee,12,Khao manee
 fire_salamander,12,Lửa salamander
-living_vegetable,12,Living Rau
+living_vegetable,12,Có sự sống Rau
 ice_cream_creature,12,Băng Màu kem Sinh vật
 ball_python,12,Quả bóng python
 leafwing_(wof),12,Leafwing (wof)
 snow_creature,12,Sinh vật tuyết
-mythological_chimera,12,Mythological chimera
+mythological_chimera,12,Thần thoại chimera
 beauceron,12,Beauceron
 unigan,12,Unigan
 plankton_(species),12,Plankton (species)
@@ -1352,7 +1352,7 @@ keldeo_(resolute_form),12,Keldeo (resolute form)
 circlehead,12,Circlehead
 mustela_humanoid,12,Mustela Dạng người
 pure_faraden,12,Pure faraden
-common_collared_lizard,12,Common collared Thằn lằn
+common_collared_lizard,12,Common có cổ Thằn lằn
 black-footed_ferret,12,Black-footed Chồn
 bambiraptor,12,Bambiraptor
 sinner_demon,12,Sinner Quỷ
@@ -1367,7 +1367,7 @@ organ_creature,12,Sinh vật nội tạng
 glaive_wyvern,12,Glaive wyvern
 amoeba_(organism),12,Amoeba (organism)
 dra'essa,12,Dra'essa
-living_melee_weapon,12,Living melee Vũ khí
+living_melee_weapon,12,Có sự sống melee Vũ khí
 lemon_shark,12,Cá mập chanh
 septarian,12,Septarian
 grant's_gazelle,12,Grant's gazelle
@@ -1388,7 +1388,7 @@ physeteroid,12,Physeteroid
 tufted_deer,12,Tufted Nai
 snow_leopard_humanoid,12,Dạng người báo tuyết
 stepmother_(lore),15,Stepmother (lore)
-high_elf,12,High Tiên
+high_elf,12,Cao Tiên
 loriine,12,Loriine
 teacup_gryphon,12,Teacup gryphon
 shellder_(slowbro),12,Shellder (slowbro)
@@ -1409,7 +1409,7 @@ saurian_(mortal_kombat),12,Saurian (mortal kombat)
 true_bug,12,True Bọ
 snowshoe_cat,12,Snowshoe Mèo
 ki'rinaes,12,Ki'rinaes
-american_pit_bull_terrier,12,American pit bull terrier
+american_pit_bull_terrier,12,Mỹ pit bull terrier
 squirmle,12,Squirmle
 seven_flowers,12,Bảy bông hoa
 catrobis,12,Catrobis
@@ -1431,10 +1431,10 @@ water_humanoid,12,Dạng người nước
 south_china_tiger,12,South china Hổ
 mephitid_taur,12,Mephitid taur
 skunk_taur,12,Chồn hôi taur
-living_sword,12,Living Kiếm
+living_sword,12,Có sự sống Kiếm
 banded_mongoose,12,Banded mongoose
 tojol,12,Tojol
-living_puppet,12,Living puppet
+living_puppet,12,Có sự sống puppet
 ictonychine,12,Ictonychine
 changeling_(world_of_darkness),12,Changeling (world of darkness)
 werewire,12,Werewire
@@ -1467,7 +1467,7 @@ manserpent,12,Manserpent
 copepod,12,Copepod
 corvid_humanoid,12,Dạng người họ quạ
 mamba,12,Mamba
-living_bubble,12,Living Bọt khí
+living_bubble,12,Có sự sống Bọt khí
 brush-tailed_penguin,12,Brush-tailed Cánh cụt
 northern_cardinal,12,Northern cardinal
 lewxen,12,Lewxen
@@ -1479,18 +1479,18 @@ drauk,12,Drauk
 night_elf_(feral),12,Ban đêm Tiên (feral)
 super_fox_(sar),12,Super Cáo (sar)
 robot_master,12,Người máy Chủ nhân
-new_faraden,12,New faraden
+new_faraden,12,Mới faraden
 hellfox,12,Hellfox
 diplodocus,12,Diplodocus
 perciform,12,Perciform
 heart_creature,12,Sinh vật trái tim
-living_sock,12,Living sock
+living_sock,12,Có sự sống sock
 bowman's_wolf,12,Bowman's Sói
 bomb_humanoid,12,Dạng người bom
 crowned_shield_zamazenta,12,Crowned Khiên zamazenta
 murasadramon,12,Murasadramon
 kirin_(mh),12,Kirin (mh)
-living_gasm_drive,12,Living gasm drive
+living_gasm_drive,12,Có sự sống gasm drive
 zony,12,Zony
 ahuizotl,12,Ahuizotl
 swift_fox,12,Swift Cáo
@@ -1517,7 +1517,7 @@ aye-aye,12,Aye-aye
 jaguar_humanoid,12,Jaguar Dạng người
 caprine_taur,12,Họ dê taur
 loon,12,Loon
-grandfather_and_granddaughter_(lore),15,Grandfather và granddaughter (lore)
+grandfather_and_granddaughter_(lore),15,Ông và granddaughter (lore)
 hero_of_many_battles_zamazenta,12,Hero of nhiều battles zamazenta
 immortal,12,Immortal
 trogon,12,Trogon
@@ -1526,9 +1526,9 @@ dragonoid_(dark_souls),12,Dragonoid (dark souls)
 jersey_cattle,12,Jersey Gia súc
 beanish,12,Beanish
 drulttur,12,Drulttur
-living_airplane,12,Living airplane
+living_airplane,12,Có sự sống airplane
 louie_(bomberman),12,Louie (bomberman)
-limited_build_koraidon,12,Limited build koraidon
+limited_build_koraidon,12,Hạn chế build koraidon
 chomper_(pvz),12,Chomper (pvz)
 snake_naga,12,Rắn naga
 regal_tang,12,Hoàng gia tang
@@ -1552,8 +1552,8 @@ spiral_knight_(species),12,Đường xoáy Hiệp sĩ (species)
 thestral,12,Thestral
 chicken_humanoid,12,Dạng người gà
 biyemorph,12,Biyemorph
-blue_flower_florges,12,Blue Hoa florges
-black_mamba,12,Black mamba
+blue_flower_florges,12,Xanh dương Hoa florges
+black_mamba,12,Đen mamba
 berger_blanc_suisse,12,Berger blanc suisse
 helmeted_lizard,12,Helmeted Thằn lằn
 letter_creature,12,Sinh vật bức thư
@@ -1564,20 +1564,20 @@ moschid,12,Moschid
 cheetah_humanoid,12,Dạng người báo gấm
 korean_jindo,12,Hàn Quốc jindo
 black_arms_(sonic),12,Cánh tay đen
-thorny_devil,12,Thorny devil
+thorny_devil,12,Thorny quỷ
 geth,12,Geth
 donkey_humanoid,12,Donkey Dạng người
 naked_mole-rat,12,Chuột cống chuột chũi trần
 protoceratopsid,12,Protoceratopsid
 styracosaurus,12,Styracosaurus
 babylonian_(sonic),12,Babylonian (sonic)
-marbled_polecat,12,Marbled polecat
+marbled_polecat,12,Vân đá polecat
 protoceratops,12,Protoceratops
 monster_(moshi_monsters),12,Quái vật
 shetland_sheepdog,12,Shetland sheepdog
 werelagomorph,12,Werelagomorph
 critter_(smiling_friends),12,Critter (smiling friends)
-new_world_parrot,12,New world parrot
+new_world_parrot,12,Mới world parrot
 echinozoan,12,Echinozoan
 wind_demon_(slightly_damned),12,Gió Quỷ (slightly damned)
 wixen,12,Wixen
@@ -1601,7 +1601,7 @@ stepfather_and_stepson_(lore),15,Stepfather và stepson (lore)
 cervine_humanoid,12,Dạng người hươu
 japanese_badger,12,Lửng Nhật Bản
 atlantic_puffin,12,Atlantic puffin
-new_world_deer_humanoid,12,New world Nai Dạng người
+new_world_deer_humanoid,12,Mới world Nai Dạng người
 jacktor,12,Jacktor
 holstaurus,12,Holstaurus
 machgaogamon,12,Machgaogamon
@@ -1615,7 +1615,7 @@ armadillomon,12,Armadillomon
 sahash,12,Sahash
 faunazon,12,Faunazon
 true_lemur,12,True Culi
-red_toad,12,Red toad
+red_toad,12,Đỏ toad
 flute_dragon,12,Flute Rồng
 leghorn_chicken,12,Leghorn Gà
 aurochs,12,Aurochs
@@ -1639,7 +1639,7 @@ japanese_hare,12,Nhật Bản hare
 camelid_taur,12,Camelid taur
 wildebeest,12,Wildebeest
 emoji_(race),12,Emoji (race)
-boom_boom,12,Boom boom
+boom_boom,12,Boom
 stormcutter,12,Stormcutter
 boxer_(dog),12,Boxer (dog)
 qunari,12,Qunari
@@ -1669,7 +1669,7 @@ belgian_shepherd,12,Belgian shepherd
 eurasian_otter,12,Eurasian Rái cá
 spotted_seal,12,Hải cẩu có đốm
 woodlouse,12,Woodlouse
-blue_merle,12,Blue merle
+blue_merle,12,Xanh dương merle
 corrupted_gem,12,Corrupted Đá quý
 pond_slider,12,Ao nước slider
 wasp_humanoid,12,Dạng người ong bắp cày
@@ -1677,8 +1677,8 @@ forced_incest_(lore),15,Bị ép buộc incest (lore)
 cadou_host_(resident_evil),12,Cadou host (resident evil)
 cremis,12,Cremis
 cynocephalus,12,Cynocephalus
-living_pumpkin,12,Living Bí ngô
-living_helicopter,12,Living helicopter
+living_pumpkin,12,Có sự sống Bí ngô
+living_helicopter,12,Có sự sống helicopter
 ambient_coral,12,Ambient coral
 red-eared_terrapin,12,Red-eared terrapin
 beholder,12,Beholder
@@ -1687,7 +1687,7 @@ aquatic_taur,12,Sinh vật thủy sinh taur
 boobipede,12,Boobipede
 motmot,12,Motmot
 living_gum,12,Kẹo cao su có sự sống
-red_flower_florges,12,Red Hoa florges
+red_flower_florges,12,Đỏ Hoa florges
 em_being,12,Em being
 tucker_chimera_(fma),12,Tucker chimera (fma)
 west_sea_gastrodon,12,West Biển gastrodon
@@ -1706,14 +1706,14 @@ true_hawk,12,True hawk
 incineram,12,Incineram
 dinosaur_humanoid,12,Khủng long Dạng người
 mackerel,12,Mackerel
-english_lop,12,English lop
+english_lop,12,Anh cụp
 sheep-goat,12,Dê cừu
 shepsky,12,Shepsky
 lyrian,12,Lyrian
 visage_form,12,Visage form
 tailmouth_(species),12,Tailmouth (species)
 teletubby,12,Teletubby
-dynamax_pokemon,12,Dynamax pokemon
+dynamax_pokemon,12,Dynamax Pokémon
 bonneter,12,Bonneter
 kestrel,12,Kestrel
 lego_minifigure,12,Lego minifigure
@@ -1735,7 +1735,7 @@ weretiger,12,Weretiger
 normal_forme_deoxys,12,Normal forme deoxys
 pill_bug,12,Pill Bọ
 american_bison,12,Bò rừng Mỹ
-living_coin,12,Living Đồng xu
+living_coin,12,Có sự sống Đồng xu
 nushi,12,Nushi
 boa_constrictor,12,Boa constrictor
 felin,12,Felin
@@ -1747,7 +1747,7 @@ banana_slug,12,Chuối slug
 zafara_(neopets),12,Zafara (neopets)
 abstraction_(tadc),12,Abstraction (tadc)
 suffolk_sheep,12,Suffolk Cừu
-half_demon,12,Half Quỷ
+half_demon,12,Một nửa Quỷ
 tauntaun,12,Tauntaun
 lesser_hedgehog_tenrec,12,Lesser Nhím tenrec
 keeper_of_the_moon,12,Keeper of Mặt trăng
@@ -1769,7 +1769,7 @@ lunagaron,12,Lunagaron
 entity,12,Entity
 trinidad_motmot,12,Trinidad motmot
 land_shark_(species),12,Land Cá mập (species)
-living_appliance,12,Living appliance
+living_appliance,12,Có sự sống appliance
 skvader,12,Skvader
 blanc_de_hotot,12,Blanc de hotot
 orca_humanoid,12,Orca Dạng người
@@ -1817,19 +1817,19 @@ wolf_demon,12,Sói Quỷ
 hyena_humanoid,12,Dạng người linh cẩu
 shorebird,12,Shorebird
 megadermitid,12,Megadermitid
-half_elf,12,Half Tiên
+half_elf,12,Một nửa Tiên
 snow_leopard_taur,12,Tuyết Báo taur
-american_alligator,12,American alligator
+american_alligator,12,Mỹ alligator
 olingo,12,Olingo
 chartreux,12,Chartreux
 bakeneko,12,Bakeneko
 linsang,12,Linsang
 virus_(organism),12,Virus (organism)
-living_watercraft,12,Living watercraft
+living_watercraft,12,Có sự sống watercraft
 ghast_(minecraft),12,Ghast (minecraft)
-american_pekin,12,American pekin
+american_pekin,12,Mỹ pekin
 ghost_bat,12,Dơi ma
-yoda's_species,12,Yoda's species
+yoda's_species,12,Yoda's loài
 ornate_hawk-eagle,12,Cầu kỳ hawk-eagle
 breast_creature,12,Sinh vật ngực
 himalayan_cat,12,Himalayan Mèo
@@ -1844,8 +1844,8 @@ eredar,12,Eredar
 elvian,12,Elvian
 sockeye_salmon,12,Sockeye salmon
 abnormality_(project_moon),12,Abnormality (project moon)
-african_grey,12,African grey
-dire_animate_inanimate,12,Dire animate inanimate
+african_grey,12,African xám
+dire_animate_inanimate,12,Dire animate vô tri
 cherry_blossom_creature,12,Sinh vật hoa nở hoa anh đào
 flower_mantis,12,Hoa mantis
 pseudowyvern,12,Pseudowyvern
@@ -1856,7 +1856,7 @@ shinkaisei-kan,12,Shinkaisei-kan
 plains_zebra,12,Plains Ngựa vằn
 bog_leech_(species),12,Bog leech (species)
 snowshoe_hare,12,Snowshoe hare
-white_yoshi,12,White yoshi
+white_yoshi,12,Trắng yoshi
 tauren_(feral),12,Tauren (feral)
 dwarf_(coh),12,Dwarf (coh)
 archaeocete,12,Archaeocete
@@ -1867,7 +1867,7 @@ raidramon,12,Raidramon
 dromedary,12,Dromedary
 freakhound,12,Freakhound
 githyanki,12,Githyanki
-red_shyguy,12,Red shyguy
+red_shyguy,12,Đỏ shyguy
 splynter,12,Splynter
 earth_wyrm,12,Earth Rồng không cánh
 lykoi,12,Lykoi
@@ -1876,13 +1876,13 @@ human_taur,12,Người taur
 mewman,12,Mewman
 mutate_(gargoyles),12,Mutate (gargoyles)
 scottish_terrier,12,Scottish terrier
-west_highland_white_terrier,12,West highland white terrier
+west_highland_white_terrier,12,West highland trắng terrier
 hoopoe,12,Hoopoe
 wurae,12,Wurae
 labbit,12,Labbit
 weredeer,12,Weredeer
 classic_tabby,12,Classic tabby
-rosy_maple_moth,12,Rosy maple Ngài
+rosy_maple_moth,12,Rosy phong Ngài
 arctic_hare,12,Arctic hare
 mitachurl,12,Mitachurl
 baxxid,12,Baxxid
@@ -1894,7 +1894,7 @@ ornithomimosaur,12,Ornithomimosaur
 crested_porcupine,12,Crested porcupine
 thylacoleo,12,Thylacoleo
 beastman_(warhammer),12,Beastman (warhammer)
-english_cocker_spaniel,12,English cocker spaniel
+english_cocker_spaniel,12,Anh cocker spaniel
 zergling,12,Zergling
 bot_(astro_bot),12,Bot (astro bot)
 ork,12,Ork
@@ -1912,9 +1912,9 @@ extraterrestrial_vegetation_evaluator,12,Extraterrestrial vegetation evaluator
 personality_core_(portal),12,Personality core (portal)
 wulg,12,Wulg
 pachycephalosaurus,12,Pachycephalosaurus
-visayan_spotted_deer,12,Visayan spotted Nai
+visayan_spotted_deer,12,Visayan có đốm Nai
 napoleon_(species),12,Napoleon (species)
-black_widow_spider,12,Black widow Nhện
+black_widow_spider,12,Đen widow Nhện
 spring_sawsbuck,12,Mùa xuân sawsbuck
 fraid_(species),12,Fraid (species)
 mosasaur,12,Mosasaur
@@ -1925,7 +1925,7 @@ armadillo_girdled_lizard,12,Armadillo girdled Thằn lằn
 hutt,12,Hutt
 cyan_lizard_(rain_world),12,Thằn lằn xanh lơ
 xenodragon,12,Xenodragon
-english_bulldog,12,English bulldog
+english_bulldog,12,Anh bulldog
 black_dragon_(dnd),12,Rồng đen
 darigan_neopet,12,Darigan neopet
 translop,12,Translop
@@ -1976,7 +1976,7 @@ demidevimon,12,Demidevimon
 druid_(feral),12,Druid (feral)
 novakid,12,Novakid
 feces_creature,12,Sinh vật phân
-frilled_petal_dragon,12,Frilled petal Rồng
+frilled_petal_dragon,12,Nhún xếp petal Rồng
 snub-nosed_monkey,12,Snub-nosed Khỉ
 aerusan,12,Aerusan
 betta_(genus),12,Betta (genus)
@@ -2036,7 +2036,7 @@ stepmother_and_stepson_(lore),15,Stepmother và stepson (lore)
 tanager,12,Tanager
 amalj'aa,12,Amalj'aa
 great_old_one_(h.p._lovecraft),12,Great Cũ một (h.p. lovecraft)
-green_tree_viper,12,Green Cây viper
+green_tree_viper,12,Xanh lá Cây viper
 red_panda_humanoid,12,Dạng người gấu trúc đỏ
 zebra_finch,12,Ngựa vằn finch
 umbrella_cockatoo,12,Cái ô cockatoo
@@ -2062,7 +2062,7 @@ pig_(angry_birds),12,Lợn
 ogremon,12,Ogremon
 moonscorched,12,Moonscorched
 yellow_lizard_(rain_world),12,Thằn lằn vàng
-mythological_basilisk,12,Mythological basilisk
+mythological_basilisk,12,Thần thoại basilisk
 langur,12,Langur
 steelhead,12,Steelhead
 mephitid_humanoid,12,Mephitid Dạng người
@@ -2074,8 +2074,8 @@ manakete,12,Manakete
 forest_dragon,12,Rừng Rồng
 coonhound,12,Coonhound
 anacondrai,12,Anacondrai
-holland_lop,12,Holland lop
-cosmic_being,12,Cosmic being
+holland_lop,12,Holland cụp
+cosmic_being,12,Vũ trụ being
 canary_(fiaskers),12,Canary (fiaskers)
 gopher,12,Gopher
 eastern_brown_snake,12,Rắn phương Đông nâu
@@ -2115,7 +2115,7 @@ puazi,12,Puazi
 leonberger,12,Leonberger
 cyberdemon,12,Cyberdemon
 naga_(warcraft),12,Naga (warcraft)
-jersey_devil,12,Jersey devil
+jersey_devil,12,Jersey quỷ
 character_chao,12,Nhân vật chao
 jasper_(gem_species),12,Jasper (gem species)
 pink_lizard_(rain_world),12,Thằn lằn hồng
@@ -2124,10 +2124,10 @@ seeker_(transformers),12,Seeker (transformers)
 hypsilophodon,12,Hypsilophodon
 otter_humanoid,12,Dạng người rái cá
 cubi_(race),12,Cubi (race)
-living_container,12,Living Vật chứa
+living_container,12,Có sự sống Vật chứa
 salamander_humanoid,12,Salamander Dạng người
 rainbow_lad,12,Màu cầu vồng lad
-living_sun,12,Living Mặt trời
+living_sun,12,Có sự sống Mặt trời
 dragoon_(avelos),12,Dragoon (avelos)
 crocodile_skink,12,Cá sấu skink
 crowned_lemur,12,Crowned Culi
@@ -2148,7 +2148,7 @@ sheep_demon,12,Cừu Quỷ
 bull_shark,12,Bull Cá mập
 kingsnake,12,Kingsnake
 trico_(species),12,Trico (species)
-like_like,12,Like like
+like_like,12,Like
 dragonflora,12,Dragonflora
 island_fox,12,Cáo đảo
 tenontosaurus,12,Tenontosaurus
@@ -2184,8 +2184,8 @@ tabby_slime,12,Tabby slime
 hydralisk_(starcraft),12,Hydralisk (starcraft)
 low-power_mode_miraidon,12,Low-power mode miraidon
 kabuto,12,Kabuto
-green_flu_mutant_(left_4_dead),12,Green flu mutant (left 4 dead)
-english_pointer,12,English pointer
+green_flu_mutant_(left_4_dead),12,Xanh lá flu mutant (left 4 dead)
+english_pointer,12,Anh pointer
 fionbri,12,Fionbri
 bubblemummy,12,Bubblemummy
 pygmy_goat,12,Pygmy Dê
@@ -2197,10 +2197,10 @@ asar,12,Asar
 zeikauko,12,Zeikauko
 western_barn_owl,12,Phương Tây barn Cú
 polygenerational_incest_(lore),15,Polygenerational incest (lore)
-furred_monster,12,Furred Quái vật
+furred_monster,12,Có lông Quái vật
 flopie,12,Flopie
 azhdarchid,12,Azhdarchid
-outer_god_(h.p._lovecraft),12,Outer god (h.p. lovecraft)
+outer_god_(h.p._lovecraft),12,Mặt ngoài god (h.p. lovecraft)
 thraxan,12,Thraxan
 foxhound,12,Foxhound
 therizinosaurus,12,Therizinosaurus
@@ -2220,7 +2220,7 @@ super_dog_(sar),12,Super Chó (sar)
 ludroth,12,Ludroth
 blue_shark,12,Cá mập xanh dương
 greenwolf,12,Greenwolf
-grey_langur,12,Grey langur
+grey_langur,12,Xám langur
 dik-dik,12,Dik-dik
 eupelycosaur,12,Eupelycosaur
 megalosaurus,12,Megalosaurus
@@ -2230,15 +2230,15 @@ rat_ogre,12,Chuột cống ogre
 anglerfish_humanoid,12,Anglerfish Dạng người
 lapis_lazuli_(gem_species),12,Lapis lazuli (gem species)
 sheep_taur,12,Cừu taur
-beastman_(brand_new_animal),12,Beastman (brand new animal)
-spotted_tabby,12,Spotted tabby
+beastman_(brand_new_animal),12,Beastman (brand mới animal)
+spotted_tabby,12,Có đốm tabby
 panda_humanoid,12,Dạng người gấu trúc
 hyaenodontid,12,Hyaenodontid
 reindeer_humanoid,12,Dạng người tuần lộc
 harp_seal,12,Harp Hải cẩu
 true_thrush,12,True thrush
 hippopotamid_humanoid,12,Hippopotamid Dạng người
-ezo_red_fox,12,Ezo red Cáo
+ezo_red_fox,12,Ezo đỏ Cáo
 myceelidos_(zortrex),12,Myceelidos (zortrex)
 hail-fanged_dragon,12,Hail-fanged Rồng
 anomalocarid,12,Anomalocarid
@@ -2267,7 +2267,7 @@ arabian_horse,12,Ngựa Ả Rập
 hippopotamus_humanoid,12,Hippopotamus Dạng người
 patchwork_monster,12,Chắp vá Quái vật
 tamaskan_dog,12,Tamaskan Chó
-furred_dinosaur,12,Furred Khủng long
+furred_dinosaur,12,Có lông Khủng long
 thrumbo,12,Thrumbo
 disguised_changeling,12,Disguised changeling
 wraith,12,Wraith
@@ -2277,9 +2277,9 @@ furby_(species),12,Furby (species)
 falcon_humanoid,12,Falcon Dạng người
 wax_creature,12,Sinh vật sáp
 marine_mammal,12,Marine Động vật có vú
-red_merle,12,Red merle
+red_merle,12,Đỏ merle
 myumon,12,Myumon
-new_world_suboscine,12,New world suboscine
+new_world_suboscine,12,Mới world suboscine
 therapsid,12,Therapsid
 alternate_(species),12,Khác
 ant_humanoid,12,Dạng người kiến
@@ -2289,7 +2289,7 @@ snow_humanoid,12,Dạng người tuyết
 flicky,12,Flicky
 meat_creature,12,Sinh vật thịt
 flamemon,12,Flamemon
-living_orange,12,Living orange
+living_orange,12,Có sự sống cam
 howler_monkey,12,Howler Khỉ
 lyrebird,12,Lyrebird
 cazar_(ratchet_and_clank),12,Cazar (ratchet và clank)
@@ -2302,7 +2302,7 @@ eurasian_sparrowhawk,12,Eurasian sparrowhawk
 fly_humanoid,12,Fly Dạng người
 nautilus,12,Nautilus
 chillet_ignis,12,Chillet ignis
-glitch_pokemon,12,Glitch pokemon
+glitch_pokemon,12,Glitch Pokémon
 gryphon_taur,12,Gryphon taur
 normal_castform,12,Normal castform
 breeder_(species),12,Breeder (species)
@@ -2321,7 +2321,7 @@ temmie_(species),12,Temmie (species)
 appoplexian,12,Appoplexian
 seeq,12,Seeq
 anthozoan_humanoid,12,Anthozoan Dạng người
-horned_tailclops,12,Horned tailclops
+horned_tailclops,12,Có sừng tailclops
 monstar_(space_jam),12,Monstar (space jam)
 goat_demon_humanoid,12,Dạng người quỷ dê
 lagomorph_taur,12,Họ thỏ taur
@@ -2334,7 +2334,7 @@ hominin,12,Hominin
 unicorn_taur,12,Kỳ lân taur
 regulus_(species),12,Regulus (species)
 regenerator_(resident_evil),12,Regenerator (resident evil)
-living_airship,12,Living airship
+living_airship,12,Có sự sống airship
 g-virus_mutant_(resident_evil),12,G-virus mutant (resident evil)
 ice_cream_humanoid,12,Băng Màu kem Dạng người
 mii,12,Mii
@@ -2357,8 +2357,8 @@ whale_dragon,12,Rồng cá voi
 asteriid,12,Asteriid
 ratfolk,12,Ratfolk
 turtle_humanoid,12,Dạng người rùa
-living_scarecrow,12,Living scarecrow
-half_shiny_pokemon,12,Half shiny pokemon
+living_scarecrow,12,Có sự sống scarecrow
+half_shiny_pokemon,12,Một nửa bóng Pokémon
 nova_scotia_duck_tolling_retriever,12,Nova scotia Vịt tolling retriever
 satanic_leaf-tailed_gecko,12,Satanic leaf-tailed Tắc kè
 stepfather_and_stepdaughter_(lore),15,Stepfather và stepdaughter (lore)
@@ -2380,7 +2380,7 @@ chimera_sui_generis,12,Chimera sui generis
 basenji,12,Basenji
 gorgosaurus,12,Gorgosaurus
 deer_mouse,12,Chuột nhắt nai
-tv_head_robot,12,Tv đầu Người máy
+tv_head_robot,12,Ti vi đầu Người máy
 kishin_(gekk0),12,Kishin (gekk0)
 xenarthran_humanoid,12,Xenarthran Dạng người
 sniffer_(minecraft),12,Sniffer (minecraft)
@@ -2390,7 +2390,7 @@ living_star,12,Ngôi sao có sự sống
 floradinn,12,Floradinn
 praimortis,12,Praimortis
 centipede_humanoid,12,Centipede Dạng người
-blue_morpho,12,Blue morpho
+blue_morpho,12,Xanh dương morpho
 garnet_(gem_species),12,Garnet (gem species)
 eyrie_(neopets),12,Eyrie (neopets)
 leporid_taur,12,Họ thỏ taur
@@ -2400,7 +2400,7 @@ kubrow,12,Kubrow
 cockroach_humanoid,12,Cockroach Dạng người
 barracuda,12,Barracuda
 tatzlwurm,12,Tatzlwurm
-the_thing_(organism),12,thing (organism)
+the_thing_(organism),12,Thing (organism)
 sea_slug_humanoid,12,Biển slug Dạng người
 dragonewt,12,Dragonewt
 wereavian,12,Wereavian
@@ -2412,7 +2412,7 @@ deadly_nadder,12,Deadly nadder
 dakotaraptor,12,Dakotaraptor
 orthros,12,Orthros
 fenra,12,Fenra
-multi_taur,12,Multi taur
+multi_taur,12,Nhiều taur
 ottaroo,12,Ottaroo
 marlin,12,Marlin
 rabbit_taur,12,Thỏ taur
@@ -2423,7 +2423,7 @@ weredragon,12,Weredragon
 nanozell_spirit,12,Nanozell spirit
 carcharodontosaurus,12,Carcharodontosaurus
 living_furniture,12,Nội thất có sự sống
-living_clone_unit,12,Living clone unit
+living_clone_unit,12,Có sự sống clone unit
 wither_beast,12,Wither beast
 super_wolf_(sar),12,Super Sói (sar)
 horse_(minecraft),12,Ngựa
@@ -2439,14 +2439,14 @@ krokodyle,12,Krokodyle
 bandit_(mario),12,Bandit (mario)
 primagen,12,Primagen
 nyctilian,12,Nyctilian
-great_horned_bunwolf,12,Great horned bunwolf
+great_horned_bunwolf,12,Great có sừng bunwolf
 vixy_(pal),12,Vixy (pal)
 amargasaurus,12,Amargasaurus
 beetle_humanoid,12,Dạng người bọ
 goblimon,12,Goblimon
 light_creature,12,Sinh vật nhạt
-living_emoji,12,Living emoji
-oceanic_whitetip_shark,12,Oceanic whitetip Cá mập
+living_emoji,12,Có sự sống emoji
+oceanic_whitetip_shark,12,Đại dương whitetip Cá mập
 wither_beast_(freak_magic1369),12,Wither beast (freak magic1369)
 blanford's_fox,12,Blanford's Cáo
 reticulated_giraffe,12,Reticulated Hươu cao cổ
@@ -2465,7 +2465,7 @@ lykra,12,Lykra
 plesiosaurus,12,Plesiosaurus
 cherubimon_(good),12,Cherubimon (good)
 tree-kangaroo,12,Chuột túi cây
-feathered_dragon_taur,12,Feathered Rồng taur
+feathered_dragon_taur,12,Có lông vũ Rồng taur
 banded_linsang,12,Banded linsang
 quantum_deathclaw,12,Quantum deathclaw
 nanomachines,12,Nanomachines
@@ -2475,7 +2475,7 @@ bugabuzz_(insomniacovrlrd),12,Bugabuzz (insomniacovrlrd)
 bronze_dragon_(dnd),12,Rồng đồng thau
 smozumi_(insomniacovrlrd),12,Smozumi (insomniacovrlrd)
 portuguese_water_dog,12,Portuguese Nước Chó
-grey_seer,12,Grey seer
+grey_seer,12,Xám seer
 rock_drake,12,Tảng đá drake
 embereon,12,Embereon
 sand_creature,12,Cát Sinh vật
@@ -2507,7 +2507,7 @@ gharial,12,Gharial
 lekgolo,12,Lekgolo
 weimaraner,12,Weimaraner
 wiltshire_horn,12,Wiltshire Sừng
-african_wild_dog_humanoid,12,African wild Chó Dạng người
+african_wild_dog_humanoid,12,African dã ngoại Chó Dạng người
 nexomon_(species),12,Nexomon (species)
 vegetable_humanoid,12,Dạng người rau
 colonial_organism,12,Colonial organism
@@ -2530,7 +2530,7 @@ muskrat,12,Muskrat
 trenco,12,Trenco
 neovison,12,Neovison
 crow_demon,12,Quạ Quỷ
-fan_species,12,Fan species
+fan_species,12,Quạt loài
 invertebrate,12,Invertebrate
 doppelganger_(species),12,Doppelganger (species)
 canis_woof,12,Họ chó woof
@@ -2538,7 +2538,7 @@ basculegion_(male_form),12,Basculegion (male form)
 carnivorous_plant_humanoid,12,Carnivorous Thực vật Dạng người
 turkish_van,12,Turkish van
 uth_duna,12,Uth duna
-furred_drake,12,Furred drake
+furred_drake,12,Có lông drake
 effulgent_dragon,12,Effulgent Rồng
 bucentaur,12,Bucentaur
 belgian_tervuren,12,Belgian tervuren
@@ -2575,14 +2575,14 @@ living_ranged_weapon,12,Vũ khí tầm xa có sự sống
 pulsatrix,12,Pulsatrix
 termite,12,Termite
 accidental_bow_mutant_(resident_evil),12,Accidental Nơ mutant (resident evil)
-american_mink,12,American mink
+american_mink,12,Mỹ mink
 nightmare_(species),12,Ác mộng
 brown_yoshi,12,Nâu yoshi
 feathered_wyvern,12,Wyvern có lông vũ
-taiwan_blue_magpie,12,Taiwan blue magpie
+taiwan_blue_magpie,12,Taiwan xanh dương magpie
 slime_dragon,12,Slime Rồng
 birbit,12,Birbit
-blue_toad,12,Blue toad
+blue_toad,12,Xanh dương toad
 golem_(minecraft),12,Golem (minecraft)
 cheloniid,12,Cheloniid
 mutant_(x-men),12,Mutant (x-men)
@@ -2594,11 +2594,11 @@ elephant_humanoid,12,Dạng người voi
 shipmorph,12,Shipmorph
 feonix,12,Feonix
 zombot,12,Zombot
-new_world_vulture,12,New world vulture
+new_world_vulture,12,Mới world vulture
 armordragon,12,Armordragon
 shadekin,12,Shadekin
-super_fennec_fox_(sar),12,Super fennec Cáo (sar)
-green_martian,12,Green martian
+super_fennec_fox_(sar),12,Super cáo sa mạc Cáo (sar)
+green_martian,12,Xanh lá martian
 genasi,12,Genasi
 alien_dog,12,Chó ngoài hành tinh
 pom-pom_oricorio,12,Pom-pom oricorio
@@ -2615,7 +2615,7 @@ gimmighoul_(roaming_form),12,Gimmighoul (roaming form)
 taurus_demon,12,Taurus Quỷ
 marsupilami,12,Marsupilami
 who_(species),12,Who (species)
-pink_slime_(slime_rancher),12,Pink slime (slime rancher)
+pink_slime_(slime_rancher),12,Hồng slime (slime rancher)
 vizsla,12,Vizsla
 sanitized_octarian,12,Sanitized octarian
 worm_(worms),12,Giun
@@ -2651,7 +2651,7 @@ livestock,12,Livestock
 brain_creature,12,Brain Sinh vật
 trandoshan,12,Trandoshan
 lumpy_space_denizen,12,Lumpy Vũ trụ denizen
-winged_kobold,12,Winged kobold
+winged_kobold,12,Có cánh kobold
 northern_crested_caracara,12,Northern crested caracara
 daemonette_(warhammer),12,Daemonette (warhammer)
 old_world_flycatcher,12,Cũ world flycatcher
@@ -2680,7 +2680,7 @@ gelert_(neopets),12,Gelert (neopets)
 garou_(world_of_darkness),12,Garou (world of darkness)
 pink_sea_star,12,Ngôi sao biển hồng
 fenril_(spicy_flakes),12,Fenril (spicy flakes)
-american_robin,12,American robin
+american_robin,12,Mỹ robin
 bush_dog,12,Bush Chó
 wyrm_(dragon),12,Rồng không cánh
 uncorrupted_gem,12,Uncorrupted Đá quý
@@ -2693,9 +2693,9 @@ kobold_(5e),12,Kobold (5e)
 kookaburra,12,Kookaburra
 ice_humanoid,12,Băng Dạng người
 magical_creature,12,Sinh vật kỳ diệu
-magenta_wisp_(sonic),12,Magenta wisp (sonic)
+magenta_wisp_(sonic),12,Hồng cánh sen wisp (sonic)
 skinwalker,12,Skinwalker
-royal_vernid,12,Royal vernid
+royal_vernid,12,Hoàng gia vernid
 debutante_trim_furfrou,12,Debutante trim furfrou
 nelvaanian,12,Nelvaanian
 weremoose,12,Weremoose
@@ -2708,7 +2708,7 @@ serkanian,12,Serkanian
 corgidor,12,Corgidor
 vontsira,12,Vontsira
 saanen_goat,12,Saanen Dê
-living_m&m,12,Living m&m
+living_m&m,12,Có sự sống m&m
 polar_bear_humanoid,12,Polar Gấu Dạng người
 strabimon,12,Strabimon
 apex_(starbound),12,Apex (starbound)
@@ -2720,8 +2720,8 @@ didelphid,12,Didelphid
 neuron_fly,12,Neuron fly
 carapacian,12,Carapacian
 east_sea_gastrodon,12,East Biển gastrodon
-american_kestrel,12,American kestrel
-great_grey_owl,12,Great grey Cú
+american_kestrel,12,Mỹ kestrel
+great_grey_owl,12,Great xám Cú
 gilded_dragon,12,Gilded Rồng
 copihue,12,Copihue
 yellow-billed_magpie,12,Yellow-billed magpie
@@ -2732,7 +2732,7 @@ magnadramon,12,Magnadramon
 magma_dragon,12,Magma Rồng
 blazedragon,12,Blazedragon
 slayer_(baldur's_gate),12,Slayer (baldur's gate)
-blue_poison_dart_frog,12,Blue poison dart Ếch
+blue_poison_dart_frog,12,Xanh dương poison dart Ếch
 condom_creature,12,Bao cao su Sinh vật
 chat_(bird),12,Chat (bird)
 ghostfox_gootraxian,12,Ghostfox gootraxian
@@ -2751,7 +2751,7 @@ hunter_(helldivers),12,Hunter (helldivers)
 daenanguis,12,Daenanguis
 ring-tailed_vontsira,12,Ring-tailed vontsira
 shrimp_humanoid,12,Dạng người tôm
-pseudo_incestuous_voyeur_(lore),15,Pseudo incestuous voyeur (lore)
+pseudo_incestuous_voyeur_(lore),15,Giả incestuous voyeur (lore)
 true_bullfinch,12,True bullfinch
 voyager_(gunsawian),12,Voyager (gunsawian)
 werecaprine,12,Werecaprine
@@ -2765,15 +2765,15 @@ orc_king_(dragon_quest),12,Orc king (dragon quest)
 corythosaurus,12,Corythosaurus
 ubumetori,12,Ubumetori
 autumn_sawsbuck,12,Mùa thu sawsbuck
-living_mannequin,12,Living mannequin
-american_marten,12,American marten
+living_mannequin,12,Có sự sống mannequin
+american_marten,12,Mỹ marten
 kyrii,12,Kyrii
 thesium,12,Thesium
 dorugamon,12,Dorugamon
 varkeeg,12,Varkeeg
 green-banded_broodsac,12,Green-banded broodsac
 great_tit,12,Great tit
-living_smoke,12,Living Khói
+living_smoke,12,Có sự sống Khói
 keaton_(tloz),12,Keaton (tloz)
 worgen_(feral),12,Worgen (feral)
 valkwulf,12,Valkwulf
@@ -2785,7 +2785,7 @@ werehusky,12,Werehusky
 balinese_cat,12,Balinese Mèo
 king_salmonid,12,King salmonid
 raposa,12,Raposa
-african_wild_ass,12,African wild Mông
+african_wild_ass,12,African dã ngoại Mông
 douglas_squirrel,12,Douglas Sóc
 girros,12,Girros
 lynxuki,12,Lynxuki
@@ -2795,7 +2795,7 @@ dinosaur_taur,12,Khủng long taur
 lobe-finned_fish,12,Lobe-finned Cá
 serpentine_dragon,12,Serpentine Rồng
 mousemallow,12,Mousemallow
-unusual_taur,12,Unusual taur
+unusual_taur,12,Bất thường taur
 sea_anemone_humanoid,12,Biển anemone Dạng người
 arflin_(species),12,Arflin (species)
 potcake,12,Potcake
@@ -2810,20 +2810,20 @@ pegasus_humanoid,12,Dạng người ngựa có cánh
 beastren,12,Beastren
 japanese_wolf,12,Sói Nhật Bản
 loth-wolf,12,Loth-wolf
-living_gun,12,Living Súng
-blue_dragon_slug,12,Blue Rồng slug
+living_gun,12,Có sự sống Súng
+blue_dragon_slug,12,Xanh dương Rồng slug
 silkie_chicken,12,Silkie Gà
-living_burger,12,Living burger
+living_burger,12,Có sự sống burger
 great_ones_(bloodborne),12,Great một (bloodborne)
 almudron,12,Almudron
 indian_giant_squirrel,12,Sóc khổng lồ Ấn Độ
 morpeko_(hangry_mode),12,Morpeko (hangry mode)
 sayakat,12,Sayakat
-palm_civet,12,Palm civet
+palm_civet,12,Cọ civet
 gyrfalcon,12,Gyrfalcon
 werejackal,12,Werejackal
-living_spacecraft,12,Living spacecraft
-living_banana,12,Living Chuối
+living_spacecraft,12,Có sự sống spacecraft
+living_banana,12,Có sự sống Chuối
 cyclostome,12,Cyclostome
 gelatinous_cube,12,Gelatinous Khối lập phương
 ophiotaurus,12,Ophiotaurus
@@ -2837,7 +2837,7 @@ fella_(aimkid),12,Fella (aimkid)
 lindwurm,12,Lindwurm
 guernsey_cattle,12,Guernsey Gia súc
 chickadee,12,Chickadee
-new_world_oriole,12,New world oriole
+new_world_oriole,12,Mới world oriole
 orc_(delicious_in_dungeon),12,Orc (delicious trong dungeon)
 quagga,12,Quagga
 turuiemon,12,Turuiemon
@@ -2878,8 +2878,8 @@ nebelung,12,Nebelung
 tism_rabbit,12,Tism Thỏ
 rocky_mountain_wolf,12,Rocky Núi Sói
 neanderthal,12,Neanderthal
-mythological_fenghuang,12,Mythological fenghuang
-american_bobtail,12,American bobtail
+mythological_fenghuang,12,Thần thoại fenghuang
+american_bobtail,12,Mỹ bobtail
 cutebold,12,Cutebold
 utonagan,12,Utonagan
 space_pirate_(species),12,Vũ trụ Cướp biển (species)
@@ -2903,7 +2903,7 @@ fennix,12,Fennix
 regional_form_(fakemon),12,Regional form (fakemon)
 shoyru,12,Shoyru
 snotter,12,Snotter
-deep_one_(h.p._lovecraft),12,Deep một (h.p. lovecraft)
+deep_one_(h.p._lovecraft),12,Sâu một (h.p. lovecraft)
 belphemon_(rage_mode),12,Belphemon (rage mode)
 bird_taur,12,Chim taur
 dream_serpent,12,Xà giấc mơ
@@ -2914,7 +2914,7 @@ shikoku_ken,12,Shikoku ken
 matoran,12,Matoran
 zerg_queen_(starcraft),12,Zerg queen (starcraft)
 marauder_(doom),12,Marauder (doom)
-royal_vixult,12,Royal vixult
+royal_vixult,12,Hoàng gia vixult
 wash_rotom,12,Wash rotom
 sparkit,12,Sparkit
 skrill_(species),12,Skrill (species)
@@ -2935,11 +2935,11 @@ gindo,12,Gindo
 tyrannomon,12,Tyrannomon
 common_dolphin,12,Common Cá heo
 syakomon,12,Syakomon
-shiny_fakemon,12,Shiny fakemon
+shiny_fakemon,12,Bóng fakemon
 boom_boo_(sonic),12,Boom boo (sonic)
 wiggler_(mario),12,Wiggler (mario)
 snork_(moomin),12,Snork (moomin)
-living_watermelon,12,Living Dưa hấu
+living_watermelon,12,Có sự sống Dưa hấu
 veilhound,12,Veilhound
 kaprosuchus,12,Kaprosuchus
 ibizan_hound,12,Ibizan hound
@@ -2959,7 +2959,7 @@ titan_(crash_bandicoot),12,Titan (crash bandicoot)
 desir,12,Desir
 indramon,12,Indramon
 grouse,12,Grouse
-half_genie,12,Half genie
+half_genie,12,Một nửa genie
 copper_dragon_(dnd),12,Rồng đồng đỏ
 dracostryx,12,Dracostryx
 primitive_hunting_dog,12,Primitive Săn mồi Chó
@@ -2972,16 +2972,16 @@ metaletemon,12,Metaletemon
 summoner_(doom),12,Summoner (doom)
 teiid,12,Teiid
 stegobold,12,Stegobold
-living_cake,12,Living Bánh ngọt
+living_cake,12,Có sự sống Bánh ngọt
 mr._saturn,12,Mr. saturn
 terror_dog,12,Terror Chó
 varvarg,12,Varvarg
-fennec_fox_taur,12,Fennec Cáo taur
+fennec_fox_taur,12,Cáo sa mạc Cáo taur
 piscciss_volann,12,Piscciss volann
-living_punching_bag,12,Living punching Túi
-royal_neopet,12,Royal neopet
+living_punching_bag,12,Có sự sống punching Túi
+royal_neopet,12,Hoàng gia neopet
 ladypot,12,Ladypot
-void_fluff,12,Void fluff
+void_fluff,12,Void lông xù
 wudwud,12,Wudwud
 snoval,12,Snoval
 scorpion_taur,12,Bọ cạp taur
@@ -2991,7 +2991,7 @@ heart_trim_furfrou,12,Trái tim trim furfrou
 burmese_python,12,Burmese python
 muskox,12,Muskox
 beast_kin,12,Beast kin
-feathered_theropod,12,Feathered theropod
+feathered_theropod,12,Có lông vũ theropod
 living_clock,12,Đồng hồ có sự sống
 lycafel,12,Lycafel
 shark_puppy,12,Chó con cá mập
@@ -3002,7 +3002,7 @@ demi-human_(elden_ring),12,Demi-human (elden ring)
 red-eyed_crocodile_skink,12,Red-eyed Cá sấu skink
 swedish_vallhund,12,Swedish vallhund
 ewok,12,Ewok
-blue-eyed_black_lemur,12,Blue-eyed black Culi
+blue-eyed_black_lemur,12,Blue-eyed đen Culi
 rahkshi,12,Rahkshi
 desire_demon,12,Desire Quỷ
 garyu_(species),12,Garyu (species)
@@ -3013,7 +3013,7 @@ talyxian_stalker,12,Talyxian stalker
 ichthyosaur,12,Ichthyosaur
 allomon,12,Allomon
 garter_snake,12,Rắn dây giữ bít tất
-ice_face_eiscue,12,Băng face eiscue
+ice_face_eiscue,12,Băng mặt eiscue
 silver_dragon_(dnd),12,Rồng bạc
 wiffen_(specie),12,Wiffen (specie)
 concavenator,12,Concavenator
@@ -3059,8 +3059,8 @@ pallid_bat,12,Pallid Dơi
 cathar,12,Cathar
 jetragon,12,Jetragon
 digidevil,12,Digidevil
-living_musical_instrument,12,Living musical Nhạc cụ
-living_beverage,12,Living Đồ uống
+living_musical_instrument,12,Có sự sống âm nhạc cụ
+living_beverage,12,Có sự sống Đồ uống
 byrdle_(atlyss),12,Byrdle (atlyss)
 cerberus_(resident_evil),12,Cerberus (resident evil)
 malo_0.9,12,Malo 0.9
@@ -3086,11 +3086,11 @@ mirromy,12,Mirromy
 fearsome_critter,12,Fearsome critter
 asian_water_monitor,12,Châu Á Nước monitor
 lunoid,12,Lunoid
-white_stork,12,White stork
+white_stork,12,Trắng stork
 inklion,12,Inklion
-white_wisp_(sonic),12,White wisp (sonic)
+white_wisp_(sonic),12,Trắng wisp (sonic)
 loggerhead_sea_turtle,12,Loggerhead Biển Rùa
-ambient_pokemon,12,Ambient pokemon
+ambient_pokemon,12,Ambient Pokémon
 sphenacodontid,12,Sphenacodontid
 major_mitchell's_cockatoo,12,Major mitchell's cockatoo
 caramel_lizard_(rain_world),12,Thằn lằn karamel
@@ -3121,7 +3121,7 @@ caracal_humanoid,12,Caracal Dạng người
 egyptian_wolf,12,Sói Ai Cập
 glowworm,12,Glowworm
 wolfos,12,Wolfos
-great_blue_heron,12,Great blue heron
+great_blue_heron,12,Great xanh dương heron
 ambient_moth,12,Ambient Ngài
 shutmon,12,Shutmon
 warforged,12,Warforged
@@ -3216,7 +3216,7 @@ lion_tamarin,12,Sư tử tamarin
 omnitope,12,Omnitope
 skydancer_dragon,12,Skydancer Rồng
 daiman_night_dragon_(keltaan),12,Daiman Ban đêm Rồng (keltaan)
-blue_crane,12,Blue crane
+blue_crane,12,Xanh dương crane
 ice_jogauni,12,Băng jogauni
 puyo_(puyo_puyo),12,Puyo (puyo puyo)
 creaking_(minecraft),12,Creaking (minecraft)
@@ -3226,7 +3226,7 @@ giraffid_taur,12,Giraffid taur
 desert_cottontail_rabbit,12,Sa mạc cottontail Thỏ
 werepony,12,Werepony
 talehnyan,12,Talehnyan
-smooth_collie,12,Smooth collie
+smooth_collie,12,Trơn collie
 fox_terrier,12,Cáo terrier
 qsiti,12,Qsiti
 ruby_cream_alcremie,12,Ruby Màu kem alcremie
@@ -3251,7 +3251,7 @@ durachev,12,Durachev
 jaggi,12,Jaggi
 type_null,12,Type null
 betsumon,12,Betsumon
-daddy_long_legs_(rain_world),12,Daddy long Đôi chân (rain world)
+daddy_long_legs_(rain_world),12,Daddy dài Đôi chân (rain world)
 wolvar,12,Wolvar
 springhare,12,Springhare
 acipenseriform,12,Acipenseriform
@@ -3268,7 +3268,7 @@ taipan,12,Taipan
 viper_tobi-kadachi,12,Viper tobi-kadachi
 coral_dragon_(rainbowwave),12,Coral Rồng (rainbowwave)
 virelli,12,Virelli
-english_setter,12,English setter
+english_setter,12,Anh setter
 amphithere,12,Amphithere
 blue_dragon_(dnd),12,Rồng xanh dương
 maned_wolf_taur,12,Maned Sói taur
@@ -3294,7 +3294,7 @@ morphauna,12,Morphauna
 bunger,12,Bunger
 adasaurus,12,Adasaurus
 nox_(pal),12,Nox (pal)
-domestic_pigeon,12,Domestic pigeon
+domestic_pigeon,12,Nhà pigeon
 taffy_monster,12,Taffy Quái vật
 starman,12,Starman
 penguin_humanoid,12,Dạng người cánh cụt
@@ -3384,7 +3384,7 @@ gaogamon,12,Gaogamon
 alligatorid_humanoid,12,Alligatorid Dạng người
 wilderkin,12,Wilderkin
 hobbit,12,Hobbit
-ambient_dragonfly,12,Ambient Chuồn chuồn
+ambient_dragonfly,12,Ambient Chuồn
 wild_cat,12,Mèo dã ngoại
 tozol,12,Tozol
 acarine,12,Acarine
@@ -3409,19 +3409,19 @@ passerina,12,Passerina
 boximp_(species),12,Boximp (species)
 myriapod_taur,12,Myriapod taur
 drazil_(grimm3d),12,Drazil (grimm3d)
-living_planet,12,Living Hành tinh
+living_planet,12,Có sự sống Hành tinh
 super_bear_(sar),12,Super Gấu (sar)
 dogborg,12,Dogborg
 twinkle-eyed,12,Twinkle-eyed
 temnoceran,12,Temnoceran
-white_flower_florges,12,White Hoa florges
-black_tip_reefshark,12,Black tip reefshark
+white_flower_florges,12,Trắng Hoa florges
+black_tip_reefshark,12,Đen đầu chóp reefshark
 kirin_humanoid,12,Kirin Dạng người
 shishi_dog,12,Shishi Chó
 pixie_(monster_rancher),12,Pixie (monster rancher)
 aphid,12,Aphid
 abyssal_(kancolle),12,Vực thẳm
-unidentified_species,12,Unidentified species
+unidentified_species,12,Unidentified loài
 super_fish_(sar),12,Super Cá (sar)
 nanyangosaurus,12,Nanyangosaurus
 ketupa,12,Ketupa
@@ -3438,7 +3438,7 @@ bullsquid,12,Bullsquid
 gold_rathian,12,Vàng rathian
 snow_pea_(pvz),12,Tuyết pea (pvz)
 borg,12,Borg
-red_fox_taur,12,Red Cáo taur
+red_fox_taur,12,Đỏ Cáo taur
 primordial_malzeno,12,Primordial malzeno
 lava_humanoid,12,Lava Dạng người
 porpoise,12,Porpoise
@@ -3454,9 +3454,9 @@ ambient_dragon,12,Ambient Rồng
 synth-crador,12,Synth-crador
 hadanin,12,Hadanin
 wizardmon,12,Wizardmon
-yellow_mongoose,12,Yellow mongoose
+yellow_mongoose,12,Vàng mongoose
 siamese_mouse,12,Siamese Chuột nhắt
-furred_cetacean,12,Furred Họ cá voi
+furred_cetacean,12,Có lông Họ cá voi
 eyeless_dog_(lethal_company),12,Không có mắt Chó (lethal company)
 herissmon,12,Herissmon
 water_demon_(slightly_damned),12,Nước Quỷ (slightly damned)
@@ -3513,7 +3513,7 @@ bundroid,12,Bundroid
 hare_humanoid,12,Hare Dạng người
 tyrant_flycatcher,12,Tyrant flycatcher
 mook,12,Mook
-feathered_dromaeosaurid,12,Feathered dromaeosaurid
+feathered_dromaeosaurid,12,Có lông vũ dromaeosaurid
 mutant_neopet,12,Mutant neopet
 rogialos,12,Rogialos
 sensu_oricorio,12,Sensu oricorio
@@ -3525,13 +3525,13 @@ beast_sergal,12,Beast sergal
 little_auk,12,Nhỏ auk
 chasmosaurus,12,Chasmosaurus
 lampcat,12,Lampcat
-living_peppermint_candy,12,Living peppermint Kẹo
+living_peppermint_candy,12,Có sự sống peppermint Kẹo
 wolver_(spiral_knights),12,Wolver (spiral knights)
 finnish_lapphund,12,Finnish lapphund
 trumpeter_swan,12,Trumpeter Thiên nga
 rainbow_trout,12,Màu cầu vồng trout
 remora,12,Remora
-northland_green_gecko,12,Northland green Tắc kè
+northland_green_gecko,12,Northland xanh lá Tắc kè
 sacred_scarab,12,Sacred scarab
 molten_corgi,12,Molten corgi
 carolina_dog,12,Carolina Chó
@@ -3556,7 +3556,7 @@ nixie,12,Nixie
 lovelitchi,12,Lovelitchi
 czechoslovakian_wolfdog,12,Czechoslovakian wolfdog
 bee_pony,12,Ngựa Pony ong
-rhode_island_red,12,Rhode Đảo red
+rhode_island_red,12,Rhode Đảo đỏ
 tatsugiri_(stretchy_form),12,Tatsugiri (stretchy form)
 rudinn,12,Rudinn
 indian_flying_fox,12,Cáo bay Ấn Độ
@@ -3570,11 +3570,11 @@ indigo_bunting,12,Indigo bunting
 black-capped_chickadee,12,Black-capped chickadee
 hybrid_taur,12,Sinh vật lai taur
 dire_tank,12,Dire Áo ba lỗ
-new_world_deer_taur,12,New world Nai taur
+new_world_deer_taur,12,Mới world Nai taur
 rubikang,12,Rubikang
 gorochu,12,Gorochu
 tatsugiri_(droopy_form),12,Tatsugiri (droopy form)
-blue_anole,12,Blue anole
+blue_anole,12,Xanh dương anole
 techno,12,Techno
 gaytor,12,Gaytor
 ink_demon,12,Ink Quỷ
@@ -3583,7 +3583,7 @@ vex_(destiny),12,Vex (destiny)
 daimon,12,Daimon
 mudraptor,12,Mudraptor
 crocanine,12,Crocanine
-red_flower_flabebe,12,Red Hoa flabebe
+red_flower_flabebe,12,Đỏ Hoa flabebe
 caridean_shrimp,12,Caridean Tôm
 hokkaido_dog,12,Hokkaido Chó
 lynx_taur,12,Lynx taur
@@ -3592,13 +3592,13 @@ cyavian,12,Cyavian
 kazemon,12,Kazemon
 god_dragon,12,God Rồng
 spacebat,12,Spacebat
-pink_fairy_armadillo,12,Pink fairy armadillo
+pink_fairy_armadillo,12,Hồng fairy armadillo
 repeater_(pvz),12,Repeater (pvz)
 splixson,12,Splixson
 snow_goose,12,Ngỗng tuyết
 furred_lizard,12,Thằn lằn có lông
 fuckplant,12,Fuckplant
-mythological_baku,12,Mythological baku
+mythological_baku,12,Thần thoại baku
 hormone_monster,12,Hormone Quái vật
 centipede_(rain_world),12,Centipede (rain world)
 common_loon,12,Common loon
@@ -3667,13 +3667,13 @@ pinniped_humanoid,12,Pinniped Dạng người
 peterbald,12,Peterbald
 mudokon,12,Mudokon
 bulborb_(pikmin),12,Bulborb (pikmin)
-red_flower_floette,12,Red Hoa floette
+red_flower_floette,12,Đỏ Hoa floette
 pegasusmon,12,Pegasusmon
 pomily,12,Pomily
 kwami,12,Kwami
 coyote_humanoid,12,Coyote Dạng người
 mooncalf_(sindri_myr),12,Mooncalf (sindri myr)
-mythological_nian,12,Mythological nian
+mythological_nian,12,Thần thoại nian
 skullcat_(species),12,Skullcat (species)
 vampony,12,Vampony
 vampire_squid,12,Mực ống ma cà rồng
@@ -3701,15 +3701,15 @@ matile,12,Matile
 fruit_dragon,12,Rồng trái cây
 jaggard,12,Jaggard
 ct'hussian,12,Ct'hussian
-orange_tabby,12,Orange tabby
-living_computer,12,Living computer
+orange_tabby,12,Cam tabby
+living_computer,12,Có sự sống computer
 stupid_rat_(pizza_tower),12,Stupid Chuột cống (pizza tower)
 snow_serval,12,Tuyết serval
 tsunomon,12,Tsunomon
 marsupial_taur,12,Thú có túi taur
 devilshark_(xfr),12,Devilshark (xfr)
 skakdi,12,Skakdi
-flat_coated_retriever,12,Flat coated retriever
+flat_coated_retriever,12,Phẳng coated retriever
 snarf_(species),12,Snarf (species)
 bald-faced_hornet,12,Bald-faced hornet
 dalamadur,12,Dalamadur
@@ -3779,7 +3779,7 @@ pitador,12,Pitador
 bio-android,12,Bio-android
 leshy,12,Leshy
 leopardus_humanoid,12,Leopardus Dạng người
-red_bluster,12,Red bluster
+red_bluster,12,Đỏ bluster
 otherling,12,Otherling
 caique,12,Caique
 dandy_trim_furfrou,12,Dandy trim furfrou
@@ -3800,13 +3800,13 @@ tigrar_shokan,12,Tigrar shokan
 hazel_dormouse,12,Hazel dormouse
 scipionyx,12,Scipionyx
 food_head,12,Đầu thức ăn
-pannon_white_rabbit,12,Pannon white Thỏ
+pannon_white_rabbit,12,Pannon trắng Thỏ
 idog,12,Idog
 thundurus_(therian_form),12,Thundurus (therian form)
 cetacean_taur,12,Họ cá voi taur
 goodman's_mouse_lemur,12,Goodman's Chuột nhắt Culi
 meow_wow,12,Meow wow
-long_neck_taur,12,Long neck taur
+long_neck_taur,12,Dài cổ taur
 atronach,12,Atronach
 zeus_genus,12,Zeus genus
 kingbird,12,Kingbird
@@ -3840,7 +3840,7 @@ wyvern_humanoid,12,Dạng người wyvern
 shoggoth_(h.p._lovecraft),12,Shoggoth (h.p. lovecraft)
 peeper_(subnautica),12,Peeper (subnautica)
 reindeer_taur,12,Tuần lộc taur
-panther_gootraxian,12,Panther gootraxian
+panther_gootraxian,12,Báo đen gootraxian
 wingless_gryphon,12,Wingless gryphon
 orserk,12,Orserk
 kaithrit,12,Kaithrit
@@ -3861,7 +3861,7 @@ dodongo,12,Dodongo
 dynx,12,Dynx
 najarala,12,Najarala
 shield_moblin,12,Khiên moblin
-english_springer_spaniel,12,English springer spaniel
+english_springer_spaniel,12,Anh springer spaniel
 hypnolizard,12,Hypnolizard
 charger_(helldivers),12,Charger (helldivers)
 chargin'_chuck,12,Chargin' chuck
@@ -3891,11 +3891,11 @@ radroach_(fallout),12,Radroach (fallout)
 rahi,12,Rahi
 kanj'isha,12,Kanj'isha
 martin_(bird),12,Martin (bird)
-great_grey_shrike,12,Great grey shrike
+great_grey_shrike,12,Great xám shrike
 marvellous_spatuletail,12,Marvellous spatuletail
 moa_(warframe),12,Moa (warframe)
 snarbolax,12,Snarbolax
-yellow_toad,12,Yellow toad
+yellow_toad,12,Vàng toad
 revenant_(supersoupnova),12,Revenant (supersoupnova)
 viatores,12,Viatores
 yiga,12,Yiga
@@ -3904,17 +3904,17 @@ guardian_(tloz),12,Guardian (tloz)
 tigerbee,12,Tigerbee
 tiger_moth,12,Ngài hổ
 yrryf,12,Yrryf
-winged_yoshi,12,Winged yoshi
+winged_yoshi,12,Có cánh yoshi
 plant_cloak_burmy,12,Thực vật Áo choàng burmy
 norwegian_elkhound,12,Norwegian elkhound
 birrin,12,Birrin
 banded_penguin,12,Banded Cánh cụt
 calupoh,12,Calupoh
 windea_(fadingsky),12,Windea (fadingsky)
-violet_mizutsune,12,Violet mizutsune
-jelly_neopet,12,Jelly neopet
+violet_mizutsune,12,Tím mizutsune
+jelly_neopet,12,Thạch neopet
 cuptain,12,Cuptain
-abyssal_lagiacrus,12,Abyssal lagiacrus
+abyssal_lagiacrus,12,Vực thẳm lagiacrus
 pup_bee,12,Ong con non
 asian_elephant,12,Voi châu Á
 simulacrum,12,Simulacrum
@@ -3925,9 +3925,9 @@ accipitriform_humanoid,12,Accipitriform Dạng người
 dire_helicopter,12,Dire helicopter
 sharkitty_(yongin),12,Sharkitty (yongin)
 dinodog_(species),12,Dinodog (species)
-fan_rotom,12,Fan rotom
+fan_rotom,12,Quạt rotom
 brass_dragon_(dnd),12,Brass Rồng (dnd)
-furred_dragon_taur,12,Furred Rồng taur
+furred_dragon_taur,12,Có lông Rồng taur
 bowgart,12,Bowgart
 netherwulf_(species),12,Netherwulf (species)
 worm_humanoid,12,Dạng người giun
@@ -3955,8 +3955,8 @@ werepoodle,12,Werepoodle
 dryosaurid,12,Dryosaurid
 lutecian,12,Lutecian
 wall-nut,12,Wall-nut
-missile_toe_(pvz),12,Missile toe (pvz)
-missile_toe,12,Missile toe
+missile_toe_(pvz),12,Missile ngón chân (pvz)
+missile_toe,12,Missile ngón chân
 lyleen_(pal),12,Lyleen (pal)
 web_(tma),12,Web (tma)
 elphidran,12,Elphidran
@@ -3991,7 +3991,7 @@ tempest_wolf,12,Tempest Sói
 yaoguai,12,Yaoguai
 brain_coral,12,Brain coral
 water_spirit,12,Nước spirit
-eurasian_blue_tit,12,Eurasian blue tit
+eurasian_blue_tit,12,Eurasian xanh dương tit
 feathered_dragon_humanoid,12,Dạng người rồng có lông vũ
 foot_head,12,Đầu bàn chân
 lambeosaurus,12,Lambeosaurus
@@ -4034,10 +4034,10 @@ three-legged_crow,12,Three-legged Quạ
 cat_fish_(sar),12,Cá mèo
 malayan_tapir,12,Malayan Heo vòi
 ichorynth,12,Ichorynth
-green_tree_python,12,Green Cây python
+green_tree_python,12,Xanh lá Cây python
 trianii,12,Trianii
 angus_cattle,12,Angus Gia súc
-green_nargacuga,12,Green nargacuga
+green_nargacuga,12,Xanh lá nargacuga
 highland_psycrhen,12,Highland psycrhen
 austroraptor,12,Austroraptor
 icelandic_horse,12,Icelandic Ngựa
@@ -4052,7 +4052,7 @@ helper_drone_(vader-san),12,Helper drone (vader-san)
 gryphonification,12,Gryphonification
 grunt_(madness_combat),12,Grunt (madness combat)
 hyrax,12,Hyrax
-living_submarine,12,Living submarine
+living_submarine,12,Có sự sống submarine
 pinky_(doom),12,Pinky (doom)
 living_candle,12,Nến có sự sống
 markhor,12,Markhor
@@ -4063,7 +4063,7 @@ bb-series_astromech_droid,12,Bb-series astromech droid
 fume-shroom,12,Fume-shroom
 bellyburster_(alien_vs._predator),12,Bellyburster (alien vs. predator)
 caterpillar_humanoid,12,Caterpillar Dạng người
-spotted_salamander,12,Spotted salamander
+spotted_salamander,12,Có đốm salamander
 dimorphodon,12,Dimorphodon
 servant_(giant_ojou-sama),12,Người hầu
 kacheek,12,Kacheek
@@ -4116,7 +4116,7 @@ mau_(pal),12,Mau (pal)
 spiny_lizard,12,Spiny Thằn lằn
 american_curl,12,Lọn tóc xoăn Mỹ
 minion_(overlord),12,Minion (overlord)
-red_river_hog,12,Red Sông hog
+red_river_hog,12,Đỏ Sông hog
 sabrecat,12,Sabrecat
 snork,12,Snork
 dusk_mane_necrozma,12,Chạng vạng Bờm necrozma
@@ -4128,21 +4128,21 @@ pearlcatcher_dragon,12,Pearlcatcher Rồng
 anubian_jackal_humanoid,12,Anubian Chồn sói Dạng người
 neapolitan_mastiff,12,Neapolitan mastiff
 sand_tiger_shark,12,Cát Hổ Cá mập
-living_cupcake,12,Living cupcake
+living_cupcake,12,Có sự sống cupcake
 ambient_cat,12,Ambient Mèo
 hell_phoenix,12,Hell phoenix
 tianma,12,Tianma
-pink_toad,12,Pink toad
+pink_toad,12,Hồng toad
 draken,12,Draken
 fox_squirrel,12,Sóc cáo
 lq-84_fenrir,12,Lq-84 fenrir
-blue_bunting,12,Blue bunting
+blue_bunting,12,Xanh dương bunting
 shushu,12,Shushu
 loupmoon,12,Loupmoon
 cissa_(genus),12,Cissa (genus)
-north_american_cougar,12,North american cougar
+north_american_cougar,12,North Mỹ cougar
 enamorus_(incarnate_form),12,Enamorus (incarnate form)
-green_puyo,12,Green puyo
+green_puyo,12,Xanh lá puyo
 sahagin,12,Sahagin
 sockbat_(species),12,Sockbat (species)
 pumpkinmon,12,Pumpkinmon
@@ -4153,7 +4153,7 @@ pawns_(fattmana),12,Pawns (fattmana)
 ape_humanoid,12,Dạng người vượn
 goat_dragon,12,Rồng dê
 m_line_kishin,12,M line kishin
-indochinese_green_magpie,12,Indochinese green magpie
+indochinese_green_magpie,12,Indochinese xanh lá magpie
 ocicat,12,Ocicat
 snake_demon,12,Rắn Quỷ
 weresuine,12,Weresuine
@@ -4176,12 +4176,12 @@ longhorn,12,Longhorn
 paradrakes_(species),12,Paradrakes (species)
 primal_(biomutant),12,Primal (biomutant)
 hive_tyrant,12,Hive tyrant
-super_red_panda_(sar),12,Super red Gấu trúc (sar)
+super_red_panda_(sar),12,Super đỏ Gấu trúc (sar)
 livly_(species),12,Livly (species)
 firewolf,12,Firewolf
 digimon_taur,12,Digimon taur
 blumaroo,12,Blumaroo
-noice_face_eiscue,12,Noice face eiscue
+noice_face_eiscue,12,Noice mặt eiscue
 nogitsune,12,Nogitsune
 evil_hare_(monster_rancher),12,Evil hare (monster rancher)
 french_bulldog,12,Pháp bulldog
@@ -4190,11 +4190,11 @@ prehensile_tailed_rat,12,Chuột cống có đuôi có khả năng quấn
 hog_badger,12,Hog Lửng
 scp-131,12,Scp-131
 zonai_construct,12,Zonai construct
-american_staffordshire_terrier,12,American staffordshire terrier
+american_staffordshire_terrier,12,Mỹ staffordshire terrier
 chinstrap_penguin,12,Chinstrap Cánh cụt
 deinosuchus,12,Deinosuchus
 spiral_dragon,12,Rồng xoắn ốc
-red_ruffed_lemur,12,Red ruffed Culi
+red_ruffed_lemur,12,Đỏ ruffed Culi
 zess,12,Zess
 skalgan_(the_nature_of_predators),12,Skalgan (the Thiên nhiên of predators)
 demiboy_(lore),15,Demiboy (lore)
@@ -4216,7 +4216,7 @@ devidramon,12,Devidramon
 bosmer,12,Bosmer
 barbary_lion,12,Barbary Sư tử
 mecranord,12,Mecranord
-masked_palm_civet,12,Masked palm civet
+masked_palm_civet,12,Masked cọ civet
 vessel_(godhusk),12,Vessel (godhusk)
 fuzzy_(mario),12,Fuzzy (mario)
 krii,12,Krii
@@ -4236,13 +4236,13 @@ bushtit,12,Bushtit
 fenkey,12,Fenkey
 bleitsell,12,Bleitsell
 rat_terrier,12,Chuột cống terrier
-horned_viper,12,Horned viper
+horned_viper,12,Có sừng viper
 yakutian_laika,12,Yakutian laika
 rain_imp,12,Mưa imp
 briard,12,Briard
 shiba_inu_humanoid,12,Shiba inu Dạng người
 hilachev,12,Hilachev
-bestial_object,12,Bestial object
+bestial_object,12,Bestial vật thể
 trochilinae,12,Trochilinae
 raichamonolith,12,Raichamonolith
 galago,12,Galago
@@ -4259,7 +4259,7 @@ sea_duck,12,Vịt biển
 fraggle,12,Fraggle
 lum_(species),12,Lum (species)
 kiev'arian,12,Kiev'arian
-silver_rathalos,12,Silver rathalos
+silver_rathalos,12,Bạc rathalos
 bloodletter,12,Bloodletter
 pyrubis_(insomniacovrlrd),12,Pyrubis (insomniacovrlrd)
 omnimon,12,Omnimon
@@ -4308,7 +4308,7 @@ huppermage,12,Huppermage
 nucleon_(fakemon),12,Nucleon (fakemon)
 generation_2_bakugan,12,Generation 2 bakugan
 springlock_suit,12,Springlock Bộ vest
-american_eskimo,12,American eskimo
+american_eskimo,12,Mỹ eskimo
 corcoracid,12,Corcoracid
 cabbit_(tenchi_muyo),12,Cabbit (tenchi muyo)
 marilith,12,Marilith
@@ -4320,7 +4320,7 @@ bane_(species),12,Bane (species)
 fillyjonk,12,Fillyjonk
 aegiri,12,Aegiri
 mixel_(species),12,Mixel (species)
-red_core_minior,12,Red core minior
+red_core_minior,12,Đỏ core minior
 hati_(zzz),12,Hati (zzz)
 hairless_rat,12,Chuột cống không lông
 true_cobra,12,True cobra
@@ -4337,8 +4337,8 @@ matanu,12,Matanu
 boo_block,12,Boo block
 cowplant_(the_sims),12,Cowplant (the sims)
 absukian,12,Absukian
-mesopotamian_blue,12,Mesopotamian blue
-yellow_flower_florges,12,Yellow Hoa florges
+mesopotamian_blue,12,Mesopotamian xanh dương
+yellow_flower_florges,12,Vàng Hoa florges
 landcats,12,Landcats
 mud_creature,12,Sinh vật bùn
 murid_taur,12,Họ chuột taur
@@ -4357,8 +4357,8 @@ blargg,12,Blargg
 ogre_(dragon_quest_x),12,Ogre (dragon quest x)
 minion_(lol),12,Minion (lol)
 inphernal,12,Inphernal
-texas_horned_lizard,12,Texas horned Thằn lằn
-small_cabbage_white,12,Nhỏ cabbage white
+texas_horned_lizard,12,Texas có sừng Thằn lằn
+small_cabbage_white,12,Nhỏ cabbage trắng
 caracat,12,Caracat
 zapper_(grimm3d),12,Zapper (grimm3d)
 lux_(species),12,Lux (species)
@@ -4376,13 +4376,13 @@ zedian,12,Zedian
 floofshark,12,Floofshark
 datamon,12,Datamon
 gelfling,12,Gelfling
-green_toad,12,Green toad
+green_toad,12,Xanh lá toad
 calling_gecko,12,Calling Tắc kè
 bengal_fox,12,Bengal Cáo
 calderian,12,Calderian
 llama_(minecraft),12,Llama (minecraft)
 living_motorcycle,12,Xe máy có sự sống
-living_rainbow,12,Living Màu cầu vồng
+living_rainbow,12,Có sự sống Màu cầu vồng
 fire_ant,12,Kiến lửa
 conductoid,12,Conductoid
 chaos_god,12,Chaos god
@@ -4407,7 +4407,7 @@ butterfly_dragon,12,Rồng bươm bướm
 tokay_gecko,12,Tokay Tắc kè
 verdanian,12,Verdanian
 felstalker_(warcraft),12,Felstalker (warcraft)
-atlantic_spotted_dolphin,12,Atlantic spotted Cá heo
+atlantic_spotted_dolphin,12,Atlantic có đốm Cá heo
 cobrat,12,Cobrat
 paddlefish,12,Paddlefish
 nexus_(species),12,Nexus (species)
@@ -4435,8 +4435,8 @@ procyonid_taur,12,Họ gấu mèo taur
 vortian,12,Vortian
 basculegion_(female_form),12,Basculegion (female form)
 protopet,12,Protopet
-mythological_arthropod,12,Mythological Động vật chân khớp
-mythological_arachnid,12,Mythological Họ nhện
+mythological_arthropod,12,Thần thoại Động vật chân khớp
+mythological_arachnid,12,Thần thoại Họ nhện
 namazu,12,Namazu
 stormbeast,12,Stormbeast
 vinesian,12,Vinesian
@@ -4478,7 +4478,7 @@ pegasus_taur,12,Ngựa Pegasus taur
 eridian_(project_hail_mary),12,Eridian (project hail mary)
 greenland_shark,12,Greenland Cá mập
 flarespeon,12,Flarespeon
-curly_coated_retriever,12,Curly coated retriever
+curly_coated_retriever,12,Xoăn coated retriever
 bosamon,12,Bosamon
 koel,12,Koel
 worm_grass_(rain_world),12,Giun Cỏ (rain world)
@@ -4490,7 +4490,7 @@ krall,12,Krall
 tri-brigade,12,Tri-brigade
 krawk_(neopets),12,Krawk (neopets)
 sillay,12,Sillay
-american_foxhound,12,American foxhound
+american_foxhound,12,Mỹ foxhound
 ferret_humanoid,12,Dạng người chồn bạc
 magpie-jay,12,Magpie-jay
 hamadryas_baboon,12,Hamadryas baboon
@@ -4515,14 +4515,14 @@ living_lamp,12,Đèn có sự sống
 liloc_(species),12,Liloc (species)
 blueberry's_race,12,Blueberry's race
 nahual,12,Nahual
-living_carrot,12,Living Cà rốt
-living_lemon,12,Living Chanh
+living_carrot,12,Có sự sống Cà rốt
+living_lemon,12,Có sự sống Chanh
 death_angel_(a_quiet_place),12,Death Thiên thần (a quiet place)
 deira,12,Deira
 lizardfolk_(lustful_desires),12,Lizardfolk (lustful desires)
 channel-billed_toucan,12,Channel-billed toucan
 heavy_draft,12,Heavy draft
-blue_puyo,12,Blue puyo
+blue_puyo,12,Xanh dương puyo
 skye_terrier,12,Skye terrier
 yellow-banded_poison_dart_frog,12,Yellow-banded poison dart Ếch
 olm,12,Olm
@@ -4540,7 +4540,7 @@ laprine,12,Laprine
 sin_eater,12,Sin eater
 macaw_humanoid,12,Macaw Dạng người
 magma_cube,12,Magma Khối lập phương
-american_bulldog,12,American bulldog
+american_bulldog,12,Mỹ bulldog
 ant_queen,12,Kiến queen
 hacksaurus,12,Hacksaurus
 nukite,12,Nukite
@@ -4565,7 +4565,7 @@ blazamut,12,Blazamut
 chinchilla_humanoid,12,Chinchilla Dạng người
 boss_bokoblin,12,Boss bokoblin
 rocky_wrench,12,Rocky wrench
-green_banana_cockroach,12,Green Chuối cockroach
+green_banana_cockroach,12,Xanh lá Chuối cockroach
 sangloupmon,12,Sangloupmon
 winter_sprite,12,Mùa đông sprite
 aqualateons,12,Aqualateons
@@ -4619,7 +4619,7 @@ monspik,12,Monspik
 comoro_flying_fox,12,Comoro Đang bay Cáo
 chumouree_(rodent_powered),12,Chumouree (rodent powered)
 jin_dahaad,12,Jin dahaad
-super_persian_cat,12,Super persian Mèo
+super_persian_cat,12,Super Ba Tư Mèo
 mogma,12,Mogma
 mogu,12,Mogu
 ruby_(gem_species),12,Ruby (gem species)
@@ -4652,7 +4652,7 @@ calot,12,Calot
 thanator,12,Thanator
 ribbon_sweet_alcremie,12,Ruy băng sweet alcremie
 ogre_(warcraft),12,Ogre (warcraft)
-blue_flicky,12,Blue flicky
+blue_flicky,12,Xanh dương flicky
 balloonicorn,12,Balloonicorn
 angel_demon,12,Thiên thần Quỷ
 living_cookie,12,Bánh quy có sự sống
@@ -4672,7 +4672,7 @@ orthrus,12,Orthrus
 wirebug,12,Wirebug
 amphibiosan,12,Amphibiosan
 devourer,12,Devourer
-red_martian,12,Red martian
+red_martian,12,Đỏ martian
 laganaphyllis_simnovorii,12,Laganaphyllis simnovorii
 lafoyan,12,Lafoyan
 lagora,12,Lagora
@@ -4706,13 +4706,13 @@ ku-series_replica_droid,12,Ku-series replica droid
 primal_(final_fantasy_xiv),12,Primal (final fantasy xiv)
 cinnamon_bear,12,Cinnamon Gấu
 horned_rabbit,12,Thỏ có sừng
-traditional_moogle,12,Traditional moogle
+traditional_moogle,12,Truyền thống moogle
 ambient_snail,12,Ambient Ốc sên
 gaboon_viper,12,Gaboon viper
 pacific_swallow,12,Pacific swallow
-asian_palm_civet,12,Châu Á palm civet
+asian_palm_civet,12,Châu Á cọ civet
 cave_hyena,12,Linh cẩu hang động
-ivory_lagiacrus,12,Ivory lagiacrus
+ivory_lagiacrus,12,Màu ngà lagiacrus
 shelldrake,12,Shelldrake
 fringillid,12,Fringillid
 rakshani,12,Rakshani
@@ -4732,8 +4732,8 @@ himalayan_rabbit,12,Himalayan Thỏ
 super_raccoon_(sar),12,Super Gấu mèo (sar)
 landorus_(therian_form),12,Landorus (therian form)
 bell_beast_(species),12,Chuông beast (species)
-red_puyo,12,Red puyo
-red_virus_(dr._mario),12,Red virus (dr. mario)
+red_puyo,12,Đỏ puyo
+red_virus_(dr._mario),12,Đỏ virus (dr. mario)
 splatterina_(pal),12,Splatterina (pal)
 possat,12,Possat
 senche-raht,12,Senche-raht
@@ -4745,7 +4745,7 @@ batgriff,12,Batgriff
 cottoid,12,Cottoid
 war_beast,12,War beast
 shigarshil,12,Shigarshil
-speculative_species,12,Speculative species
+speculative_species,12,Speculative loài
 minxen,12,Minxen
 kiko_goat,12,Kiko Dê
 gloom_spawn_(tloz),12,Gloom spawn (tloz)
@@ -4755,8 +4755,8 @@ elfane,12,Elfane
 tilcayo,12,Tilcayo
 flytrap_creature,12,Flytrap Sinh vật
 bushwoolies,12,Bushwoolies
-south_american_tapir,12,South american Heo vòi
-living_pickle,12,Living pickle
+south_american_tapir,12,South Mỹ Heo vòi
+living_pickle,12,Có sự sống pickle
 living_number,12,Chữ số có sự sống
 tajaran,12,Tajaran
 raccoon_dog_humanoid,12,Dạng người chó gấu mèo
@@ -4766,7 +4766,7 @@ energy_being,12,Năng lượng being
 skywrath,12,Skywrath
 dyna_blade_(species),12,Dyna blade (species)
 rabbit_(minecraft),12,Thỏ
-blue_honeysham,12,Blue honeysham
+blue_honeysham,12,Xanh dương honeysham
 harris's_hawk,12,Harris's hawk
 chipori,12,Chipori
 green_dragon_(dnd),12,Rồng xanh lá
@@ -4805,17 +4805,17 @@ melpaca,12,Melpaca
 loris,12,Loris
 sorg_(species),12,Sorg (species)
 whitespotted_bamboo_shark,12,Whitespotted Tre Cá mập
-pokemon_naga,12,Pokemon naga
+pokemon_naga,12,Pokémon naga
 threepeater,12,Threepeater
 reppamon,12,Reppamon
 kerian,12,Kerian
-purple_people_eater,12,Purple Những người eater
-blue_virus_(dr._mario),12,Blue virus (dr. mario)
+purple_people_eater,12,Tím Những người eater
+blue_virus_(dr._mario),12,Xanh dương virus (dr. mario)
 polar_bear_dog,12,Polar Gấu Chó
 wiggler_(monster_hunter),12,Wiggler (monster hunter)
-living_condiment,12,Living condiment
+living_condiment,12,Có sự sống condiment
 skritt,12,Skritt
-south_american_grey_fox,12,South american grey Cáo
+south_american_grey_fox,12,South Mỹ xám Cáo
 lisko,12,Lisko
 tiger_salamander,12,Hổ salamander
 enigma_(species),12,Enigma (species)
@@ -4857,12 +4857,12 @@ digimon_humanoid,12,Digimon Dạng người
 alurian,12,Alurian
 baaz,12,Baaz
 mosscreep,12,Mosscreep
-shampoo_ginger,12,Shampoo ginger
+shampoo_ginger,12,Shampoo gừng
 klaptrap,12,Klaptrap
 horny_toad,12,Horny toad
 hizathri_(species),12,Hizathri (species)
 frostallion,12,Frostallion
-pale_clouded_yellow,12,Nhạt clouded yellow
+pale_clouded_yellow,12,Nhạt clouded vàng
 struthiomimus,12,Struthiomimus
 jawa,12,Jawa
 ratcicle,12,Ratcicle
@@ -4880,7 +4880,7 @@ american_vine_snake,12,Rắn dây leo Mỹ
 stink_bug,12,Stink Bọ
 leaf_dragon,12,Rồng chiếc lá
 basilosaurus,12,Basilosaurus
-mythological_mandrake,12,Mythological mandrake
+mythological_mandrake,12,Thần thoại mandrake
 dergodal,12,Dergodal
 orion_(star_trek),12,Orion (star trek)
 vulpaphyla,12,Vulpaphyla
@@ -4890,7 +4890,7 @@ lemur_humanoid,12,Dạng người culi
 bauble,12,Bauble
 pyonmon,12,Pyonmon
 stranger_(tma),12,Stranger (tma)
-orange_flower_florges,12,Orange Hoa florges
+orange_flower_florges,12,Cam Hoa florges
 cait_sith_(species),12,Cait sith (species)
 sharkcat,12,Sharkcat
 werecattle,12,Werecattle
@@ -4912,7 +4912,7 @@ olorotitan,12,Olorotitan
 epicyon,12,Epicyon
 gatorclaw_(fallout),12,Gatorclaw (fallout)
 lowland_psycrhen,12,Lowland psycrhen
-rainy_castform,12,Rainy castform
+rainy_castform,12,Trời mưa castform
 siberian_weasel,12,Siberian Chồn
 gekko_(tloz),12,Gekko (tloz)
 dryakui,12,Dryakui
@@ -4922,7 +4922,7 @@ kanoa_(jimmuarts),12,Kanoa (jimmuarts)
 horned_dragon,12,Rồng có sừng
 krazoa,12,Krazoa
 pangolin_humanoid,12,Pangolin Dạng người
-the_nekoluga_family,12,nekoluga family
+the_nekoluga_family,12,Nekoluga family
 geoffroy's_cat,12,Geoffroy's Mèo
 m.u.l.e._(drg),12,M.u.l.e. (drg)
 sulyvahn's_beast,12,Sulyvahn's beast
@@ -4935,13 +4935,13 @@ korikakumon,12,Korikakumon
 reaper_(mass_effect),12,Reaper (mass effect)
 damselfly,12,Damselfly
 mana_dragon,12,Mana Rồng
-super_bunny_(sar),12,Super bunny (sar)
+super_bunny_(sar),12,Super thỏ (sar)
 nefer_(species),12,Nefer (species)
 mantid_(warcraft),12,Mantid (warcraft)
 poptop,12,Poptop
 herrerasaurus,12,Herrerasaurus
 dracolotl,12,Dracolotl
-super_yellow_bear_(sar),12,Super yellow Gấu (sar)
+super_yellow_bear_(sar),12,Super vàng Gấu (sar)
 daedric_prince,12,Daedric prince
 scorchio_(neopets),12,Scorchio (neopets)
 scorchbeast_(fallout),12,Scorchbeast (fallout)
@@ -4996,8 +4996,8 @@ cricetid_humanoid,12,Cricetid Dạng người
 eleutherodactylus,12,Eleutherodactylus
 crinos,12,Crinos
 carbuncle_(atlyss),12,Carbuncle (atlyss)
-mythological_thunderbird,12,Mythological thunderbird
-mythological_rainbird,12,Mythological rainbird
+mythological_thunderbird,12,Thần thoại thunderbird
+mythological_rainbird,12,Thần thoại rainbird
 inostrancevia,12,Inostrancevia
 cardueline,12,Cardueline
 floater,12,Floater
@@ -5033,9 +5033,9 @@ megaraptorid,12,Megaraptorid
 chinese_paddlefish,12,Trung Quốc paddlefish
 klowahkan_(species),12,Klowahkan (species)
 klyntar,12,Klyntar
-living_pastry,12,Living pastry
-living_marshmallow,12,Living marshmallow
-blue_pianta,12,Blue pianta
+living_pastry,12,Có sự sống pastry
+living_marshmallow,12,Có sự sống marshmallow
+blue_pianta,12,Xanh dương pianta
 pinto,12,Pinto
 artiomon,12,Artiomon
 yaungol,12,Yaungol
@@ -5109,7 +5109,7 @@ mon_calamari,12,Mon calamari
 x'i,12,X'i
 rat_taur,12,Chuột cống taur
 jigsawry,12,Jigsawry
-high_entia,12,High entia
+high_entia,12,Cao entia
 octopus_taur,12,Bạch tuộc taur
 rouse,12,Rouse
 eternal_flower_floette,12,Eternal Hoa floette
@@ -5122,11 +5122,11 @@ honey_buzzard,12,Mật ong buzzard
 patapon_(tribe),12,Patapon (tribe)
 dokri,12,Dokri
 hooded_skunk,12,Chồn hôi có mũ trùm
-black_caiman,12,Black caiman
+black_caiman,12,Đen caiman
 lumine,12,Lumine
 sciurid_taur,12,Họ sóc taur
 pit_fiend_(might_and_magic),12,Pit fiend (might và magic)
-north_american_wolverine,12,North american wolverine
+north_american_wolverine,12,North Mỹ wolverine
 kroot,12,Kroot
 sibelyx,12,Sibelyx
 chaurus,12,Chaurus
@@ -5161,9 +5161,9 @@ living_bottle,12,Cái chai có sự sống
 lithulraptor,12,Lithulraptor
 gor_(beastmen),12,Gor (beastmen)
 harlequin_great_dane,12,Harlequin great dane
-yellow_puyo,12,Yellow puyo
+yellow_puyo,12,Vàng puyo
 tzaangor,12,Tzaangor
-white_mushroom_(kingdom_hearts),12,White Nấm (kingdom hearts)
+white_mushroom_(kingdom_hearts),12,Trắng Nấm (kingdom hearts)
 ichthyocentaur,12,Ichthyocentaur
 onocentaur,12,Onocentaur
 banana_humanoid,12,Dạng người chuối
@@ -5196,10 +5196,10 @@ waterbot,12,Waterbot
 swunnel_(insomniacovrlrd),12,Swunnel (insomniacovrlrd)
 vulture_droid,12,Vulture droid
 unknown_unown_form,12,Unknown unown form
-mythological_behemoth,12,Mythological behemoth
+mythological_behemoth,12,Thần thoại behemoth
 silkworm,12,Silkworm
-mythological_feline,12,Mythological Loài mèo
-new_world_blackbird,12,New world blackbird
+mythological_feline,12,Thần thoại Loài mèo
+new_world_blackbird,12,Mới world blackbird
 robot_pony,12,Ngựa Pony người máy
 lava_shark,12,Lava Cá mập
 ipotane,12,Ipotane
@@ -5228,10 +5228,10 @@ psychoraptor,12,Psychoraptor
 kyriean,12,Kyriean
 warsphinx,12,Warsphinx
 warumonzaemon,12,Warumonzaemon
-purple_demon,12,Purple Quỷ
+purple_demon,12,Tím Quỷ
 protovali,12,Protovali
 ceanataur,12,Ceanataur
-purple_puyo,12,Purple puyo
+purple_puyo,12,Tím puyo
 elizabee,12,Elizabee
 toruk,12,Toruk
 silky_sifaka,12,Silky sifaka
@@ -5252,7 +5252,7 @@ lion_demon,12,Sư tử Quỷ
 endertwinks_(species),12,Endertwinks (species)
 rabite,12,Rabite
 hyracodontid,12,Hyracodontid
-sidorak's_species,12,Sidorak's species
+sidorak's_species,12,Sidorak's loài
 hyde,12,Hyde
 long-eared_jerboa,12,Long-eared jerboa
 palafin_(hero_form),12,Palafin (hero form)
@@ -5292,19 +5292,19 @@ blue_rat,12,Chuột cống xanh dương
 noasaurid,12,Noasaurid
 chinese_mantis,12,Trung Quốc mantis
 peale's_falcon,12,Peale's falcon
-yellow_virus_(dr._mario),12,Yellow virus (dr. mario)
+yellow_virus_(dr._mario),12,Vàng virus (dr. mario)
 polymorph_(ben_10),12,Polymorph (ben 10)
 yi_qi,12,Yi qi
 ribbon_worm,12,Giun ruy băng
 vam,12,Vam
 crowned_crane,12,Crowned crane
 blizzarian,12,Blizzarian
-twin_sunflower_(pvz),12,Twin Hướng dương (pvz)
+twin_sunflower_(pvz),12,Đôi Hướng dương (pvz)
 arati,12,Arati
 caramel_swirl_alcremie,12,Karamel swirl alcremie
 beta_zorua,12,Beta zorua
 dwarf_hotot,12,Dwarf hotot
-green_iguana,12,Green iguana
+green_iguana,12,Xanh lá iguana
 kajo_(marakusa),12,Kajo (marakusa)
 tyrvari,12,Tyrvari
 corvidae,12,Corvidae
@@ -5325,7 +5325,7 @@ bivalve_humanoid,12,Bivalve Dạng người
 star_humanoid,12,Dạng người ngôi sao
 drakobloxxer,12,Drakobloxxer
 star_spirit,12,Ngôi sao spirit
-alexander_archipelago_wolf,12,Alexander archipelago Sói
+alexander_archipelago_wolf,12,Alexander quần đảo Sói
 mynx,12,Mynx
 myrmedion,12,Myrmedion
 pineapple_dragon,12,Pineapple Rồng
@@ -5361,7 +5361,7 @@ colmillos_(resident_evil),12,Colmillos (resident evil)
 motacillid,12,Motacillid
 geordian,12,Geordian
 moschus_troll,12,Moschus troll
-ghost_pepper_(pvz),12,Ma pepper (pvz)
+ghost_pepper_(pvz),12,Ma tiêu (pvz)
 salamander_(rain_world),12,Salamander (rain world)
 gigantes_(dragon_quest),12,Gigantes (dragon quest)
 compet,12,Compet
@@ -5397,7 +5397,7 @@ jukani,12,Jukani
 merhog,12,Merhog
 poogle,12,Poogle
 bunyip,12,Bunyip
-hand_taur,12,Hand taur
+hand_taur,12,Bàn tay taur
 savage_deviljho,12,Savage deviljho
 poppup_(deltarune),12,Poppup (deltarune)
 echinozoan_humanoid,12,Echinozoan Dạng người
@@ -5424,10 +5424,10 @@ teporingo_(species),12,Teporingo (species)
 prime_soul,12,Prime soul
 vitamin_(species),12,Vitamin (species)
 tern,12,Tern
-javan_green_magpie,12,Javan green magpie
+javan_green_magpie,12,Javan xanh lá magpie
 ambient_sea_anemone,12,Ambient Biển anemone
 oarfish_merfolk,12,Oarfish merfolk
-xenomorph_queen_mother,12,Xenomorph queen mother
+xenomorph_queen_mother,12,Xenomorph queen mẹ
 rayhound,12,Rayhound
 xenogender_(lore),15,Xenogender (lore)
 tetranadon,12,Tetranadon
@@ -5449,12 +5449,12 @@ okapi_humanoid,12,Okapi Dạng người
 wolfe,12,Wolfe
 brownie_(creature),12,Brownie (creature)
 protogen_taur,12,Protogen taur
-pseudo_shork_(kaiju_paradise),12,Pseudo shork (kaiju paradise)
+pseudo_shork_(kaiju_paradise),12,Giả shork (kaiju paradise)
 wingless_bat_pony,12,Wingless Dơi Ngựa pony
 aereis,12,Aereis
 kzinti,12,Kzinti
 wagtail,12,Wagtail
-silver_stiletto_fly,12,Silver stiletto fly
+silver_stiletto_fly,12,Bạc stiletto fly
 hydromel,12,Hydromel
 torchwood_(pvz),12,Torchwood (pvz)
 torgon,12,Torgon
@@ -5513,7 +5513,7 @@ mountain_bluebird,12,Núi bluebird
 bat_dragon,12,Rồng dơi
 ssi-ruu,12,Ssi-ruu
 enforcer_(duke_nukem),12,Enforcer (duke nukem)
-living_building,12,Living Tòa nhà
+living_building,12,Có sự sống Tòa nhà
 keranidae,12,Keranidae
 living_panties,12,Quần lót có sự sống
 motaur,12,Motaur
@@ -5540,7 +5540,7 @@ kyrian,12,Kyrian
 plasmoid,12,Plasmoid
 old_world_parrot,12,Cũ world parrot
 hovawart,12,Hovawart
-black_tree_monitor,12,Black Cây monitor
+black_tree_monitor,12,Đen Cây monitor
 super_songbird_(sar),12,Super songbird (sar)
 house_gecko,12,House Tắc kè
 hound_dog,12,Hound Chó
@@ -5570,7 +5570,7 @@ green_sea_turtle,12,Rùa biển xanh lá
 coyodune_(insomniacovrlrd),12,Coyodune (insomniacovrlrd)
 ambulantes_omnigus,12,Ambulantes omnigus
 xalanyn,12,Xalanyn
-new_world_porcupine,12,New world porcupine
+new_world_porcupine,12,Mới world porcupine
 toy_fox_terrier,12,Toy Cáo terrier
 dire_truck,12,Dire Xe tải
 flamoa_(insomniacovrlrd),12,Flamoa (insomniacovrlrd)
@@ -5594,7 +5594,7 @@ eagle_ray,12,Tia đại bàng
 nightingale,12,Nightingale
 atlas_moth,12,Atlas Ngài
 arativulpes,12,Arativulpes
-red_rumped_agouti,12,Red rumped agouti
+red_rumped_agouti,12,Đỏ rumped agouti
 avarian,12,Avarian
 figment_creature,12,Figment Sinh vật
 edmontosaurus,12,Edmontosaurus
@@ -5619,14 +5619,14 @@ mastodon,12,Mastodon
 rhaall,12,Rhaall
 megantereon,12,Megantereon
 megalania,12,Megalania
-yellow_wisp_(sonic),12,Yellow wisp (sonic)
+yellow_wisp_(sonic),12,Vàng wisp (sonic)
 tamaraw,12,Tamaraw
 cupid_bee,12,Cupid Ong
-bun_jay_(synpentane),12,Bun jay (synpentane)
+bun_jay_(synpentane),12,Búi tóc jay (synpentane)
 currawong,12,Currawong
 parrot_(minecraft),12,Parrot (minecraft)
 echo_pea,12,Echo pea
-blue_iguana,12,Blue iguana
+blue_iguana,12,Xanh dương iguana
 porcupine_humanoid,12,Porcupine Dạng người
 aurochs_humanoid,12,Aurochs Dạng người
 federation_worker,12,Federation worker
@@ -5688,7 +5688,7 @@ shark_demon,12,Cá mập Quỷ
 sliver_(magic:_the_gathering),12,Sliver (magic: gathering)
 woolie_(bubsy),12,Woolie (bubsy)
 digmon,12,Digmon
-slime_pup,12,Slime pup
+slime_pup,12,Slime con non
 blacklight_virus_(prototype),12,Blacklight virus (prototype)
 ovnee,12,Ovnee
 arkkin,12,Arkkin
@@ -5707,7 +5707,7 @@ angler,12,Angler
 lono'e,12,Lono'e
 moon_wolf,12,Sói mặt trăng
 windcutter,12,Windcutter
-black_heron,12,Black heron
+black_heron,12,Đen heron
 husky_taur,12,Chó husky taur
 mordle,12,Mordle
 sulenx,12,Sulenx
@@ -5726,14 +5726,14 @@ shadowdog,12,Shadowdog
 skeleton_dog,12,Chó bộ xương
 agrossian,12,Agrossian
 lar_gibbon,12,Lar gibbon
-white_blood_cell_(organism),12,White máu cell (organism)
+white_blood_cell_(organism),12,Trắng máu cell (organism)
 dragoon_(kingdom_hearts),12,Dragoon (kingdom hearts)
 piantan,12,Piantan
 gamajig,12,Gamajig
 deinocheirus,12,Deinocheirus
 white-tailed_mongoose,12,White-tailed mongoose
 galaxy_dragon,12,Galaxy Rồng
-serpent_mage,12,Serpent mage
+serpent_mage,12,Xà mage
 illager_(minecraft),12,Illager (minecraft)
 singarti,12,Singarti
 citron-crested_cockatoo,12,Citron-crested cockatoo

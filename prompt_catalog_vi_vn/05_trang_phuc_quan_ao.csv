@@ -302,7 +302,7 @@ striped_bikini,0,Bikini kẻ sọc
 adjusting_clothes,0,Đang chỉnh quần áo
 blood_on_clothes,0,Máu trên quần áo
 panting,7,Panting
-backless_outfit,0,Backless outfit
+backless_outfit,0,Hở lưng outfit
 panties_under_pantyhose,0,Quần lót bên dưới quần tất
 two-tone_dress,0,Váy hai tông
 white_one-piece_swimsuit,0,Đồ bơi một mảnh màu trắng
@@ -436,7 +436,7 @@ maid_uniform,7,Đồng phục hầu gái
 clothing_pull,7,Kéo quần áo
 yellow_skirt,0,Chân váy vàng
 naked_shirt,0,Áo sơ mi trần
-chest_harness,0,Chest Đai buộc
+chest_harness,0,Ngực Đai buộc
 open_kimono,0,Kimono mở
 green_shorts,0,Quần short màu xanh lá
 pink_gloves,0,Găng tay hồng
@@ -452,7 +452,7 @@ three-quarter_sleeves,0,Three-quarter Tay áo
 white_bodysuit,0,Đồ liền thân trắng
 pink_thighhighs,0,Tất cao đùi hồng
 unworn_shoes,0,Giày không mặc
-jacket_partially_removed,0,Áo khoác partially removed
+jacket_partially_removed,0,Áo khoác một phần removed
 fur-trimmed_sleeves,0,Tay áo lông thú viền
 bare_pectorals,0,Cơ ngực trụi lá
 swimsuit_under_clothes,0,Đồ bơi bên dưới quần áo
@@ -519,7 +519,7 @@ asymmetrical_clothes,0,Quần áo bất đối xứng
 green_kimono,0,Kimono xanh lá
 latex_gloves,0,Găng tay cao su
 bra_strap,0,Dây đeo áo ngực
-black_sandals,0,Black Dép xăng đan
+black_sandals,0,Đen Dép xăng đan
 blue_bodysuit,0,Đồ liền thân xanh dương
 lace-trimmed_panties,0,Quần lót ren viền
 turtleneck_shirt,0,Áo sơ mi cổ lọ
@@ -594,7 +594,7 @@ baggy_pants,0,Baggy Quần dài
 waist_cape,0,Áo choàng eo
 open_hoodie,0,Áo hoodie mở
 clothed_feral,7,Nhân vật bán thú mặc đồ
-high_heel_sandals,0,High Gót chân Dép xăng đan
+high_heel_sandals,0,Cao Gót chân Dép xăng đan
 bra_visible_through_clothes,0,Áo ngực nhìn thấy được xuyên qua quần áo
 bunny_costume,7,Trang phục thỏ
 panty_peek,0,Panty peek
@@ -638,7 +638,7 @@ sakuragaoka_high_school_uniform,0,Đồng phục trường Sakuragaoka
 single_shoe,0,Một shoe
 shorts_pull,0,Đang kéo quần short
 green_cape,0,Áo choàng màu xanh lá
-tight_fit,7,Tight fit
+tight_fit,7,Ôm sát dáng thể hình
 pattern_shirt,7,Áo sơ mi có hoa văn
 sleeveless_kimono,0,Kimono không tay
 toeless_footwear,7,Giày dép hở ngón chân
@@ -797,7 +797,7 @@ soccer_uniform,0,Đồng phục bóng đá
 chaldea_master_uniform,0,Đồng phục Chaldea Master
 black_stockings,7,Bít tất màu đen
 under-elbow_gloves,0,Găng tay quá khuỷu tay
-sideless_outfit,0,Sideless outfit
+sideless_outfit,0,Hở bên outfit
 single_fingerless_glove,0,Găng tay hở ngón một chiếc
 two-tone_bikini,0,Bikini hai tông
 one-piece_swimsuit_pull,0,Đang kéo đồ bơi một mảnh
@@ -838,7 +838,7 @@ unworn_shirt,0,Áo sơ mi không mặc
 open_robe,0,Áo choàng mở
 american_flag_bikini,0,Bikini hình cờ Mỹ
 checkered_skirt,0,Chân váy kẻ ca-rô
-white_sandals,0,White Dép xăng đan
+white_sandals,0,Trắng Dép xăng đan
 employee_uniform,0,Đồng phục nhân viên
 green_bra,0,Áo ngực màu xanh lá
 yellow_hoodie,0,Áo hoodie vàng
@@ -858,7 +858,7 @@ two-tone_swimsuit,0,Đồ bơi hai tông
 polka_dot_bikini,0,Bikini chấm bi
 clothes_in_mouth,0,Quần áo trong miệng
 bikini_tan,0,Đồ bơi bikini nâu rám
-strappy_heels,0,Strappy Gót chân
+strappy_heels,0,Strappy Giày cao gót
 toeless_socks,0,Tất kín ngón
 tan_clothing,7,Trang phục màu nâu rám nắng
 kindergarten_uniform,0,Đồng phục mẫu giáo
@@ -887,7 +887,7 @@ holding_panties,0,Cầm quần lót
 white_armor,0,Giáp trắng
 suspender_shorts,0,Suspender Quần short
 aqua_jacket,0,Áo khoác màu xanh ngọc
-matching_outfits,0,Matching outfits
+matching_outfits,0,Đồng bộ outfits
 purple_hoodie,0,Áo hoodie tím
 grey_sleeves,0,Tay áo xám
 orange_pants,0,Quần màu cam
@@ -906,7 +906,7 @@ uneven_gloves,0,Găng tay không đều
 nijigasaki_school_uniform,0,Đồng phục trường Nijigasaki
 untucked_shirt,0,Áo sơ mi bỏ giắt
 skirt_suit,0,Bộ vest chân váy
-crotchless_panties,0,Không có đũng quần Quần lót
+crotchless_panties,0,Không có đũng quần lót
 long_shirt,0,Áo sơ mi dài
 pink_coat,0,Áo khoác màu hồng
 yellow_pants,0,Quần màu vàng
@@ -916,7 +916,7 @@ aqua_bikini,0,Bikini màu xanh ngọc
 tokyo-3_middle_school_uniform,0,Đồng phục trường trung học cơ sở Tokyo-3
 tail_under_skirt,7,Đuôi bên dưới chân váy
 shoe_dangle,0,Shoe dangle
-stiletto_heels,0,Stiletto Gót chân
+stiletto_heels,0,Stiletto Giày cao gót
 polo_shirt,0,Áo sơ mi polo
 adjusting_swimsuit,0,Đang chỉnh đồ bơi
 purple_underwear,7,Đồ lót màu tím
@@ -956,7 +956,7 @@ mismatched_bikini,0,Bikini lệch đôi
 tail_through_skirt,7,Đuôi xuyên qua chân váy
 yellow_thighhighs,0,Tất cao đùi vàng
 arabian_clothes,0,Quần áo Ả Rập
-plate_armor,0,Giáp giáp tấm
+plate_armor,0,Giáp tấm
 pattern_socks,7,Tất hoa văn
 red_one-piece_swimsuit,0,Đồ bơi một mảnh màu đỏ
 uranohoshi_school_uniform,0,Đồng phục trường Uranohoshi
@@ -997,7 +997,7 @@ pink_footwear,7,Giày dép hồng
 orange_bodysuit,0,Đồ liền thân cam
 fur-trimmed_skirt,0,Chân váy lông thú viền
 pulling_another's_clothes,0,Đang kéo quần áo người khác
-tights,7,Tights
+tights,7,Ôm sát
 uneven_sleeves,0,Tay áo không đều
 plaid_jacket,0,Áo khoác kẻ caro
 tsukinomori_school_uniform,0,Đồng phục trường Tsukinomori
@@ -1013,7 +1013,7 @@ shared_clothes,0,Quần áo dùng chung
 american_flag_dress,0,Váy cờ Mỹ
 multicolored_coat,0,Áo khoác nhiều màu
 arm_armor,0,Giáp cánh tay
-hands_in_opposite_sleeves,0,Hands trong opposite Tay áo
+hands_in_opposite_sleeves,0,Bàn tay trong opposite Tay áo
 skirt_tug,0,Đang kéo chân váy
 collared_cape,0,Áo choàng có cổ
 dress_shoes,0,Giày diện váy
@@ -1044,7 +1044,7 @@ fold-over_boots,0,Bốt gập cổ
 tight_dress,0,Váy ôm sát
 black_garter_belt,0,Dây treo tất đen
 heel_up,0,Gót chân hướng lên
-hakama_pants,0,Quần quần hakama
+hakama_pants,0,Quần hakama
 pink_one-piece_swimsuit,0,Đồ bơi một mảnh màu hồng
 leotard_pull,0,Đang kéo đồ liền thân
 orange_sweater,0,Áo len màu cam
@@ -1176,7 +1176,7 @@ skirt_around_one_leg,0,Chân váy quanh một chân
 print_bra,0,Áo ngực họa tiết
 single_garter_strap,0,Dây đeo dây giữ bít tất một chiếc
 latex_elbow_gloves,7,Găng tay khuỷu tay cao su
-red_sandals,0,Red Dép xăng đan
+red_sandals,0,Đỏ Dép xăng đan
 knee_socks,7,Tất đầu gối
 collared_vest,0,Áo ghi-lê có cổ
 cowboy_boots,0,Bốt cao bồi
@@ -1222,17 +1222,17 @@ spandex_shorts,7,Spandex Quần short
 shorts_under_dress,0,Quần short bên dưới váy liền
 purple_robe,0,Áo choàng tím
 sideless_kimono,0,Kimono hở bên
-mitten_hands,7,Mitten hands
-multi-strapped_bikini_top,0,Multi-strapped Đồ bơi bikini top
+mitten_hands,7,Mitten bàn tay
+multi-strapped_bikini_top,0,Multi-strapped Đồ bơi bikini Áo
 lace_gloves,0,Găng tay ren
-blue_jeans,7,Blue Quần jean
+blue_jeans,7,Xanh dương Quần jean
 yellow_leotard,0,Leotard vàng
 combat_boots,0,Giày chiến đấu
 belt_bra,0,Áo ngực thắt lưng
 impossible_swimsuit,0,Đồ bơi bất khả thi
 green_sweater_vest,0,Áo len gilê xanh lá
 orange_pantyhose,0,Quần tất cam
-panty_shot,7,Panty shot
+panty_shot,7,Panty Cắt cảnh
 rolled_up_sleeves,7,Rolled lên Tay áo
 ribbon-trimmed_dress,0,Váy ruy băng viền
 brown_bikini,0,Bikini màu nâu
@@ -1240,7 +1240,7 @@ orange_boots,0,Bốt màu cam
 spread_pussy_under_clothes,0,Âm hộ dạng ra bên dưới quần áo
 yuigaoka_school_uniform,0,Đồng phục trường Yuigaoka
 team_rocket_uniform,0,Đồng phục Team Rocket
-unworn_sandals,0,Unworn Dép xăng đan
+unworn_sandals,0,Không mặc Dép xăng đan
 reindeer_costume,0,Trang phục tuần lộc
 gladiator_sandals,0,Gladiator Dép xăng đan
 black_high_heels,7,Giày cao gót cao đen
@@ -1268,7 +1268,7 @@ pants_rolled_up,0,Quần dài cuộn lên hướng lên
 purple_cardigan,0,Áo cardigan tím
 dress_tug,0,Đang kéo váy liền
 frilly_panties,7,Quần lót nhún diềm
-doki_doki_literature_club_school_uniform,0,Đồng phục trường Doki Doki Literature Club
+doki_doki_literature_club_school_uniform,0,Đồng phục trường Doki Literature Club
 floral_print_dress,0,Váy họa tiết thêu hoa
 animal_print_bikini,7,Bikini họa tiết động vật
 print_underwear,7,Đồ lót họa tiết
@@ -1299,7 +1299,7 @@ grey_cape,0,Áo choàng màu xám
 tight_topwear,7,Áo ôm sát
 two-tone_hoodie,0,Áo hoodie hai tông
 jiangshi_costume,0,Jiangshi Trang phục
-pants_tucked_in,0,Quần dài tucked trong
+pants_tucked_in,0,Quần dài giắt trong
 balls_in_underwear,7,Tinh hoàn trong đồ lót
 hand_under_shirt,0,Bàn tay bên dưới áo sơ mi
 orange_panties,0,Quần lót cam
@@ -1346,7 +1346,7 @@ unworn_dress,0,Váy không mặc
 anzio_school_uniform,0,Đồng phục trường Anzio
 tracen_swimsuit,0,Tracen Đồ bơi
 loose_shirt,0,Áo sơ mi rộng
-blue_sandals,0,Blue Dép xăng đan
+blue_sandals,0,Xanh dương Dép xăng đan
 turtleneck_jacket,0,Áo khoác cổ lọ
 green_cardigan,0,Áo cardigan xanh lá
 single_thigh_boot,0,Bốt đùi một chiếc
@@ -1362,7 +1362,7 @@ pants_around_one_leg,0,Quần dài quanh một chân
 tactical_school_uniform,0,Đồng phục học đường chiến thuật
 white_stockings,7,Bít tất màu trắng
 fatui_coat,0,Fatui Áo khoác dài
-colored_edge_underwear,7,Colored edge Đồ lót
+colored_edge_underwear,7,Nhuộm màu edge Đồ lót
 organic_bra,0,Organic Áo ngực
 yellow_footwear,7,Giày dép vàng
 sleeved_leotard,0,Sleeved Đồ liền thân
@@ -1375,7 +1375,7 @@ green_swimwear,7,Đồ bơi màu xanh lá
 green_armor,0,Giáp xanh lá
 shark_costume,0,Trang phục cá mập
 pleated_shorts,0,Quần short xếp ly
-baggy_clothes,0,Baggy clothes
+baggy_clothes,0,Baggy Quần áo
 brown_leotard,0,Leotard nâu
 vibrator_under_panties,0,Đồ chơi rung bên dưới quần lót
 brown_panties,0,Quần lót nâu
@@ -1409,12 +1409,12 @@ tomoeda_elementary_school_uniform,0,Đồng phục trường Tomoeda Elementary
 white_t-shirt,7,Áo thun trắng
 underwear_sniffing,7,Đang ngửi đồ lót
 sukajan,0,Sukajan
-colored_edge_panties,7,Colored edge Quần lót
+colored_edge_panties,7,Nhuộm màu edge Quần lót
 yellow_swimwear,7,Đồ bơi màu vàng
 pinching_sleeves,0,Pinching Tay áo
-opening_own_clothes,0,Opening own clothes
-coat_partially_removed,0,Áo khoác dài partially removed
-borrowed_design,0,Borrowed design
+opening_own_clothes,0,Opening của mình Quần áo
+coat_partially_removed,0,Áo khoác dài một phần removed
+borrowed_design,0,Mượn design
 hooded_cardigan,0,Áo cardigan có mũ trùm
 shuujin_academy_school_uniform,0,Đồng phục học viện Shuujin
 humanoid_heel,7,Gót chân dạng người
@@ -1440,7 +1440,7 @@ thighhighs_pull,0,Đang kéo tất cao đùi
 multicolored_underwear,7,Đồ lót nhiều màu
 purple_cloak,0,Áo choàng màu tím
 front-fastening_bra,0,Front-fastening Áo ngực
-hand_in_another's_panties,0,Hand trong another's Quần lót
+hand_in_another's_panties,0,Bàn tay trong another's Quần lót
 side_slit_shorts,0,Quần short xẻ tà lệch bên
 fur_jacket,0,Áo khoác lông thú
 uchikake,0,Uchikake
@@ -1450,7 +1450,7 @@ two-sided_gloves,0,Găng tay mặt hai
 white_swimwear,7,Đồ bơi màu trắng
 long_sleeve_shirt,7,Áo sơ mi tay áo dài
 swimsuit_cover-up,0,Đồ bơi cover-up
-pussy_juice_drip_through_clothes,0,Âm hộ Nước ép drip through clothes
+pussy_juice_drip_through_clothes,0,Âm hộ Nước ép drip through Quần áo
 tentacles_under_clothes,0,Xúc tu bên dưới quần áo
 ribbed_leotard,0,Leotard sống dọc
 polka_dot_shirt,0,Áo sơ mi chấm bi
@@ -1467,7 +1467,7 @@ covered_testicles,0,Tinh hoàn được che
 high-waist_pantyhose,0,Quần tất eo cao
 purple_armor,0,Giáp tím
 multicolored_hoodie,0,Áo hoodie nhiều màu
-lactation_through_clothes,0,Lactation through clothes
+lactation_through_clothes,0,Lactation through Quần áo
 dongtan_dress,0,Dongtan Váy liền
 vibrator_in_thighhighs,0,Đồ chơi rung trong tất cao đùi
 sleeveless_clothing,7,Trang phục không tay
@@ -1511,7 +1511,7 @@ wolf_costume,0,Trang phục sói
 checkered_shirt,0,Áo sơ mi kẻ ca-rô
 new_school_swimsuit,0,Đồ bơi học đường mới
 living_clothes,0,Quần áo có sự sống
-sweater_tucked_in,0,Áo len tucked trong
+sweater_tucked_in,0,Áo len giắt trong
 red_sports_bra,0,Áo ngực thể thao màu đỏ
 short-sleeved_sweater,0,Short-sleeved Áo len
 gingham_clothes,0,Quần áo kẻ ô vuông
@@ -1591,8 +1591,8 @@ print_t-shirt,7,Áo thun họa tiết
 orange_underwear,7,Đồ lót màu cam
 pinstripe_pants,0,Quần sọc chỉ
 text_on_underwear,7,Chữ trong ảnh trên đồ lót
-breast_padding,0,Breast padding
-expressive_clothes,0,Expressive clothes
+breast_padding,0,Ngực padding
+expressive_clothes,0,Expressive Quần áo
 holding_swimsuit,0,Cầm đồ bơi
 suimei_academy_school_uniform,0,Đồng phục học viện Suimei
 penguin_costume,0,Trang phục cánh cụt
@@ -1601,7 +1601,7 @@ broken_armor,0,Giáp bị gãy
 torn_cloak,0,Áo choàng bị rách
 fur_cloak,0,Áo choàng lông thú
 pink_sweater_vest,0,Áo len gilê hồng
-sling_bikini_top,0,Sling Đồ bơi bikini top
+sling_bikini_top,0,Sling Đồ bơi bikini Áo
 print_sweater,0,Áo len họa tiết
 biting_glove,0,Đang cắn găng tay
 heart_print_panties,0,Quần lót họa tiết trái tim
@@ -1612,16 +1612,16 @@ ao_dai,0,Ao dai
 spiked_armor,0,Giáp có gai
 panties_on_head,0,Quần lót trên đầu
 frontless_outfit,0,Frontless outfit
-shirt_partially_removed,0,Áo sơ mi partially removed
+shirt_partially_removed,0,Áo sơ mi một phần removed
 oversized_pants,0,Quần quá khổ
 grabbing_another's_sleeve,0,Grabbing another's Tay áo
 apron_lift,0,Nhấc tạp dề
-aristocratic_clothes,0,Aristocratic clothes
+aristocratic_clothes,0,Aristocratic Quần áo
 christmas_sweater,0,Áo len Giáng sinh
 masturbation_under_clothes,0,Thủ dâm bên dưới quần áo
 undersized_clothing,7,Trang phục quá nhỏ
 slit_dress,7,Váy xẻ tà
-pink_sandals,0,Pink Dép xăng đan
+pink_sandals,0,Hồng Dép xăng đan
 jacket_only,7,Chỉ mặc áo khoác
 overall_skirt,0,Chân váy yếm
 barefoot_sandals_(jewelry),0,Chân trần Dép xăng đan (jewelry)
@@ -1633,8 +1633,8 @@ brown_robe,0,Áo choàng nâu
 fur_boots,0,Bốt lông
 unworn_bikini,0,Bikini không mặc
 hand_in_pants,0,Bàn tay trong quần dài
-shirt_partially_tucked_in,0,Áo sơ mi partially tucked trong
-wedge_heels,0,Wedge Gót chân
+shirt_partially_tucked_in,0,Áo sơ mi một phần giắt trong
+wedge_heels,0,Wedge Giày cao gót
 aqua_sleeves,0,Tay áo xanh ngọc
 bikini_shorts,0,Quần short bikini
 penis_clothing,7,Trang phục dương vật
@@ -1648,7 +1648,7 @@ aria_company_uniform,0,Đồng phục Aria Company
 sweater_only,7,Chỉ mặc áo len
 pattern_thigh_socks,7,Tất đùi hoa văn
 trapped_in_clothing,7,Trapped trong Trang phục
-unworn_bikini_bottom,0,Unworn Đồ bơi bikini bottom
+unworn_bikini_bottom,0,Không mặc Đồ bơi bikini bottom
 aqua_leotard,0,Leotard xanh ngọc
 crotchless_underwear,7,Không có đũng quần Đồ lót
 metamoran_vest,0,Metamoran Áo gile
@@ -1678,7 +1678,7 @@ armored_bodysuit,0,Đồ liền thân bọc giáp
 leaf_clothing,0,Trang phục chiếc lá
 rabbit_costume,0,Trang phục thỏ
 pattern_sweater,7,Áo len hoa văn
-crotchless_pantyhose,0,Không có đũng quần Quần tất
+crotchless_pantyhose,0,Không có đũng quần tất
 latex_thighhighs,0,Tất cao đùi cao su
 orange_apron,0,Tạp dề màu cam
 torn_swimsuit,0,Đồ bơi bị rách
@@ -1734,7 +1734,7 @@ unworn_shorts,0,Quần short không mặc
 strawberry_print_panties,0,Quần lót họa tiết dâu tây
 two_tone_shoes,7,Giày hai tông
 stained_clothes,0,Quần áo vấy bẩn
-yellow_sandals,0,Yellow Dép xăng đan
+yellow_sandals,0,Vàng Dép xăng đan
 fingerless_gloves_(marking),7,Găng tay hở ngón
 removing_jacket,0,Đang cởi áo khoác
 clothing_swap,7,Đổi quần áo
@@ -1747,8 +1747,8 @@ workout_clothing,7,Quần áo tập thể dục
 fingering_through_panties,0,Kích thích bằng ngón tay xuyên qua quần lót
 lowleg_skirt,0,Chân váy cạp trễ
 gold_bra,0,Áo ngực màu vàng kim
-crotchless_pants,0,Không có đũng quần Quần dài
-titfuck_under_clothes,7,Titfuck bên dưới clothes
+crotchless_pants,0,Không có đũng quần dài
+titfuck_under_clothes,7,Titfuck bên dưới Quần áo
 multicolored_shorts,0,Quần short nhiều màu
 iridescent_clothes,0,Quần áo ánh kim
 odaiba_girls_high_school_uniform,0,Đồng phục trường trung học phổ thông Odaiba Girls
@@ -1763,7 +1763,7 @@ leggings_under_shorts,0,Quần legging bên dưới quần short
 sophist's_robe_(ff14),0,Sophist's Áo choàng dài (ff14)
 panties_under_shorts,0,Quần lót bên dưới quần short
 translucent_shirt,7,Áo sơ mi bán trong suốt
-block_heels,0,Block Gót chân
+block_heels,0,Block Giày cao gót
 wearing_collar,7,Mặc vòng cổ
 floral_print_shirt,0,Áo sơ mi họa tiết thêu hoa
 shirt_under_sweater,0,Áo sơ mi bên dưới áo len
@@ -1778,7 +1778,7 @@ starting_future_(umamusume),0,Starting future (umamusume)
 micro_bra,0,Áo ngực rất nhỏ
 spiked_boots,0,Bốt có gai
 nipples_visible_through_clothing,7,Núm vú nhìn thấy được xuyên qua trang phục
-cardigan_partially_removed,0,Áo cardigan partially removed
+cardigan_partially_removed,0,Áo cardigan một phần removed
 shirt_bow,0,Nơ trên áo sơ mi
 unworn_cape,0,Áo choàng không mặc
 ribbon-trimmed_bikini,0,Bikini ruy băng viền
@@ -1821,7 +1821,7 @@ single-shoulder_shirt,0,Áo sơ mi vai một chiếc
 two_tone_underwear,7,Đồ lót hai tông
 fur_bikini,0,Bikini lông thú
 raised_dress,7,Váy dựng lên
-penis_under_another's_clothes,0,Dương vật bên dưới another's clothes
+penis_under_another's_clothes,0,Dương vật bên dưới another's Quần áo
 hololive_idol_uniform_(origin),0,Đồng phục thần tượng Hololive
 naked_cloak,0,Áo choàng trần
 ashigaya_high_school_uniform,0,Đồng phục trường trung học phổ thông Ashigaya
@@ -1870,7 +1870,7 @@ azumanga_daioh's_school_uniform,0,Đồng phục trường Azumanga Daioh's
 layered_gloves,0,Găng tay nhiều lớp
 two-tone_vest,0,Áo ghi-lê hai tông
 brown_bodysuit,0,Đồ liền thân nâu
-exploding_clothes,0,Exploding clothes
+exploding_clothes,0,Exploding Quần áo
 pinstripe_vest,0,Áo ghi-lê sọc chỉ
 erection_under_skirt,7,Cương cứng bên dưới chân váy
 collared_leotard,0,Leotard có cổ
@@ -1881,7 +1881,7 @@ blue_male_underwear,0,Đồ lót nam màu xanh dương
 vertical-striped_panties,0,Quần lót kẻ sọc dọc
 footwear_focus,0,Nhấn mạnh giày
 cupless_bikini,0,Cupless Đồ bơi bikini
-sock_fetish,7,Sock fetish
+sock_fetish,7,Sock Sở thích
 fishnet_stockings,7,Bít tất lưới
 multicolored_pants,0,Quần nhiều màu
 see-through_bikini,0,Đồ bơi bikini xuyên thấu
@@ -1901,7 +1901,7 @@ sailor_swimsuit_(idolmaster),0,Đồ bơi thủy thủ
 wet_skirt,0,Chân váy ướt
 stretched_clothing,7,Stretched Trang phục
 martial_arts_uniform,7,Đồng phục Martial Arts
-panties_bulge,7,Chỗ lùm lùm quần lót
+panties_bulge,7,Chỗ lùm quần lót
 hip_armor,0,Giáp hông
 unworn_pants,0,Quần không mặc
 bandages_over_clothes,0,Băng gạc phía trên quần áo
@@ -1932,7 +1932,7 @@ cum_in_panties,0,Tinh dịch trong quần lót
 sweater_pull,0,Đang kéo áo len
 text_on_t-shirt,7,Chữ trong ảnh trên áo phông
 single_half_glove,0,Găng tay một chiếc một nửa
-panty_lift,0,Panty lift
+panty_lift,0,Panty Nâng lên
 yamabuki_high_school_uniform,0,Đồng phục trường trung học phổ thông Yamabuki
 presenting_panties,7,Quần lót chĩa ra
 split-color_clothes,0,Quần áo hai màu tách biệt
@@ -1981,7 +1981,7 @@ panties_around_one_ankle,0,Quần lót xung quanh một Cổ chân
 discarded_underwear,7,Đồ lót đã bỏ đi
 back-tie_bikini,7,Bikini cà vạt lưng
 front-tie_bra,0,Áo ngực cà vạt phía trước
-adjusting_another's_clothes,0,Adjusting another's clothes
+adjusting_another's_clothes,0,Adjusting another's Quần áo
 hololive_idol_uniform_(bright),0,Đồng phục thần tượng Hololive
 two_tone_socks,7,Tất hai tông
 shorts_tan,0,Quần short nâu rám
@@ -1989,7 +1989,7 @@ workout_clothes,0,Quần áo tập thể dục
 star_print_bikini,0,Bikini họa tiết ngôi sao
 t-shirt_only,7,Chỉ có áo phông
 partially_open_jacket,0,Áo khoác một phần mở
-furry_wearing_fursuit,7,Furry wearing fursuit
+furry_wearing_fursuit,7,Nhiều lông wearing fursuit
 panty_lines,7,Panty đường nét
 hoof_boots,7,Bốt móng guốc
 high-low_skirt,0,Chân váy cao thấp
@@ -2010,7 +2010,7 @@ saunders_school_uniform,0,Đồng phục trường Saunders
 naked_skirt,0,Chân váy trần
 ejaculation_under_clothes,0,Xuất tinh bên dưới quần áo
 precum_through_clothes,0,Dịch tiền xuất tinh xuyên qua quần áo
-shirt_cut_meme,0,Áo sơ mi cut meme
+shirt_cut_meme,0,Áo sơ mi cut Meme
 ornate_armor,0,Giáp cầu kỳ
 heart_panties,7,Quần lót trái tim
 torn_shoes,0,Giày bị rách
@@ -2040,7 +2040,7 @@ german_flag_bikini,0,Bikini hình cờ Đức
 asymmetrical_dress,0,Váy bất đối xứng
 sock_pull,0,Sock Kéo
 clothing_loss,7,Mất quần áo
-colored_edge_bikini,7,Colored edge Đồ bơi bikini
+colored_edge_bikini,7,Nhuộm màu edge Đồ bơi bikini
 single_sandal,0,Một sandal
 multicolored_pantyhose,0,Quần tất nhiều màu
 side-tie_swimsuit,0,Đồ bơi cà vạt lệch bên
@@ -2068,31 +2068,31 @@ hand_in_panties,7,Bàn tay trong quần lót
 latex_panties,0,Quần lót cao su
 argyle_dress,0,Váy kẻ quả thoi
 two-tone_pantyhose,0,Quần tất hai tông
-tight_orifice,7,Tight orifice
+tight_orifice,7,Ôm sát orifice
 panties_around_thighs,0,Quần lót quanh đùi
 skirt_down,7,Kéo chân váy xuống
 tsab_ground_military_uniform,0,Đồng phục quân đội Tsab Ground
-magical_girl_outfit,7,Magical girl outfit
+magical_girl_outfit,7,Kỳ diệu nữ outfit
 blueberry_academy_school_uniform,0,Đồng phục học viện Blueberry
 vest_lift,0,Nhấc áo gile
 see-through_bra,0,Áo ngực xuyên thấu
 polka_dot_thighhighs,0,Tất cao đùi chấm bi
 getabako,0,Getabako
-cock_sock,7,Cock sock
+cock_sock,7,Dương vật sock
 multicolored_sweater,0,Áo len nhiều màu
 white_seam_underwear,7,Đồ lót đường may màu trắng
 frilly_dress,7,Váy nhún diềm
 single_knee_boot,0,Bốt đầu gối một chiếc
 coat_cape,7,Áo choàng áo khoác
 cardigan_vest,0,Áo ghi-lê áo cardigan
-nijisanji_matching_outfit,0,Nijisanji matching outfit
+nijisanji_matching_outfit,0,Nijisanji đồng bộ outfit
 gold_gloves,0,Găng tay vàng kim
 rainbow_bikini,0,Bikini màu cầu vồng
 orange_swimwear,7,Đồ bơi màu cam
 torn_kimono,0,Áo kimono bị rách
 breastless_clothing,7,Trang phục không ngực
 gold_dress,0,Váy vàng kim
-trying_on_clothes,0,Trying on clothes
+trying_on_clothes,0,Trying on Quần áo
 footjob_with_footwear,0,Footjob với Giày dép
 see-through_dress_layer,0,See-through Váy liền layer
 crotch_apron,7,Tạp dề đũng quần
@@ -2118,7 +2118,7 @@ work_uniform,7,Đồng phục lao động
 adjusting_leotard,0,Đang chỉnh đồ liền thân
 dildo_under_clothes,0,Dương vật giả bên dưới quần áo
 zipper_leotard,0,Leotard khóa kéo
-grey_sandals,0,Grey Dép xăng đan
+grey_sandals,0,Xám Dép xăng đan
 white_thigh_socks,7,Tất đùi màu trắng
 asymmetrical_armor,0,Giáp bất đối xứng
 sagging_pants,0,Sagging Quần dài
@@ -2126,7 +2126,7 @@ belt_skirt,0,Chân váy thắt lưng
 pleated_shirt,0,Áo sơ mi xếp ly
 tsukumihara_academy_uniform_(fate/extra_ccc),0,Đồng phục học viện Tsukumihara
 pubic_boot,7,Bốt vùng kín
-purple_sandals,0,Purple Dép xăng đan
+purple_sandals,0,Tím Dép xăng đan
 aqua_cape,0,Áo choàng màu xanh ngọc
 elbow_sleeve,0,Tay áo khuỷu tay
 clothing_theft,7,Trộm trang phục
@@ -2149,7 +2149,7 @@ purple_sports_bra,0,Áo ngực thể thao màu tím
 shoulderless_shirt,7,Áo không vai
 impossible_sweater,0,Áo len bất khả thi
 pink_armor,0,Giáp hồng
-bdsm_outfit,7,Bdsm outfit
+bdsm_outfit,7,BDSM outfit
 sweater_guard,0,Áo len guard
 clothing_grab,7,Nắm trang phục
 white_sweater_vest,0,Áo len gilê trắng
@@ -2167,7 +2167,7 @@ fold-over_gloves,0,Gập phía trên găng tay
 hooters_uniform,7,Đồng phục Hooters
 cat_keyhole_bra,7,Áo ngực lỗ khóa mèo
 angel_wing_uniform,0,Đồng phục cánh thiên thần
-heel_claw,7,Gót chân claw
+heel_claw,7,Gót chân móng vuốt
 sports_sandals,0,Thể thao Dép xăng đan
 soviet_school_uniform,0,Đồng phục trường Soviet
 toeless_shoes,7,Giày hở ngón chân
@@ -2178,7 +2178,7 @@ panties_visible_through_clothes,0,Quần lót nhìn thấy được xuyên qua q
 metal_gloves,0,Găng tay kim loại
 see-through_skirt_layer,0,See-through Chân váy layer
 bikini_tug,0,Đang kéo đồ bơi bikini
-holding_unworn_sandals,0,Đang cầm unworn Dép xăng đan
+holding_unworn_sandals,0,Đang cầm không mặc Dép xăng đan
 armor_plates,7,Cái đĩa giáp
 short_yukata,0,Áo yukata ngắn
 cum_through_pants,7,Tinh dịch xuyên qua quần dài
@@ -2192,7 +2192,7 @@ pink_high_heels,7,Giày cao gót cao hồng
 yotsuba_university_affiliated_junior_high_school_uniform,0,Đồng phục trường trung học cơ sở Yotsuba University Affiliated
 tune_squad_outfit,7,Tune squad outfit
 kobeya_uniform,0,Đồng phục Kobeya
-clothes_on_and_off,0,Clothes on và off
+clothes_on_and_off,0,Quần áo on và off
 heel_pad,7,Gót chân pad
 angel's_24_uniform_(blue_archive),0,Đồng phục Angel's 24
 no_coat,0,Không có áo khoác dài
@@ -2223,26 +2223,26 @@ kazamatsuri_institute_high_school_uniform,0,Đồng phục trường trung học
 picot_trim_panties,0,Picot trim Quần lót
 hololive_dance_practice_uniform,0,Đồng phục Hololive Dance Practice
 gold_leotard,0,Leotard vàng kim
-skirt_caught_on_object,0,Chân váy caught on object
+skirt_caught_on_object,0,Chân váy caught on vật thể
 hololive_idol_uniform_(color_rise),0,Đồng phục thần tượng Hololive
-changing_clothes,0,Changing clothes
+changing_clothes,0,Changing Quần áo
 padded_coat,0,Áo khoác có đệm
 text_on_hoodie,7,Chữ trong ảnh trên áo hoodie
-bikini_bulge,7,Chỗ lùm lùm bikini
+bikini_bulge,7,Chỗ lùm bikini
 silver_bikini,0,Bikini màu bạc
 holding_unworn_cape,0,Cầm áo choàng không mặc
 dress_aside,0,Kéo váy sang bên
 blue_seam_underwear,7,Đồ lót đường may màu xanh dương
-vietnamese_clothes,0,Vietnamese clothes
+vietnamese_clothes,0,Vietnamese Quần áo
 blood_on_gloves,0,Máu trên găng tay
-archery_shooting_glove,0,Archery shooting glove
+archery_shooting_glove,0,Archery shooting găng tay
 kanon_school_uniform,0,Đồng phục trường Kanon
 purple_stockings,7,Bít tất màu tím
 golden_clothing,7,Trang phục màu vàng
 putting_on_gloves,0,Đang đeo găng tay
 holding_gloves,0,Cầm găng tay
 clothes_in_front,0,Quần áo trong phía trước
-foot_up_heel_up,0,Foot lên Gót chân lên
+foot_up_heel_up,0,Bàn chân lên Gót chân lên
 holding_coat,0,Cầm áo khoác dài
 cycling_uniform,0,Đồng phục Cycling
 portal_panties,7,Portal Quần lót
@@ -2278,10 +2278,10 @@ hoto_cocoa's_school_uniform,0,Đồng phục trường Hoto Cocoa's
 bikini_under_skirt,0,Đồ bơi bikini bên dưới chân váy
 zipper_bikini,0,Bikini khóa kéo
 cum_on_underwear,7,Tinh dịch trên đồ lót
-buttjob_over_clothes,0,Buttjob trên clothes
-full-body_clothes_hanger,0,Full-body clothes Móc treo
+buttjob_over_clothes,0,Buttjob trên Quần áo
+full-body_clothes_hanger,0,Full-body Quần áo Móc treo
 grey_t-shirt,7,Áo thun xám
-black_jeans,7,Black Quần jean
+black_jeans,7,Đen Quần jean
 playboy_outfit,7,Playboy outfit
 fur_clothing,7,Trang phục lông thú
 pattern_gloves,7,Găng tay hoa văn
@@ -2302,7 +2302,7 @@ oversized_sleeves,7,Tay áo quá khổ
 light_clothing,7,Trang phục nhạt
 ribbed_clothing,7,Trang phục sống dọc
 frilled_footwear,0,Giày dép nhún xếp
-shibari_under_clothes,0,Shibari bên dưới clothes
+shibari_under_clothes,0,Shibari bên dưới Quần áo
 aqua_one-piece_swimsuit,0,Đồ bơi một mảnh màu xanh ngọc
 flag_clothing,7,Trang phục hình cờ
 blue_slingshot_swimsuit,0,Đồ bơi dây chéo màu xanh dương
@@ -2318,7 +2318,7 @@ dildo_under_panties,0,Dương vật giả bên dưới quần lót
 roman_clothes,0,Quần áo La Mã
 multicolored_sleeves,0,Tay áo nhiều màu
 furgonomic_underwear,7,Đồ lót nửa người nửa thú
-green_sandals,0,Green Dép xăng đan
+green_sandals,0,Xanh lá Dép xăng đan
 print_cape,0,Áo choàng họa tiết
 panties_cat's_cradle,0,Quần lót cat's cradle
 pseudo-tokyo_school_uniform,0,Đồng phục trường Pseudo-tokyo
@@ -2340,7 +2340,7 @@ spiked_shoes,0,Giày có gai
 floral_dress,0,Váy thêu hoa
 feather-trimmed_dress,0,Váy lông vũ viền
 dance_shoes,7,Dance Giày
-ballet_class_clothes,0,Ballet class clothes
+ballet_class_clothes,0,Ballet class Quần áo
 yuyushiki's_school_uniform,0,Đồng phục trường Yuyushiki's
 himematsu_academy_school_uniform,0,Đồng phục học viện Himematsu
 pajama_pants,0,Pajama Quần dài
@@ -2355,7 +2355,7 @@ polka_dot_pantyhose,0,Quần tất chấm bi
 camisole_over_clothes,0,Áo hai dây phía trên quần áo
 shiny_footwear,0,Giày dép bóng
 white_high_heels,7,Giày cao gót cao trắng
-panty_&_stocking_with_garterbelt_(style),0,Panty & stocking với garterbelt (style)
+panty_&_stocking_with_garterbelt_(style),0,Panty & Tất dài với garterbelt (style)
 two_tone_bodysuit,7,Đồ liền thân hai tông
 holding_unworn_dress,0,Cầm váy không mặc
 panty_bulge,0,Panty Phần phồng lên
@@ -2375,13 +2375,13 @@ undone_bikini,0,Đồ bơi bikini chưa cài
 cafe_lycoreco_uniform,0,Đồng phục Cafe Lycoreco
 camouflage_shorts,0,Quần short rằn ri
 collared_cloak,0,Áo choàng có cổ
-mexican_clothes,0,Mexican clothes
+mexican_clothes,0,Mexican Quần áo
 coat_of_arms,0,Áo khoác dài cánh tay
 translucent_stockings,7,Bít tất bán trong suốt
 boy_shorts,7,Quần short boxer
 tokiwadai_school_gym_uniform,0,Đồng phục Tokiwadai School Gym
 monotone_footwear,7,Giày dép một tông
-nipple_tweak_through_clothes,0,Nipple tweak through clothes
+nipple_tweak_through_clothes,0,Núm vú tweak through Quần áo
 orange_one-piece_swimsuit,0,Đồ bơi một mảnh màu cam
 heart_print_underwear,7,Đồ lót họa tiết trái tim
 wet_pantyhose,0,Quần tất ướt
@@ -2389,10 +2389,10 @@ shirt_down,0,Kéo áo sơ mi xuống
 chinese_armor,0,Giáp Trung Quốc
 biting_clothes,0,Đang cắn quần áo
 frilled_garter,0,Dây treo nhún xếp
-clothes_rack,0,Clothes rack
+clothes_rack,0,Quần áo rack
 unworn_pantyhose,0,Quần tất không mặc
 leopard_print_panties,0,Quần lót họa tiết báo
-robe_partially_removed,0,Áo choàng dài partially removed
+robe_partially_removed,0,Áo choàng dài một phần removed
 native_american_clothes,0,Trang phục người bản địa châu Mỹ
 clothing_on_floor,7,Trang phục trên sàn nhà
 vest_only,7,Chỉ mặc áo gile
@@ -2405,7 +2405,7 @@ multicolored_stockings,7,Bít tất nhiều màu
 shorts_under_shorts,0,Quần short bên dưới quần short
 torn_vest,0,Áo gile bị rách
 bird_costume,0,Trang phục chim
-high_heel_slides,0,High Gót chân Cầu trượt
+high_heel_slides,0,Cao Gót chân Cầu trượt
 front-tie_clothing,7,Quần áo buộc phía trước
 orange_planet_uniform,0,Đồng phục Orange Planet
 bra_down,7,Kéo áo ngực xuống
@@ -2417,7 +2417,7 @@ kibina_high_school_uniform,0,Đồng phục trường trung học phổ thông K
 glistening_bodysuit,7,Đồ liền thân bóng nhẫy
 ludvico_private_girls'_academy_school_uniform,0,Đồng phục học viện nữ sinh Ludvico Private
 loose_bikini,0,Bikini rộng
-blue_bike_shorts,0,Blue bike Quần short
+blue_bike_shorts,0,Xanh dương bike Quần short
 himeya_company_uniform,0,Đồng phục Himeya Company
 neck-tie_bikini,7,Bikini cà vạt cổ
 tail_growth_in_pants,7,Sự mọc đuôi trong quần dài
@@ -2462,7 +2462,7 @@ ohananomitsu_high_school_uniform,0,Đồng phục trường trung học phổ th
 multicolored_t-shirt,7,Áo thun nhiều màu
 metal_bikini,0,Bikini kim loại
 tan_shorts,7,Quần short màu nâu rám nắng
-mongolian_clothes,0,Mongolian clothes
+mongolian_clothes,0,Mongolian Quần áo
 backless_pants,0,Quần hở lưng
 bikini_top_removed,7,Áo bikini đã tháo ra
 hand_under_swimsuit,0,Bàn tay bên dưới đồ bơi
@@ -2475,7 +2475,7 @@ mma_gloves,0,Mma Găng tay
 crotchless_leotard,0,Không có đũng quần Đồ liền thân
 sweater_around_neck,0,Áo len quanh cổ
 red_garter_straps,0,Dây đeo dây giữ bít tất đỏ
-aztec_clothes,0,Aztec clothes
+aztec_clothes,0,Aztec Quần áo
 kimono_dress,0,Váy kimono
 bikini_bralette,7,Đồ bơi bikini bralette
 aqua_cardigan,0,Áo cardigan xanh ngọc
@@ -2539,20 +2539,20 @@ checkered_sleeves,0,Tay áo kẻ ca-rô
 alternate_footwear,0,Giày dép khác
 waitress_uniform,7,Đồng phục Waitress
 panda_costume,0,Trang phục gấu trúc
-black_bikini_bottom,7,Black Đồ bơi bikini bottom
+black_bikini_bottom,7,Đen Đồ bơi bikini bottom
 star_print_panties,0,Quần lót họa tiết ngôi sao
 hebijo_academy_school_uniform,0,Đồng phục học viện Hebijo
 sweater_tug,0,Đang kéo áo len
 gradient_shirt,0,Áo sơ mi chuyển sắc
-colored_edge_bra,7,Colored edge Áo ngực
+colored_edge_bra,7,Nhuộm màu edge Áo ngực
 leaf_bikini,0,Bikini chiếc lá
 dress_only,7,Chỉ mặc váy liền
-tight_bulges,7,Chỗ lùm lùm ôm sát
+tight_bulges,7,Chỗ lùm ôm sát
 ooarai_naval_school_uniform,0,Đồng phục trường Ooarai Naval
 two_tone_thigh_socks,7,Tất đùi hai tông
 pajama_shirt,7,Pajama Áo sơ mi
 medieval_armor,7,Giáp trung cổ
-footjob_over_clothes,0,Footjob trên clothes
+footjob_over_clothes,0,Footjob trên Quần áo
 latex_skirt,0,Chân váy cao su
 two-sided_sleeves,0,Tay áo mặt hai
 unworn_kimono,0,Kimono không mặc
@@ -2575,7 +2575,7 @@ penis_under_skirt,7,Dương vật bên dưới chân váy
 ama_usa_an_uniform,0,Đồng phục Ama Usa An
 checkered_bikini,0,Bikini kẻ ca-rô
 demon_costume,0,Trang phục quỷ
-autotitfuck_under_clothes,7,Autotitfuck bên dưới clothes
+autotitfuck_under_clothes,7,Autotitfuck bên dưới Quần áo
 jacket_vest,7,Áo ghi-lê áo khoác
 heel,7,Gót chân
 paprika_private_academy_school_uniform,0,Đồng phục học viện tư thục Paprika
@@ -2618,16 +2618,16 @@ high_heeled_feet,7,Bàn chân cao có gót
 multicolored_cloak,0,Áo choàng nhiều màu
 mahora_academy_middle_school_uniform,0,Đồng phục trường trung học cơ sở Mahora Academy
 heart_apron,0,Tạp dề trái tim
-under_another's_clothes,0,Bên dưới another's clothes
+under_another's_clothes,0,Bên dưới another's Quần áo
 lydian_academy_school_uniform,0,Đồng phục học viện Lydian
 russian_clothes,0,Quần áo Nga
 hypnotic_clothing,7,Trang phục bị thôi miên
 torn_boots,0,Ủng bị rách
 crotchless_bikini,0,Không có đũng quần Đồ bơi bikini
-shoe_fetish,7,Shoe fetish
+shoe_fetish,7,Shoe Sở thích
 multicolored_one-piece_swimsuit,0,Đồ bơi nhiều màu một mảnh
 gym_challenge_uniform,0,Đồng phục Gym Challenge
-diamond_clan_outfit,0,Diamond clan outfit
+diamond_clan_outfit,0,Hình thoi clan outfit
 swimsuit_lift,0,Nhấc đồ bơi
 no_detached_sleeves,0,Không có tay áo rời
 socks_over_thighhighs,0,Tất phía trên tất cao đùi
@@ -2657,7 +2657,7 @@ latex_bikini,0,Bikini cao su
 safari_jacket,0,Safari Áo khoác
 heel_pop,0,Gót chân pop
 cape_lift,0,Nhấc áo choàng
-slavic_clothes,0,Slavic clothes
+slavic_clothes,0,Slavic Quần áo
 gradient_bikini,0,Bikini chuyển sắc
 garter_belt_socks,7,Tất thắt lưng dây giữ bít tất
 button_dress,0,Váy cúc
@@ -2726,10 +2726,10 @@ verone_gakuin_school_uniform,0,Đồng phục trường Verone Gakuin
 danganronpa_10th_anniversary_costume,0,Danganronpa 10th anniversary Trang phục
 wet_shorts,0,Quần short ướt
 fujimi_high_school_uniform,0,Đồng phục trường trung học phổ thông Fujimi
-hand_in_another's_clothes,0,Hand trong another's clothes
+hand_in_another's_clothes,0,Bàn tay trong another's Quần áo
 lingerie_panties,7,Quần lót đồ lót nữ
 bra_over_clothes,0,Áo ngực phía trên quần áo
-cowgirl_outfit,7,Cowgirl outfit
+cowgirl_outfit,7,Cưỡi ngựa outfit
 penis_through_underwear,7,Dương vật xuyên qua đồ lót
 dress_pants,7,Quần váy
 glistening_underwear,7,Đồ lót bóng nhẫy
@@ -2796,7 +2796,7 @@ puffy_dress,0,Váy phồng
 two_tone_jacket,7,Áo khoác hai tông
 shirt_logo,7,Logo áo sơ mi
 aoshidan_school_uniform,0,Đồng phục trường Aoshidan
-clothes_shop,0,Clothes shop
+clothes_shop,0,Quần áo shop
 presenting_bra,0,Áo ngực chĩa ra
 silver_shoes,0,Giày màu bạc
 gokugetsu_gakuen_school_uniform,0,Đồng phục học viện Gokugetsu
@@ -2807,7 +2807,7 @@ shiraitodai_school_uniform,0,Đồng phục trường Shiraitodai
 jacket_tug,0,Đang kéo áo khoác
 purple_garter_belt,0,Dây treo tất tím
 fox_costume,0,Trang phục cáo
-naked_lab_coat,0,Naked lab Áo khoác dài
+naked_lab_coat,0,Trần lab Áo khoác dài
 pattern_shorts,7,Quần short hoa văn
 biting_shirt,7,Đang cắn áo sơ mi
 footjob_with_shoes,0,Footjob với Giày
@@ -2823,7 +2823,7 @@ orange_robe,0,Áo choàng cam
 argyle_footwear,0,Giày dép kẻ quả thoi
 paizuri_over_clothes,0,Ép ngực vào dương vật phía trên quần áo
 flamenco_dress,0,Flamenco Váy liền
-sock_in_mouth,0,Sock trong mouth
+sock_in_mouth,0,Sock trong miệng
 mismatched_underwear,0,Đồ lót lệch đôi
 asymmetrical_shirt,0,Áo sơ mi bất đối xứng
 purple_high_heels,7,Giày cao gót cao tím
@@ -2847,7 +2847,7 @@ indonesian_high_school_uniform,0,Đồng phục trường trung học phổ thô
 clothing_down,7,Kéo trang phục xuống
 satin_bra,0,Áo ngực sa tanh
 knights_of_the_round_uniform,0,Đồng phục Knights Of The Round
-kimono_partially_removed,0,Áo kimono partially removed
+kimono_partially_removed,0,Áo kimono một phần removed
 raizen_high_school_uniform,0,Đồng phục trường trung học phổ thông Raizen
 puffy_coat,0,Áo khoác phồng
 pink_thigh_socks,7,Tất đùi màu hồng
@@ -2870,7 +2870,7 @@ fur_gloves,0,Găng tay lông thú
 ribbon-trimmed_kimono,0,Kimono ruy băng viền
 detached_cape,0,Áo choàng tách rời
 up_sleeve,0,Lên Tay áo
-low_block_heels,0,Low block Gót chân
+low_block_heels,0,Thấp block Giày cao gót
 bikini_over_clothes,0,Đồ bơi bikini phía trên quần áo
 gold_slingshot_swimsuit,0,Đồ bơi dây chéo màu vàng kim
 blue_dress_shirt,7,Áo sơ mi váy màu xanh dương
@@ -2906,14 +2906,14 @@ cum_on_panties,7,Tinh dịch trên quần lót
 safety_vest,7,Safety Áo gile
 drawstring_hoodie,7,Drawstring Áo hoodie
 orange_cloak,0,Áo choàng màu cam
-mule_heels,7,Mule Gót chân
+mule_heels,7,Mule Giày cao gót
 red_bikini_top,7,Áo bikini màu đỏ
 wet_male_underwear,0,Đồ lót nam ướt
 bandeau_bikini,7,Bandeau Đồ bơi bikini
 bodysuit_pull,0,Đang kéo đồ liền thân
 dirty_underwear,7,Đồ lót bẩn
 tune_squad_outfit_(2021),7,Tune squad outfit (2021)
-shoe_loss,0,Shoe loss
+shoe_loss,0,Shoe Sự mất
 gradient_pants,0,Quần chuyển sắc
 breastless_leotard,0,Leotard không ngực
 striped_cardigan,0,Áo cardigan kẻ sọc
@@ -2926,8 +2926,8 @@ st._michael's_school_uniform,0,Đồng phục trường St. Michael's
 lace_shirt,0,Áo sơ mi ren
 hakuryou_high_school_uniform,0,Đồng phục trường trung học phổ thông Hakuryou
 yellow_male_underwear,0,Đồ lót nam màu vàng
-abydos_high_school_swimsuit,0,Abydos high Học đường Đồ bơi
-used_condom_in_clothes,0,Used Bao cao su trong clothes
+abydos_high_school_swimsuit,0,Abydos cao Học đường Đồ bơi
+used_condom_in_clothes,0,Used Bao cao su trong Quần áo
 footprint_in_shoe,7,Footprint trong shoe
 panty_tug,0,Panty tug
 gradient_pantyhose,0,Quần tất chuyển sắc
@@ -2945,7 +2945,7 @@ baseball_glove,7,Găng tay bóng chày
 l'ecole_des_cinq_lumieres_school_uniform,0,Đồng phục trường L'ecole Des Cinq Lumieres
 burning_clothes,0,Quần áo đang cháy
 monotone_gloves,7,Găng tay một tông
-cover_bikini_girl_(gta_vi)_(pose),0,Ảnh bìa Đồ bơi bikini girl (gta vi) (pose)
+cover_bikini_girl_(gta_vi)_(pose),0,Ảnh bìa Đồ bơi bikini nữ (gta vi) (pose)
 skimpy_underwear,7,Đồ lót ít vải
 thigh_stockings,7,Bít tất đùi
 two_tone_pants,7,Quần hai tông
@@ -2964,7 +2964,7 @@ hoof_shoes,0,Giày móng guốc
 shirt_behind_neck,0,Áo sơ mi phía sau cổ
 ginkgo_guild_uniform,0,Đồng phục Ginkgo Guild
 food_as_clothes,0,Thức ăn thay quần áo
-condom_wrapper_in_clothes,0,Bao cao su wrapper trong clothes
+condom_wrapper_in_clothes,0,Bao cao su wrapper trong Quần áo
 removing_sock,0,Removing sock
 lace-trimmed_kimono,0,Kimono ren viền
 balls_in_panties,7,Tinh hoàn trong quần lót
@@ -2976,7 +2976,7 @@ socks_removed,7,Tất đã tháo ra
 living_armor,0,Giáp có sự sống
 thigh_armor,0,Giáp đùi
 sideless_clothing,7,Trang phục hở bên
-artist_glove,0,Artist glove
+artist_glove,0,Artist găng tay
 armored_shoes,0,Giày bọc giáp
 sock_sniffing,7,Sock sniffing
 asymmetrical_shorts,0,Quần short bất đối xứng
@@ -2999,7 +2999,7 @@ jeans_down,7,Quần jean hướng xuống
 akiha_school_uniform,0,Đồng phục trường Akiha
 shoulderless_sweater,7,Áo len không vai
 blue_garter_straps,0,Dây đeo dây giữ bít tất xanh dương
-playboy_bunny_swimsuit,0,Playboy bunny Đồ bơi
+playboy_bunny_swimsuit,0,Playboy thỏ Đồ bơi
 torn_hoodie,0,Áo hoodie bị rách
 atlas_academy_uniform,0,Đồng phục học viện Atlas
 drying_clothes,0,Đang sấy quần áo
@@ -3014,14 +3014,14 @@ coat_lift,0,Nhấc áo khoác dài
 riding_outfit,0,Riding outfit
 panties_under_bike_shorts,0,Quần lót bên dưới quần đạp xe
 translucent_skirt,7,Chân váy bán trong suốt
-orange_sandals,0,Orange Dép xăng đan
-transforming_clothes,0,Transforming clothes
+orange_sandals,0,Cam Dép xăng đan
+transforming_clothes,0,Transforming Quần áo
 heart_pattern_panties,7,Quần lót hoa văn trái tim
 blue_elbow_gloves,7,Găng tay khuỷu tay màu xanh dương
 nontraditional_wedding_dress,0,Nontraditional Cưới Váy liền
 your_bra_strap_is_showing_(meme),0,Your Áo ngực Dây đeo is showing (meme)
 pinstripe_thighhighs,0,Tất cao đùi sọc chỉ
-sleeve_slit,0,Tay áo slit
+sleeve_slit,0,Tay áo xẻ tà
 dress_of_heaven,0,Váy liền of heaven
 aogami_high_school_uniform,0,Đồng phục trường trung học phổ thông Aogami
 kafra_uniform,0,Đồng phục Kafra
@@ -3047,7 +3047,7 @@ striped_elbow_gloves,7,Găng tay khuỷu tay kẻ sọc
 fur-trimmed_sweater,0,Áo len lông thú viền
 barber_cape,0,Barber Áo choàng
 print_slingshot_swimsuit,0,Đồ bơi dây chéo họa tiết
-white_lab_coat,7,White lab Áo khoác dài
+white_lab_coat,7,Trắng lab Áo khoác dài
 dress_over_shirt,0,Váy liền phía trên áo sơ mi
 green_stockings,7,Bít tất màu xanh lá
 lcb_uniform_(project_moon),0,Đồng phục Lcb
@@ -3147,7 +3147,7 @@ argyle_sweater_vest,0,Áo len gilê kẻ quả thoi
 bow_swimsuit,0,Đồ bơi nơ
 chronopattern_dress,0,Chronopattern Váy liền
 polka_dot_apron,0,Tạp dề chấm bi
-o-ring_bikini_top,7,O-ring Đồ bơi bikini top
+o-ring_bikini_top,7,O-ring Đồ bơi bikini Áo
 tied_sweater,0,Áo len được buộc
 florida_bikini,0,Florida Đồ bơi bikini
 embroidered_dress,0,Váy thêu
@@ -3161,10 +3161,10 @@ putting_on_clothes,7,Đang mặc quần áo
 clothing_in_mouth,7,Trang phục trong miệng
 starfish_bra,7,Áo ngực sao biển
 diaper_under_skirt,7,Tã lót bên dưới chân váy
-head_under_another's_clothes,0,Đầu bên dưới another's clothes
+head_under_another's_clothes,0,Đầu bên dưới another's Quần áo
 smelling_underwear,0,Ngửi đồ lót
 transformative_clothing,7,Transformative Trang phục
-clitoral_stimulation_through_clothes,0,Clitoral stimulation through clothes
+clitoral_stimulation_through_clothes,0,Clitoral stimulation through Quần áo
 tan_footwear,7,Giày dép nâu rám nắng
 suggestive_shirt,7,Áo sơ mi gợi cảm
 panties_removed,7,Quần lót đã tháo ra
@@ -3212,7 +3212,7 @@ spiked_cape,0,Áo choàng có gai
 winter_gloves,0,Găng tay mùa đông
 flower_bikini,0,Bikini hoa
 tight_panties,7,Quần lót ôm sát
-bikini_bottom_around_leg,0,Đồ bơi bikini bottom xung quanh leg
+bikini_bottom_around_leg,0,Đồ bơi bikini bottom xung quanh chân
 cow_print_leotard,0,Leotard họa tiết bò
 sleeve_tied_shut,0,Tay áo tied shut
 tentacle_under_clothing,7,Xúc tu bên dưới trang phục
@@ -3262,7 +3262,7 @@ japanese_national_soccer_team_uniform,0,Đồng phục đội bóng đá quốc 
 mandalorian_armor,0,Mandalorian Áo giáp
 monotone_swimwear,7,Đồ bơi một tông
 black_gothic_dress_(idolmaster),0,Váy gothic màu đen
-clothes_gag,0,Clothes Nhét miệng
+clothes_gag,0,Quần áo Nhét miệng
 leather_bikini,0,Bikini da
 patched_clothing,7,Patched Trang phục
 wet_jacket,0,Áo khoác ướt
@@ -3274,11 +3274,11 @@ savanaclaw_dorm_uniform,0,Đồng phục ký túc xá Savanaclaw
 looking_at_panties,0,Nhìn quần lót
 kasamatsu_tracen_school_uniform,0,Đồng phục trường Kasamatsu Tracen
 ribbed_swimsuit,0,Đồ bơi sống dọc
-bikini_bottom_lift,0,Đồ bơi bikini bottom lift
+bikini_bottom_lift,0,Đồ bơi bikini bottom Nâng lên
 frilly_swimwear,7,Đồ bơi nhún diềm
 st._feles_gakuen_uniform,0,Đồng phục St. Feles Gakuen
 cow_print_panties,0,Quần lót họa tiết bò
-tribadism_through_clothes,0,Tribadism through clothes
+tribadism_through_clothes,0,Tribadism through Quần áo
 sanbaka_anniversary_outfit,0,Sanbaka anniversary outfit
 tan_skirt,7,Chân váy nâu rám nắng
 handjob_through_clothing,7,Thủ dâm bằng tay xuyên qua trang phục
@@ -3295,10 +3295,10 @@ cinq_association_south_uniform,0,Đồng phục Cinq Association South
 aether_foundation_uniform,0,Đồng phục Aether Foundation
 anakt_arts_high_school_uniform,0,Đồng phục trường trung học phổ thông Anakt Arts
 soiling_pants,7,Soiling Quần dài
-shitty_t-shirt_naval_base,0,Shitty t-shirt naval base
+shitty_t-shirt_naval_base,0,Shitty t-shirt hải quân base
 shi_association_south_uniform,0,Đồng phục Shi Association South
 half-jacket,0,Áo khoác một nửa
-tight_jeans,7,Tight Quần jean
+tight_jeans,7,Ôm sát Quần jean
 wet_bikini,0,Bikini ướt
 sword_mastery_academy_school_uniform,0,Đồng phục học viện Sword Mastery
 sweater_under_jacket,0,Áo len bên dưới áo khoác
@@ -3391,12 +3391,12 @@ parasite_dress_uniform_(darling_in_the_franxx),0,Đồng phục Parasite Dress
 rainbow_underwear,7,Đồ lót màu cầu vồng
 heartslabyul_dorm_uniform,0,Đồng phục ký túc xá Heartslabyul
 bow_garter_belt,0,Dây treo tất nơ
-t-shirt_lift,7,T-shirt lift
+t-shirt_lift,7,T-shirt Nâng lên
 two_tone_elbow_gloves,7,Găng tay khuỷu tay hai tông
 blue_sneakers,7,Giày thể thao xanh dương
 purple_bikini_top,7,Áo bikini màu tím
 unworn_hoodie,0,Áo hoodie không mặc
-red_bikini_bottom,7,Red Đồ bơi bikini bottom
+red_bikini_bottom,7,Đỏ Đồ bơi bikini bottom
 erection_in_underwear,7,Cương cứng trong đồ lót
 brooklyn_sweater,0,Brooklyn Áo len
 glistening_shoes,7,Giày bóng nhẫy
@@ -3446,18 +3446,18 @@ grey_dress_shirt,7,Áo sơ mi váy màu xám
 fingernail_gloves,0,Fingernail Găng tay
 denim_dress,0,Váy jean
 argyle_coat,0,Áo khoác kẻ quả thoi
-blue_bikini_bottom,7,Blue Đồ bơi bikini bottom
+blue_bikini_bottom,7,Xanh dương Đồ bơi bikini bottom
 exposed_underwear,7,Lộ đồ lót
 aqua_sweater_vest,0,Áo len gilê xanh ngọc
 marine_uniform_(one_piece),0,Đồng phục Marine
 mexican_dress,0,Mexican Váy liền
-grey_jeans,7,Grey Quần jean
+grey_jeans,7,Xám Quần jean
 glistening_high_heels,7,Giày cao gót bóng nhẫy cao
 torn_apron,0,Tạp dề bị rách
-clothes_dryer,0,Clothes dryer
+clothes_dryer,0,Quần áo dryer
 bloom_garden_party_jacket,0,Bloom garden Tiệc Áo khoác
 keyhole_panties,7,Quần lót lỗ khóa
-contemporary_traditional_clothes,0,Contemporary traditional clothes
+contemporary_traditional_clothes,0,Contemporary truyền thống Quần áo
 see-through_sports_bra,0,Áo ngực thể thao xuyên thấu
 removing_coat,0,Đang cởi áo khoác dài
 hamster_costume,0,Trang phục chuột hamster
@@ -3476,13 +3476,13 @@ fen_cichlid_girls_academy_school_uniform,0,Đồng phục học viện nữ sinh
 shindouji_school_uniform,0,Đồng phục trường Shindouji
 jacket_around_neck,0,Áo khoác quanh cổ
 feather_cape,0,Áo choàng lông vũ
-torn_tights,7,Torn tights
+torn_tights,7,Rách ôm sát
 gingham_bikini,0,Bikini kẻ ô vuông
 long_pants,7,Quần dài
 apron_aside,0,Kéo tạp dề sang bên
 shirt_pocket,7,Túi áo sơ mi
 yellow_bikini_top,7,Áo bikini màu vàng
-black_tights,7,Black tights
+black_tights,7,Đen ôm sát
 tied_dress,0,Váy liền được buộc
 lowered_pants,7,Quần dài hạ xuống
 two_tone_swimwear,7,Đồ bơi hai tông
@@ -3517,7 +3517,7 @@ brown_stockings,7,Bít tất màu nâu
 purple_male_underwear,0,Đồ lót nam màu tím
 tan_underwear,7,Đồ lót màu nâu rám nắng
 buttplug_clothing,7,Trang phục chậu hậu môn
-although_she_hurriedly_put_on_clothes_(meme),0,Although she hurriedly put on clothes (meme)
+although_she_hurriedly_put_on_clothes_(meme),0,Although she hurriedly put on Quần áo (meme)
 aqua_bodysuit,0,Đồ liền thân xanh ngọc
 o-ring_bra,0,O-ring Áo ngực
 cropped_cardigan,0,Áo cardigan lửng
@@ -3528,7 +3528,7 @@ garderobe_uniform,0,Đồng phục Garderobe
 sock_transformation,7,Sock Biến hình
 alzano_school_uniform,0,Đồng phục trường Alzano
 kissuisou_uniform,0,Đồng phục Kissuisou
-white_blouse,7,White Áo kiểu nữ
+white_blouse,7,Trắng Áo kiểu nữ
 pink_bikini_top,7,Áo bikini màu hồng
 heart_shirt,7,Áo sơ mi trái tim
 origami_family's_elite_guard_uniform,0,Đồng phục Origami Family's Elite Guard
@@ -3539,7 +3539,7 @@ grey_swimwear,7,Đồ bơi màu xám
 bougu,0,Bougu
 fur_sweater,0,Áo len lông thú
 nipple_sleeves,0,Tay áo núm vú
-clothes_line,7,Clothes line
+clothes_line,7,Quần áo line
 twin_clothing_bows,7,Nơ quần áo đôi
 kirameki_high_school_uniform,0,Đồng phục trường trung học phổ thông Kirameki
 backless_gloves,7,Găng tay hở lưng
@@ -3551,7 +3551,7 @@ arm_stockings,7,Bít tất cánh tay
 peeing_through_clothing,7,Đi tiểu through Trang phục
 utility_vest,0,Utility Áo gile
 silver_gloves,0,Găng tay bạc
-colombian_clothes,0,Colombian clothes
+colombian_clothes,0,Colombian Quần áo
 checkered_panties,0,Quần lót kẻ ca-rô
 holding_dress,7,Cầm váy liền
 pom_pom_footwear,0,Giày dép quả bông quả bông
@@ -3572,31 +3572,31 @@ teal_underwear,7,Đồ lót màu xanh cổ vịt
 swimsuit_only,7,Chỉ mặc đồ bơi
 tan_jacket,7,Áo khoác màu nâu rám nắng
 feather_sleeves,0,Tay áo lông vũ
-cover_bikini_girl_(gta_vi)_(cosplay),0,Ảnh bìa Đồ bơi bikini girl (gta vi) (cosplay)
+cover_bikini_girl_(gta_vi)_(cosplay),0,Ảnh bìa Đồ bơi bikini nữ (gta vi) (cosplay)
 rainbow_stockings,7,Bít tất màu cầu vồng
 katagiri_senior_high_school_uniform,0,Đồng phục trường trung học phổ thông Katagiri Senior
 green_slingshot_swimsuit,0,Đồ bơi dây chéo màu xanh lá
 changing_clothing,7,Changing Trang phục
 wet_socks,0,Tất ướt
 cum_on_skirt,0,Tinh dịch trên chân váy
-d'orsay_heels,0,D'orsay Gót chân
+d'orsay_heels,0,D'orsay Giày cao gót
 diagonal-striped_bikini,0,Bikini chéo kẻ sọc
 expedition_uniform,0,Đồng phục Expedition
 alternate_uniform,0,Đồng phục khác
 duster_coat,0,Duster Áo khoác dài
 pink_garter_belt,0,Dây treo tất hồng
-silver_sandals,0,Silver Dép xăng đan
+silver_sandals,0,Bạc Dép xăng đan
 unzipped_shorts,7,Quần short kéo khóa
 fingering_through_clothing,7,Kích thích bằng ngón tay xuyên qua trang phục
 tail_stocking,7,Tất đuôi
 nylon_stockings,7,Nylon Bít tất dài
 seiou_gakuen_school_uniform,0,Đồng phục học viện Seiou
-tights_day,0,Tights Ban ngày
+tights_day,0,Ôm sát Ban ngày
 monotone_dress,7,Váy một tông
 cutout_heels,7,Giày cao gót mổ xẻ
 intestine_clothing,0,Intestine Trang phục
 floral_pattern_panties,7,Quần lót hoa văn thêu hoa
-fuck-me_clothes,0,Fuck-me clothes
+fuck-me_clothes,0,Fuck-me Quần áo
 army_outfit,7,Lục quân outfit
 santa_coat,7,Áo khoác ông già Noel
 open_leotard,0,Leotard mở
@@ -3604,7 +3604,7 @@ roman_clothing,7,Trang phục La Mã
 baby_bodysuit,7,Baby Đồ liền thân
 frilled_sweater,0,Áo len nhún xếp
 argyle_jacket,0,Áo khoác kẻ quả thoi
-slingback_heels,0,Slingback Gót chân
+slingback_heels,0,Slingback Giày cao gót
 gradient_coat,0,Áo khoác chuyển sắc
 vibrator_under_clothing,7,Đồ chơi rung bên dưới trang phục
 jika-tabi,0,Jika-tabi
@@ -3620,7 +3620,7 @@ soiling_panties,7,Soiling Quần lót
 modakawa_dress,0,Modakawa Váy liền
 object_in_swimsuit,0,Vật thể trong đồ bơi
 private_misaki_high_school_uniform,0,Đồng phục trường trung học phổ thông Private Misaki
-indonesian_clothes,0,Indonesian clothes
+indonesian_clothes,0,Indonesian Quần áo
 cow_print_jacket,0,Áo khoác họa tiết bò
 ribbon-trimmed_vest,0,Áo ghi-lê ruy băng viền
 horse_costume,0,Trang phục ngựa
@@ -3632,8 +3632,8 @@ pony_express_uniform,0,Đồng phục Pony Express
 lace-trimmed_shorts,0,Quần short ren viền
 logo_on_shirt,7,Logo trên áo sơ mi
 high_top_shoes,7,Giày cao áo
-pink_outfit,7,Pink outfit
-breast_sucking_through_clothes,0,Breast sucking through clothes
+pink_outfit,7,Hồng outfit
+breast_sucking_through_clothes,0,Ngực sucking through Quần áo
 tennis_skirt,0,Chân váy quần vợt
 pinstripe_one-piece_swimsuit,0,Đồ bơi sọc chỉ một mảnh
 angel_costume,7,Trang phục thiên thần
@@ -3645,7 +3645,7 @@ unworn_male_underwear,0,Đồ lót nam không mặc
 dark_shirt,7,Áo sơ mi sẫm
 side-tie_one-piece_swimsuit,0,Đồ bơi cà vạt lệch bên một mảnh
 sideless_shorts,0,Quần short hở bên
-viltrumite_clothes,0,Viltrumite clothes
+viltrumite_clothes,0,Viltrumite Quần áo
 osafune_girls_academy_school_uniform,0,Đồng phục học viện nữ sinh Osafune
 spiked_shirt,0,Áo sơ mi có gai
 impossible_vest,0,Áo ghi-lê bất khả thi
@@ -3662,7 +3662,7 @@ floral_print_pantyhose,0,Quần tất họa tiết thêu hoa
 sweaty_footwear,7,Giày dép đầm mồ hôi
 greek_clothing,7,Trang phục Hy Lạp
 backless_kimono,0,Kimono hở lưng
-outgrowing_clothes,7,Outgrowing clothes
+outgrowing_clothes,7,Outgrowing Quần áo
 tiger_panties,0,Quần lót hổ
 touching_panties,7,Chạm quần lót
 penis_under_clothes,7,Dương vật bên dưới quần áo
@@ -3701,7 +3701,7 @@ thighhigh_gaiters,0,Thighhigh gaiters
 fur-trimmed_panties,0,Quần lót lông thú viền
 penis_in_glove,0,Dương vật trong găng tay
 naval_working_uniform,0,Đồng phục Naval Working
-pink_bikini_bottom,7,Pink Đồ bơi bikini bottom
+pink_bikini_bottom,7,Hồng Đồ bơi bikini bottom
 arabian_clothing,7,Trang phục Ả Rập
 underwear_around_ankles,7,Đồ lót quanh cổ chân
 micro_in_clothes,7,Rất nhỏ trong quần áo
@@ -3720,11 +3720,11 @@ dirty_footwear,0,Giày dép bẩn
 musky_underwear,7,Đồ lót có mùi xạ hương
 striped_male_underwear,0,Đồ lót nam kẻ sọc
 wrinkles_in_clothes,7,Nếp nhăn trong quần áo
-crotchless_shorts,0,Không có đũng quần Quần short
+crotchless_shorts,0,Không có đũng quần short
 night_raven_college_gym_uniform,0,Đồng phục Night Raven College Gym
 lace-trimmed_leotard,0,Leotard ren viền
 steaming_clothes,0,Quần áo đang bốc khói
-tibetan_clothes,0,Tibetan clothes
+tibetan_clothes,0,Tibetan Quần áo
 brown_t-shirt,7,Áo thun nâu
 green_fingerless_gloves,7,Găng tay hở ngón màu xanh lá
 adjusting_shorts,0,Đang chỉnh quần short
@@ -3735,7 +3735,7 @@ sleeve_pull,0,Kéo tay áo
 looking_up_skirt,7,Nhìn lên chân váy
 blue_santa_costume,0,Trang phục ông già Noel xanh dương
 st._odessa_girls'_school_uniform,0,Đồng phục trường St. Odessa Girls'
-mayan_clothes,0,Mayan clothes
+mayan_clothes,0,Mayan Quần áo
 shorts_around_ankles,0,Quần short quanh cổ chân
 l'avenir_academy_school_uniform,0,Đồng phục học viện L'avenir
 floral_shirt,7,Áo sơ mi thêu hoa
@@ -3746,7 +3746,7 @@ checkered_cape,0,Áo choàng kẻ ca-rô
 ribbed_pantyhose,0,Quần tất sống dọc
 white_collared_shirt,7,Áo sơ mi có cổ màu trắng
 feather-trimmed_coat,0,Áo khoác lông vũ viền
-opening_another's_clothes,0,Opening another's clothes
+opening_another's_clothes,0,Opening another's Quần áo
 stone_skirt,0,Chân váy đá
 two_tone_bra,7,Áo ngực hai tông
 gold_jacket,0,Áo khoác màu vàng kim
@@ -3760,7 +3760,7 @@ sweater_under_dress,0,Áo len bên dưới váy liền
 asahigaoka_school_uniform,0,Đồng phục trường Asahigaoka
 tanuki_costume,0,Tanuki Trang phục
 shirahana_school_uniform,0,Đồng phục trường Shirahana
-striped_bike_shorts,0,Striped bike Quần short
+striped_bike_shorts,0,Kẻ sọc bike Quần short
 kimisaki_school_uniform,0,Đồng phục trường Kimisaki
 unworn_sleeves,0,Tay áo không mặc
 korean_clothing,7,Trang phục Hàn Quốc
@@ -3785,14 +3785,14 @@ pantyhose_under_buruma,0,Quần tất bên dưới buruma
 multicolored_fingerless_gloves,7,Găng tay hở ngón nhiều màu
 cum_on_shoes,7,Tinh dịch trên giày
 adjusting_skirt,0,Đang chỉnh chân váy
-keisanchuu_new_costume,0,Keisanchuu new Trang phục
-digitigrade_heels,7,Đi bằng ngón chân Gót chân
+keisanchuu_new_costume,0,Keisanchuu mới Trang phục
+digitigrade_heels,7,Đi bằng ngón chân Giày cao gót
 chuo_academy_school_uniform,0,Đồng phục học viện Chuo
 umesato_middle_school_uniform,0,Đồng phục trường trung học cơ sở Umesato
 tempura_costume,0,Tempura Trang phục
 gravure_swimsuit_(idolmaster),0,Gravure Đồ bơi (idolmaster)
 fur_lined_clothing,7,Quần áo lót lông
-green_bikini_bottom,7,Green Đồ bơi bikini bottom
+green_bikini_bottom,7,Xanh lá Đồ bơi bikini bottom
 penis_in_bikini,7,Dương vật trong đồ bơi bikini
 b.a.b.e.l._uniform,0,Đồng phục B.A.B.E.L.
 futuristic_clothing,7,Trang phục tương lai
@@ -3804,11 +3804,11 @@ print_sports_bra,0,Áo ngực họa tiết thể thao
 purple_thigh_socks,7,Tất đùi màu tím
 fiery_clothing,0,Trang phục bằng lửa
 ripping_clothing,7,Ripping Trang phục
-buttjob_under_clothes,0,Buttjob bên dưới clothes
+buttjob_under_clothes,0,Buttjob bên dưới Quần áo
 skirt_in_mouth,0,Chân váy trong miệng
 argyle_vest,0,Áo ghi-lê kẻ quả thoi
 plaid_pantyhose,0,Quần tất kẻ caro
-unzipping_another's_clothes,0,Unzipping another's clothes
+unzipping_another's_clothes,0,Unzipping another's Quần áo
 st._hilde_academy_of_magic_uniform,0,Đồng phục St. Hilde Academy Of Magic
 yotsuboshi_academy_school_uniform,0,Đồng phục học viện Yotsuboshi
 see-through_kimono,0,Áo kimono xuyên thấu
@@ -3841,20 +3841,20 @@ wedding_clothing,7,Trang phục cưới
 light_shirt,7,Áo sơ mi nhạt
 chainmail_bikini,7,Bikini áo giáp lưới
 taut_shorts,0,Quần short căng chặt
-closed_lab_coat,0,Closed lab Áo khoác dài
+closed_lab_coat,0,Khép lab Áo khoác dài
 cape_grab,0,Nắm áo choàng
 sailor_jacket,0,Áo khoác thủy thủ
-not_furry_wearing_fursuit,7,Not furry wearing fursuit
-purple_bikini_bottom,7,Purple Đồ bơi bikini bottom
+not_furry_wearing_fursuit,7,Not nhiều lông wearing fursuit
+purple_bikini_bottom,7,Tím Đồ bơi bikini bottom
 gloves_over_bodysuit,0,Găng tay phía trên đồ liền thân
-thai_clothes,0,Thai clothes
+thai_clothes,0,Thai Quần áo
 sleeve_pouch,0,Túi con tay áo
 coat_stash,0,Áo khoác dài stash
 gold_crown_academy_school_uniform,0,Đồng phục học viện Gold Crown
 pride_color_footwear,7,Giày dép màu tự hào
 brown_swimwear,7,Đồ bơi màu nâu
 bra_removed,7,Áo ngực đã tháo ra
-colored_shoe_interior,0,Colored shoe interior
+colored_shoe_interior,0,Nhuộm màu shoe bên trong
 roman_armor,0,Giáp La Mã
 leotard_tug,0,Đang kéo đồ liền thân
 glistening_leotard,7,Leotard bóng nhẫy
@@ -3879,8 +3879,8 @@ marching_band_uniform,7,Đồng phục Marching Band
 taur_clothing,7,Taur Trang phục
 highleg_underwear,7,Đồ lót cắt cao
 snowfield_police_uniform,0,Đồng phục cảnh sát Snowfield
-aqua_sandals,0,Aqua Dép xăng đan
-miao_clothes,0,Miao clothes
+aqua_sandals,0,Xanh ngọc Dép xăng đan
+miao_clothes,0,Miao Quần áo
 kosei_high_school_uniform,0,Đồng phục trường trung học phổ thông Kosei
 love_high_school_uniform,0,Đồng phục trường trung học phổ thông Love
 mouse_costume,0,Trang phục chuột
@@ -3891,7 +3891,7 @@ arts_shirt_(fate),0,Arts Áo sơ mi (fate)
 ugly_sweater,0,Ugly Áo len
 sock_puppet,0,Sock puppet
 bow_shorts,0,Quần short nơ
-ukrainian_clothes,0,Ukrainian clothes
+ukrainian_clothes,0,Ukrainian Quần áo
 armor_under_clothes,0,Áo giáp bên dưới quần áo
 text_on_pants,7,Chữ trong ảnh trên quần dài
 juuban_elementary_school_uniform,0,Đồng phục trường Juuban Elementary
@@ -3901,7 +3901,7 @@ momozono_junior_high_school_uniform,0,Đồng phục trường trung học cơ s
 ohananomitsu_middle_school_uniform,0,Đồng phục trường trung học cơ sở Ohananomitsu
 terminator_armor,0,Terminator Áo giáp
 pumpkin_skirt,0,Chân váy bí ngô
-panty_spread,0,Panty spread
+panty_spread,0,Panty dạng ra
 shorts_rolled_up,0,Quần short cuộn lên hướng lên
 meat_armor,0,Giáp thịt
 hand_on_clothing,7,Bàn tay trên trang phục
@@ -3914,17 +3914,17 @@ polka_dot_hoodie,0,Áo hoodie chấm bi
 shoe_print,0,Shoe Họa tiết
 cat_stockings,7,Bít tất mèo
 sjms_school_uniform,0,Đồng phục trường Sjms
-iranian_clothes,0,Iranian clothes
+iranian_clothes,0,Iranian Quần áo
 chest_armor,7,Giáp ngực
 padded_jacket,0,Áo khoác có đệm
 glove_snap,7,Cúc bấm găng tay
 pattern_hoodie,7,Áo hoodie hoa văn
 fuuka_school_uniform_(hara_hara!!),0,Đồng phục trường Fuuka
 zipper_underwear,7,Đồ lót khóa kéo
-turn_cuff_socks,0,Turn cuff Tất
+turn_cuff_socks,0,Turn Ống tay Tất
 collared_socks,0,Tất có cổ
 strawberry_underwear,7,Đồ lót dâu tây
-black_outfit,7,Black outfit
+black_outfit,7,Đen outfit
 tight_bra,7,Áo ngực ôm sát
 multicolored_sports_bra,0,Áo ngực nhiều màu thể thao
 claw_bra,0,Áo ngực móng vuốt
@@ -3933,7 +3933,7 @@ buttplug_bikini,7,Bikini chậu hậu môn
 camo_jacket,7,Áo khoác rằn ri
 text_on_footwear,7,Chữ trong ảnh trên giày dép
 dark_underwear,7,Đồ lót sẫm
-yellow_bikini_bottom,7,Yellow Đồ bơi bikini bottom
+yellow_bikini_bottom,7,Vàng Đồ bơi bikini bottom
 frilly_stockings,7,Bít tất nhún diềm
 checkered_shorts,0,Quần short kẻ ca-rô
 raglan_shirt,7,Raglan Áo sơ mi
@@ -3955,7 +3955,7 @@ polka_dot_gloves,0,Găng tay chấm bi
 object_in_panties,0,Vật thể trong quần lót
 bikini_theft,7,Trộm đồ bơi bikini
 nekoma_volleyball_uniform,0,Đồng phục Nekoma Volleyball
-clothing_bulge,7,Chỗ lùm lùm quần áo
+clothing_bulge,7,Chỗ lùm quần áo
 ironmouse_outfit_art_contest,0,Ironmouse outfit art contest
 facesitting_in_underwear,7,Ngồi lên mặt trong đồ lót
 print_one-piece_swimsuit,0,Đồ bơi họa tiết một mảnh
@@ -3970,7 +3970,7 @@ monotone_bikini,7,Bikini một tông
 first_class_mage_uniform,0,Đồng phục First Class Mage
 face_panties,7,Quần lót mặt
 american_flag_skirt,0,Chân váy hình cờ Mỹ
-playboy_bunny_vest,0,Playboy bunny Áo gile
+playboy_bunny_vest,0,Playboy thỏ Áo gile
 skin_tight_suit,7,Bộ đồ da ôm sát
 rathalos_armor,7,Rathalos Áo giáp
 plaid_underwear,7,Đồ lót kẻ caro
@@ -4006,12 +4006,12 @@ samurai_armor,7,Giáp samurai
 layered_clothing,7,Trang phục nhiều lớp
 elegant_dress,7,Elegant Váy liền
 wet_bra,0,Áo ngực ướt
-outfit_connection,0,Outfit connection
+outfit_connection,0,Outfit nối
 renaissance_clothes,0,Quần áo thời phục hưng
 gold_bikini_bottom,7,Vàng Đồ bơi bikini bottom
 hachimitsu_academy_school_uniform,0,Đồng phục học viện Hachimitsu
 serendia_academy_school_uniform,0,Đồng phục học viện Serendia
-otonokizaka_track_jacket,0,Otonokizaka track Áo khoác
+otonokizaka_track_jacket,0,Otonokizaka điền kinh Áo khoác
 silver_boots,0,Bốt màu bạc
 fingerless_gloves_only,7,Chỉ đeo găng tay hở ngón
 cherry_print_panties,0,Quần lót họa tiết hoa anh đào
@@ -4022,7 +4022,7 @@ discarded_shirt,7,Áo sơ mi đã bỏ đi
 erection_under_dress,7,Cương cứng bên dưới váy liền
 green_elbow_gloves,7,Găng tay khuỷu tay màu xanh lá
 feral_armor,7,Giáp bán thú
-white_bikini_bottom,7,White Đồ bơi bikini bottom
+white_bikini_bottom,7,Trắng Đồ bơi bikini bottom
 ototachibana_academy_school_uniform,0,Đồng phục học viện Ototachibana
 hobble_skirt,0,Hobble Chân váy
 wings_through_clothes,0,Đôi cánh xuyên qua quần áo
@@ -4032,14 +4032,14 @@ tight_pussy,7,Âm hộ ôm sát
 house_ivenmoth_uniform,7,Đồng phục House Ivenmoth
 glorious_azure_costume_(umamusume),0,Glorious azure Trang phục (umamusume)
 yellow_seam_underwear,7,Đồ lót đường may màu vàng
-yokosuka_girls_marine_high_school_swimsuit,0,Yokosuka girls marine high Học đường Đồ bơi
-coordinated_clothes_writing,0,Coordinated clothes Chữ viết
+yokosuka_girls_marine_high_school_swimsuit,0,Yokosuka nữ marine cao Học đường Đồ bơi
+coordinated_clothes_writing,0,Coordinated Quần áo Chữ viết
 himematsu_school_uniform,0,Đồng phục trường Himematsu
 feathered_cape,0,Áo choàng có lông vũ
 unusual_heels,7,Giày cao gót bất thường
 unbuttoned_dress,0,Váy liền mở khuy
 lace-up_thighhighs,0,Lace-up Tất cao đùi
-clothes_iron,0,Clothes Sắt
+clothes_iron,0,Quần áo Sắt
 holding_cloak,0,Cầm áo choàng
 floral_print_pants,0,Quần họa tiết thêu hoa
 tree_costume,0,Trang phục cây
@@ -4079,7 +4079,7 @@ tucked_shirt,7,Áo sơ mi giắt vào trong
 fringe-trimmed_cape,0,Áo choàng mái viền
 venus_bikini,0,Venus Đồ bơi bikini
 thumb_hole_sleeves,0,Ngón cái hole Tay áo
-stocking_(psg)_(cosplay),0,Stocking (psg) (cosplay)
+stocking_(psg)_(cosplay),0,Tất dài (psg) (cosplay)
 burger_costume,0,Burger Trang phục
 tied_skirt,0,Chân váy được buộc
 good_thighhighs_day,0,Good Tất cao đùi Ban ngày
@@ -4096,7 +4096,7 @@ underwear_around_ankle,7,Đồ lót quanh cổ chân
 ordinal_scale_uniform_(sao),0,Đồng phục Ordinal Scale
 irken_clothing,7,Irken Trang phục
 team_aqua_uniform,0,Đồng phục đội màu xanh ngọc
-clutching_clothes,0,Clutching clothes
+clutching_clothes,0,Clutching Quần áo
 second_wangan_school_uniform,0,Đồng phục trường Second Wangan
 snake_costume,0,Trang phục rắn
 leather_stockings,7,Bít tất da
@@ -4108,7 +4108,7 @@ argyle_pants,0,Quần kẻ quả thoi
 white_garter,0,Dây treo trắng
 misono_gakuen_school_uniform,0,Đồng phục học viện Misono
 two_tone_fingerless_gloves,7,Găng tay hở ngón hai tông
-clothes_falling_off,7,Clothes falling off
+clothes_falling_off,7,Quần áo falling off
 latex_socks,7,Tất cao su
 panties_under_leotard,0,Quần lót bên dưới đồ liền thân
 turtleneck_bikini_top,0,Áo bikini cổ lọ
@@ -4127,21 +4127,21 @@ thigh_socks_only,7,Chỉ mang tất đùi
 number_on_shirt,7,Chữ số trên áo sơ mi
 they're_not_panties,0,They're not Quần lót
 pseudo_clothing_down,7,Kéo trang phục giả xuống
-nipple_stimulation_through_clothes,0,Nipple stimulation through clothes
+nipple_stimulation_through_clothes,0,Núm vú stimulation through Quần áo
 babyls_school_uniform,0,Đồng phục trường Babyls
 soap_shoes,0,Giày bọt xà phòng
 hand_under_dress,0,Bàn tay bên dưới váy liền
 rakuyo_high_school_uniform,0,Đồng phục trường trung học phổ thông Rakuyo
 camo_underwear,7,Đồ lót rằn ri
 wrestler_costume,7,Wrestler Trang phục
-sock_garters,7,Sock Dây treo
+sock_garters,7,Sock Dây treo tất
 clothes_blanket,0,Chăn quần áo
 tennis_dress,0,Váy quần vợt
 tracen_ondo_outfit_(umamusume),0,Tracen ondo outfit (umamusume)
 drawstring_shorts,7,Drawstring Quần short
 two_tone_leotard,7,Leotard hai tông
 startorch_academy_school_uniform,0,Đồng phục học viện Startorch
-hand_in_another's_pants,0,Hand trong another's Quần dài
+hand_in_another's_pants,0,Bàn tay trong another's Quần dài
 princess_rosa_costume,0,Princess rosa Trang phục
 trapped_in_sock,7,Trapped trong sock
 leotard_under_clothing,7,Đồ liền thân bên dưới trang phục
@@ -4149,7 +4149,7 @@ garter_belt_legwear,7,Đồ che chân thắt lưng dây giữ bít tất
 doctor's_coat,7,Doctor's Áo khoác dài
 sharkini,0,Sharkini
 cutting_clothes,0,Đang cắt quần áo
-night_clothes,0,Ban đêm clothes
+night_clothes,0,Ban đêm Quần áo
 cape_clasp,0,Áo choàng clasp
 sleeping_in_underwear,7,Đang ngủ trong đồ lót
 underwear_gag,7,Đồ lót Nhét miệng
@@ -4176,13 +4176,13 @@ tiered_skirt,0,Tiered Chân váy
 dress_removed,7,Váy liền đã tháo ra
 yoga_shorts,0,Yoga Quần short
 fur-trimmed_hoodie,0,Áo hoodie lông thú viền
-flushed_face_emoji_shirt_(meme),0,Flushed face emoji Áo sơ mi (meme)
+flushed_face_emoji_shirt_(meme),0,Flushed mặt emoji Áo sơ mi (meme)
 cumdrip_through_panties,0,Cumdrip through Quần lót
 team_plasma_uniform,0,Đồng phục Team Plasma
 sweaty_shirt,7,Áo sơ mi đầm mồ hôi
 elbow_sleeves,7,Tay áo khuỷu tay
 two_tone_robe,7,Áo choàng hai tông
-white_straitjacket,7,White straitjacket
+white_straitjacket,7,Trắng straitjacket
 satin_underwear,0,Đồ lót sa tanh
 high_heel_sneakers,0,Giày thể thao gót cao
 v-neck_shirt,7,V-neck Áo sơ mi
@@ -4207,7 +4207,7 @@ traditional_dress,7,Váy truyền thống
 skirt_pocket,0,Túi áo chân váy
 plaid_footwear,0,Giày dép kẻ caro
 unusual_clothing,7,Trang phục bất thường
-edie_crop_hoodie,0,Edie crop Áo hoodie
+edie_crop_hoodie,0,Edie cắt ngắn Áo hoodie
 clothes_on_ground,7,Quần áo trên mặt đất
 penis_out_of_underwear,7,Dương vật thò ra đồ lót
 small_bikini,7,Bikini nhỏ
@@ -4260,14 +4260,14 @@ discarded_shoes,7,Giày đã bỏ đi
 leaf_shirt,0,Áo sơ mi chiếc lá
 translucent_leotard,7,Leotard bán trong suốt
 open_lab_coat,7,Mở lab Áo khoác dài
-tight_space,7,Tight Vũ trụ
-red_outfit,7,Red outfit
+tight_space,7,Ôm sát Vũ trụ
+red_outfit,7,Đỏ outfit
 velcro_footwear,0,Velcro Giày dép
 wet_kimono,0,Kimono ướt
 panties_around_toe,0,Quần lót quanh ngón chân
-cumdrip_through_clothes,0,Cumdrip through clothes
+cumdrip_through_clothes,0,Cumdrip through Quần áo
 washing_clothes,0,Đang giặt quần áo
-folk_clothes,7,Folk clothes
+folk_clothes,7,Folk Quần áo
 compression_shorts,7,Compression Quần short
 tsukinaga_academy_school_uniform,0,Đồng phục học viện Tsukinaga
 discarded_pants,7,Quần dài đã bỏ đi
@@ -4275,7 +4275,7 @@ jacket_over_head,0,Áo khoác phía trên đầu
 penetration_through_clothing,7,Thâm nhập xuyên qua trang phục
 vibrator_under_swimsuit,0,Đồ chơi rung bên dưới đồ bơi
 grid_skirt,0,Chân váy lưới
-clothes_sex,7,Clothes quan hệ tình dục
+clothes_sex,7,Quần áo quan hệ tình dục
 native_american_clothing,7,Trang phục Mỹ bản địa
 border_operator_uniform_(world_trigger),0,Đồng phục Border Operator
 unzipped_clothing,7,Trang phục kéo khóa
@@ -4284,8 +4284,8 @@ glove_cuffs,0,Ống bọc cổ tay găng tay
 fluffy_clothing,7,Trang phục lông xù
 orange_stockings,7,Bít tất màu cam
 leaf_panties,0,Quần lót chiếc lá
-shrinking_out_of_clothes,7,Shrinking out of clothes
-black_straitjacket,7,Black straitjacket
+shrinking_out_of_clothes,7,Shrinking out of Quần áo
+black_straitjacket,7,Đen straitjacket
 babydoll_t-shirt,0,Babydoll t-shirt
 zipper_jacket,7,Áo khoác khóa kéo
 seed_uniform_(ff8),0,Đồng phục Seed
@@ -4294,7 +4294,7 @@ bonple_military_uniform,0,Đồng phục quân đội Bonple
 watermelon_bikini,7,Bikini dưa hấu
 nine_ball_maid_uniform,0,Đồng phục hầu gái Nine Ball
 button_underwear,7,Đồ lót cúc
-blue_outfit,7,Blue outfit
+blue_outfit,7,Xanh dương outfit
 flare_pants,7,Flare Quần dài
 battle_armor,7,Battle Áo giáp
 st._spica_school_uniform,0,Đồng phục trường St. Spica
@@ -4302,13 +4302,13 @@ object_in_bra,0,Vật thể trong áo ngực
 nijisanji_fes_t-shirt,0,Nijisanji fes t-shirt
 shoe_strap,0,Shoe Dây đeo
 zwei_association_south_uniform,0,Đồng phục Zwei Association South
-african_clothes,0,African clothes
+african_clothes,0,African Quần áo
 ski_boots,0,Ski Ủng
 80s_clothing,7,80s Trang phục
 amanogawa_high_school_uniform,0,Đồng phục trường trung học phổ thông Amanogawa
 spiked_bra,0,Áo ngực có gai
 flapper_dress,7,Flapper Váy liền
-stripper_clothes,7,Stripper clothes
+stripper_clothes,7,Stripper Quần áo
 taut_jacket,0,Áo khoác căng chặt
 frog_print_panties,0,Quần lót họa tiết ếch
 shared_cape,0,Áo choàng dùng chung
@@ -4342,10 +4342,10 @@ translucent_pants,7,Quần bán trong suốt
 penis_through_clothing,7,Dương vật xuyên qua trang phục
 holding_apron,0,Cầm tạp dề
 footjob_through_clothing,7,Footjob through Trang phục
-nijigasaki_track_jacket,0,Nijigasaki track Áo khoác
+nijigasaki_track_jacket,0,Nijigasaki điền kinh Áo khoác
 high_heeled_sneakers,7,Giày thể thao cao có gót
-low_cut_shirt,7,Low cut Áo sơ mi
-frayed_clothes,0,Frayed clothes
+low_cut_shirt,7,Thấp cut Áo sơ mi
+frayed_clothes,0,Frayed Quần áo
 zipper_shorts,0,Quần short khóa kéo
 floppy_sleeves,0,Floppy Tay áo
 penis_in_another's_thighhigh,0,Dương vật trong another's thighhigh
@@ -4383,14 +4383,14 @@ jet_boots,0,Jet Ủng
 zwei_association_west_uniform,0,Đồng phục Zwei Association West
 two-sided_shirt,0,Áo sơ mi mặt hai
 oral_through_clothing,7,Quan hệ bằng miệng xuyên qua trang phục
-senjougahara_hitagi_skirt_lift_pose,0,Senjougahara hitagi Chân váy lift Tư thế
+senjougahara_hitagi_skirt_lift_pose,0,Senjougahara hitagi Chân váy Nâng lên Tư thế
 succubus_costume,7,Succubus Trang phục
 bikini_lift,7,Nhấc đồ bơi bikini
-multicolored_sandals,0,Multicolored Dép xăng đan
+multicolored_sandals,0,Nhiều màu Dép xăng đan
 holding_unworn_boot,0,Cầm bốt không mặc
 ruffled_panties,7,Quần lót xếp tầng
 urine_through_clothing,7,Nước tiểu xuyên qua trang phục
-falconry_glove,0,Falconry glove
+falconry_glove,0,Falconry găng tay
 panties_on_breasts,0,Quần lót trên ngực
 balls_in_clothing,7,Tinh hoàn trong trang phục
 evening_dress,7,Buổi tối Váy liền
@@ -4409,7 +4409,7 @@ naked_vest,0,Áo ghi-lê trần
 plaid_one-piece_swimsuit,0,Đồ bơi kẻ caro một mảnh
 roller_shoes,0,Roller Giày
 throwing_clothing,7,Đang ném trang phục
-bowser_logo_underwear,7,Bowser logo Đồ lót
+bowser_logo_underwear,7,Bowser biểu tượng Đồ lót
 two-tone_sandals,0,Two-tone Dép xăng đan
 monotone_boots,7,Bốt một tông
 hoshinomiya_girls'_high_school_uniform,0,Đồng phục trường trung học phổ thông Hoshinomiya Girls'
@@ -4438,7 +4438,7 @@ hand_in_bra,0,Bàn tay trong áo ngực
 work_boots,0,Bốt lao động
 stained_bra,0,Áo ngực vấy bẩn
 kitami_hokuryo_high_school_uniform,0,Đồng phục trường trung học phổ thông Kitami Hokuryo
-piyo_piyo_apron,0,Piyo piyo Tạp dề
+piyo_piyo_apron,0,Piyo Tạp dề
 skirt_aside,0,Kéo chân váy sang bên
 skirt_tied_over_head,0,Chân váy được buộc phía trên đầu
 fishnet_bikini,0,Bikini lưới
@@ -4448,7 +4448,7 @@ studded_clothing,7,Trang phục đính đinh
 wide-leg_pants,0,Quần chân rộng
 pokemon_ranger_uniform,0,Đồng phục Pokemon Ranger
 licking_shoe,0,Đang liếm shoe
-kazakh_clothes,0,Kazakh clothes
+kazakh_clothes,0,Kazakh Quần áo
 sage_outfit_(fire_emblem_engage),0,Sage outfit (fire Huy hiệu engage)
 pattern_jacket,7,Áo khoác hoa văn
 footwear_ornament,0,Đồ trang trí giày dép
@@ -4465,19 +4465,19 @@ leather_shirt,0,Áo sơ mi da
 tuxedo_jacket,0,Tuxedo Áo khoác
 multi-strapped_swimsuit,0,Multi-strapped Đồ bơi
 army_clothing,7,Trang phục lục quân
-boot_licking,7,Boot Đang liếm
+boot_licking,7,Bốt Đang liếm
 pareo_swimsuit_(fire_emblem_engage),0,Pareo Đồ bơi (fire Huy hiệu engage)
 hung_clothing,7,Hung Trang phục
 laminar_armor,7,Laminar Áo giáp
 ejaculation_on_worn_panties,7,Xuất tinh trên quần lót đang mặc
-black_sling_bikini,7,Black sling Đồ bơi bikini
+black_sling_bikini,7,Đen sling Đồ bơi bikini
 cat_bra,0,Áo ngực mèo
 cross-laced_sweater,0,Áo len chữ thập buộc dây
 oversized_footwear,0,Giày dép quá khổ
 postal_uniform,7,Đồng phục Postal
 black_knee_socks,7,Tất đầu gối màu đen
 button_skirt,7,Chân váy cúc
-stacked_clothes_dryer,0,Stacked clothes dryer
+stacked_clothes_dryer,0,Stacked Quần áo dryer
 discarded_bikini,7,Đồ bơi bikini đã bỏ đi
 snowman_costume,0,Trang phục người tuyết
 adjusting_apron,0,Đang chỉnh tạp dề
@@ -4493,7 +4493,7 @@ holy_night_dress_(idolmaster),0,Holy Ban đêm Váy liền (idolmaster)
 side_slit_skirt,7,Chân váy xẻ tà bên
 glass_footwear,0,Giày dép thủy tinh
 very_long_cape,0,Áo choàng rất dài
-single_unworn_shoe,0,Một unworn shoe
+single_unworn_shoe,0,Một không mặc shoe
 camouflage_gloves,0,Găng tay rằn ri
 jacket_on_arm,0,Áo khoác trên cánh tay
 ghostbusters_uniform,0,Đồng phục Ghostbusters
@@ -4512,13 +4512,13 @@ two_tone_heels,7,Giày cao gót hai tông
 white_shirt_collar,7,Cổ áo sơ mi màu trắng
 white_uniform,7,Đồng phục màu trắng
 monotone_cloak,7,Áo choàng một tông
-sweater_partially_tucked_in,0,Áo len partially tucked trong
+sweater_partially_tucked_in,0,Áo len một phần giắt trong
 tatenashi_high_school_uniform,0,Đồng phục trường trung học phổ thông Tatenashi
 bra_clasp,7,Áo ngực clasp
 leather_bra,0,Áo ngực da
-tight_speedo,7,Tight speedo
+tight_speedo,7,Ôm sát speedo
 trapeze_dress,0,Trapeze Váy liền
-green_outfit,7,Green outfit
+green_outfit,7,Xanh lá outfit
 sketchbook_full_colors's_school_uniform,0,Đồng phục trường Sketchbook Full Colors's
 ainu_clothing,7,Trang phục Ainu
 black_knee_boots,7,Bốt đầu gối màu đen
@@ -4539,7 +4539,7 @@ soleless_footwear,7,Soleless Giày dép
 spotted_panties,7,Quần lót có đốm
 pants_on_floor,7,Quần dài trên sàn nhà
 diagonal-striped_thighhighs,0,Tất cao đùi chéo kẻ sọc
-tight_thigh_highs,7,Tight thigh highs
+tight_thigh_highs,7,Ôm sát đùi cao
 plant_dress,7,Váy cây cảnh
 ribbon-trimmed_coat,0,Áo khoác ruy băng viền
 teal_footwear,7,Giày dép xanh cổ vịt
@@ -4553,11 +4553,11 @@ flight_jacket,7,Flight Áo khoác
 layered_armor,0,Giáp nhiều lớp
 argyle_clothing,7,Trang phục kẻ quả thoi
 panties_on_floor,7,Quần lót trên sàn nhà
-kita_high_school_uniform_(tsui_no_sora_(remake)),0,Kita high Học đường Đồng phục (tsui không có sora (remake))
+kita_high_school_uniform_(tsui_no_sora_(remake)),0,Kita cao Học đường Đồng phục (tsui không có sora (remake))
 backless_sweater,0,Áo len hở lưng
 german_national_soccer_team_uniform,0,Đồng phục đội bóng đá quốc gia Đức
 thors_military_academy_school_uniform,0,Đồng phục học viện Thors Military
-polish_clothes,0,Polish clothes
+polish_clothes,0,Polish Quần áo
 kashima_high_school_uniform,0,Đồng phục trường trung học phổ thông Kashima
 o-ring_legwear_garter,0,O-ring Trang phục chân Dây treo
 patriotic_clothing,7,Patriotic Trang phục
@@ -4600,13 +4600,13 @@ costume_party,7,Trang phục Tiệc
 handjob_under_clothes,0,Thủ dâm bằng tay bên dưới quần áo
 yumizuki_imperial_high_school_uniform,0,Đồng phục trường trung học phổ thông Yumizuki Imperial
 fellatio_through_clothes,0,Quan hệ bằng miệng xuyên qua quần áo
-black_yoga_pants,7,Black yoga Quần dài
+black_yoga_pants,7,Đen yoga Quần dài
 dahlia_academy_boarding_school_uniform,0,Đồng phục trường Dahlia Academy Boarding
 tribadism_through_clothing,7,Tribadism through Trang phục
 black_leather_jacket,7,Áo khoác da màu đen
 high_heeled_boots_only,7,Chỉ đi bốt cao gót
 clothing_bite,7,Cắn trang phục
-black_bike_shorts,0,Black bike Quần short
+black_bike_shorts,0,Đen bike Quần short
 southern_cross_academy_school_uniform,0,Đồng phục học viện Southern Cross
 book_skirt,0,Chân váy sách
 glistening_skirt,7,Chân váy bóng nhẫy
@@ -4618,7 +4618,7 @@ underwear_outline,7,Vết hằn đồ lót
 combat_shirt,0,Áo sơ mi chiến đấu
 gradient_leotard,0,Leotard chuyển sắc
 plaid_male_underwear,0,Đồ lót nam kẻ caro
-lace-up_heels,0,Lace-up Gót chân
+lace-up_heels,0,Lace-up Giày cao gót
 black_gym_shorts,7,Quần short thể dục màu đen
 yuigaoka_music_program_school_uniform,0,Đồng phục trường Yuigaoka Music Program
 vest_pouch,0,Túi con áo ghi-lê
@@ -4643,7 +4643,7 @@ multicolored_sneakers,7,Giày thể thao nhiều màu
 zipper_hoodie,7,Áo hoodie khóa kéo
 grey_garter_straps,0,Dây đeo dây giữ bít tất xám
 open_back_dress,7,Váy lưng mở
-fuzzy_clothes,0,Fuzzy clothes
+fuzzy_clothes,0,Fuzzy Quần áo
 kosho_academy_school_uniform,0,Đồng phục học viện Kosho
 bra_tug,0,Đang kéo áo ngực
 seitetsu_academy_school_uniform,0,Đồng phục học viện Seitetsu
@@ -4658,7 +4658,7 @@ floating_jacket,0,Áo khoác lơ lửng
 white_santa_costume,0,Trang phục ông già Noel trắng
 go-go_boots,7,Go-go Ủng
 kuho_girls_academy_school_uniform,0,Đồng phục học viện nữ sinh Kuho
-vspo!_matching_outfit,0,Vspo! matching outfit
+vspo!_matching_outfit,0,Vspo! đồng bộ outfit
 fancy_dress,7,Fancy Váy liền
 open_toe_shoes,7,Giày ngón chân mở
 shell_jacket,0,Áo khoác vỏ
@@ -4717,7 +4717,7 @@ text_on_shoes,7,Chữ trong ảnh trên giày
 panties_over_bodysuit,0,Quần lót phía trên đồ liền thân
 frayed_skirt,0,Frayed Chân váy
 duck_costume,0,Trang phục vịt
-one_boot_on,7,Một boot on
+one_boot_on,7,Một bốt on
 floral_print_gloves,0,Găng tay họa tiết thêu hoa
 two_tone_coat,7,Áo khoác hai tông
 hockey_sweater,0,Hockey Áo len
@@ -4725,13 +4725,13 @@ pink_fingerless_gloves,7,Găng tay hở ngón màu hồng
 licking_panties,0,Đang liếm quần lót
 tanker_jacket,0,Tanker Áo khoác
 dark_shoes,7,Giày sẫm
-biting_another's_clothes,0,Biting another's clothes
+biting_another's_clothes,0,Biting another's Quần áo
 feather-trimmed_cape,0,Áo choàng lông vũ viền
 ahnenerbe_shop_uniform,0,Đồng phục Ahnenerbe Shop
 shoulder_cape,7,Áo choàng vai
 sleeve_pushed_up,0,Tay áo đẩy hướng lên
-purple_outfit,7,Purple outfit
-winged_sandals,0,Winged Dép xăng đan
+purple_outfit,7,Tím outfit
+winged_sandals,0,Có cánh Dép xăng đan
 bulge_through_clothing,7,Phần phồng lên xuyên qua trang phục
 frilled_cardigan,0,Áo cardigan nhún xếp
 ninomiya_squad's_uniform,0,Đồng phục đội Ninomiya
@@ -4751,7 +4751,7 @@ bikini_jeans,0,Đồ bơi bikini Quần jean
 hoodie_pull,0,Đang kéo áo hoodie
 vaginal_fluids_on_clothing,7,Dịch âm đạo trên trang phục
 pasties_under_clothes,0,Miếng che núm vú bên dưới quần áo
-gothic_plate_armor,0,Giáp giáp tấm gothic
+gothic_plate_armor,0,Giáp tấm gothic
 kirarigaoka_middle_school_uniform,0,Đồng phục trường trung học cơ sở Kirarigaoka
 seijou_academy_school_uniform,0,Đồng phục học viện Seijou
 bedroom_clothing,7,Phòng ngủ Trang phục
@@ -4769,7 +4769,7 @@ sankyoin_academy_school_uniform,0,Đồng phục học viện Sankyoin
 cotton_panties,0,Quần lót cotton
 detailed_clothing,7,Trang phục có chi tiết
 victorian_clothing,7,Trang phục thời Victoria
-tight_hug,7,Tight Ôm
+tight_hug,7,Ôm sát Ôm
 blush_visible_through_clothes,0,Đỏ mặt nhìn thấy được xuyên qua quần áo
 chinese_track_school_uniform,0,Đồng phục học đường điền kinh Trung Quốc
 exposed_bra,7,Lộ áo ngực
@@ -4793,7 +4793,7 @@ argyle_bikini,0,Bikini kẻ quả thoi
 pokemon_clothing,7,Trang phục Pokémon
 breast_armor,7,Giáp ngực
 tight_sweater,7,Áo len ôm sát
-soleless_heels,7,Soleless Gót chân
+soleless_heels,7,Soleless Giày cao gót
 shinigami_uniform,7,Đồng phục Shinigami
 maihama_minami_high_school_uniform,0,Đồng phục trường trung học phổ thông Maihama Minami
 revealing_shirt,7,Revealing Áo sơ mi
@@ -4805,7 +4805,7 @@ jacket_over_jacket,0,Áo khoác phía trên áo khoác
 pseudo_clothing_removed,7,Trang phục giả đã tháo ra
 wet_leotard,0,Leotard ướt
 tight_thong,7,Quần lót dây ôm sát
-high_cut_miko_outfit,7,High cut miko outfit
+high_cut_miko_outfit,7,Cao cut miko outfit
 clown_shoes,7,Clown Giày
 socks_over_pants,0,Tất phía trên quần dài
 furgonomic_dress,7,Váy nửa người nửa thú
@@ -4817,7 +4817,7 @@ ribbon-trimmed_jacket,0,Áo khoác ruy băng viền
 japanese_tankery_league_judge_uniform,0,Đồng phục Japanese Tankery League Judge
 unworn_robe,0,Áo choàng không mặc
 swimsuit_under_swimsuit,0,Đồ bơi bên dưới đồ bơi
-hand_in_another's_pantyhose,0,Hand trong another's Quần tất
+hand_in_another's_pantyhose,0,Bàn tay trong another's Quần tất
 pride_color_t-shirt,7,Áo thun màu tự hào
 lace-up_gloves,0,Găng tay buộc dây
 fenix_uniform,0,Đồng phục Fenix
@@ -4857,7 +4857,7 @@ indian_clothing,7,Trang phục Ấn Độ
 black_sleeveless_shirt,7,Áo sơ mi không tay màu đen
 worn_clothing,7,Trang phục đang mặc
 feather-trimmed_leotard,0,Leotard lông vũ viền
-yellow_outfit,7,Yellow outfit
+yellow_outfit,7,Vàng outfit
 kaga_cape,0,Kaga Áo choàng
 green_uniform,7,Đồng phục màu xanh lá
 stained_shirt,7,Áo sơ mi vấy bẩn
@@ -4879,8 +4879,8 @@ drawstring_pants,7,Drawstring Quần dài
 unicorns_hunter_uniform,0,Đồng phục Unicorns Hunter
 carrot_panties,7,Quần lót cà rốt
 light_footwear,7,Giày dép nhạt
-cafe_mew_mew_uniform,0,Đồng phục Cafe Mew Mew
-purple_tights,7,Purple tights
+cafe_mew_mew_uniform,0,Đồng phục Cafe Mew
+purple_tights,7,Tím ôm sát
 stirrup_thigh_socks,7,Tất đùi đai giữ
 graduation_robe,7,Graduation Áo choàng dài
 ikoma_squad's_uniform,0,Đồng phục đội Ikoma
@@ -4908,7 +4908,7 @@ straw_cape,0,Áo choàng rơm
 bow_shirt,7,Áo sơ mi nơ
 pattern_fingerless_gloves,7,Găng tay hở ngón hoa văn
 white_shirt_cuffs,7,Ống bọc cổ tay áo sơ mi trắng
-mutual_skirt_lift,0,Mutual Chân váy lift
+mutual_skirt_lift,0,Mutual Chân váy Nâng lên
 makoto_mirai_academy_middle_school_uniform,0,Đồng phục trường trung học cơ sở Makoto Mirai Academy
 winter_jacket,7,Áo khoác mùa đông
 cat_panties,7,Quần lót mèo
@@ -4944,7 +4944,7 @@ teal_pants,7,Quần màu xanh cổ vịt
 hanzou_academy_school_uniform_(new_link),0,Đồng phục học viện Hanzou
 knee_sleeve,0,Tay áo đầu gối
 clothing_focus,7,Trọng tâm quần áo
-red_sling_bikini,7,Red sling Đồ bơi bikini
+red_sling_bikini,7,Đỏ sling Đồ bơi bikini
 precum_through_pants,7,Dịch tiền xuất tinh xuyên qua quần dài
 paw_print_underwear,7,Đồ lót họa tiết chân thú
 impractical_clothing,7,Impractical Trang phục
@@ -4956,8 +4956,8 @@ thighhigh_removed,0,Thighhigh removed
 striped_sweater_vest,0,Áo len gilê kẻ sọc
 pink_garter,0,Dây treo hồng
 monotone_high_heels,7,Giày cao gót một tông cao
-male_wearing_chastity,7,Giới tính nam wearing chastity
-skirt_partially_removed,0,Chân váy partially removed
+male_wearing_chastity,7,Giới tính nam wearing trinh tiết
+skirt_partially_removed,0,Chân váy một phần removed
 text_on_sports_bra,7,Chữ trong ảnh trên áo ngực thể thao
 shoe_buckle,0,Shoe Khóa
 ribbon-trimmed_pants,0,Quần ruy băng viền
@@ -4977,7 +4977,7 @@ pulling_pants_up,7,Kéo đang kéo quần dài lên
 st._liliana's_academy_school_uniform,0,Đồng phục học viện St. Liliana's
 opening_jacket,7,Opening Áo khoác
 gold_underwear,7,Đồ lót màu vàng kim
-titfuck_over_clothes,7,Titfuck trên clothes
+titfuck_over_clothes,7,Titfuck trên Quần áo
 pink_leotard_(dq),0,Leotard hồng
 coat_on_head,0,Áo khoác dài trên đầu
 shift_dress,0,Shift Váy liền
@@ -4996,7 +4996,7 @@ squirrel_costume,0,Trang phục sóc
 latex_sleeves,0,Tay áo cao su
 trailblazer_bash!_(umamusume),0,Trailblazer bash! (umamusume)
 coat_hold,0,Cái giữ áo khoác
-high_tights,7,High tights
+high_tights,7,Cao ôm sát
 seimei_high_school_uniform,0,Đồng phục trường trung học phổ thông Seimei
 meme_shirt,7,Meme Áo sơ mi
 collared_apron,0,Tạp dề có cổ
@@ -5009,7 +5009,7 @@ matching_clothing,7,Trang phục đồng bộ
 cutout_bikini,7,Bikini mổ xẻ
 tactical_pants,7,Quần chiến thuật
 hand_in_shorts,7,Bàn tay trong quần short
-hand_in_another's_shirt,0,Hand trong another's Áo sơ mi
+hand_in_another's_shirt,0,Bàn tay trong another's Áo sơ mi
 skirt_ruff,0,Diềm cổ chân váy
 acid_armor,7,Acid Áo giáp
 penis_under_dress,7,Dương vật bên dưới váy liền
@@ -5024,7 +5024,7 @@ side-tie_underwear,7,Đồ lót cà vạt lệch bên
 midgar_academy_school_uniform,0,Đồng phục học viện Midgar
 sleeve,7,Tay áo
 dark_armor,7,Giáp sẫm
-high_waisted_shorts,7,High waisted Quần short
+high_waisted_shorts,7,Cao waisted Quần short
 republic_of_china_school_uniform,0,Đồng phục trường Republic Of China
 broken_high_heel,0,Gót chân bị gãy cao
 saint_mary's_academy_school_uniform,0,Đồng phục học viện Saint Mary's
@@ -5032,7 +5032,7 @@ cunnilingus_through_clothing,7,Kích thích âm hộ bằng miệng xuyên qua t
 bra_in_mouth,0,Áo ngực trong miệng
 bellhop_uniform,0,Đồng phục Bellhop
 gold_heels,7,Giày cao gót vàng kim
-holding_clothes_iron,0,Đang cầm clothes Sắt
+holding_clothes_iron,0,Đang cầm Quần áo Sắt
 bandeau_bra,7,Bandeau Áo ngực
 saotome_academy_school_uniform,0,Đồng phục học viện Saotome
 dark_socks,7,Tất sẫm
@@ -5048,7 +5048,7 @@ hand_on_pants,7,Bàn tay trên quần dài
 o-ring_garter_straps,0,O-ring Dây treo Dây đeo
 summer_dress,7,Váy mùa hè
 alternate_skirt_length,0,Khác Chân váy length
-grey_tights,7,Grey tights
+grey_tights,7,Xám ôm sát
 masturbating_under_clothing,7,Masturbating bên dưới Trang phục
 spiked_thighhighs,0,Tất cao đùi có gai
 mechanic_outfit,7,Mechanic outfit
@@ -5097,9 +5097,9 @@ star_pattern_underwear,7,Đồ lót hoa văn ngôi sao
 through_underwear,7,Through Đồ lót
 buttoned_clothing,7,Trang phục có cúc
 league_club_uniform,0,Đồng phục League Club
-button_down_shirt,7,Button xuống Áo sơ mi
+button_down_shirt,7,Cúc xuống Áo sơ mi
 sailor_leotard,0,Leotard thủy thủ
-blue_tights,7,Blue tights
+blue_tights,7,Xanh dương ôm sát
 mikagura_uniform,0,Đồng phục Mikagura
 oversized_gloves,0,Găng tay quá khổ
 tres_bien_maid_uniform,0,Đồng phục hầu gái Tres Bien
@@ -5113,17 +5113,17 @@ reimei_school_uniform,0,Đồng phục trường Reimei
 clothing_penetration,7,Sự thâm nhập quần áo
 shrimp_costume,0,Trang phục tôm
 furgonomic_skirt,7,Chân váy nửa người nửa thú
-feet_up_heels_up,0,Bàn chân lên Gót chân lên
+feet_up_heels_up,0,Bàn chân lên Giày cao gót lên
 unbuckled_pants,7,Unbuckled Quần dài
 tea_party_militant_outfit_(blue_archive),0,Trà Tiệc militant outfit (blue archive)
 translucent_robe,7,Áo choàng bán trong suốt
 translucent_gloves,7,Găng tay bán trong suốt
-long_fall_boots_(portal),0,Long fall Ủng (portal)
+long_fall_boots_(portal),0,Dài fall Ủng (portal)
 plaid_hoodie,0,Áo hoodie kẻ caro
 balls_in_bikini,7,Tinh hoàn trong đồ bơi bikini
 see-through_hoodie,0,Áo hoodie xuyên thấu
 hole_in_sock,0,Hole trong sock
-tight_bottoms,0,Tight bottoms
+tight_bottoms,0,Ôm sát bottoms
 awafuji_school_uniform,0,Đồng phục trường Awafuji
 seigetsu_academy_school_uniform,0,Đồng phục học viện Seigetsu
 untied_swimsuit,0,Đồ bơi cởi dây
@@ -5155,12 +5155,12 @@ kouryoukan_academy_school_uniform,0,Đồng phục học viện Kouryoukan
 festive_clothing,7,Festive Trang phục
 licking_boots,7,Đang liếm ủng
 half-coat,0,Áo khoác một nửa
-ballet_high_heels,7,Ballet high Gót chân
+ballet_high_heels,7,Ballet cao Giày cao gót
 hololive_gamers_fes_outfit,0,Hololive gamers fes outfit
 shiratsuyu-type_underwear,0,Shiratsuyu-type Đồ lót
 pajama_shorts,0,Pajama Quần short
 hanging_clothing,7,Hanging Trang phục
-ink_on_clothes,0,Ink on clothes
+ink_on_clothes,0,Ink on Quần áo
 shorts_tug,0,Đang kéo quần short
 french_national_soccer_team_uniform,0,Đồng phục đội bóng đá quốc gia Pháp
 completionist_cape_(runescape),0,Completionist Áo choàng (runescape)
@@ -5184,10 +5184,10 @@ disintegrating_clothing,7,Disintegrating Trang phục
 spiked_dress,0,Váy có gai
 down_vest,0,Xuống Áo gile
 latex_jacket,0,Áo khoác cao su
-hand_in_another's_glove,0,Hand trong another's glove
+hand_in_another's_glove,0,Bàn tay trong another's găng tay
 hand_in_thighhighs,0,Bàn tay trong tất cao đùi
 holding_leotard,0,Cầm đồ liền thân
-nipple_suspension_bikini,7,Nipple suspension Đồ bơi bikini
+nipple_suspension_bikini,7,Núm vú suspension Đồ bơi bikini
 pink_seam_underwear,7,Đồ lót đường may màu hồng
 magenta_clothing,7,Trang phục màu hồng cánh sen
 sex_through_bodysuit,7,Quan hệ tình dục xuyên qua đồ liền thân
@@ -5214,7 +5214,7 @@ spartan_armor_(roman),7,Spartan Áo giáp (roman)
 goryoukan_academy_uniform,0,Đồng phục học viện Goryoukan
 jeans_only,7,Chỉ có quần jean
 ho-kago_tea_time_t-shirt,0,Ho-kago Trà time t-shirt
-jacket_tucked_in,0,Áo khoác tucked trong
+jacket_tucked_in,0,Áo khoác giắt trong
 charged_armor_(totk),7,Charged Áo giáp (totk)
 shoe_on_penis,7,Shoe on Dương vật
 hoodie_vest,7,Áo ghi-lê áo hoodie
@@ -5241,8 +5241,8 @@ taut_bikini,0,Bikini căng chặt
 checkered_cloak,0,Áo choàng kẻ ca-rô
 tying_bikini,0,Đang buộc đồ bơi bikini
 asobi_asobase's_school_uniform,0,Đồng phục trường Asobi Asobase's
-manchu_clothes,0,Manchu clothes
-kamiha_magica_idol_costume,0,Kamiha magica idol Trang phục
+manchu_clothes,0,Manchu Quần áo
+kamiha_magica_idol_costume,0,Kamiha magica thần tượng Trang phục
 racing_uniform,7,Đồng phục Racing
 camouflage_coat,0,Áo khoác rằn ri
 bellwall_military_uniform,0,Đồng phục quân đội Bellwall
@@ -5251,30 +5251,30 @@ hand_in_jacket,0,Bàn tay trong áo khoác
 laced_clothing,7,Trang phục buộc dây
 pulling_down_shirt,7,Đang kéo xuống áo sơ mi
 fur-trimmed_cardigan,0,Áo cardigan lông thú viền
-orange_bikini_bottom,7,Orange Đồ bơi bikini bottom
+orange_bikini_bottom,7,Cam Đồ bơi bikini bottom
 striped_robe,0,Áo choàng kẻ sọc
 shinsen_middle_school_uniform,0,Đồng phục trường trung học cơ sở Shinsen
 elmo_training_outfit,0,Elmo Tập luyện outfit
 ribbon-trimmed_swimsuit,0,Đồ bơi ruy băng viền
 saliva_on_clothes,7,Nước bọt trên quần áo
 flower_shirt,7,Áo sơ mi hoa
-sock_on_face,7,Sock on face
+sock_on_face,7,Sock on mặt
 wearing,7,Wearing
 wearing_partner,7,Mặc bạn tình
-purple_sling_bikini,7,Purple sling Đồ bơi bikini
-clothes_pile,7,Clothes pile
+purple_sling_bikini,7,Tím sling Đồ bơi bikini
+clothes_pile,7,Quần áo pile
 blue_garter,0,Dây treo xanh dương
 s.o.n.g._uniform,0,Đồng phục S.O.N.G.
-green_sling_bikini,7,Green sling Đồ bơi bikini
+green_sling_bikini,7,Xanh lá sling Đồ bơi bikini
 swimsuit_around_one_leg,0,Đồ bơi quanh một chân
-striped_inmates_clothing,7,Striped inmates Trang phục
+striped_inmates_clothing,7,Kẻ sọc inmates Trang phục
 black_high_heeled_boots,7,Bốt cao có gót màu đen
 heel_stretch,0,Gót chân stretch
 panties_under_bodysuit,0,Quần lót bên dưới đồ liền thân
 hand_in_own_bra,0,Bàn tay trong áo ngực của mình
 denim_apron,0,Tạp dề jean
 animal_panties,7,Quần lót động vật
-white_tights,7,White tights
+white_tights,7,Trắng ôm sát
 contrast_trim_panties,0,Contrast trim Quần lót
 on_heel,7,On Gót chân
 tearing_pants,7,Đang xé quần dài
@@ -5288,7 +5288,7 @@ rabbit_panties,7,Quần lót thỏ
 doll_panty_check,0,Búp bê panty check
 nipple_armor,7,Giáp núm vú
 leaf_print_shirt,7,Áo sơ mi họa tiết chiếc lá
-fishnet_tights,7,Fishnet tights
+fishnet_tights,7,Lưới ôm sát
 one_piece_sweater,7,Áo len một mảnh
 mismatched_boots,0,Bốt lệch đôi
 sideless_sweater,0,Áo len hở bên
@@ -5296,8 +5296,8 @@ animal_ear_footwear,0,Giày dép tai động vật
 latex_costume,7,Trang phục cao su
 hoof_boots_(hoofwear),7,Bốt móng guốc
 hoodie_leotard,7,Leotard áo hoodie
-clothes_rip,7,Clothes rip
-low_cut_dress,7,Low cut Váy liền
+clothes_rip,7,Quần áo rip
+low_cut_dress,7,Thấp cut Váy liền
 apron_pocket,0,Túi áo tạp dề
 kazami_uniform,0,Đồng phục Kazami
 goat_costume,0,Trang phục dê
@@ -5305,10 +5305,10 @@ underwear_locked,0,Đồ lót locked
 monotone_bodysuit,7,Đồ liền thân một tông
 shirt_belt,0,Thắt lưng áo sơ mi
 pants_falling_down,7,Quần dài falling xuống
-pink_sling_bikini,7,Pink sling Đồ bơi bikini
+pink_sling_bikini,7,Hồng sling Đồ bơi bikini
 mikagura_private_academy_school_uniform,0,Đồng phục học viện tư thục Mikagura
 pulling_bra,7,Đang kéo áo ngực
-pink_blouse,7,Pink Áo kiểu nữ
+pink_blouse,7,Hồng Áo kiểu nữ
 tiny_panties,7,Quần lót rất nhỏ
 open-butt_dress,7,Váy mông mở
 fortune_bikini,0,Fortune Đồ bơi bikini
@@ -5317,7 +5317,7 @@ open_blouse,7,Mở Áo kiểu nữ
 half-sleeves,0,Tay áo một nửa
 slingshot_dress,0,Váy dây chéo
 putting_on_socks,7,Đang mặc tất
-swedish_clothes,0,Swedish clothes
+swedish_clothes,0,Swedish Quần áo
 officer_uniform,7,Đồng phục Officer
 skirt_around_one_ankle,0,Chân váy xung quanh một Cổ chân
 lace-trimmed_boots,0,Bốt ren viền
@@ -5330,7 +5330,7 @@ eggplant_costume,0,Eggplant Trang phục
 belted_boots,7,Belted Ủng
 pants_unzipped,7,Quần dài kéo khóa
 holding_unworn_thighhighs,0,Cầm tất cao đùi không mặc
-reflective_clothes,0,Reflective clothes
+reflective_clothes,0,Reflective Quần áo
 tennomifune_academy_school_uniform,0,Đồng phục học viện Tennomifune
 holostars_idol_uniform_(1st_act),0,Đồng phục thần tượng Holostars
 leotard_under_pants,0,Đồ liền thân bên dưới quần dài
@@ -5350,18 +5350,18 @@ yukuni_academy_school_uniform,0,Đồng phục học viện Yukuni
 minimal_clothing,7,Minimal Trang phục
 zonai_clothing,7,Zonai Trang phục
 tsubakisakuhana_school_uniform,0,Đồng phục trường Tsubakisakuhana
-pink_tights,7,Pink tights
+pink_tights,7,Hồng ôm sát
 two_tone_apron,7,Tạp dề hai tông
 rainbow_panties,7,Quần lót cầu vồng
-blue_sling_bikini,7,Blue sling Đồ bơi bikini
+blue_sling_bikini,7,Xanh dương sling Đồ bơi bikini
 cum_in_sock,7,Tinh dịch trong sock
 grey_thigh_socks,7,Tất đùi màu xám
 frilled_pantyhose,0,Quần tất nhún xếp
 kouryou_academy_school_uniform,0,Đồng phục học viện Kouryou
 pantyhose_around_legs,0,Quần tất quanh đôi chân
 star-shaped_bikini,0,Bikini hình ngôi sao
-malaysian_clothes,0,Malaysian clothes
-shoe_removal,7,Shoe removal
+malaysian_clothes,0,Malaysian Quần áo
+shoe_removal,7,Shoe Sự tháo bỏ
 brazilian_national_soccer_team_uniform,0,Đồng phục đội tuyển bóng đá quốc gia Brazilian
 takizakura_school_uniform,0,Đồng phục trường Takizakura
 holostars_idol_uniform_(2nd_act),0,Đồng phục thần tượng Holostars
@@ -5373,18 +5373,18 @@ sock_tan,0,Sock nâu rám
 heart_keyhole_clothing,7,Trang phục lỗ khóa trái tim
 dirty_shirt,7,Áo sơ mi bẩn
 panties_on_foot,7,Quần lót trên bàn chân
-off_shoulder_shirt,7,Off shoulder Áo sơ mi
-nipple_rub_through_clothes,0,Nipple rub through clothes
-professional_clothes,7,Professional clothes
+off_shoulder_shirt,7,Off vai Áo sơ mi
+nipple_rub_through_clothes,0,Núm vú rub through Quần áo
+professional_clothes,7,Professional Quần áo
 korean_armor,0,Giáp Hàn Quốc
 ichigozaka_middle_school_uniform,0,Đồng phục trường trung học cơ sở Ichigozaka
 studded_armor,0,Giáp đính đinh
 cock_armor,7,Giáp dương vật
-hand_in_another's_bra,0,Hand trong another's Áo ngực
+hand_in_another's_bra,0,Bàn tay trong another's Áo ngực
 i_really_like_wearing_sunglasses_(meme),0,I really like wearing Kính râm (meme)
 kiritsusei_juuji_academy_school_uniform,0,Đồng phục học viện Kiritsusei Juuji
 kyouwa_school_uniform,0,Đồng phục trường Kyouwa
-turkish_clothes,0,Turkish clothes
+turkish_clothes,0,Turkish Quần áo
 plastic_pants,7,Quần nhựa
 thigh_boots_only,7,Chỉ đi bốt đùi
 evolved_virgin_killer_sweater,0,Evolved Trinh nữ killer Áo len
@@ -5396,7 +5396,7 @@ flower_costume,0,Trang phục hoa
 bridal_sleeves,0,Tay áo cô dâu
 gradient_shoes,0,Giày chuyển sắc
 asymmetrical_one-piece_swimsuit,0,Đồ bơi bất đối xứng một mảnh
-armor_girls_project,0,Áo giáp girls project
+armor_girls_project,0,Áo giáp nữ project
 pinstripe_clothing,7,Trang phục sọc chỉ
 breastless_ghost_costume,0,Trang phục ma không ngực
 police_vest,7,Áo ghi-lê cảnh sát
@@ -5407,14 +5407,14 @@ smelling_pantyhose,0,Ngửi quần tất
 ballerina_shoes,7,Ballerina Giày
 nasu_squad's_uniform,0,Đồng phục đội Nasu
 removing_bikini_top,0,Đang cởi áo bikini
-high_waisted_skirt,7,High waisted Chân váy
+high_waisted_skirt,7,Cao waisted Chân váy
 combat_gloves,7,Găng tay chiến đấu
 seashell_bikini,7,Seashell Đồ bơi bikini
 big_shirt,7,Áo sơ mi to
 pants_around_ankle,7,Quần dài quanh cổ chân
 nylon_clothing,7,Nylon Trang phục
 liebe_girls_academy_school_uniform,0,Đồng phục học viện nữ sinh Liebe
-unworn_blouse,0,Unworn Áo kiểu nữ
+unworn_blouse,0,Không mặc Áo kiểu nữ
 wedding_garter,7,Dây treo cưới
 brown_thigh_boots,7,Bốt đùi màu nâu
 you_dress_weird_(meme),0,You Váy liền weird (meme)
@@ -5426,13 +5426,13 @@ short-sleeved_coat,0,Short-sleeved Áo khoác dài
 pearl_bikini,0,Bikini ngọc trai
 body_stocking,7,Tất dài cơ thể
 bodysuit_only,0,Chỉ mặc đồ liền thân
-brown_tights,7,Nâu tights
+brown_tights,7,Nâu ôm sát
 indonesian_elementary_school_uniform,0,Đồng phục trường Indonesian Elementary
 barefoot_sandals,7,Chân trần Dép xăng đan
 highleg_shorts,0,Quần short cắt cao
 light_socks,7,Tất nhạt
 half-leotard,0,Leotard một nửa
-pulling_on_clothes,7,Pulling on clothes
+pulling_on_clothes,7,Pulling on Quần áo
 duel_academy_uniform_(yu-gi-oh!_arc-v),0,Đồng phục học viện Duel
 kamihama_future_academy_school_uniform,0,Đồng phục học viện Kamihama Future
 maginot_school_uniform,0,Đồng phục trường Maginot
@@ -5454,7 +5454,7 @@ very_long_robe,0,Áo choàng rất dài
 pride_trooper_uniform,0,Đồng phục Pride Trooper
 underwear_showing,7,Đồ lót lộ ra
 cupless_swimsuit,0,Cupless Đồ bơi
-white_jeans,7,White Quần jean
+white_jeans,7,Trắng Quần jean
 underwear_grab,7,Nắm đồ lót
 assless_skirt,0,Assless Chân váy
 gyaru_garter_lingerie_set,0,Gyaru Dây treo Đồ lót nữ gợi cảm set
@@ -5467,7 +5467,7 @@ clothes_over_shoulder,0,Quần áo phía trên vai
 grey_garter_belt,0,Dây treo tất xám
 tying_panties,0,Đang buộc quần lót
 holes_in_underwear,7,Holes trong Đồ lót
-high_waisted_panties,7,High waisted Quần lót
+high_waisted_panties,7,Cao waisted Quần lót
 multicolored_knee_socks,7,Tất đầu gối nhiều màu
 floral_print_leotard,0,Leotard họa tiết thêu hoa
 gradient_cloak,0,Áo choàng chuyển sắc
@@ -5480,7 +5480,7 @@ hand_in_shirt,7,Bàn tay trong áo sơ mi
 miwa_squad's_uniform,0,Đồng phục đội Miwa
 offering_panties,7,Đưa cho quần lót
 dark_panties,7,Quần lót sẫm
-shoe_focus,7,Shoe focus
+shoe_focus,7,Shoe Trọng tâm
 secretary_outfit,7,Secretary outfit
 cow_print_sling_bikini,7,Bò Họa tiết sling Đồ bơi bikini
 mexican_national_soccer_team_uniform,0,Đồng phục đội tuyển bóng đá quốc gia Mexican
@@ -5516,7 +5516,7 @@ camelot_academy_of_chivalry_school_uniform,0,Đồng phục trường Camelot Ac
 tuxedo_underwear,7,Tuxedo Đồ lót
 spotted_shirt,7,Áo sơ mi có đốm
 cropped_coat,0,Áo khoác lửng
-dress_bulge,7,Chỗ lùm lùm váy
+dress_bulge,7,Chỗ lùm váy
 penis_in_stocking,7,Dương vật trong tất dài
 hull_shoes,0,Hull Giày
 arisugawa_academy_school_uniform,0,Đồng phục học viện Arisugawa
@@ -5525,14 +5525,14 @@ boot_on_face,7,Bốt trên khuôn mặt
 rinmeikan_girls_school_uniform,0,Đồng phục trường nữ sinh Rinmeikan
 sneakers_without_bottomwear,7,Giày thể thao không có Trang phục thân dưới
 checkered_swimsuit,0,Đồ bơi kẻ ca-rô
-dutch_clothes,0,Dutch clothes
+dutch_clothes,0,Dutch Quần áo
 pride_color_panties,7,Quần lót màu tự hào
 resistance_costume_(amphibia),0,Resistance Trang phục (amphibia)
 half-shirt,0,Áo sơ mi một nửa
 flag_cape,7,Áo choàng hình cờ
 side-tie_vest,0,Áo ghi-lê cà vạt lệch bên
 brown_outfit,7,Nâu outfit
-striped_bikini_bottom,7,Striped Đồ bơi bikini bottom
+striped_bikini_bottom,7,Kẻ sọc Đồ bơi bikini bottom
 feces_on_clothing,7,Phân trên trang phục
 pleated_kimono,0,Kimono xếp ly
 writing_on_clothes,7,Chữ viết trên quần áo
@@ -5540,7 +5540,7 @@ doukyuusei_2_school_uniform,0,Đồng phục trường Doukyuusei 2
 rainbow_elbow_gloves,7,Găng tay khuỷu tay màu cầu vồng
 yellow_dress_shirt,7,Áo sơ mi váy màu vàng
 mage_robe,7,Mage Áo choàng dài
-backless_bikini_bottom,0,Backless Đồ bơi bikini bottom
+backless_bikini_bottom,0,Hở lưng Đồ bơi bikini bottom
 boots_without_bottomwear,7,Ủng không có Trang phục thân dưới
 historical_dress,7,Historical Váy liền
 softball_uniform,0,Đồng phục Softball
@@ -5554,18 +5554,18 @@ assless_swimsuit,0,Assless Đồ bơi
 hiiragi_utena's_school_uniform,0,Đồng phục trường Hiiragi Utena's
 animal_print_clothing,7,Trang phục họa tiết động vật
 tight_leggings,7,Quần legging ôm sát
-bikini_cowgirl,7,Đồ bơi bikini cowgirl
+bikini_cowgirl,7,Đồ bơi bikini cưỡi ngựa
 gradient_swimsuit,0,Đồ bơi chuyển sắc
 shirt_stay,0,Áo sơ mi stay
-tight_briefs,7,Tight Quần lót tam giác
+tight_briefs,7,Ôm sát Quần lót tam giác
 collared_one-piece_swimsuit,0,Đồ bơi có cổ một mảnh
 fruit_costume,0,Trang phục trái cây
 college_jacket,7,College Áo khoác
 o-ring_footwear,0,O-ring Giày dép
-blue_blouse,7,Blue Áo kiểu nữ
+blue_blouse,7,Xanh dương Áo kiểu nữ
 victorian_dress,7,Váy thời Victoria
 seidouzan_soccer_uniform,0,Đồng phục Seidouzan Soccer
-lce_clothes_(project_moon),0,Lce clothes (project moon)
+lce_clothes_(project_moon),0,Lce Quần áo (project moon)
 brown_elbow_gloves,7,Găng tay khuỷu tay màu nâu
 pearl_panties,7,Quần lót ngọc trai
 fur_shorts,0,Quần short lông thú
@@ -5580,29 +5580,29 @@ torayamachi_academy_school_uniform,0,Đồng phục học viện Torayamachi
 young_pioneer_uniform,7,Đồng phục Young Pioneer
 norwegian_national_soccer_team_uniform,0,Đồng phục đội tuyển bóng đá quốc gia Norwegian
 regency_period_clothing,7,Regency period Trang phục
-arm_length_gloves,7,Arm length Găng tay
-tights_down,7,Tights xuống
+arm_length_gloves,7,Cánh tay length Găng tay
+tights_down,7,Ôm sát xuống
 white_glove,7,Găng tay trắng
 hoodie_bodysuit,7,Đồ liền thân áo hoodie
 fujinomisaki_school_uniform,0,Đồng phục trường Fujinomisaki
 bellydancer_outfit,7,Bellydancer outfit
-little_devil_swimsuit_(idolmaster),0,Nhỏ devil Đồ bơi (idolmaster)
+little_devil_swimsuit_(idolmaster),0,Nhỏ quỷ Đồ bơi (idolmaster)
 tight_leotard,7,Leotard ôm sát
 undoing_clothing,7,Undoing Trang phục
 kimono_tug,0,Áo kimono tug
 sports_bra_visible_through_clothes,0,Áo ngực thể thao nhìn thấy được xuyên qua quần áo
 clitoris_sleeve,0,Tay áo âm vật
-uygur_clothes,0,Uygur clothes
+uygur_clothes,0,Uygur Quần áo
 fur_panties,0,Quần lót lông thú
 yellow_thigh_socks,7,Tất đùi màu vàng
 tall_boots,7,Bốt cao
 stitched_pants,0,Quần khâu
 food_clothing,7,Trang phục thức ăn
-long_fall_boots,7,Long fall Ủng
+long_fall_boots,7,Dài fall Ủng
 shoe_rack,0,Shoe rack
 bat_panties,0,Quần lót dơi
 wet_apron,0,Tạp dề ướt
-high_waisted_pants,7,High waisted Quần dài
+high_waisted_pants,7,Cao waisted Quần dài
 thighhighs_under_pantyhose,0,Tất cao đùi bên dưới quần tất
 bulge_under_clothes,7,Phần phồng lên bên dưới quần áo
 cat_underwear,7,Đồ lót mèo
@@ -5611,7 +5611,7 @@ lowered_panties,7,Quần lót hạ xuống
 hololive_super_expo_2025_outfit,0,Hololive super expo Năm 2025 outfit
 lowered_underwear,7,Đồ lót hạ xuống
 heel_spike,7,Gót chân spike
-power_glove_(nintendo),0,Sức mạnh glove (nintendo)
+power_glove_(nintendo),0,Sức mạnh găng tay (nintendo)
 crossdressing_under_clothes_(mtf),0,Trang phục chéo giới bên dưới quần áo
 painted_underwear,7,Đồ lót vẽ họa tiết
 hanamichi_middle_school_uniform,0,Đồng phục trường trung học cơ sở Hanamichi
@@ -5658,7 +5658,7 @@ undone_skirt,0,Chân váy chưa cài
 spudsy's_uniform,0,Đồng phục Spudsy's
 armored_vest,7,Áo ghi-lê bọc giáp
 doukyuusei_school_uniform,0,Đồng phục trường Doukyuusei
-scottish_clothes,0,Scottish clothes
+scottish_clothes,0,Scottish Quần áo
 torn_costume,7,Trang phục bị rách
 footwear_removed,7,Giày dép đã tháo ra
 torn_sweater_vest,0,Áo ghi-lê len bị rách
@@ -5684,8 +5684,8 @@ slut_shirt,0,Slut Áo sơ mi
 front_slit_clothing,7,Trang phục xẻ tà phía trước
 orange_sneakers,7,Giày thể thao cam
 green_costume,7,Trang phục xanh lá
-eating_clothes,0,Ăn clothes
-purple_blouse,7,Purple Áo kiểu nữ
+eating_clothes,0,Ăn Quần áo
+purple_blouse,7,Tím Áo kiểu nữ
 heel-less_legwear,0,Đồ che chân gót không có
 bullet_bill_underwear,7,Bullet bill Đồ lót
 kamome_gakuen_school_uniform,0,Đồng phục học viện Kamome
@@ -5703,11 +5703,11 @@ purple_seam_underwear,7,Đồ lót đường may màu tím
 translucent_pantyhose,7,Quần tất bán trong suốt
 translucent_shorts,7,Quần short bán trong suốt
 bone_print_clothing,7,Trang phục họa tiết xương
-power_glove,7,Sức mạnh glove
+power_glove,7,Sức mạnh găng tay
 star_pattern_panties,7,Quần lót hoa văn ngôi sao
 keishin_academy_school_uniform,0,Đồng phục học viện Keishin
 recompense_maid_uniform,0,Đồng phục hầu gái Recompense
-flustered_face_emoji_t-shirt,7,Flustered face emoji t-shirt
+flustered_face_emoji_t-shirt,7,Flustered mặt emoji t-shirt
 dark_t-shirt,7,Áo thun sẫm
 holding_boots,7,Cầm ủng
 english_national_soccer_team_uniform,0,Đồng phục đội bóng đá quốc gia Anh
@@ -5717,7 +5717,7 @@ gold_skirt,0,Chân váy vàng kim
 world_w_academy_school_uniform,0,Đồng phục học viện World W
 head_up_shirt,0,Áo sơ mi trễ cổ
 mismatched_pants,0,Quần lệch đôi
-filipino_clothes,0,Filipino clothes
+filipino_clothes,0,Filipino Quần áo
 polka_dot_sweater,0,Áo len chấm bi
 two-sided_shorts,0,Quần short mặt hai
 oversized_shorts,7,Quần short quá khổ
@@ -5728,7 +5728,7 @@ white_sleeveless_shirt,7,Áo sơ mi không tay màu trắng
 semi-transparent_dress,0,Semi-transparent Váy liền
 striped_cloak,0,Áo choàng kẻ sọc
 yellow_fingerless_gloves,7,Găng tay hở ngón màu vàng
-mini_person_in_clothes,0,Siêu ngắn person trong clothes
+mini_person_in_clothes,0,Siêu ngắn người trong Quần áo
 diaper_under_dress,7,Tã lót bên dưới váy liền
 carrot_pattern_underwear,7,Đồ lót hoa văn cà rốt
 seashell_panties,7,Seashell Quần lót
@@ -5739,7 +5739,7 @@ apple_costume,0,Trang phục táo
 vivid_bikini_(idolmaster),0,Bikini rực rỡ
 furred_clothing,7,Trang phục có lông
 pseudo_clothing_lift,7,Nhấc trang phục giả
-hand_in_another's_skirt,0,Hand trong another's Chân váy
+hand_in_another's_skirt,0,Bàn tay trong another's Chân váy
 socks_on_face,7,Tất trên khuôn mặt
 zipper_swimsuit,7,Đồ bơi khóa kéo
 gun_in_pants,0,Súng trong quần dài
@@ -5753,7 +5753,7 @@ udder_bra,7,Udder Áo ngực
 white_arm_garter,0,Dây treo cánh tay trắng
 aztec_clothing,7,Aztec Trang phục
 tomoeda_elementary_cheerleader_uniform,0,Đồng phục cổ động viên Tomoeda Elementary
-black_blouse,7,Black Áo kiểu nữ
+black_blouse,7,Đen Áo kiểu nữ
 coat_over_head,0,Áo khoác dài phía trên đầu
 christian_private_white_clover_academy_school_uniform,0,Đồng phục học viện Christian Private White Clover
 wet_gloves,0,Găng tay ướt
@@ -5768,15 +5768,15 @@ hot_dogging_through_clothing,7,Hot dogging through Trang phục
 clothing_rack,7,Trang phục rack
 flower-trimmed_panties,0,Quần lót hoa viền
 ride_armor_(mospeada),0,Ride Áo giáp (mospeada)
-clothes_variants,0,Clothes variants
+clothes_variants,0,Quần áo variants
 flowing_cape,7,Áo choàng tung bay
 lace_leotard,0,Leotard ren
 asfeld_academy_school_uniform,0,Đồng phục học viện Asfeld
 tentacle_underwear,0,Đồ lót xúc tu
 holostars_english_idol_uniform,0,Đồng phục thần tượng Holostars English
 naginomori_gakuen_high_school_uniform,0,Đồng phục trường trung học phổ thông Naginomori Gakuen
-hoodie_partially_removed,0,Áo hoodie partially removed
-minoan_clothes,0,Minoan clothes
+hoodie_partially_removed,0,Áo hoodie một phần removed
+minoan_clothes,0,Minoan Quần áo
 choker_over_clothes,0,Vòng cổ choker phía trên quần áo
 dark_elbow_gloves,7,Găng tay khuỷu tay sẫm
 adjusting_underwear,0,Đang chỉnh đồ lót
@@ -5791,7 +5791,7 @@ rainbow_swimwear,7,Đồ bơi màu cầu vồng
 panty_theft,7,Panty theft
 saliva_on_clothing,7,Nước bọt trên trang phục
 spiked_clothes,0,Quần áo có gai
-yuki_miku_official_costume_design_contest,0,Yuki miku official Trang phục design contest
+yuki_miku_official_costume_design_contest,0,Yuki miku chính thức Trang phục design contest
 loose_sleeves,7,Tay áo rộng
 coat_bow,0,Nơ áo khoác
 surre_academy_school_uniform,0,Đồng phục học viện Surre
@@ -5815,7 +5815,7 @@ bone_armor_(monster_hunter),0,Giáp xương
 virtual_talent_academy_school_uniform,0,Đồng phục học viện Virtual Talent
 print_elbow_gloves,7,Găng tay khuỷu tay họa tiết
 tan_dress_shirt,7,Áo sơ mi váy màu nâu rám nắng
-exercise_clothes,7,Exercise clothes
+exercise_clothes,7,Exercise Quần áo
 hololive_super_expo_2024_outfit,0,Hololive super expo Năm 2024 outfit
 zundamon_outfit,0,Zundamon outfit
 shiny_skirt,0,Chân váy bóng
@@ -5894,7 +5894,7 @@ carrot_pattern_panties,7,Quần lót hoa văn cà rốt
 paw_pattern_panties,7,Quần lót hoa văn chân thú
 honey_strap_stage_costume,0,Trang phục sân khấu dây mật ong
 minion_uniform,7,Đồng phục Minion
-world_cup_american_bikini_(meme),0,World Cốc american Đồ bơi bikini (meme)
+world_cup_american_bikini_(meme),0,World Cốc Mỹ Đồ bơi bikini (meme)
 pantyhose_over_swimsuit,0,Quần tất phía trên đồ bơi
 textured_clothing,7,Trang phục có kết cấu
 cropped_t-shirt,7,Áo thun lửng
@@ -5911,10 +5911,10 @@ taut_vest,0,Áo ghi-lê căng chặt
 flora_girls_academy_school_uniform,0,Đồng phục học viện nữ sinh Flora
 standard_diving_dress,0,Standard Lặn Váy liền
 cherry_print_bra,0,Áo ngực họa tiết hoa anh đào
-green_tights,7,Green tights
+green_tights,7,Xanh lá ôm sát
 ez-on_vest,7,Ez-on Áo gile
 multicolored_cardigan,0,Áo cardigan nhiều màu
-boot_knife,0,Boot Con dao
+boot_knife,0,Bốt Con dao
 decapitated_head_sex_sleeve,0,Decapitated đầu quan hệ tình dục Tay áo
 rare_apron_(fire_emblem_engage),0,Rare Tạp dề (fire Huy hiệu engage)
 msby_black_jackals_volleyball_uniform,0,Đồng phục Msby Black Jackals Volleyball
@@ -5932,12 +5932,12 @@ knights_moralis_uniform,0,Đồng phục Knights Moralis
 clothes_on_wall,0,Quần áo trên bức tường
 yellow_clothes,7,Quần áo màu vàng
 bikini_top_down,7,Áo bikini hướng xuống
-designer_clothes,7,Designer clothes
+designer_clothes,7,Designer Quần áo
 leg_stockings,7,Bít tất chân
 please_charge_panties,0,Please charge Quần lót
 plastic_gloves,0,Găng tay nhựa
 human_wearing_fursuit,7,Người wearing fursuit
-finnish_clothes,0,Finnish clothes
+finnish_clothes,0,Finnish Quần áo
 frilled_shoes,0,Giày nhún xếp
 agnus_female_off-seer_uniform,0,Đồng phục Agnus Female Off-seer
 camouflage_thighhighs,0,Tất cao đùi rằn ri
@@ -5969,9 +5969,9 @@ torigoe_gakuen_school_uniform,0,Đồng phục học viện Torigoe
 crab_costume,0,Trang phục cua
 bow_clothing,7,Trang phục nơ
 clothes_pin_on_nipples,7,Ghim quần áo trên núm vú
-black_shoe,7,Black shoe
+black_shoe,7,Đen shoe
 a-line_skirt,0,A-line Chân váy
-wearing_another_person,7,Wearing another person
+wearing_another_person,7,Wearing another người
 multicolored_thigh_boots,7,Bốt đùi nhiều màu
 multicolored_heels,7,Giày cao gót nhiều màu
 cow_print_dress,0,Váy họa tiết bò
@@ -5991,9 +5991,9 @@ maroon_underwear,7,Đồ lót màu nâu đỏ
 sakuraba_institute_school_uniform,0,Đồng phục trường Sakuraba Institute
 game_controller_shirt,7,Game Tay cầm chơi game Áo sơ mi
 pink_santa_costume,0,Trang phục ông già Noel hồng
-white_sling_bikini,7,White sling Đồ bơi bikini
+white_sling_bikini,7,Trắng sling Đồ bơi bikini
 unhooked_bra,7,Unhooked Áo ngực
-white_outfit,7,White outfit
+white_outfit,7,Trắng outfit
 panty_raid,7,Panty raid
 pants_removed,7,Quần dài đã tháo ra
 pikachu_hoodie,7,Pikachu Áo hoodie
@@ -6022,8 +6022,8 @@ sunglasses_on_shirt,7,Kính râm trên áo sơ mi
 chinese_school_uniform,0,Đồng phục học đường Trung Quốc
 aerobics_clothing,7,Aerobics Trang phục
 formal_dress,7,Váy trang trọng
-sniffing_own_shoe,7,Sniffing own shoe
-byzantine_clothes,0,Byzantine clothes
+sniffing_own_shoe,7,Sniffing của mình shoe
+byzantine_clothes,0,Byzantine Quần áo
 light_pants,7,Quần nhạt
 bra_(anatomy),7,Áo ngực
 glistening_pantyhose,7,Quần tất bóng nhẫy
@@ -6058,7 +6058,7 @@ lace_bodysuit,0,Đồ liền thân ren
 cardigan_around_neck,0,Áo cardigan quanh cổ
 spiked_skirt,0,Chân váy có gai
 knot_through_clothing,7,Nút thắt xuyên qua trang phục
-red_blouse,7,Red Áo kiểu nữ
+red_blouse,7,Đỏ Áo kiểu nữ
 black_tail_stocking,7,Tất dài đuôi đen
 parachute_pants,0,Parachute Quần dài
 owl_costume,0,Trang phục cú mèo
@@ -6099,13 +6099,13 @@ food_bikini,7,Bikini thức ăn
 pentagram_bra,7,Pentagram Áo ngực
 ripped_socks,7,Tất xé rách
 sexy_underwear_(dq),0,Đồ lót gợi cảm
-weighted_clothes,0,Weighted clothes
+weighted_clothes,0,Weighted Quần áo
 argyle_bra,0,Áo ngực kẻ quả thoi
 safari_shirt,7,Safari Áo sơ mi
 tropical_shirt,7,Tropical Áo sơ mi
 cape_verde,0,Áo choàng verde
 helvetian_military_uniform,0,Đồng phục quân đội Helvetian
-upside-down_bikini_top,0,Upside-down Đồ bơi bikini top
+upside-down_bikini_top,0,Upside-down Đồ bơi bikini Áo
 blood_on_apron,7,Máu trên tạp dề
 cherryton_school_uniform,0,Đồng phục trường Cherryton
 fluffy_jacket,7,Áo khoác lông xù
@@ -6125,7 +6125,7 @@ one-piece_dress,7,Váy một mảnh
 heart_keyhole_bra,7,Áo ngực lỗ khóa trái tim
 unconventional_police_uniform,0,Đồng phục cảnh sát Unconventional
 long_sleeve_dress,7,Váy tay áo dài
-taiwanese_clothes,0,Taiwanese clothes
+taiwanese_clothes,0,Taiwanese Quần áo
 cross_academy_school_uniform,0,Đồng phục học viện Cross
 skirt_around_thighs,0,Chân váy quanh đùi
 ortensia_idol_uniform,0,Đồng phục thần tượng Ortensia
@@ -6147,9 +6147,9 @@ hand_on_shirt,7,Bàn tay trên áo sơ mi
 two-sided_vest,0,Áo ghi-lê mặt hai
 frostbite_armor,7,Frostbite Áo giáp
 coat_tails,7,Đuôi áo khoác
-yellow_sling_bikini,7,Yellow sling Đồ bơi bikini
+yellow_sling_bikini,7,Vàng sling Đồ bơi bikini
 tan_armor,7,Giáp nâu rám nắng
-uzbek_clothes,0,Uzbek clothes
+uzbek_clothes,0,Uzbek Quần áo
 t-shirt_on_long_sleeve,7,Áo phông trên tay áo dài
 orange_dress_shirt,7,Áo sơ mi váy màu cam
 footwear_on_head,0,Giày dép trên đầu
@@ -6177,7 +6177,7 @@ baseball_jacket,7,Áo khoác bóng chày
 dog_print_panties,0,Quần lót họa tiết chó
 panties_showing,7,Quần lót lộ ra
 dolphin_costume,0,Trang phục cá heo
-on_heels,7,On Gót chân
+on_heels,7,On Giày cao gót
 blue_boxing_gloves,7,Găng tay quyền Anh màu xanh dương
 panty_peeing,7,Panty đi tiểu
 tight_sheath,7,Bao dương vật ôm sát
@@ -6236,7 +6236,7 @@ inside_panties,7,Bên trong Quần lót
 t-shirt_design,7,T-shirt design
 hololive_fantasy_1st_anniversary_outfit,0,Hololive fantasy 1st anniversary outfit
 striped_shoes,0,Giày kẻ sọc
-striped_sock,7,Striped sock
+striped_sock,7,Kẻ sọc sock
 tan_apron,7,Tạp dề màu nâu rám nắng
 baby_clothing,7,Baby Trang phục
 saika_academy_school_uniform,0,Đồng phục học viện Saika
@@ -6251,20 +6251,20 @@ wearing_pants,7,Mặc quần dài
 cow_print_socks,0,Tất họa tiết bò
 carrot_costume,0,Trang phục cà rốt
 cow_clothing,7,Trang phục bò
-in_clothes,7,Trong clothes
+in_clothes,7,Trong Quần áo
 rimming_through_clothing,7,Rimming through Trang phục
 black_stirrup_socks,7,Tất đai giữ màu đen
 partially_open_hoodie,0,Áo hoodie một phần mở
-anilingus_through_clothes,0,Anilingus through clothes
+anilingus_through_clothes,0,Anilingus through Quần áo
 ichigo_field_high_school_uniform,0,Đồng phục trường trung học phổ thông Ichigo Field
-one_stocking_on,7,Một stocking on
+one_stocking_on,7,Một Tất dài on
 middleton_high_school_cheerleader_uniform,0,Đồng phục cổ động viên Middleton High School
 panty_humiliation,7,Panty humiliation
 gardening_gloves,7,Gardening Găng tay
 wind_blowing_skirt,7,Gió blowing Chân váy
 boar_costume,0,Trang phục lợn rừng
 70s_clothing,7,70s Trang phục
-red_jeans,7,Red Quần jean
+red_jeans,7,Đỏ Quần jean
 mountain_pattern_armor,0,Giáp hoa văn núi
 leotard_removed,0,Đồ liền thân đã tháo ra
 double_frill_skirt_swimsuit,0,Đồ bơi chân váy kép diềm xếp
@@ -6276,7 +6276,7 @@ multi-strapped_shirt,0,Multi-strapped Áo sơ mi
 turtle_costume,0,Trang phục rùa
 holding_tight,7,Cầm ôm sát
 stretched_shirt,7,Stretched Áo sơ mi
-clothes_bursting,7,Clothes bursting
+clothes_bursting,7,Quần áo bursting
 shi_association_east_uniform,0,Đồng phục Shi Association East
 poverty_outfit,0,Poverty outfit
 bra_armor,7,Giáp áo ngực
@@ -6306,13 +6306,13 @@ umemizaki_middle_school_uniform,0,Đồng phục trường trung học cơ sở 
 bra_on_floor,7,Áo ngực trên sàn nhà
 fold-over_socks,0,Gập phía trên tất
 crotch_armor,7,Giáp đũng quần
-two_tone_sandals,7,Hai tone Dép xăng đan
+two_tone_sandals,7,Hai tông Dép xăng đan
 kirameki_high_school_uniform_(summer),0,Đồng phục trường trung học phổ thông Kirameki
 penis_in_another's_pantyhose,0,Dương vật trong another's Quần tất
 shoe_buckles,7,Shoe Khóa
 peeing_through_panties,7,Đi tiểu through Quần lót
 flashing_underwear,7,Flashing Đồ lót
-shorts_partially_removed,0,Quần short partially removed
+shorts_partially_removed,0,Quần short một phần removed
 knit_cardigan,0,Knit Áo cardigan
 panties_around_toes,7,Quần lót quanh ngón chân
 holding_cape,7,Cầm áo choàng
@@ -6323,14 +6323,14 @@ dildo_pants,7,Quần dương vật giả
 magician_robe,7,Magician Áo choàng dài
 lace-trimmed_cape,0,Áo choàng ren viền
 hammer_and_sickle_bikini,0,Búa và sickle Đồ bơi bikini
-hand_in_another's_underwear,0,Hand trong another's Đồ lót
+hand_in_another's_underwear,0,Bàn tay trong another's Đồ lót
 highso_private_girls'_academy_school_uniform,0,Đồng phục học viện nữ sinh Highso Private
 science_special_search_party_uniform,0,Đồng phục Science Special Search Party
 yellow_garter_belt,0,Dây treo tất vàng
 heart_pattern_bra,7,Áo ngực hoa văn trái tim
 skirt_over_leggings,0,Chân váy phía trên quần legging
 tight_socks,7,Tất ôm sát
-tight_overalls,7,Tight Quần yếm
+tight_overalls,7,Ôm sát Quần yếm
 scalemail_bikini,7,Scalemail Đồ bơi bikini
 skull_on_clothing,7,Đầu lâu trên trang phục
 heart_boots,7,Bốt trái tim
@@ -6360,15 +6360,15 @@ chinese-styled_leotard,0,Chinese-styled Đồ liền thân
 tan_stockings,7,Bít tất màu nâu rám nắng
 rocking_horse_shoes,0,Rocking Ngựa Giày
 shoe_blade,0,Shoe blade
-green_blouse,7,Green Áo kiểu nữ
+green_blouse,7,Xanh lá Áo kiểu nữ
 twirling_panties,0,Đang xoắn quần lót
 rainbow_thighhighs,0,Tất cao đùi cầu vồng
 metallic_clothing,7,Trang phục màu ánh kim
 flower_in_clothes,0,Hoa trong quần áo
-hungarian_clothes,0,Hungarian clothes
+hungarian_clothes,0,Hungarian Quần áo
 fluffy_coat,7,Áo khoác lông xù
 bear_panties,7,Quần lót gấu
-bowling_glove,0,Bowling glove
+bowling_glove,0,Bowling găng tay
 kicking_off_shoe,0,Kicking off shoe
 rabbit_ear_panties,0,Quần lót tai thỏ
 bra_around_one_arm,0,Áo ngực quanh một cánh tay
@@ -6412,7 +6412,7 @@ sweater_under_coat,0,Áo len bên dưới áo khoác dài
 gingham_shorts,0,Quần short kẻ ô vuông
 royal_sword_academy_school_uniform,0,Đồng phục học viện Royal Sword
 glistening_sweater,7,Áo len bóng nhẫy
-vanishing_clothes,7,Vanishing clothes
+vanishing_clothes,7,Vanishing Quần áo
 nintendo_switch_shirt,0,Nintendo switch Áo sơ mi
 chitin_armor,7,Chitin Áo giáp
 water_sleeves,0,Tay áo nước
@@ -6421,7 +6421,7 @@ breast_grab_under_bra,0,Bóp ngực bên dưới áo ngực
 grey_uniform,7,Đồng phục màu xám
 plaid_cloak,0,Áo choàng kẻ caro
 socks_and_sandals,7,Tất và dép xăng đan
-autopaizuri_under_clothes,0,Autopaizuri bên dưới clothes
+autopaizuri_under_clothes,0,Autopaizuri bên dưới Quần áo
 soccer_shirt,0,Áo sơ mi bóng đá
 unworn_bodysuit,0,Đồ liền thân không mặc
 pinstripe_bikini,0,Bikini sọc chỉ
@@ -6430,7 +6430,7 @@ quilted_dress,0,Váy bông chần
 pineapple_print_dress,7,Pineapple Họa tiết Váy liền
 underwear_under_swimwear,7,Đồ lót bên dưới đồ bơi
 hands_on_clothing,7,Bàn tay trên trang phục
-hanging_by_clothes,7,Hanging by clothes
+hanging_by_clothes,7,Hanging by Quần áo
 white_high_heeled_boots,7,Bốt cao có gót màu trắng
 checkered_leotard,0,Leotard kẻ ca-rô
 anjanath_armor,7,Anjanath Áo giáp
@@ -6442,14 +6442,14 @@ boxing_skirt,0,Chân váy quyền Anh
 shirt_rip,7,Áo sơ mi rip
 leotard_down,7,Kéo đồ liền thân xuống
 winged_clothes,0,Quần áo có cánh
-wiping_with_clothes,0,Wiping với clothes
+wiping_with_clothes,0,Wiping với Quần áo
 penis_in_another's_sock,0,Dương vật trong another's sock
 torn_cardigan,0,Áo cardigan bị rách
 shorts_open,7,Mở quần short
 carrot_print_underwear,7,Đồ lót họa tiết cà rốt
 world_detective_organization_uniform,0,Đồng phục World Detective Organization
 cat_print_underwear,7,Đồ lót họa tiết mèo
-pattern_tights,7,Pattern tights
+pattern_tights,7,Hoa văn ôm sát
 boot_on_head,7,Bốt trên đầu
 seiran_general_art_institute_school_uniform,0,Đồng phục trường Seiran General Art Institute
 print_sandals,0,Họa tiết Dép xăng đan
@@ -6493,7 +6493,7 @@ spartan_armor_(halo),7,Spartan Áo giáp (halo)
 footwear_worship,7,Sự sùng bái giày dép
 removing_armor,0,Đang cởi áo giáp
 glowing_footwear,0,Giày dép phát sáng
-tight_jockstrap,7,Tight jockstrap
+tight_jockstrap,7,Ôm sát jockstrap
 keyhole_shirt,7,Áo sơ mi lỗ khóa
 flowing_dress_(dq),0,Váy tung bay
 energy_clothes,0,Quần áo năng lượng
@@ -6510,7 +6510,7 @@ yukari's_gap_bikini,0,Yukari's gap Đồ bơi bikini
 kakyuusei_school_uniform,0,Đồng phục trường Kakyuusei
 under_dress,7,Đồ mặc trong váy
 blazer-with-bow_outfit_(tomodachi_life),0,Blazer-with-bow outfit (tomodachi life)
-growing_out_of_clothes,7,Growing out of clothes
+growing_out_of_clothes,7,Growing out of Quần áo
 text_on_bikini,7,Chữ trong ảnh trên đồ bơi bikini
 bloody_apron,0,Tạp dề vấy máu
 magic_bikini_(dq),0,Bikini phép thuật
@@ -6527,7 +6527,7 @@ underwear_pee,7,Đồ lót pee
 octopus_costume,0,Trang phục bạch tuộc
 underwear_on_foot,7,Đồ lót trên bàn chân
 wearing_cape,7,Mặc áo choàng
-grey_outfit,7,Grey outfit
+grey_outfit,7,Xám outfit
 kakyuusei_2_school_uniform,0,Đồng phục trường Kakyuusei 2
 checkered_hoodie,0,Áo hoodie kẻ ca-rô
 breasts_out_of_clothes,7,Ngực lộ ra quần áo
@@ -6542,10 +6542,10 @@ takarazaki_junshin_school_uniform,0,Đồng phục trường Takarazaki Junshin
 cross-laced_hoodie,0,Áo hoodie chữ thập buộc dây
 rooster_costume,0,Rooster Trang phục
 gold_stockings,7,Bít tất màu vàng kim
-purple_jeans,7,Purple Quần jean
+purple_jeans,7,Tím Quần jean
 tail-tie_clothing,7,Trang phục cà vạt đuôi
 tail-tie_bikini,7,Bikini cà vạt đuôi
-sami_clothes,0,Sami clothes
+sami_clothes,0,Sami Quần áo
 gloves_removed,7,Găng tay đã tháo ra
 glistening_socks,7,Tất bóng nhẫy
 glistening_thigh_boots,7,Bốt đùi bóng nhẫy
@@ -6570,8 +6570,8 @@ high-visibility_jacket,0,High-visibility Áo khoác
 black_bondage_gloves,7,Găng tay trói buộc màu đen
 diagonal-striped_panties,0,Quần lót chéo kẻ sọc
 spotted_bra,7,Áo ngực có đốm
-monotone_blouse,7,Monotone Áo kiểu nữ
-monotone_jeans,7,Monotone Quần jean
+monotone_blouse,7,Một tông Áo kiểu nữ
+monotone_jeans,7,Một tông Quần jean
 shoes_on_desk,0,Giày trên bàn làm việc
 sumomo-gaoka_high_school_uniform,0,Đồng phục trường trung học phổ thông Sumomo-gaoka
 donut_costume,7,Trang phục bánh donut
@@ -6587,7 +6587,7 @@ pansexual_pride_clothing,7,Pansexual Tự hào Trang phục
 cat_outfit,7,Mèo outfit
 pants_pee,7,Quần dài pee
 japanese_flag_bikini,0,Bikini hình cờ Nhật Bản
-clothes_disappearing,0,Clothes disappearing
+clothes_disappearing,0,Quần áo disappearing
 panty_pee,7,Panty pee
 fur_collar_jacket,7,Áo khoác cổ áo lông thú
 boot_soles,7,Bàn chân bốt
@@ -6614,7 +6614,7 @@ dissolved_clothing,7,Dissolved Trang phục
 semi-transparent_clothing,7,Semi-transparent Trang phục
 st._astraia's_school_uniform,0,Đồng phục trường St. Astraia's
 suggestive_underwear,7,Đồ lót gợi cảm
-colored_edge_swimsuit,7,Colored edge Đồ bơi
+colored_edge_swimsuit,7,Nhuộm màu edge Đồ bơi
 slut_print_clothing,7,Slut Họa tiết Trang phục
 arrow_in_armor,0,Mũi tên trong áo giáp
 seirin_high_basketball_uniform,0,Đồng phục Seirin High Basketball
@@ -6641,7 +6641,7 @@ cum_on_hoodie,7,Tinh dịch trên áo hoodie
 hands_in_shoes,0,Bàn tay trong giày
 polka_dot_vest,0,Áo ghi-lê chấm bi
 handjob_under_clothing,7,Thủ dâm bằng tay bên dưới trang phục
-hand_up_shirt,7,Hand lên Áo sơ mi
+hand_up_shirt,7,Bàn tay lên Áo sơ mi
 shoes_on_table,0,Giày trên bàn
 shoe_on_head,7,Shoe on đầu
 pelt_clothing,7,Pelt Trang phục
@@ -6701,11 +6701,11 @@ multicolored_high_heels,7,Giày cao gót nhiều màu cao
 rabbit_pattern_panties,7,Quần lót hoa văn thỏ
 star_bikini,7,Bikini ngôi sao
 biting_underwear,7,Đang cắn đồ lót
-blue_pajama_shirt,7,Blue pajama Áo sơ mi
+blue_pajama_shirt,7,Xanh dương pajama Áo sơ mi
 camouflage_sports_bra,0,Áo ngực rằn ri thể thao
 pawpad_socks,7,Pawpad Tất
 gold_shirt,0,Áo vàng kim
-amazigh_clothes,0,Amazigh clothes
+amazigh_clothes,0,Amazigh Quần áo
 gartered_thighhighs,0,Tất cao đùi có dây treo
 animal_gloves,7,Găng tay động vật
 animal_ear_underwear,0,Đồ lót tai động vật
@@ -6749,7 +6749,7 @@ teikoku_soccer_uniform,0,Đồng phục Teikoku Soccer
 holding_single_heel,0,Cầm một gót chân
 off-shoulder_robe,0,Off-shoulder Áo choàng dài
 footwear_cutout,0,Lỗ cắt giày dép
-hoodie_tucked_in,0,Áo hoodie tucked trong
+hoodie_tucked_in,0,Áo hoodie giắt trong
 aogiri_gym_uniform,0,Đồng phục Aogiri Gym
 teal_boots,7,Bốt màu xanh cổ vịt
 backless_coat,0,Áo khoác hở lưng
@@ -6761,7 +6761,7 @@ removing_costume,0,Đang cởi trang phục
 gold_bodysuit,0,Đồ liền thân vàng kim
 raimon_track_uniform,0,Đồng phục Raimon Track
 pride_color_sweater,7,Áo len màu tự hào
-chilean_clothes,0,Chilean clothes
+chilean_clothes,0,Chilean Quần áo
 renpu_girls_school_uniform_(old_design),0,Đồng phục trường nữ sinh Renpu
 sideless_pants,0,Quần hở bên
 blue_suit_jacket,7,Áo khoác vest màu xanh dương
@@ -6801,19 +6801,19 @@ cow_print_shirt,0,Áo sơ mi họa tiết bò
 tail_through_bikini,7,Đuôi xuyên qua đồ bơi bikini
 tail_over_panties,7,Đuôi phía trên quần lót
 chocobo_costume,0,Chocobo Trang phục
-penis_in_own_thighhigh,0,Dương vật trong own thighhigh
+penis_in_own_thighhigh,0,Dương vật trong của mình thighhigh
 iridescent_dress,7,Váy ánh kim
 waffle_costume,7,Trang phục bánh quế
 two-tone_cardigan,0,Áo cardigan hai tông
 broken_heel,7,Gót chân bị gãy
-b.e.a.s.t._glove,0,B.e.a.s.t. glove
+b.e.a.s.t._glove,0,B.e.a.s.t. găng tay
 unicorn_panties,7,Quần lót kỳ lân
 lace-trimmed_sweater,0,Áo len ren viền
 pulling_bikini_down,7,Kéo đang kéo đồ bơi bikini xuống
 puffy-trimmed_coat,0,Áo khoác phồng viền
 broken_footwear,0,Giày dép bị gãy
 pseudo_dress_removed,7,Váy giả đã tháo ra
-purple_bike_shorts,0,Purple bike Quần short
+purple_bike_shorts,0,Tím bike Quần short
 american_flag_leotard,0,Leotard hình cờ Mỹ
 single_strap_shirt,7,Áo sơ mi dây một chiếc
 leather_swimwear,7,Đồ bơi da
@@ -6832,11 +6832,11 @@ horse_armor,7,Giáp ngựa
 hooded_swimsuit,0,Đồ bơi có mũ trùm
 written_consent_clothing,7,Written consent Trang phục
 evilfall_outfit,0,Evilfall outfit
-pouring_through_clothes,0,Pouring through clothes
+pouring_through_clothes,0,Pouring through Quần áo
 cherry_panties,7,Quần lót hoa anh đào
 hipless_clothing,7,Hipless Trang phục
 vertical-striped_robe,0,Áo choàng dọc kẻ sọc
-red_tights,7,Red tights
+red_tights,7,Đỏ ôm sát
 verone_gakuin_cheerleader_uniform,0,Đồng phục cổ động viên Verone Gakuin
 face_mask_bikini,7,Bikini mặt nạ
 mao_jacket,0,Mao Áo khoác
@@ -6845,10 +6845,10 @@ pattern_cape,7,Áo choàng hoa văn
 knit_bikini,0,Knit Đồ bơi bikini
 knit_dress,0,Knit Váy liền
 feather-trimmed_skirt,0,Chân váy lông vũ viền
-yellow_blouse,7,Yellow Áo kiểu nữ
+yellow_blouse,7,Vàng Áo kiểu nữ
 feces_in_clothing,7,Phân trong trang phục
 hand_under_bikini,0,Bàn tay bên dưới đồ bơi bikini
-hand_in_another's_swimsuit,0,Hand trong another's Đồ bơi
+hand_in_another's_swimsuit,0,Bàn tay trong another's Đồ bơi
 ride_armor_(mega_man),0,Ride Áo giáp (mega man)
 crust_pants,7,Crust Quần dài
 alternate_underwear,0,Đồ lót khác
@@ -6869,7 +6869,7 @@ c.cats_uniform_(idolmaster),0,Đồng phục C.cats
 plaid_shoes,0,Giày kẻ caro
 monotone_thigh_boots,7,Bốt đùi một tông
 black_costume,7,Trang phục đen
-sakura_miku_official_costume_design_contest,0,Sakura miku official Trang phục design contest
+sakura_miku_official_costume_design_contest,0,Hoa anh đào miku chính thức Trang phục design contest
 karate_pants,7,Karate Quần dài
 camouflage_bodysuit,0,Đồ liền thân rằn ri
 pinstripe_gloves,0,Găng tay sọc chỉ
@@ -6886,7 +6886,7 @@ cake_dress,0,Váy bánh ngọt
 unbuttoning_shirt,7,Đang mở cúc áo sơ mi
 unbuttoned_underwear,7,Đồ lót mở khuy
 pinstripe_sweater,0,Áo len sọc chỉ
-stuck_in_clothes,7,Stuck trong clothes
+stuck_in_clothes,7,Stuck trong Quần áo
 bike_shorts_under_leotard,0,Quần đạp xe bên dưới đồ liền thân
 artisanship_commission_uniform_(honkai:_star_rail),0,Đồng phục Artisanship Commission
 russian_flag_bikini,7,Bikini hình cờ Nga
@@ -6896,7 +6896,7 @@ plaid_dress_shirt,7,Áo sơ mi váy kẻ caro
 spotted_pants,7,Quần có đốm
 molle_vest,0,Molle Áo gile
 footwear_aside,7,Kéo giày dép sang bên
-footjob_under_clothes,0,Footjob bên dưới clothes
+footjob_under_clothes,0,Footjob bên dưới Quần áo
 shirozume_girls_high_school_uniform,0,Đồng phục trường trung học phổ thông Shirozume Girls
 shirt_around_one_arm,0,Áo sơ mi quanh một cánh tay
 shirt_knot,7,Nút thắt áo sơ mi
@@ -6916,12 +6916,12 @@ mask_panties,0,Quần lót mặt nạ
 belted_dress,0,Belted Váy liền
 casual_clothes,7,Quần áo thường ngày
 trium_tone_idol_uniform,0,Đồng phục thần tượng Trium Tone
-heelless_high_heels,7,Heelless high Gót chân
+heelless_high_heels,7,Heelless cao Giày cao gót
 jiefang_shoes,0,Jiefang Giày
 panties_under_leggings,0,Quần lót bên dưới quần legging
 teal_coat,7,Áo khoác màu xanh cổ vịt
 red_sleeveless_shirt,7,Áo sơ mi không tay màu đỏ
-high_waisted_bikini,7,High waisted Đồ bơi bikini
+high_waisted_bikini,7,Cao waisted Đồ bơi bikini
 side-tie_bikini_top,0,Áo bikini cà vạt lệch bên
 makoto_mirai_academy_high_school_uniform,0,Đồng phục trường trung học phổ thông Makoto Mirai Academy
 tentacles_in_thighhighs,0,Xúc tu trong tất cao đùi
@@ -6944,7 +6944,7 @@ bra_transformation,7,Sự biến đổi áo ngực
 ice_cream_costume,7,Băng Màu kem Trang phục
 skirt_on_head,0,Chân váy trên đầu
 pumpkin_bra,0,Áo ngực bí ngô
-tight_grip,7,Tight grip
+tight_grip,7,Ôm sát grip
 white_seam_shorts,7,Quần short đường may màu trắng
 simple_clothing,7,Simple Trang phục
 diagonal-striped_bra,0,Áo ngực chéo kẻ sọc
@@ -6954,7 +6954,7 @@ light_elbow_gloves,7,Găng tay khuỷu tay nhạt
 purple_cropped_jacket,7,Áo khoác lửng màu tím
 invisibility_cloak,0,Invisibility Áo choàng
 wearing_another's_underwear,7,Wearing another's Đồ lót
-organic_clothes,0,Organic clothes
+organic_clothes,0,Organic Quần áo
 sexy_underwear,7,Đồ lót gợi cảm
 pineapple_costume,0,Pineapple Trang phục
 underwear_tag,7,Nhãn đồ lót
@@ -6962,10 +6962,10 @@ united_states_men's_national_soccer_team_uniform,0,Đồng phục đội tuyển
 dress_coat,7,Áo khoác váy
 denim_underwear,7,Đồ lót jean
 orange_thigh_socks,7,Tất đùi màu cam
-orange_straitjacket,7,Orange straitjacket
-single_sleeve_past_elbow,0,Một Tay áo past elbow
+orange_straitjacket,7,Cam straitjacket
+single_sleeve_past_elbow,0,Một Tay áo past khuỷu tay
 strawberry_bra,7,Áo ngực dâu tây
-clothes_inflation,7,Clothes Phình to
+clothes_inflation,7,Quần áo Phình to
 clothing_markings,7,Vằn quần áo
 clothing_stretch,7,Trang phục stretch
 front_slit_dress,7,Váy xẻ tà phía trước
@@ -6989,12 +6989,12 @@ keyhole_sweater,7,Áo len lỗ khóa
 gingham_bra,0,Áo ngực kẻ ô vuông
 armor_pads,7,Áo giáp pads
 neck-tie_swimsuit,7,Đồ bơi cà vạt cổ
-lost_clothes,7,Lost clothes
+lost_clothes,7,Lost Quần áo
 plastic_bag_swimsuit,0,Đồ bơi nhựa túi
 spotted_stockings,7,Bít tất có đốm
 oversized_shoes,0,Giày quá khổ
 lowered_shorts,7,Quần short hạ xuống
-wooden_sandals,7,Wooden Dép xăng đan
+wooden_sandals,7,Bằng gỗ Dép xăng đan
 christmas_panties,7,Quần lót Giáng sinh
 holomyth_anniversary_outfit,0,Holomyth anniversary outfit
 hololive_1st_generation_anniversary_outfit,0,Hololive 1st generation anniversary outfit
@@ -7003,10 +7003,10 @@ dutch_national_soccer_team_uniform,0,Đồng phục đội tuyển bóng đá qu
 sanc_kingdom_school_uniform,0,Đồng phục trường Sanc Kingdom
 floral_skirt,7,Chân váy thêu hoa
 cow_print_hoodie,0,Áo hoodie họa tiết bò
-green_jeans,7,Green Quần jean
-alsatian_clothes,0,Alsatian clothes
+green_jeans,7,Xanh lá Quần jean
+alsatian_clothes,0,Alsatian Quần áo
 hockey_gloves,0,Hockey Găng tay
-grey_blouse,7,Grey Áo kiểu nữ
+grey_blouse,7,Xám Áo kiểu nữ
 egg_costume,0,Trang phục trứng
 flag_print_shirt,0,Áo sơ mi họa tiết hình cờ
 flag_dress,0,Váy hình cờ
@@ -7022,12 +7022,12 @@ highschool_uniform,7,Đồng phục Highschool
 hair_bikini,0,Bikini tóc
 blood_stained_clothing,7,Trang phục vấy bẩn máu
 sock_gagged,0,Sock Bị nhét miệng
-hand_in_another's_shorts,0,Hand trong another's Quần short
+hand_in_another's_shorts,0,Bàn tay trong another's Quần short
 tsukiyomi-no-kamu_kimono_(idolmaster),0,Tsukiyomi-no-kamu Áo kimono (idolmaster)
 baekje_middle_school_uniform,0,Đồng phục trường trung học cơ sở Baekje
 cuffed_pants,7,Cuffed Quần dài
 ribbon-trimmed_boots,0,Bốt ruy băng viền
-czech_clothes,0,Czech clothes
+czech_clothes,0,Czech Quần áo
 apple_underwear,7,Đồ lót táo
 medical_mask_underwear,7,Đồ lót y tế mặt nạ
 tan_bodysuit,7,Đồ liền thân nâu rám nắng
@@ -7041,15 +7041,15 @@ blue_knee_socks,7,Tất đầu gối màu xanh dương
 meimon_high_school_uniform,0,Đồng phục trường trung học phổ thông Meimon
 hand_under_bra,7,Bàn tay bên dưới áo ngực
 heel_fur,7,Lông gót
-april_fools_2025_cat_ear_maid_outfit_(saihate_eki),0,April fools Năm 2025 Mèo ear Hầu gái outfit (saihate eki)
+april_fools_2025_cat_ear_maid_outfit_(saihate_eki),0,April kẻ ngốc Năm 2025 Mèo tai Hầu gái outfit (saihate eki)
 amagi_sealing_congregation_school_uniform,0,Đồng phục trường Amagi Sealing Congregation
 yogurt_school_uniform,0,Đồng phục trường Yogurt
 cat_ear_footwear,0,Giày dép tai mèo
-norwegian_clothes,0,Norwegian clothes
+norwegian_clothes,0,Norwegian Quần áo
 baggy_jeans,7,Baggy Quần jean
 kouzu_school_uniform,0,Đồng phục trường Kouzu
 teal_socks,7,Tất màu xanh cổ vịt
-sock_on_muzzle,7,Sock on muzzle
+sock_on_muzzle,7,Sock on mõm
 shuutoku_basketball_uniform,0,Đồng phục Shuutoku Basketball
 mfg_angels_outfit,0,Mfg Thiên thần outfit
 pawpad_gloves,7,Pawpad Găng tay
@@ -7074,7 +7074,7 @@ prism_school_school_uniform,0,Đồng phục trường Prism School
 rolling_up_sleeves,7,Đang cuộn lên tay áo
 spiked_vest,7,Áo ghi-lê có gai
 corset_armor,7,Giáp áo corset
-romanian_clothes,0,Romanian clothes
+romanian_clothes,0,Romanian Quần áo
 dark_vest,7,Áo ghi-lê sẫm
 touching_own_underwear,7,Chạm đồ lót của mình
 wooden_armor,7,Giáp bằng gỗ
@@ -7082,7 +7082,7 @@ banknote_in_garter,7,Banknote trong Dây treo
 shirt_over_face,7,Áo sơ mi phía trên khuôn mặt
 silk_dress,7,Váy lụa
 canvas_shoes,7,Canvas Giày
-hot_dogging_over_clothes,7,Hot dogging trên clothes
+hot_dogging_over_clothes,7,Hot dogging trên Quần áo
 glistening_robe,7,Áo choàng bóng nhẫy
 assault_vest_(pokemon),0,Assault Áo gile (pokemon)
 overall_pants,7,Quần yếm
@@ -7117,14 +7117,14 @@ striped_armor,7,Giáp kẻ sọc
 open_nipple_clothing,7,Trang phục núm vú mở
 clothing_around_ankles,7,Trang phục quanh cổ chân
 clothing_inside,7,Trang phục bên trong
-clothes_stretching,7,Clothes stretching
+clothes_stretching,7,Quần áo stretching
 strawberry_print_underwear,7,Đồ lót họa tiết dâu tây
 warrior_outfit_(fire_emblem_engage),0,Warrior outfit (fire Huy hiệu engage)
 impossible_apron,0,Tạp dề bất khả thi
 strapless_sports_bra,0,Áo ngực không quai thể thao
 cloak_pull,0,Đang kéo áo choàng
 layered_apron,0,Tạp dề nhiều lớp
-pink_straitjacket,7,Pink straitjacket
+pink_straitjacket,7,Hồng straitjacket
 leaf_cape,0,Áo choàng chiếc lá
 wearing_character,7,Mặc nhân vật
 fur_pants,0,Quần lông thú
