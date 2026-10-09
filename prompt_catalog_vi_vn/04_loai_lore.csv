@@ -1,0 +1,684 @@
+mammal,12,Động vật có vú
+canid,12,Họ chó
+canine,12,Loài chó
+felid,12,Họ mèo
+canis,12,Họ chó
+scalie,12,Nhân vật bò sát nhân hóa
+pokemon_(species),12,Loài Pokémon
+feline,12,Loài mèo
+humanoid,12,Dạng người
+human,12,Người
+equid,12,Họ ngựa
+mythological_scalie,12,Nhân vật bò sát thần thoại
+equine,12,Thuộc loài ngựa
+domestic_dog,12,Chó nhà
+felis,12,Họ mèo
+domestic_cat,12,Mèo nhà
+lagomorph,12,Họ thỏ
+reptile,12,Loài bò sát
+leporid,12,Họ thỏ
+bovid,12,Họ bò
+pantherine,12,Phân họ báo
+avian,12,Loài chim
+mythological_equine,12,Ngựa thần thoại
+hybrid,12,Sinh vật lai
+rodent,12,Loài gặm nhấm
+animal_humanoid,12,Động vật dạng người
+aquatic,12,Sinh vật thủy sinh
+generation_1_pokemon,12,Pokémon thế hệ đầu
+caprine,12,Họ dê
+pony,12,Ngựa pony
+generation_4_pokemon,12,Pokémon thế hệ 4
+mammal_humanoid,12,Động vật có vú dạng người
+true_fox,12,Cáo thật
+murid,12,Họ chuột
+murine,12,Thuộc họ chuột
+generation_3_pokemon,12,Pokémon thế hệ 3
+generation_2_pokemon,12,Pokémon thế hệ 2
+generation_6_pokemon,12,Pokémon thế hệ 6
+mustelid,12,Họ chồn
+bovine,12,Họ bò
+prehistoric_species,12,Loài tiền sử
+generation_5_pokemon,12,Pokémon thế hệ 5
+bat,12,Dơi
+mythological_canine,12,Chó thần thoại
+earth_pony,12,Ngựa đất
+digimon_(species),12,Loài Digimon
+legendary_pokemon,12,Pokémon huyền thoại
+eulipotyphlan,12,Bộ ăn sâu bọ
+mouse,12,Chuột nhắt
+generation_7_pokemon,12,Pokémon thế hệ 7
+insect,12,Côn trùng
+procyonid,12,Họ gấu mèo
+marsupial,12,Thú có túi
+pastoral_dog,12,Chó chăn cừu
+herding_dog,12,Chó chăn gia súc
+cattle,12,Gia súc
+werecreature,12,Người hóa thú
+sciurid,12,Họ sóc
+nordic_sled_dog,12,Chó kéo xe Bắc Âu
+werecanid,12,Người hóa chó sói
+felid_humanoid,12,Dạng người họ mèo
+furred_scalie,12,Bò sát nhân hóa có lông
+musteline,12,Họ chồn
+rat,12,Chuột cống
+elemental_creature,12,Sinh vật nguyên tố
+hunting_dog,12,Chó săn mồi
+feline_humanoid,12,Dạng người mèo
+ursine,12,Gấu
+cat_humanoid,12,Dạng người mèo
+canid_humanoid,12,Dạng người họ chó
+canine_humanoid,12,Dạng người chó
+horned_humanoid,12,Nhân vật có sừng
+tree_squirrel,12,Sóc cây
+goo_creature,12,Sinh vật nhầy
+raccoon_dog,12,Chó gấu mèo
+giant_panda,12,Gấu trúc khổng lồ
+spotted_hyena,12,Linh cẩu có đốm
+mollusk,12,Thân mềm
+bird_dog,12,Chó chim
+demon_humanoid,12,Dạng người quỷ
+alien_humanoid,12,Dạng người ngoài hành tinh
+arachnid,12,Họ nhện
+cetacean,12,Họ cá voi
+corvid,12,Họ quạ
+aquatic_humanoid,12,Dạng người dưới nước
+fox_humanoid,12,Dạng người cáo
+toothed_whale,12,Cá voi có răng
+domestic_pig,12,Lợn nhà
+wingless_dragon,12,Rồng không cánh
+oceanic_dolphin,12,Cá heo đại dương
+wild_boar,12,Lợn rừng dã ngoại
+ground_squirrel,12,Sóc mặt đất
+robot_humanoid,12,Dạng người máy
+elemental_humanoid,12,Dạng người nguyên tố
+lagomorph_humanoid,12,Dạng người bộ thỏ
+bovid_humanoid,12,Dạng người họ trâu bò
+cervine,12,Hươu
+food_creature,12,Sinh vật thức ăn
+robot_anthro,12,Nhân vật nhân hóa người máy
+mollusk_humanoid,12,Dạng người thân mềm
+leporid_humanoid,12,Dạng người họ thỏ
+domestic_ferret,12,Chồn nhà
+rabbit_humanoid,12,Dạng người thỏ
+tailed_humanoid,12,Nhân vật có đuôi
+cephalopod_humanoid,12,Dạng người đầu chân vòng
+dragon_humanoid,12,Dạng người rồng
+plant_humanoid,12,Dạng người cây cảnh
+bat_pony,12,Ngựa Pony dơi
+arthropod_humanoid,12,Dạng người chân khớp
+domestic_sheep,12,Cừu nhà
+domestic_rabbit,12,Thỏ nhà
+bovine_humanoid,12,Dạng người bò
+winged_humanoid,12,Dạng người có cánh
+scalie_humanoid,12,Dạng người bò sát
+wolf_humanoid,12,Dạng người sói
+aquatic_dragon,12,Rồng dưới nước
+flying_wyvern,12,Wyvern bay
+fish_humanoid,12,Dạng người cá
+striped_skunk,12,Chồn hôi kẻ sọc
+rodent_humanoid,12,Dạng người bộ gặm nhấm
+striped_hyena,12,Linh cẩu kẻ sọc
+tentacle_creature,12,Sinh vật xúc tu
+dog_humanoid,12,Dạng người chó
+mountain_dog,12,Chó núi
+avian_humanoid,12,Dạng người chim
+monstrous_humanoid,12,Dạng người quái dị
+hairless_cat,12,Mèo không lông
+equid_humanoid,12,Dạng người họ ngựa
+living_latex,12,Cao su có sự sống
+fluffy_pony_(species),12,Ngựa Pony lông xù
+insect_humanoid,12,Dạng người côn trùng
+grey_squirrel,12,Sóc xám
+flower_creature,12,Sinh vật hoa
+equine_humanoid,12,Dạng người ngựa
+goo_humanoid,12,Dạng người nhầy
+spider_humanoid,12,Dạng người nhện
+living_clothing,12,Trang phục có sự sống
+red_deer,12,Hươu đỏ
+mythological_bird,12,Chim thần thoại
+pantherine_humanoid,12,Dạng người họ mèo lớn
+seal,12,Hải cẩu
+caprine_humanoid,12,Dạng người dê
+sciurid_humanoid,12,Dạng người sóc
+sea_eagle,12,Đại bàng biển
+silver_fox,12,Cáo bạc
+tree_squirrel_humanoid,12,Dạng người sóc cây
+tiger_shark,12,Cá mập hổ
+white-tailed_deer,12,Hươu đuôi trắng
+winged_dragon,12,Rồng có cánh
+eastern_grey_squirrel,12,Sóc phương Đông xám
+murine_humanoid,12,Dạng người chuột
+river_otter,12,Rái cá sông
+shadow_creature,12,Sinh vật bóng
+cape_buffalo,12,Trâu áo choàng
+latex_creature,12,Sinh vật cao su
+angel_humanoid,12,Dạng người thiên thần
+red_wolf,12,Sói đỏ
+inanimate_object,12,Vật thể vô tri
+bird_wyvern,12,Wyvern chim
+screen_head,12,Đầu màn hình
+fire_creature,12,Sinh vật lửa
+bird_humanoid,12,Dạng người chim
+tiger_humanoid,12,Dạng người hổ
+horse_humanoid,12,Dạng người ngựa
+pokemon_humanoid,12,Dạng người Pokémon
+food_humanoid,12,Dạng người thức ăn
+mouse_humanoid,12,Dạng người chuột
+shark_humanoid,12,Dạng người cá mập
+white_shark,12,Cá mập trắng
+cross_fox,12,Cáo chữ thập
+snake_humanoid,12,Dạng người rắn
+tv_head,12,Đầu ti vi
+gem_(species),12,Đá quý
+grey_fox,12,Cáo xám
+sloth,12,Con lười
+octopus_humanoid,12,Dạng người bạch tuộc
+sheep_humanoid,12,Dạng người cừu
+vampire_bat,12,Dơi ma cà rồng
+sunflower_(pvz),12,Hướng dương
+lizard_humanoid,12,Dạng người thằn lằn
+patchwork_creature,12,Sinh vật chắp vá
+ray_(fish),12,Tia
+carpet_shark,12,Cá mập thảm trải sàn
+rock_creature,12,Sinh vật tảng đá
+wood_mouse,12,Chuột nhắt gỗ
+goat_humanoid,12,Dạng người dê
+water_creature,12,Sinh vật nước
+witch_(the_owl_house),12,Phù thủy
+deer_humanoid,12,Dạng người nai
+squid_humanoid,12,Dạng người mực
+sloth_bear,12,Gấu lười
+sphere_creature,12,Sinh vật hình cầu
+space_dragon_(metroid),12,Rồng vũ trụ
+american_black_bear,12,Gấu Mỹ đen
+robot_feral,12,Nhân vật bán thú người máy
+domestic_goat,12,Dê nhà
+penis_creature,12,Sinh vật dương vật
+hairless_dog,12,Chó không lông
+american_red_fox,12,Cáo Mỹ đỏ
+procyonid_humanoid,12,Dạng người họ gấu trúc
+raccoon_humanoid,12,Dạng người gấu mèo
+cactus_creature,12,Sinh vật xương rồng
+rat_humanoid,12,Dạng người chuột cống
+feathered_snake,12,Rắn có lông vũ
+diamond_dog_(mlp),12,Chó hình thoi
+goo_dragon,12,Rồng nhầy
+marble_fox,12,Cáo đá cẩm thạch
+flower_humanoid,12,Dạng người hoa
+moth_humanoid,12,Dạng người bướm đêm
+angel_dragon,12,Rồng thiên thần
+bat_humanoid,12,Dạng người dơi
+furred_shark,12,Cá mập có lông
+living_mask,12,Mặt nạ có sự sống
+ring-tailed_cat,12,Mèo đuôi vòng
+jackal_humanoid,12,Dạng người chồn sói
+moon_bear,12,Gấu mặt trăng
+dragon_(dnd),12,Rồng
+flying_fox,12,Cáo bay
+ground_shark,12,Cá mập mặt đất
+lion_humanoid,12,Dạng người sư tử
+leopard_cat,12,Mèo báo
+monkey_humanoid,12,Dạng người khỉ
+living_cloud,12,Đám mây có sự sống
+domestic_duck,12,Vịt nhà
+honey_bee,12,Ong mật ong
+bee_humanoid,12,Dạng người ong
+sun_bear,12,Gấu mặt trời
+mustelid_humanoid,12,Dạng người họ chồn
+cactus_humanoid,12,Dạng người xương rồng
+diaper_creature,12,Sinh vật tã lót
+fruit_humanoid,12,Dạng người trái cây
+mushroom_humanoid,12,Dạng người nấm
+fire_humanoid,12,Dạng người lửa
+frilled_lizard,12,Thằn lằn nhún xếp
+mythological_fox,12,Cáo thần thoại
+bat-eared_fox,12,Cáo tai dơi
+living_car,12,Ô tô có sự sống
+frog_humanoid,12,Dạng người ếch
+living_costume,12,Trang phục có sự sống
+paper_creature,12,Sinh vật giấy
+skull_dog,12,Chó đầu lâu
+water_deer,12,Hươu nước
+red_kangaroo,12,Chuột túi đỏ
+living_balloon,12,Bóng bay có sự sống
+leopard_seal,12,Hải cẩu báo
+avian_(starbound),12,Loài chim
+heartless,12,Không có trái tim
+brown_hyena,12,Linh cẩu nâu
+spiral-horned_antelope,12,Linh dương xoắn ốc có sừng
+mouth_creature,12,Sinh vật miệng
+abyssal_wolf,12,Sói vực thẳm
+rat_snake,12,Rắn chuột cống
+spotted_skunk,12,Chồn hôi có đốm
+musteline_humanoid,12,Dạng người chồn
+reef_shark,12,Cá mập rạn san hô
+dark_latex,12,Cao su sẫm
+silver_dragon,12,Rồng bạc
+corn_snake,12,Rắn ngô
+american_badger,12,Lửng Mỹ
+baleen_whale,12,Cá voi tấm sừng
+jellyfish_humanoid,12,Dạng người sứa
+teddy_bear_(species),12,Gấu bông
+desert_long-eared_bat,12,Dơi có tai sa mạc dài
+kangaroo_rat,12,Chuột cống chuột túi
+cloud_humanoid,12,Dạng người đám mây
+lizard_(divinity),12,Thằn lằn
+fennec_humanoid,12,Dạng người cáo sa mạc
+weasel_humanoid,12,Dạng người chồn
+pine_squirrel,12,Sóc thông
+pup_(adventure_time),12,Con non
+cetacean_humanoid,12,Dạng người họ cá voi
+furred_snake,12,Rắn có lông
+nurse_shark,12,Cá mập y tá
+crystal_pony_(mlp),12,Ngựa Pony pha lê
+unicorn_humanoid,12,Dạng người kỳ lân
+pale_wolf_(minecraft),12,Sói nhạt
+tree_frog,12,Ếch cây
+eye_creature,12,Sinh vật con mắt
+spider_monkey,12,Khỉ nhện
+sea_goat,12,Dê biển
+demon_dragon,12,Rồng quỷ
+owl_humanoid,12,Dạng người cú mèo
+mechanical_dragon,12,Rồng cơ khí
+cookie_(cookie_run),12,Bánh quy
+gem_creature,12,Sinh vật đá quý
+ursine_humanoid,12,Dạng người gấu
+american_red_squirrel,12,Sóc Mỹ đỏ
+faceless_(species),12,Không mặt
+dream_creature,12,Sinh vật giấc mơ
+pig_humanoid,12,Dạng người lợn
+collared_lizard,12,Thằn lằn có cổ
+crystal_creature,12,Sinh vật pha lê
+living_tank,12,Áo ba lỗ có sự sống
+metal_creature,12,Sinh vật kim loại
+snow_creature,12,Sinh vật tuyết
+long-tailed_weasel,12,Chồn đuôi dài
+organ_creature,12,Sinh vật nội tạng
+lemon_shark,12,Cá mập chanh
+dragon_pony,12,Ngựa Pony rồng
+butterfly_humanoid,12,Dạng người bươm bướm
+snow_leopard_humanoid,12,Dạng người báo tuyết
+pearl_(gem_species),12,Ngọc trai
+sunflower_creature,12,Sinh vật hướng dương
+hedgehog_humanoid,12,Dạng người nhím gai
+seven_flowers,12,Bảy bông hoa
+water_humanoid,12,Dạng người nước
+clay_creature,12,Sinh vật đất sét
+ethereal_(zzz),12,Thoát tục
+corvid_humanoid,12,Dạng người họ quạ
+heart_creature,12,Sinh vật trái tim
+bomb_humanoid,12,Dạng người bom
+living_chocolate,12,Sô-cô-la có sự sống
+rock_humanoid,12,Dạng người tảng đá
+candy_humanoid,12,Dạng người kẹo
+leopard_shark,12,Cá mập báo
+chicken_humanoid,12,Dạng người gà
+letter_creature,12,Sinh vật bức thư
+cheetah_humanoid,12,Dạng người báo gấm
+black_arms_(sonic),12,Cánh tay đen
+naked_mole-rat,12,Chuột cống chuột chũi trần
+monster_(moshi_monsters),12,Quái vật
+bubble_dragon,12,Rồng bọt khí
+cervine_humanoid,12,Dạng người hươu
+japanese_badger,12,Lửng Nhật Bản
+goo_creature_with_bones,12,Sinh vật nhầy kèm xương
+nurse_(silent_hill),12,Y tá
+diamond_(gem_species),12,Hình thoi
+blank_humanoid,12,Dạng người trống
+kangaroo_mouse,12,Chuột nhắt chuột túi
+spotted_seal,12,Hải cẩu có đốm
+wasp_humanoid,12,Dạng người ong bắp cày
+living_gum,12,Kẹo cao su có sự sống
+space_dragon,12,Rồng vũ trụ
+rain_dragon,12,Rồng mưa
+scorpion_humanoid,12,Dạng người bọ cạp
+sheep-goat,12,Dê cừu
+egg_creature,12,Sinh vật trứng
+crow_humanoid,12,Dạng người quạ
+american_bison,12,Bò rừng Mỹ
+crocodilian_humanoid,12,Dạng người họ cá sấu
+red_lizard_(rain_world),12,Thằn lằn đỏ
+wild_sheep,12,Cừu dã ngoại
+sea_snail,12,Ốc sên biển
+honey_creature,12,Sinh vật mật ong
+hyena_humanoid,12,Dạng người linh cẩu
+ghost_bat,12,Dơi ma
+breast_creature,12,Sinh vật ngực
+star_dragon,12,Rồng ngôi sao
+cherry_blossom_creature,12,Sinh vật hoa nở hoa anh đào
+domestic_silk_moth,12,Ngài lụa nhà
+furred_fish,12,Cá có lông
+eastern_red_bat,12,Dơi phương Đông đỏ
+cyan_lizard_(rain_world),12,Thằn lằn xanh lơ
+black_dragon_(dnd),12,Rồng đen
+leopard_humanoid,12,Dạng người báo
+living_moon,12,Mặt trăng có sự sống
+tiger_(monster_rancher),12,Hổ
+feces_creature,12,Sinh vật phân
+eared_owl,12,Cú có tai
+giant_otter,12,Rái cá khổng lồ
+red_panda_humanoid,12,Dạng người gấu trúc đỏ
+crystal_humanoid,12,Dạng người pha lê
+metallic_dragon_(dnd),12,Rồng ánh kim
+sea_snake,12,Rắn biển
+pig_(angry_birds),12,Lợn
+yellow_lizard_(rain_world),12,Thằn lằn vàng
+bread_creature,12,Sinh vật bánh mì
+eastern_brown_snake,12,Rắn phương Đông nâu
+eastern_dragon_humanoid,12,Dạng người rồng phương Đông
+skunk_humanoid,12,Dạng người chồn hôi
+pink_lizard_(rain_world),12,Thằn lằn hồng
+otter_humanoid,12,Dạng người rái cá
+leaf-tailed_gecko,12,Tắc kè có đuôi chiếc lá
+electricity_creature,12,Sinh vật dòng điện
+island_fox,12,Cáo đảo
+blue_lizard_(rain_world),12,Thằn lằn xanh dương
+space_dog,12,Chó vũ trụ
+living_hat,12,Mũ có sự sống
+chinese_water_deer,12,Hươu nước Trung Quốc
+black_rhinoceros,12,Tê giác đen
+flat-tailed_gecko,12,Tắc kè đuôi bằng
+blue_shark,12,Cá mập xanh dương
+panda_humanoid,12,Dạng người gấu trúc
+reindeer_humanoid,12,Dạng người tuần lộc
+mole_humanoid,12,Dạng người chuột chũi
+red_dragon_(dnd),12,Rồng đỏ
+gold_dragon,12,Rồng vàng kim
+axolotl_humanoid,12,Dạng người kỳ giông axolotl
+tree_humanoid,12,Dạng người cây
+arabian_horse,12,Ngựa Ả Rập
+crab_humanoid,12,Dạng người cua
+wax_creature,12,Sinh vật sáp
+alternate_(species),12,Khác
+ant_humanoid,12,Dạng người kiến
+snow_humanoid,12,Dạng người tuyết
+meat_creature,12,Sinh vật thịt
+demon_pony,12,Ngựa Pony quỷ
+goat_demon_humanoid,12,Dạng người quỷ dê
+velvet_worm,12,Giun nhung
+alien_cat,12,Mèo ngoài hành tinh
+whale_dragon,12,Rồng cá voi
+turtle_humanoid,12,Dạng người rùa
+striped_dolphin,12,Cá heo kẻ sọc
+snail_humanoid,12,Dạng người ốc sên
+chinese_mountain_cat,12,Mèo núi Trung Quốc
+half-dragon,12,Rồng một nửa
+deer_mouse,12,Chuột nhắt nai
+living_star,12,Ngôi sao có sự sống
+living_ship,12,Con tàu có sự sống
+piscine_wyvern,12,Wyvern cá
+living_furniture,12,Nội thất có sự sống
+horse_(minecraft),12,Ngựa
+beetle_humanoid,12,Dạng người bọ
+light_creature,12,Sinh vật nhạt
+lantern_mouse_(rain_world),12,Chuột nhắt đèn lồng
+nightmare_(sonic),12,Ác mộng
+tree-kangaroo,12,Chuột túi cây
+bronze_dragon_(dnd),12,Rồng đồng thau
+hair_sheep,12,Cừu tóc
+giant_squirrel,12,Sóc khổng lồ
+ground_squirrel_humanoid,12,Dạng người sóc mặt đất
+gecko_(fallout),12,Tắc kè
+vegetable_humanoid,12,Dạng người rau
+snowman_(species),12,Người tuyết
+hooded_crow,12,Quạ có mũ trùm
+spiral_(tma),12,Đường xoáy
+demon_rabbit,12,Thỏ quỷ
+living_ranged_weapon,12,Vũ khí tầm xa có sự sống
+nightmare_(species),12,Ác mộng
+feathered_wyvern,12,Wyvern có lông vũ
+elephant_humanoid,12,Dạng người voi
+alien_dog,12,Chó ngoài hành tinh
+worm_(worms),12,Giun
+moose_humanoid,12,Dạng người nai sừng tấm
+object_humanoid,12,Dạng người vật thể
+vehicle_humanoid,12,Dạng người xe cộ
+pink_sea_star,12,Ngôi sao biển hồng
+wyrm_(dragon),12,Rồng không cánh
+germ_(organism),12,Vi trùng
+talking_flower_(super_mario_bros_wonder),12,Nói chuyện với hoa
+magical_creature,12,Sinh vật kỳ diệu
+crystal_dragon,12,Rồng pha lê
+winged_lemur,12,Culi có cánh
+western_dragon_humanoid,12,Dạng người rồng phương Tây
+shrimp_humanoid,12,Dạng người tôm
+long-eared_owl,12,Cú tai dài
+pegasus_humanoid,12,Dạng người ngựa có cánh
+japanese_wolf,12,Sói Nhật Bản
+indian_giant_squirrel,12,Sóc khổng lồ Ấn Độ
+spider_wasp,12,Ong bắp cày nhện
+american_crow,12,Quạ Mỹ
+living_drawing,12,Hình vẽ có sự sống
+space_cat,12,Mèo vũ trụ
+dream_serpent,12,Xà giấc mơ
+white_lizard_(rain_world),12,Thằn lằn trắng
+copper_dragon_(dnd),12,Rồng đồng đỏ
+living_clock,12,Đồng hồ có sự sống
+shark_puppy,12,Chó con cá mập
+tentacle_plant,12,Cây cảnh xúc tu
+garter_snake,12,Rắn dây giữ bít tất
+silver_dragon_(dnd),12,Rồng bạc
+celestial_dragon,12,Rồng thiên thể
+ground_sloth,12,Con lười mặt đất
+sky_dragon_(cave_story),12,Rồng bầu trời
+furred_dragon_humanoid,12,Dạng người rồng có lông
+dust_bunny,12,Thỏ bụi
+gold_dragon_(dnd),12,Rồng vàng kim
+caramel_lizard_(rain_world),12,Thằn lằn karamel
+rose_creature,12,Sinh vật hoa hồng
+zombie_(plants_vs_zombies),12,Thây ma
+egyptian_wolf,12,Sói Ai Cập
+asian_golden_cat,12,Mèo châu Á màu vàng
+giraffe_humanoid,12,Dạng người hươu cao cổ
+crocodile_humanoid,12,Dạng người cá sấu
+zebra_humanoid,12,Dạng người ngựa vằn
+witch_(puella_magi),12,Phù thủy
+furred_wyvern,12,Wyvern có lông
+short-eared_owl,12,Cú tai ngắn
+blue_dragon_(dnd),12,Rồng xanh dương
+snake_wyvern,12,Wyvern rắn
+penguin_humanoid,12,Dạng người cánh cụt
+hand_creature,12,Sinh vật bàn tay
+armored_dragon_(kaijudo),12,Rồng bọc giáp
+velvet_ant,12,Kiến nhung
+wolf_spider,12,Nhện sói
+bomb_head,12,Đầu bom
+mouse_lemur,12,Culi chuột
+water_dragon_(agamid),12,Rồng nước
+cactus_cat,12,Mèo xương rồng
+wild_cat,12,Mèo dã ngoại
+black_lizard_(rain_world),12,Thằn lằn đen
+squid_(minecraft),12,Mực ống
+gear_(guilty_gear),12,Bánh răng
+abyssal_(kancolle),12,Vực thẳm
+badger_humanoid,12,Dạng người lửng
+food_pony,12,Ngựa Pony thức ăn
+bird_dragon,12,Rồng chim
+gecko_humanoid,12,Dạng người tắc kè
+cube_creature,12,Sinh vật khối lập phương
+dragon_otter,12,Rái cá rồng
+wind_dragon,12,Rồng gió
+shadow_pony,12,Ngựa Pony bóng
+bleeding-heart_monkey,12,Khỉ trái tim đang chảy máu
+skull_dragon,12,Rồng đầu lâu
+sun_dragon,12,Rồng mặt trời
+whale_humanoid,12,Dạng người cá voi
+day_gecko,12,Tắc kè ngày
+dolphin_humanoid,12,Dạng người cá heo
+green_gecko,12,Tắc kè xanh lá
+bee_pony,12,Ngựa Pony ong
+indian_flying_fox,12,Cáo bay Ấn Độ
+aquatic_dragon_humanoid,12,Dạng người rồng dưới nước
+shadow_dragon,12,Rồng bóng
+snow_goose,12,Ngỗng tuyết
+furred_lizard,12,Thằn lằn có lông
+living_logo,12,Logo có sự sống
+grey_kangaroo,12,Chuột túi xám
+crystal_lizard,12,Thằn lằn pha lê
+snake_pony,12,Ngựa Pony rắn
+vampire_squid,12,Mực ống ma cà rồng
+squirrel_monkey,12,Khỉ sóc
+extinct,12,Tuyệt chủng
+glass_frog,12,Ếch thủy tinh
+exotic_(cyberpunk),12,Độc lạ
+fruit_dragon,12,Rồng trái cây
+tentacle_dog,12,Chó xúc tu
+antelope_humanoid,12,Dạng người linh dương
+milk_snake,12,Rắn sữa
+toothed_whale_humanoid,12,Dạng người cá voi có răng
+vulva_creature,12,Sinh vật âm hộ
+white_rhinoceros,12,Tê giác trắng
+jellyfish_(spongebob),12,Sứa
+food_head,12,Đầu thức ăn
+cave_lion,12,Sư tử hang động
+angel_(dragon_ball),12,Thiên thần
+wyvern_humanoid,12,Dạng người wyvern
+deer_pony,12,Ngựa Pony nai
+lizard_(bless_unleashed),12,Thằn lằn
+tiger_moth,12,Ngài hổ
+pup_bee,12,Ong con non
+asian_elephant,12,Voi châu Á
+worm_humanoid,12,Dạng người giun
+demon_horse,12,Ngựa quỷ
+hair_creature,12,Sinh vật tóc
+living_book,12,Quyển sách có sự sống
+river_pig,12,Lợn sông
+bat_(cave_story),12,Dơi
+girl_(8eyes),12,Cô gái
+feathered_dragon_humanoid,12,Dạng người rồng có lông vũ
+foot_head,12,Đầu bàn chân
+rain_deer_(rain_world),12,Hươu mưa
+cape_fox,12,Cáo áo choàng
+half_human,12,Người một nửa
+hourglass_dolphin,12,Cá heo đồng hồ cát
+cat_fish_(sar),12,Cá mèo
+white_dragon_(dnd),12,Rồng trắng
+living_candle,12,Nến có sự sống
+servant_(giant_ojou-sama),12,Người hầu
+horn_point,12,Chỉ vào sừng
+mirror_dragon,12,Rồng cái gương
+vampire_deer,12,Hươu ma cà rồng
+american_curl,12,Lọn tóc xoăn Mỹ
+fox_squirrel,12,Sóc cáo
+ape_humanoid,12,Dạng người vượn
+goat_dragon,12,Rồng dê
+rhinoceros_humanoid,12,Dạng người tê giác
+white_dragon_(species),12,Rồng trắng
+prehensile_tailed_rat,12,Chuột cống có đuôi có khả năng quấn
+spiral_dragon,12,Rồng xoắn ốc
+ancient_(rain_world),12,Cổ đại
+space_dog_(pikmin),12,Chó vũ trụ
+kangaroo_humanoid,12,Dạng người chuột túi
+sea_duck,12,Vịt biển
+cookie_humanoid,12,Dạng người bánh quy
+italian_wolf,12,Sói Ý
+living_bus,12,Xe buýt có sự sống
+hybrid_(wof),12,Sinh vật lai
+dolphin_(mario),12,Cá heo
+hairless_rat,12,Chuột cống không lông
+celestial_wolf,12,Sói thiên thể
+mud_creature,12,Sinh vật bùn
+western_spotted_skunk,12,Chồn hôi phương Tây có đốm
+living_motorcycle,12,Xe máy có sự sống
+fire_ant,12,Kiến lửa
+dragon_(lol),12,Rồng
+butterfly_dragon,12,Rồng bươm bướm
+shadow_humanoid,12,Dạng người bóng
+paper_humanoid,12,Dạng người giấy
+ferret_humanoid,12,Dạng người chồn bạc
+living_lamp,12,Đèn có sự sống
+orange_(gunsawian),12,Màu cam
+beaver_humanoid,12,Dạng người hải ly
+space_badger,12,Lửng vũ trụ
+umbrella_leaf_(pvz),12,Lá cái ô
+space_fox,12,Cáo vũ trụ
+glow_squid_(minecraft),12,Mực ống phát sáng
+drill_dragon,12,Rồng xoắn ốc
+zebra_shark,12,Cá mập ngựa vằn
+straw_dog,12,Chó rơm
+cloud_rat,12,Chuột cống đám mây
+eastern_spotted_skunk,12,Chồn hôi phương Đông có đốm
+living_cookie,12,Bánh quy có sự sống
+wolf_(fortnite),12,Sói
+domestic_goose,12,Ngỗng nhà
+horned_rabbit,12,Thỏ có sừng
+cave_hyena,12,Linh cẩu hang động
+fox_squirrel_(ghibli),12,Sóc cáo
+living_number,12,Chữ số có sự sống
+raccoon_dog_humanoid,12,Dạng người chó gấu mèo
+arabian_wolf,12,Sói Ả Rập
+rabbit_(minecraft),12,Thỏ
+green_dragon_(dnd),12,Rồng xanh lá
+river_dolphin,12,Cá heo sông
+duck_humanoid,12,Dạng người vịt
+deep_pony,12,Ngựa Pony sâu
+winged_unicorn_humanoid,12,Dạng người kỳ lân có cánh
+giant_ground_sloth,12,Con lười mặt đất khổng lồ
+monster_(geometry_dash),12,Quái vật
+cat_shark,12,Cá mập mèo
+bronze_dragon,12,Rồng đồng thau
+american_vine_snake,12,Rắn dây leo Mỹ
+leaf_dragon,12,Rồng chiếc lá
+lemur_humanoid,12,Dạng người culi
+wild_horse,12,Ngựa dã ngoại
+long-eared_hedgehog,12,Nhím có tai dài
+horned_dragon,12,Rồng có sừng
+paper_wasp,12,Ong bắp cày giấy
+tapir_humanoid,12,Dạng người heo vòi
+green_vine_snake,12,Rắn dây leo xanh lá
+otter_dragon,12,Rồng rái cá
+hamster_humanoid,12,Dạng người chuột hamster
+velvet_(gunsawian),12,Nhung
+mountain_deer_dragon,12,Rồng nai núi
+plant_dragon,12,Rồng cây cảnh
+maple_dog,12,Chó phong
+seal_humanoid,12,Dạng người hải cẩu
+cactus_(pvz),12,Xương rồng
+germ_(anpanman),12,Vi trùng
+honey_badger_humanoid,12,Dạng người lửng mật ong
+hooded_skunk,12,Chồn hôi có mũ trùm
+golden_hamster,12,Chuột hamster màu vàng
+living_bottle,12,Cái chai có sự sống
+banana_humanoid,12,Dạng người chuối
+white-sided_dolphin,12,Cá heo mặt trắng
+eagle_humanoid,12,Dạng người đại bàng
+robot_pony,12,Ngựa Pony người máy
+lantern_worm,12,Giun đèn lồng
+island_puppy,12,Chó con đảo
+celestial_(species),12,Thiên thể
+demon_mouse,12,Chuột nhắt quỷ
+western_fence_lizard,12,Thằn lằn hàng rào phương Tây
+wyvern_(kingdom_hearts),12,Wyvern
+smiling_dragon,12,Cười rồng
+sea_wyvern,12,Wyvern biển
+sea_monkey,12,Khỉ biển
+tank_humanoid,12,Dạng người áo ba lỗ
+blue_rat,12,Chuột cống xanh dương
+ribbon_worm,12,Giun ruy băng
+spotted_owl,12,Cú có đốm
+giant_leopard_moth,12,Ngài báo khổng lồ
+ghost_(pac-man),12,Ma
+star_humanoid,12,Dạng người ngôi sao
+clay_(species),12,Đất sét
+banana_dragon,12,Rồng chuối
+balloon_humanoid,12,Dạng người bóng bay
+snake_eagle,12,Đại bàng rắn
+living_bodysuit,12,Đồ liền thân có sự sống
+living_anal_beads,12,Hạt chuỗi hậu môn có sự sống
+bison_humanoid,12,Dạng người bò rừng
+iron_hands,12,Bàn tay sắt
+bat_dragon,12,Rồng dơi
+living_panties,12,Quần lót có sự sống
+long-eared_bat,12,Dơi có tai dài
+swamp_dragon_(zerofox1000),12,Rồng đầm lầy
+green_sea_turtle,12,Rùa biển xanh lá
+painted_bat,12,Dơi vẽ họa tiết
+bone_dragon,12,Rồng xương
+eagle_ray,12,Tia đại bàng
+fire_fox,12,Cáo lửa
+mole_(romancing_saga_2),12,Nốt ruồi
+winged_pony,12,Ngựa Pony có cánh
+moon_wolf,12,Sói mặt trăng
+candle_humanoid,12,Dạng người nến
+skeleton_dog,12,Chó bộ xương

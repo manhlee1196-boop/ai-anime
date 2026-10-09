@@ -6,7 +6,7 @@ Tài liệu này giải thích accordion **🧭 Quy trình chuẩn · khung prom
 
 > **Thư viện prompt trên điện thoại:** danh sách prompt trong accordion 📚 là **danh sách chạm (radio) cuộn được** — chạm một dòng là nạp ngay, hoặc chọn dòng rồi bấm **⬇️ Nạp prompt đã chọn**.
 
-> **Catalog chia nhóm:** ngoài file tổng, thư mục `prompt_catalog/` có các file 5 cột không header theo nhóm độc quyền: `trang_phuc_quan_ao`, `phu_kien`, `ngoai_hinh`, `tu_the_bieu_cam`, `boi_canh`, `phong_cach`, `anh_sang_mau_sac`, `bo_cuc_ky_thuat`, cùng nhóm chủ thể/họa sĩ/tác phẩm/loài và `99_khac`. `manifest.json` xác nhận tổng số dòng bằng catalog chính; chạy `python scripts/split_prompt_catalog.py` để tạo lại.
+> **Catalog chia nhóm:** ngoài file tổng, thư mục `prompt_catalog/` có các file 5 cột không header theo nhóm độc quyền: `trang_phuc_quan_ao`, `phu_kien`, `ngoai_hinh`, `tu_the_bieu_cam`, `boi_canh`, `phong_cach`, `anh_sang_mau_sac`, `bo_cuc_ky_thuat`, cùng nhóm chủ thể/họa sĩ/tác phẩm/loài và `99_khac`. `manifest.json` xác nhận tổng số dòng bằng catalog chính; chạy `python scripts/split_prompt_catalog.py` để tạo lại. Các nhóm `01`, `04`–`13` có bản dịch 3 cột trong `prompt_catalog_vi_vn/` (tổng **21.320 dòng**), tạo bằng `python scripts/build_prompt_catalog_vi.py`; tag chưa có bản dịch thật không được bịa.
 
 > **Ảnh nguồn cho ◈ Biến đổi · ⤢ Phóng to · ✎ Sửa vùng:** không còn kiểu "luôn lấy ảnh mới nhất". Khung
 > **02 · Kết quả** có ô **Ảnh sẽ nạp vào tab sửa / phóng** (mặc định = ảnh vừa tạo, bấm ảnh trong thư viện để

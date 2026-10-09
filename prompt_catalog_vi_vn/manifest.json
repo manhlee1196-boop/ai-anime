@@ -1,0 +1,121 @@
+{
+  "source_catalog": "prompt_catalog",
+  "source_translation": "danbooru_e621_merged_vi_vn.csv",
+  "schema": "tag,category,translation",
+  "header": false,
+  "selected_groups": [
+    "01_chu_the",
+    "04_loai_lore",
+    "05_trang_phuc_quan_ao",
+    "06_phu_kien",
+    "07_ngoai_hinh",
+    "08_tu_the_bieu_cam",
+    "09_boi_canh",
+    "10_phong_cach",
+    "11_anh_sang_mau_sac",
+    "12_bo_cuc_ky_thuat",
+    "13_vat_the"
+  ],
+  "translated_rows": 21320,
+  "groups": [
+    {
+      "id": "01_chu_the",
+      "file": "01_chu_the.csv",
+      "rows": 472,
+      "bytes": 23400,
+      "sha256": "03c5dde4588b7e9f9b6072c7f9c87b3e02133786b2b81ed488b2dc9f61f81352",
+      "source_group_rows": 938,
+      "untranslated_rows": 466
+    },
+    {
+      "id": "04_loai_lore",
+      "file": "04_loai_lore.csv",
+      "rows": 684,
+      "bytes": 25777,
+      "sha256": "dc63a45851ded27122d791983006214557b66b5a6f8d7034062776fff99f63f5",
+      "source_group_rows": 5757,
+      "untranslated_rows": 5073
+    },
+    {
+      "id": "05_trang_phuc_quan_ao",
+      "file": "05_trang_phuc_quan_ao.csv",
+      "rows": 5685,
+      "bytes": 263406,
+      "sha256": "5cfeb218d885d010ec62536b9c87047bf645be4d10eb17259198d2052bda4b32",
+      "source_group_rows": 7136,
+      "untranslated_rows": 1451
+    },
+    {
+      "id": "06_phu_kien",
+      "file": "06_phu_kien.csv",
+      "rows": 2573,
+      "bytes": 97748,
+      "sha256": "e8b2ed0dbf1d717288ec1d65915c9bced668805ca0c17e6bb616f2787838a009",
+      "source_group_rows": 3366,
+      "untranslated_rows": 793
+    },
+    {
+      "id": "07_ngoai_hinh",
+      "file": "07_ngoai_hinh.csv",
+      "rows": 7719,
+      "bytes": 299984,
+      "sha256": "aa7ddae3c0579c4a3e227150acd5037a6a2a60a49801fbe406558e3b8e113eb2",
+      "source_group_rows": 11540,
+      "untranslated_rows": 3821
+    },
+    {
+      "id": "08_tu_the_bieu_cam",
+      "file": "08_tu_the_bieu_cam.csv",
+      "rows": 1056,
+      "bytes": 42306,
+      "sha256": "2a7bc565edb75682e9c2a57776558ecd5c5a33a20455a4c0cd8fd1d3f22ab7da",
+      "source_group_rows": 2639,
+      "untranslated_rows": 1583
+    },
+    {
+      "id": "09_boi_canh",
+      "file": "09_boi_canh.csv",
+      "rows": 441,
+      "bytes": 15340,
+      "sha256": "260a4d772789ad0397667e4516df581b4c9cf45b59b8b54c5abdd55375fa3651",
+      "source_group_rows": 1198,
+      "untranslated_rows": 757
+    },
+    {
+      "id": "10_phong_cach",
+      "file": "10_phong_cach.csv",
+      "rows": 46,
+      "bytes": 1776,
+      "sha256": "9825e1d8ed8ac0b9f5abd468cb4419b1ffdf87e49d0425f111627eaa443e40ac",
+      "source_group_rows": 268,
+      "untranslated_rows": 222
+    },
+    {
+      "id": "11_anh_sang_mau_sac",
+      "file": "11_anh_sang_mau_sac.csv",
+      "rows": 1665,
+      "bytes": 59605,
+      "sha256": "2957e227af3c24969690840fd1a506175eedb4ec0cca1c6e84c0de70532eb489",
+      "source_group_rows": 3722,
+      "untranslated_rows": 2057
+    },
+    {
+      "id": "12_bo_cuc_ky_thuat",
+      "file": "12_bo_cuc_ky_thuat.csv",
+      "rows": 255,
+      "bytes": 10066,
+      "sha256": "9e16a5155ed59405a7b75b614740be58bf67263bf46623b41d88f79316a93def",
+      "source_group_rows": 644,
+      "untranslated_rows": 389
+    },
+    {
+      "id": "13_vat_the",
+      "file": "13_vat_the.csv",
+      "rows": 724,
+      "bytes": 28074,
+      "sha256": "9073c3f1d7815d558f47ca2c2edd4359abf312a9cf64cd8b46d7efa68cc24bae",
+      "source_group_rows": 2082,
+      "untranslated_rows": 1358
+    }
+  ]
+}
