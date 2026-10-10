@@ -167,13 +167,13 @@ def build():
 
     introduction = """# WAI Studio · tạo ảnh anime trên Google Colab bằng liên kết tạm thời
 
-> **Không cần Google Drive, tài khoản hay API token.** Link Gradio ở ô 8 không cần Cloudflare; ô 9 dùng Cloudflare Quick Tunnel tùy chọn làm link dự phòng. Colab chạy checkpoint WAI-illustrious v17 + LoRA đã kiểm SHA-256; Gradio chỉ hiển thị giao diện.
+> **Không cần Google Drive, tài khoản hay API token.** Ô 8 mở link Gradio Live (`gradio.live`) để vào Studio; ô 9 dùng Cloudflare Quick Tunnel tùy chọn làm link dự phòng khi Gradio Live không cấp được link hoặc bị nghẽn. Colab chạy checkpoint WAI-illustrious v17 + LoRA đã kiểm SHA-256; Gradio chỉ hiển thị giao diện.
 
 ### Chạy trong 3 bước
 
 > **Notebook đã thu gọn:** mỗi ô code chỉ hiện một thanh tiêu đề kèm nút **Run** (Colab form), kể cả ô 7 chứa toàn bộ mã giao diện và ô 9 mở giao diện dự phòng — nên trang rất ngắn và dễ chạy tuần tự. Muốn xem hoặc sửa code của ô nào, bấm biểu tượng `>_` (hay ⋮ → *Show code*) ở góc ô đó; kết quả in ra vẫn hiển thị bình thường.
 1. Chọn **Runtime → Change runtime type → T4 GPU** (hoặc GPU mạnh hơn), rồi **Runtime → Run all**. Checkpoint ~6,94 GB và tối đa ~457 MB LoRA được tải **trực tiếp vào `/content`**, kiểm tra SHA-256 trước khi nạp, không gắn hay sao chép sang Drive. Nếu file còn trong cùng runtime sẽ dùng lại; phiên Colab mới phải tải lại. Cần ~9 GiB đĩa trống. Ô 4 kiểm toàn bộ hash, có thể mất một lúc.
-2. Ô 8 mở Gradio trên `127.0.0.1:7860` (mặc định **không** bật Gradio Share `gradio.live`, vì mọi request — kể cả ảnh — phải đi qua máy chủ trung gian công cộng, hay nghẽn và kẹt hẳn giao diện), rồi **ô 9 tạo URL tạm `https://….trycloudflare.com` — đường khuyến nghị để mở Studio, không cần tài khoản/mật khẩu**. Muốn dùng link `gradio.live` làm đường chính thì đặt `GRADIO_SHARE = True` ở đầu ô 8. Ô 9 chạy tự động khi chọn **Runtime → Run all**, tải cloudflared một lần rồi lưu binary trong `/content`; giữ runtime hoạt động. Link `trycloudflare.com` cũng là URL công khai, không có đăng nhập — đừng chia sẻ. **Không có selector phong cách: bạn tự viết phong cách ngay trong prompt** (`anime illustration, cel shading`, `watercolor`, `cinematic lighting`…). Khi Studio khởi động ở ô 8, CSV tag prompt đã lọc (348.716 dòng, bỏ Metadata/không hợp lệ) được đọc/tải và xác minh SHA-256 một lần; gõ từ khóa chủ đề ở cuối prompt (ví dụ `mắt`/`eyes`) sẽ tìm tag tiếng Anh canonical trong catalog dùng chung với tab Kho thẻ. Chọn một tag để thay cụm cuối; nếu tải catalog thất bại, tạo ảnh vẫn hoạt động và tab Kho thẻ có thể thử lại. Hai ô **Prompt gửi model** / **Negative gửi model** là đúng những gì được gửi ở cả ba chế độ, không thêm thẻ ẩn theo LoRA hay vùng sửa khi bấm tạo. Cần trigger cho LoRA mắt thì bấm nút **Thêm `perfect eyes`**; tab sửa vùng có nút **Thêm gợi ý sửa vùng vào prompt** — cả hai đều hiển thị trong ô để bạn sửa hoặc xóa trước khi tạo.
+2. Ô 8 mở Gradio trên `127.0.0.1:7860` và **tạo link Gradio Live `gradio.live` mặc định**, link được in ra và hiện thành nút bấm trong output của ô 8. Relay công cộng có thể nghẽn hoặc trả 504 khi lượt tạo ảnh dài; khi đó **ô 9 tạo URL tạm `https://….trycloudflare.com` — đường dự phòng tới đúng giao diện đang chạy, không cần nạp lại model**. Ô 9 chạy tự động khi chọn **Runtime → Run all**, tải cloudflared một lần rồi lưu binary trong `/content`; giữ runtime hoạt động. Cả hai link đều công khai, không có đăng nhập — đừng chia sẻ. **Không có selector phong cách: bạn tự viết phong cách ngay trong prompt** (`anime illustration, cel shading`, `watercolor`, `cinematic lighting`…). Khi Studio khởi động ở ô 8, CSV tag prompt đã lọc (348.716 dòng, bỏ Metadata/không hợp lệ) được đọc/tải và xác minh SHA-256 một lần; gõ từ khóa chủ đề ở cuối prompt (ví dụ `mắt`/`eyes`) sẽ tìm tag tiếng Anh canonical trong catalog dùng chung với tab Kho thẻ. Chọn một tag để thay cụm cuối; nếu tải catalog thất bại, tạo ảnh vẫn hoạt động và tab Kho thẻ có thể thử lại. Hai ô **Prompt gửi model** / **Negative gửi model** là đúng những gì được gửi ở cả ba chế độ, không thêm thẻ ẩn theo LoRA hay vùng sửa khi bấm tạo. Cần trigger cho LoRA mắt thì bấm nút **Thêm `perfect eyes`**; tab sửa vùng có nút **Thêm gợi ý sửa vùng vào prompt** — cả hai đều hiển thị trong ô để bạn sửa hoặc xóa trước khi tạo.
    - **Nạp nhiều prompt một lúc:** mở accordion **📚 Thư viện prompt · nạp danh sách từ file text**, tải file `.txt`/`.md`/`.json` (hoặc dán nội dung) có dạng `PROMPT 01 - Tên tiếng Việt` rồi đoạn prompt bên dưới (cũng đọc được bảng `Tên tiếng Việt | Nội dung prompts tiếng Anh`, JSON `[{"title","prompt"}]`, hoặc các đoạn prompt cách nhau dòng trống). Danh sách hiện ra dưới dạng **danh sách chạm cuộn được** (dễ dùng trên điện thoại) và **chạm một dòng là hệ thống tự nạp prompt** vào ô *Prompt gửi model*, hoặc chọn dòng rồi bấm **⬇️ Nạp prompt đã chọn**; các dòng `Negative:`, `Steps:`, `CFG:`, `Size:`, `Seed:` trong file cũng được áp dụng. Chưa có file thì bấm **Nạp thư viện mẫu** để xem định dạng.
    - **Làm theo quy trình chuyên nghiệp:** accordion **🧭 Quy trình chuẩn · khung prompt + negative tối ưu** có sáu nút. **Sắp xếp prompt theo thứ tự chuẩn** xếp lại thẻ của bạn theo thứ tự nút đang dùng (chủ thể → nhãn phân loại → ngoại hình → trang phục → tư thế → bố cục → bối cảnh → ánh sáng → phong cách → thẻ khác → chất lượng → `absurdres`), bỏ thẻ trùng và thêm thẻ neo còn thiếu của khung đã chọn. **Nạp negative đã chọn** đưa một trong 8 bộ negative tối ưu theo mục đích (chuẩn nhà phát hành WAI v17, Illustrious chuẩn, tay/chân, giữ chất 2D, chân dung, phong cảnh, an toàn nội dung, inpaint) vào ô negative — ghi đè hoặc nối thêm. **🩺 Kiểm tra prompt & thông số** báo prompt ≈ bao nhiêu token so với khối 75 token của SDXL, thẻ chất lượng thừa, thẻ trùng, thẻ vừa dương vừa âm, cú pháp Pony, trọng số quá 1.2, negative quá dài và steps/CFG/kích thước/hires ngoài khuyến nghị. **🧪 Kiểm tra thẻ với kho thẻ** đối chiếu từng thẻ trong hai ô prompt/negative với kho CSV Danbooru + e621 đã xác minh SHA-256: thẻ nào đúng tên trong kho, thẻ nào là alias/nhãn tiếng Việt của một thẻ khác, thẻ nào không có trong kho (kèm gợi ý sửa chính tả). **🛠️ Sửa prompt thành thẻ chuẩn** phân tích từng thẻ trong ô Prompt: alias/nhãn Việt/gõ sai được chọn sẵn để đổi sang tên canonical; thẻ đã đúng tên có các phương án thay thế tùy chọn. Bấm **✅ Tạo prompt hoàn chỉnh** để áp dụng các lựa chọn, giữ trọng số và mô tả tự do; kết quả chỉ ghi vào ô hiển thị. Cả sáu nút **chỉ ghi nội dung hiển thị** vào hai ô prompt/ô báo cáo để bạn sửa; không có thẻ nào được thêm ngầm khi tạo ảnh. Quy trình đầy đủ: [docs/QUY_TRINH_TAO_ANH.md](https://github.com/manhlee1196-boop/ai-anime/blob/main/docs/QUY_TRINH_TAO_ANH.md).
 **Hires fix / phóng to ảnh:** tab **✨ Chi tiết** có `1.25×`, `1.5×`, `1.75×`, `2×`; Real-ESRGAN 4x+ Anime6B (tải khoảng 18 MB khi dùng lần đầu) chạy theo tile rồi WAI img2img tinh chỉnh. Kết quả tối đa ≈4,2 MP; tùy chọn scale tự giảm khi cần. SHA-256 đang ghim theo metadata mirror Hugging Face nhưng **chưa được đối chiếu độc lập với asset GitHub chính thức** do lỗi TLS khi tải trong sandbox; file sai hash sẽ bị từ chối, chế độ tạo ảnh thường không hires vẫn dùng được. Xem `VERIFICATION.md` để biết giới hạn.
@@ -200,7 +200,8 @@ del pipe  # runtime owns the only reference, allowing OOM recovery to free VRAM
 print("Đã chuẩn bị WAI Studio. Ô 8 sẽ tạo liên kết giao diện không cần đăng nhập.")
 """
     )
-    launch = """# @title 8. Mở liên kết giao diện tạm thời (không cần đăng nhập)
+    launch = """# @title 8. Mở WAI Studio qua Gradio Live (gradio.live)
+from html import escape
 from pathlib import Path
 
 if "studio_runtime" not in globals():
@@ -215,12 +216,9 @@ blocked_weights = [
     str(local_cache_root.resolve()), str(local_lora_cache.resolve()),
     *(str(Path(path).resolve()) for path in studio_runtime.lora_paths.values()),
 ]
-# Mặc định KHÔNG dùng Gradio Share (gradio.live): mọi request — kể cả ảnh — phải đi
-# qua thiết bị công cộng trung gian của gradio.live, hay nghẽn khi Colab đang tải và
-# là nguồn gây "treo hẳn, phải tải lại". Ô 9 mở Cloudflare Quick Tunnel thẳng tới
-# Gradio đang chạy, đó là đường khuyến nghị. Đặt GRADIO_SHARE = True nếu muốn dùng
-# link gradio.live làm đường chính.
-GRADIO_SHARE = globals().get("GRADIO_SHARE", False)
+# Gradio Live là đường chính của ô 8. Ô 9 chỉ là đường Cloudflare dự phòng nếu
+# relay gradio.live bị nghẽn hoặc không cấp được link.
+GRADIO_SHARE = True
 _, studio_local_url, share_url = studio_app.launch(
     share=GRADIO_SHARE, inline=False, prevent_thread_lock=True,
     server_name="127.0.0.1", max_file_size="12mb", footer_links=[],
@@ -228,15 +226,26 @@ _, studio_local_url, share_url = studio_app.launch(
     allowed_paths=allowed_outputs, blocked_paths=blocked_weights,
     enable_monitoring=False, show_error=True,
 )
+
+def _display_gradio_live_link(url):
+    # Hiện link dạng bấm được trong output Colab; ngoài IPython vẫn có print.
+    try:
+        from IPython.display import HTML, display
+    except Exception:
+        return
+    safe_url = escape(str(url), quote=True)
+    display(HTML(
+        f'<div style="font-size:1.1em;margin:8px 0">'
+        f'🔗 <a href="{safe_url}" target="_blank" rel="noopener">'
+        "Mở WAI Studio qua Gradio Live</a></div>"
+    ))
+
 if GRADIO_SHARE and not share_url:
-    print("⚠️ Gradio Share chưa tạo được link công khai; giao diện nội bộ vẫn chạy. Ô 9 sẽ tạo link Cloudflare Quick Tunnel.")
+    print("⚠️ Gradio Live chưa tạo được link công khai; giao diện nội bộ vẫn chạy. Chạy ô 9 để lấy link Cloudflare Quick Tunnel.")
 elif GRADIO_SHARE:
-    print("Mở link:", share_url)
+    print("Mở link Gradio Live:", share_url)
+    _display_gradio_live_link(share_url)
     print("Không cần tài khoản/mật khẩu. Ai có link đều có thể dùng GPU Colab của bạn.")
-else:
-    print("↪ Bỏ qua Gradio Share (mặc định) để tránh nghẽn qua máy chủ trung gian gradio.live.")
-    print("↪ Chạy tiếp Ô 9 để lấy link https://…trycloudflare.com tới đúng giao diện này.")
-    print("↪ Cần link gradio.live thì đặt GRADIO_SHARE = True ở đầu ô này rồi chạy lại.")
 print("Link ngừng hoạt động khi Colab dừng/ngắt. KHÔNG chia sẻ link; dừng runtime để thu hồi.")
 """
     quick_tunnel = """# @title 9. Tạo link Cloudflare Quick Tunnel (dự phòng Gradio Live)
@@ -464,7 +473,7 @@ display(HTML(
         code(launch, "studio-launch"),
         code(quick_tunnel, "studio-cloudflare-tunnel"),
         markdown(
-            "**Khi gặp lỗi:** nếu ô 2 chỉ hiện dòng `ERROR: pip's dependency resolver...`, hãy xem ô đó có in `✅ Thư viện Studio đã sẵn sàng` không; riêng dòng này có thể là cảnh báo không chặn cài đặt. Nếu không có dấu ✅ hoặc có traceback, mở lại notebook mới nhất, chọn *Runtime → Restart runtime → Run all* và gửi đầy đủ traceback nếu vẫn lỗi (che link Gradio và thông tin riêng). Nếu không có GPU, chọn GPU trong Runtime; nếu RAM gần đầy nhưng VRAM còn trống, để `VRAM_MODE=auto` rồi xem VRAM và `Chế độ sau khi nạp` ở ô 6 (CPU offload vẫn dùng GPU từng phần). Nếu OOM, giảm kích thước ảnh; nếu cần, chỉnh `VRAM_MODE=low_vram` hoặc tắt LoRA ở ô 3 rồi khởi động lại runtime. Nếu **bấm ✦ Tạo ảnh / 🏷️ Kho thẻ / 📚 Thư viện mà trình duyệt báo trang không phản hồi**: đó là lỗi Gradio 6.15.2. **Runtime → Restart runtime → Run all** để ô 2 cài Gradio 6.17.3; chỉ chạy lại ô 8 hoặc ô 9 thì trang vẫn đơ. Nếu **giao diện đứng im và phải tải lại trang**: thường là đường hầm bị ngắt giữa lượt tạo (một lượt có thể chạy nhiều phút) — trang sẽ hiện dải “Mất kết nối với phiên Colab” kèm nút **Tải lại trang**, ảnh đã tạo vẫn nằm trong `/content/wai_outputs` và trong danh sách tải. Nếu trang chỉ chậm, dải riêng “Trang bị chặn … s” hiện lên — đó không phải mất kết nối và không có nút tải lại; đừng tải lại chỉ vì dòng đó. Chạy lại ô 9 nếu link `trycloudflare.com` chết hẳn; không cần nạp lại model. Nếu bật `GRADIO_SHARE = True` mà `gradio.live` báo 504/nghẽn, để mặc định và dùng ô 9. Cả hai link đều công khai và không có đăng nhập — đừng chia sẻ. Notebook cơ sở và hash tài nguyên xem [README của dự án](https://github.com/manhlee1196-boop/ai-anime/blob/main/README.md).",
+            "**Khi gặp lỗi:** nếu ô 2 chỉ hiện dòng `ERROR: pip's dependency resolver...`, hãy xem ô đó có in `✅ Thư viện Studio đã sẵn sàng` không; riêng dòng này có thể là cảnh báo không chặn cài đặt. Nếu không có dấu ✅ hoặc có traceback, mở lại notebook mới nhất, chọn *Runtime → Restart runtime → Run all* và gửi đầy đủ traceback nếu vẫn lỗi (che link Gradio và thông tin riêng). Nếu không có GPU, chọn GPU trong Runtime; nếu RAM gần đầy nhưng VRAM còn trống, để `VRAM_MODE=auto` rồi xem VRAM và `Chế độ sau khi nạp` ở ô 6 (CPU offload vẫn dùng GPU từng phần). Nếu OOM, giảm kích thước ảnh; nếu cần, chỉnh `VRAM_MODE=low_vram` hoặc tắt LoRA ở ô 3 rồi khởi động lại runtime. Nếu **bấm ✦ Tạo ảnh / 🏷️ Kho thẻ / 📚 Thư viện mà trình duyệt báo trang không phản hồi**: đó là lỗi Gradio 6.15.2. **Runtime → Restart runtime → Run all** để ô 2 cài Gradio 6.17.3; chỉ chạy lại ô 8 hoặc ô 9 thì trang vẫn đơ. Nếu **giao diện đứng im và phải tải lại trang**: thường là đường hầm bị ngắt giữa lượt tạo (một lượt có thể chạy nhiều phút) — trang sẽ hiện dải “Mất kết nối với phiên Colab” kèm nút **Tải lại trang**, ảnh đã tạo vẫn nằm trong `/content/wai_outputs` và trong danh sách tải. Nếu trang chỉ chậm, dải riêng “Trang bị chặn … s” hiện lên — đó không phải mất kết nối và không có nút tải lại; đừng tải lại chỉ vì dòng đó. Chạy lại ô 9 nếu link `trycloudflare.com` chết hẳn; không cần nạp lại model. Nếu ô 8 không tạo được link `gradio.live` hoặc link báo 504/nghẽn, chạy ô 9 để lấy link `trycloudflare.com` dự phòng. Cả hai link đều công khai và không có đăng nhập — đừng chia sẻ. Notebook cơ sở và hash tài nguyên xem [README của dự án](https://github.com/manhlee1196-boop/ai-anime/blob/main/README.md).",
             "studio-help",
         ),
     ]

@@ -174,6 +174,9 @@ class NotebookTests(unittest.TestCase):
                 self.assertEqual(cell["outputs"], [])
         compile(ui_source, "studio-ui", "exec")
         launch_source = "".join(n["cells"][8]["source"])
+        self.assertIn("# @title 8. Mở WAI Studio qua Gradio Live (gradio.live)", launch_source)
+        self.assertIn("GRADIO_SHARE = True", launch_source)
+        self.assertIn("_display_gradio_live_link", launch_source)
         self.assertIn("studio_local_url, share_url", launch_source)
         self.assertIn("giao diện nội bộ vẫn chạy", launch_source)
         self.assertIn("Cloudflare Quick Tunnel", launch_source)
@@ -419,9 +422,8 @@ class NotebookTests(unittest.TestCase):
             self.assertEqual(len(calls), 1)
             self.assertNotIn("auth", calls[0])
             self.assertNotIn("auth_message", calls[0])
-            # Mặc định KHÔNG bật Gradio Share: mọi request (cả ảnh) phải đi qua relay
-            # công cộng gradio.live, nguồn gây nghẽn/kẹt hẳn phải tải lại trang.
-            self.assertIs(calls[0]["share"], False)
+            # Ô 8 phải bật Gradio Live mặc định để link công khai không bị ẩn.
+            self.assertIs(calls[0]["share"], True)
             self.assertEqual(calls[0]["theme"], "test-theme")
             self.assertEqual(calls[0]["css"], "test-css")
             self.assertEqual(calls[0]["footer_links"], [])
@@ -429,15 +431,16 @@ class NotebookTests(unittest.TestCase):
             self.assertIn(str(ns["local_cache_root"]), calls[0]["blocked_paths"])
             self.assertIn(str(ns["local_lora_cache"]), calls[0]["blocked_paths"])
             self.assertNotIn(str(ck.parent), calls[0]["allowed_paths"])
-            self.assertNotIn("Ai có link đều có thể dùng GPU", text.getvalue())
-            self.assertIn("trycloudflare.com", text.getvalue())
+            self.assertIn("Mở link Gradio Live", text.getvalue())
+            self.assertIn("https://temporary.gradio.live", text.getvalue())
+            self.assertIn("Ai có link đều có thể dùng GPU", text.getvalue())
             old_app = ns["studio_app"]
             with contextlib.redirect_stdout(io.StringIO()):
                 exec(launch, ns)
             self.assertTrue(old_app.closed)
             self.assertEqual(len(calls), 2)
 
-    def test_launch_can_opt_back_into_gradio_share(self):
+    def test_launch_prints_gradio_live_url(self):
         launch = "".join(
             json.loads(NOTEBOOK.read_text(encoding="utf-8"))["cells"][8]["source"]
         )
@@ -467,7 +470,6 @@ class NotebookTests(unittest.TestCase):
                 "build_app": lambda _: FakeApp(),
                 "local_cache_root": root / "wai_model_cache",
                 "local_lora_cache": root / "wai_lora_cache",
-                "GRADIO_SHARE": True,
             }
             text = io.StringIO()
             with contextlib.redirect_stdout(text):
