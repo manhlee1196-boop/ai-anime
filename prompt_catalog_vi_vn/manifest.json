@@ -1,0 +1,157 @@
+{
+  "source_catalog": "prompt_catalog",
+  "source_translation": "danbooru_e621_merged_vi_vn.csv",
+  "schema": "tag,category,translation",
+  "header": false,
+  "selected_groups": [
+    "01_chu_the",
+    "04_loai_lore",
+    "05_trang_phuc_quan_ao",
+    "06_phu_kien",
+    "07_ngoai_hinh",
+    "08_tu_the_bieu_cam",
+    "09_boi_canh",
+    "10_phong_cach",
+    "11_anh_sang_mau_sac",
+    "12_bo_cuc_ky_thuat",
+    "13_vat_the",
+    "99_khac"
+  ],
+  "translated_rows": 82654,
+  "real_translated_rows": 29436,
+  "machine_translated_rows": 53218,
+  "groups": [
+    {
+      "id": "01_chu_the",
+      "file": "01_chu_the.csv",
+      "rows": 938,
+      "bytes": 46783,
+      "sha256": "6cff4d049a111f638afba2583b12468f7f31e116ba053c51516ad9d2d23a4a28",
+      "source_group_rows": 938,
+      "real_translated_rows": 472,
+      "machine_translated_rows": 466,
+      "untranslated_rows": 466
+    },
+    {
+      "id": "04_loai_lore",
+      "file": "04_loai_lore.csv",
+      "rows": 5757,
+      "bytes": 183532,
+      "sha256": "ef98c104c4c9532dcdaac1c11611578837bb2fb7edfeccd59b44eb8edb53185d",
+      "source_group_rows": 5757,
+      "real_translated_rows": 684,
+      "machine_translated_rows": 5073,
+      "untranslated_rows": 5073
+    },
+    {
+      "id": "05_trang_phuc_quan_ao",
+      "file": "05_trang_phuc_quan_ao.csv",
+      "rows": 7136,
+      "bytes": 326345,
+      "sha256": "18553b3e9fcdf205c7e7cbe7fd64821214e668aa42899b3bb29e25ec2c29a0eb",
+      "source_group_rows": 7136,
+      "real_translated_rows": 5685,
+      "machine_translated_rows": 1451,
+      "untranslated_rows": 1451
+    },
+    {
+      "id": "06_phu_kien",
+      "file": "06_phu_kien.csv",
+      "rows": 3366,
+      "bytes": 128427,
+      "sha256": "910f76a4d3660a67078fd7f5d64c53ddffb3699ede53e876f2e3a704d03de68c",
+      "source_group_rows": 3366,
+      "real_translated_rows": 2573,
+      "machine_translated_rows": 793,
+      "untranslated_rows": 793
+    },
+    {
+      "id": "07_ngoai_hinh",
+      "file": "07_ngoai_hinh.csv",
+      "rows": 11540,
+      "bytes": 450429,
+      "sha256": "2e1386d57b46532a97ce576971090296b29d6e3592b630a058f5417d6d4a8fed",
+      "source_group_rows": 11540,
+      "real_translated_rows": 7719,
+      "machine_translated_rows": 3821,
+      "untranslated_rows": 3821
+    },
+    {
+      "id": "08_tu_the_bieu_cam",
+      "file": "08_tu_the_bieu_cam.csv",
+      "rows": 2639,
+      "bytes": 108419,
+      "sha256": "e18b12c09e93e553d2887158bc0df793d418d8e53d72125c9ce530b329e101e1",
+      "source_group_rows": 2639,
+      "real_translated_rows": 1056,
+      "machine_translated_rows": 1583,
+      "untranslated_rows": 1583
+    },
+    {
+      "id": "09_boi_canh",
+      "file": "09_boi_canh.csv",
+      "rows": 1198,
+      "bytes": 44547,
+      "sha256": "f4c650635b2d8b39bca224bdd93c03290c7f53f7c1f1fc4316c68485c9d7ed31",
+      "source_group_rows": 1198,
+      "real_translated_rows": 441,
+      "machine_translated_rows": 757,
+      "untranslated_rows": 757
+    },
+    {
+      "id": "10_phong_cach",
+      "file": "10_phong_cach.csv",
+      "rows": 268,
+      "bytes": 10449,
+      "sha256": "73ca9a33f8956eaa662de513637fb747335d4fcd49469d4634ae08f723d4d509",
+      "source_group_rows": 268,
+      "real_translated_rows": 46,
+      "machine_translated_rows": 222,
+      "untranslated_rows": 222
+    },
+    {
+      "id": "11_anh_sang_mau_sac",
+      "file": "11_anh_sang_mau_sac.csv",
+      "rows": 3722,
+      "bytes": 135785,
+      "sha256": "a785ce389faa9e9838f0c3d425a9b656e4de629094f5ecd32b63b431e0b72a01",
+      "source_group_rows": 3722,
+      "real_translated_rows": 1665,
+      "machine_translated_rows": 2057,
+      "untranslated_rows": 2057
+    },
+    {
+      "id": "12_bo_cuc_ky_thuat",
+      "file": "12_bo_cuc_ky_thuat.csv",
+      "rows": 644,
+      "bytes": 27580,
+      "sha256": "f023a4c193ad63c287d83de50153e9be4cb64bfc0d9cb7598975a666759021bd",
+      "source_group_rows": 644,
+      "real_translated_rows": 255,
+      "machine_translated_rows": 389,
+      "untranslated_rows": 389
+    },
+    {
+      "id": "13_vat_the",
+      "file": "13_vat_the.csv",
+      "rows": 2082,
+      "bytes": 80847,
+      "sha256": "b3b121757614483c2a8064c3ea92344efdcd1cbcbab249bcc84b5cdb93183a9a",
+      "source_group_rows": 2082,
+      "real_translated_rows": 724,
+      "machine_translated_rows": 1358,
+      "untranslated_rows": 1358
+    },
+    {
+      "id": "99_khac",
+      "file": "99_khac.csv",
+      "rows": 43364,
+      "bytes": 1533449,
+      "sha256": "bdd092e4a4ae8dd750c1e55676c4e7333a394b27a27b08d372f21bbeae833a45",
+      "source_group_rows": 43364,
+      "real_translated_rows": 8116,
+      "machine_translated_rows": 35248,
+      "untranslated_rows": 35248
+    }
+  ]
+}

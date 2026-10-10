@@ -2494,6 +2494,8 @@ class UiResponsivenessTests(unittest.TestCase):
             "fn=update_keyword_tag_suggestions,",
             "fn=apply_keyword_tag_suggestion_ui,",
             "fn=apply_csv_tags,",
+            "fn=run_tag_check,",
+            "fn=run_prompt_rewrite,",
         ):
             self.assertIn(anchor, self.source)
             block = self.block(anchor)
@@ -2514,6 +2516,16 @@ class UiResponsivenessTests(unittest.TestCase):
         # Job GPU vẫn phải chạy một lượt một — tránh tràn VRAM trên Colab.
         self.assertIn('concurrency_id="wai_gpu"', self.source)
         self.assertIn("concurrency_limit=1,", self.source)
+
+    def test_tag_browser_has_a_queue_independent_from_gpu_inference(self):
+        self.assertIn('TAG_CATALOG_CONCURRENCY_ID = "wai_tag_catalog"', self.source)
+        for anchor in ("tag_search.click(", "tag_add.click("):
+            block = self.block(anchor)
+            self.assertIn("queue=True", block)
+            self.assertIn("concurrency_id=TAG_CATALOG_CONCURRENCY_ID", block)
+            self.assertIn("concurrency_limit=TAG_CATALOG_CONCURRENCY_LIMIT", block)
+            self.assertNotIn('concurrency_id="wai_gpu"', block)
+            self.assertNotIn("queue=False", block)
 
     def function_body(self, name):
         """Thân hàm lồng trong build_app, cắt ở def cùng cấp kế tiếp."""

@@ -53,7 +53,7 @@ REAL_ESRGAN_MODEL = {
 }
 # Cập nhật mỗi lần sửa colab/studio.py: header in mã này để người dùng biết phiên
 # Colab đang chạy bản nào (chạy lại riêng ô 9 KHÔNG cập nhật mã UI — nằm ở ô 7).
-STUDIO_BUILD = "2026.10.07 · sửa phóng to"
+STUDIO_BUILD = "2026.10.10 · tách hàng đợi Kho thẻ"
 REAL_ESRGAN_CACHE = "/content/wai_upscaler_cache"
 REAL_ESRGAN_TILE_SIZE = 256
 REAL_ESRGAN_TILE_PAD = 16
@@ -352,7 +352,7 @@ def apply_look_tags(
 
 # ---------------------------------------------------------------------------
 # QUY TRÌNH PROMPT CHUYÊN NGHIỆP (thứ tự thẻ chuẩn + negative theo mục đích +
-# bộ kiểm tra prompt/thông số).
+# bộ kiểm tra prompt/thông số + kiểm tra thẻ trong prompt với kho thẻ CSV).
 #
 # Căn cứ đã đối chiếu (xem docs/QUY_TRINH_TAO_ANH.md, mục Nguồn):
 #   • Nhà phát hành WAI-illustrious v17: quality head "masterpiece, best quality,
@@ -3031,13 +3031,13 @@ class StudioRuntime:
 
 # CSV is data only: lazily downloaded, pinned and verified; never executed.
 TAG_CSV_NAME = "danbooru_e621_merged_2026-10-01_pt20-ia-dd-ed-spc.csv"
-TAG_CSV_SHA256 = "1a906f4e1148846b77482bce29b988e3fdcc9ed8240a53f0889573511690a057"
-# Backward-compatible source at TAG_CSV_URL is the verified four-column catalog.
+TAG_CSV_SHA256 = "9e51c0bde90e0d9535ce8d4ce52c9e422ac347926bb493546ebe42f6f3b786df"
+# Keep accepting the older four-column catalog when a user uploads it manually.
 TAG_CSV_LEGACY_SHA256 = "287bb5ad86fcc56f535b9ebae8d3e696e5ff3fa5c057d6fa6884282fb083e738"
 TAG_CSV_MAX_BYTES = 32_000_000
 TAG_CSV_URL = (
     "https://raw.githubusercontent.com/manhlee1196-boop/ai-anime/"
-    "0a0d3b87a4f7fa77da3274674c4d89649f7c3657/" + TAG_CSV_NAME
+    "96cc543afa7664345129e5bbef3bd57167365091/" + TAG_CSV_NAME
 )
 TAG_CATEGORIES = {
     "0": "Danbooru · Chung", "1": "Danbooru · Họa sĩ",
@@ -7505,9 +7505,13 @@ _TAG_LOCK = threading.Lock()
 _TAG_LABEL_WORD_INDEX_ROWS = None
 _TAG_LABEL_WORD_INDEX = None
 # Tên thẻ đã chuẩn hoá, dựng một lần cho mỗi catalog. Tìm kiểu *đuôi*/*giữa* phải đối
-# chiếu 349.714 tên; gọi normalize_csv_tag trong vòng lặp mỗi lần gõ là phần tốn nhất.
+# chiếu khoảng 348k tên; gọi normalize_csv_tag trong vòng lặp mỗi lần gõ là phần tốn nhất.
 _TAG_SEARCH_NAMES = None
 _TAG_LABEL_INDEX_LOCK = threading.Lock()
+# Các lượt tìm trong tab Kho thẻ có thể quét toàn bộ catalog, nhưng không được dùng
+# chung slot với một lượt inference GPU kéo dài vài phút.
+TAG_CATALOG_CONCURRENCY_ID = "wai_tag_catalog"
+TAG_CATALOG_CONCURRENCY_LIMIT = 1
 TAG_PAGE_SIZE = 60
 # Search-only wording helps natural Vietnamese prompt fragments find canonical tags.
 # These synonyms are never displayed or inserted into the model prompt.
@@ -7557,7 +7561,7 @@ VI_TEXT_CACHE_LIMIT = 600_000
 def _normalize_tag_text_preserving_accents(value):
     """Normalize separators/case but keep Vietnamese marks to disambiguate captions.
 
-    Có memo: hàm này chạy trên 349.714 nhãn khi dựng index từ khóa và chạy lại cho từng
+    Có memo: hàm này chạy trên khoảng 348k nhãn khi dựng index từ khóa và chạy lại cho từng
     ứng viên mỗi lần tìm. Nhãn trong catalog lặp lại rất nhiều (cùng một cụm cho hàng
     nghìn thẻ) nên bộ nhớ chỉ vài MB mà tiết kiệm phần lớn thời gian.
     """
@@ -7721,6 +7725,18 @@ def load_csv_tags():
         return rows
 
 
+def cached_tag_catalog():
+    """Return the already verified in-memory catalog for read-only UI searches.
+
+    ``build_app`` calls :func:`prime_prompt_tag_catalog` before registering the UI,
+    so normal Kho thẻ searches take this fast path and do not re-open, hash, or parse
+    the CSV.  The fallback is intentional: if startup was offline, the first search
+    may make the one allowed retry; ``load_csv_tags`` still serializes and caches it.
+    """
+    rows = _TAG_ROWS
+    return rows if rows is not None else load_csv_tags()
+
+
 def search_csv_tags(
     rows, query="", category="", theme="", sort="Phổ biến nhất", page=1,
     allow_partial_last=False,
@@ -7859,7 +7875,7 @@ def browse_csv_tags(query, category, theme, sort, page):
     import gradio as gr
 
     try:
-        rows = load_csv_tags()
+        rows = cached_tag_catalog()
         found, total, current, pages = search_csv_tags(rows, query, category, theme, sort, page)
         choices = [(f"{csv_tag_caption(row[0], row[1], row[5])} · {TAG_CATEGORIES[row[1]]} · {row[2]:,} lượt", row[0]) for row in found]
         return gr.update(choices=choices, value=[]), current, (
@@ -7908,6 +7924,548 @@ def apply_csv_tags(positive, negative, selected, destination):
     else:
         positive = result
     return positive, negative, f"Đã thêm {len(additions)} thẻ vào {destination}; bỏ qua thẻ trùng. Bạn có thể sửa/xóa trực tiếp trong ô prompt."
+
+
+# ---------------------------------------------------------------------------
+# KIỂM TRA THẺ TRONG PROMPT VỚI KHO THẺ (CSV Danbooru + e621 đã xác minh SHA-256).
+#
+# Nút "🧪 Kiểm tra thẻ với kho thẻ" ở tab 🧭 Quy trình tách từng thẻ trong hai ô
+# prompt/negative rồi đối chiếu với tên thẻ, alias và nhãn tiếng Việt trong catalog:
+# thẻ nào đúng tên trong kho, thẻ nào chỉ là alias/nhãn Việt của một thẻ khác, thẻ
+# nào không có trong kho (kèm gợi ý gần nhất cho trường hợp gõ sai). Chỉ đọc và
+# báo cáo — không sửa nội dung hai ô prompt.
+# ---------------------------------------------------------------------------
+_CATALOG_TAG_FIELDS = None  # (rows, {đã chuẩn hoá: (tên thẻ chính, kind)})
+_CATALOG_NAME_BUCKETS = None  # (rows, {ký tự đầu: (tên thẻ đã chuẩn hoá, ...)})
+
+
+def catalog_tag_fields(rows=None):
+    """Bảng tên/alias/nhãn đã chuẩn hoá → (tên thẻ chính, kind), dựng một lần/catalog.
+
+    kind ∈ {"name", "alias", "label"}: "name" là đúng tên thẻ trong kho, "alias" là
+    tên phụ ở cột alias của CSV, "label" là nhãn tiếng Việt của thẻ — hai loại sau
+    đều có trong kho nhưng nên viết bằng tên thẻ chính tiếng Anh. Khi một chuỗi vừa
+    là tên thẻ vừa là alias của thẻ khác thì "name" thắng. Khóa theo đúng đối tượng
+    rows (``is``) như csv_tag_names nên một catalog khác (bản vá trong test) không
+    bao giờ dùng nhầm bảng cũ.
+    """
+    global _CATALOG_TAG_FIELDS
+    rows = load_csv_tags() if rows is None else rows
+    cached = _CATALOG_TAG_FIELDS
+    if cached is not None and cached[0] is rows:
+        return cached[1]
+    names = {}
+    fields = {}
+    for row in rows:
+        name = row[0]
+        name_key = normalize_csv_tag(name)
+        names[name_key] = name
+        label_key = normalize_csv_tag(row[5])
+        synonym_key = normalize_csv_tag(TAG_VI_SEARCH_SYNONYMS.get(name, ""))
+        for field in row[3].split(","):
+            field = field.strip()
+            if not field or field == name_key:
+                continue
+            kind = "label" if field in (label_key, synonym_key) else "alias"
+            fields.setdefault(field, (name, kind))
+    index = {key: (name, "name") for key, name in names.items()}
+    for key, value in fields.items():
+        index.setdefault(key, value)
+    _CATALOG_TAG_FIELDS = (rows, index)
+    return index
+
+
+def _catalog_name_buckets(rows):
+    """Tên thẻ đã chuẩn hoá nhóm theo ký tự đầu — ứng viên gợi ý khi gõ sai chính tả."""
+    global _CATALOG_NAME_BUCKETS
+    cached = _CATALOG_NAME_BUCKETS
+    if cached is not None and cached[0] is rows:
+        return cached[1]
+    buckets = {}
+    for name in tag_normalized_names(rows):
+        if name:
+            buckets.setdefault(name[0], []).append(name)
+    buckets = {key: tuple(value) for key, value in buckets.items()}
+    _CATALOG_NAME_BUCKETS = (rows, buckets)
+    return buckets
+
+
+def _catalog_check_exempt_tags():
+    """Thẻ hợp lệ nhưng không có trong kho CSV — chính Studio đề xuất hoặc chèn.
+
+    Gồm thẻ chất lượng chuẩn WAI v17, toàn bộ thẻ của 8 bộ negative, thẻ neo của
+    khung prompt/phong cách, thẻ kỹ thuật `highres`/`absurdres`, thẻ gợi ý sửa vùng,
+    thẻ của nhóm Chi tiết mắt & móng, trigger LoRA ``perfect eyes`` và các từ khóa
+    ``BREAK``/``AND`` của SDXL. Một số tag kỹ thuật này nằm ở nhóm Metadata của nguồn
+    nên đã được lọc khỏi CSV tối ưu, nhưng vẫn là prompt hợp lệ của Studio. Kiểm tra
+    trong kho được ưu tiên hơn: thẻ vừa có trong CSV vừa ở đây vẫn báo "đúng tên thẻ"
+    chứ không phải "thẻ chuẩn ngoài kho".
+    """
+    tags = set(QUALITY_TAG_SET)
+    tags.update(QUALITY_TAIL)
+    tags.update(STYLE_TAG_HINTS)
+    tags.update(("highres", "hi_res", "absurdres", "absurd_res"))
+    tags.update(("perfect eyes", "BREAK", "AND"))
+    for scaffold in PROMPT_SCAFFOLDS.values():
+        for anchor_tags in scaffold["anchors"].values():
+            tags.update(anchor_tags)
+    for preset in NEGATIVE_PRESETS:
+        tags.update(preset["tags"])
+    for positive, negative in REPAIR_HINTS.values():
+        tags.update(split_tags(positive))
+        tags.update(split_tags(negative))
+    for _field, _label, choices in LOOK_FIELDS:
+        for option in choices.values():
+            tags.update(option)
+    return frozenset(key for key in (normalize_csv_tag(tag) for tag in tags) if key)
+
+
+CATALOG_CHECK_EXEMPT = _catalog_check_exempt_tags()
+
+
+def _catalog_tag_suggestions(core, fields, rows, limit=3):
+    """Gợi ý tên thẻ trong kho cho thẻ không khớp: tìm trong kho trước, rồi đoán chính tả."""
+    found, _, _, _ = search_csv_tags(rows, query=core, sort="Khớp nhất")
+    names = []
+    for row in found:
+        if row[0] not in names:
+            names.append(row[0])
+        if len(names) >= limit:
+            return names
+    if names:
+        return names
+    import difflib
+
+    key = normalize_csv_tag(core)
+    bucket = _catalog_name_buckets(rows).get(key[:1], ())
+    close = difflib.get_close_matches(key, bucket, n=limit, cutoff=0.72)
+    if not close:
+        # Gõ sai thẻ chuẩn ngoài kho (vd. "worst qualit"): so với chính tập thẻ đó —
+        # nhỏ hơn nhiều nên rẻ, và tên chuẩn của chúng đã đúng dạng cần gợi ý.
+        close = difflib.get_close_matches(
+            key, sorted(CATALOG_CHECK_EXEMPT), n=limit, cutoff=0.72
+        )
+    suggestions = []
+    for match in close:
+        canonical = fields.get(match, (match, "name"))[0]
+        if canonical not in suggestions:
+            suggestions.append(canonical)
+    return suggestions
+
+
+def check_prompt_tag(tag, fields, rows):
+    """Đối chiếu MỘT thẻ với kho — trả (status, tên thẻ chính, gợi ý).
+
+    status ∈ {"ok", "alias", "label", "known", "unknown", "skip"}: "ok" = đúng tên
+    thẻ trong kho, "alias"/"label" = khớp alias/nhãn tiếng Việt của một thẻ (nên đổi
+    sang tên chính), "known" = thẻ chuẩn ngoài kho, "unknown" = không có trong kho
+    (mô tả tự do hoặc gõ sai), "skip" = thẻ rỗng sau khi gỡ cú pháp trọng số.
+    """
+    core = tag_core(tag)
+    key = normalize_csv_tag(core)
+    if not key:
+        return "skip", None, ()
+    if core == "BREAK":
+        # Viết hoa đúng chuẩn là từ khóa tách khối của SDXL, không phải thẻ "break"
+        # (nghỉ giải lao) trong kho Danbooru — đừng gợi ý đổi thành tên thẻ.
+        return "known", None, ()
+    if key in fields:
+        canonical, kind = fields[key]
+        return {"name": "ok", "alias": "alias", "label": "label"}[kind], canonical, ()
+    if key in CATALOG_CHECK_EXEMPT:
+        return "known", None, ()
+    return "unknown", None, tuple(_catalog_tag_suggestions(core, fields, rows))
+
+
+def validate_prompt_tags(text, rows=None):
+    """Kiểm tra từng thẻ của một ô prompt với kho thẻ.
+
+    Trả (total, results): total là số thẻ trong ô (kể cả trùng), results là danh
+    sách (thẻ gốc, status, tên thẻ chính, gợi ý) cho từng thẻ duy nhất — thẻ trùng
+    đã được 🩺 Kiểm tra prompt & thông số báo nên không lặp lại ở đây.
+    """
+    rows = load_csv_tags() if rows is None else rows
+    fields = catalog_tag_fields(rows)
+    tags = split_tags(text if isinstance(text, str) else "")
+    results = []
+    seen = set()
+    for tag in tags:
+        key = normalize_csv_tag(tag_core(tag))
+        if not key or key in seen:
+            continue
+        seen.add(key)
+        status, canonical, suggestions = check_prompt_tag(tag, fields, rows)
+        if status == "skip":
+            continue
+        results.append((tag, status, canonical, suggestions))
+    return len(tags), results
+
+
+TAG_CHECK_REPORT_LIMIT = 12  # mỗi nhóm liệt kê tối đa 12 thẻ, phần còn lại gộp theo số
+
+
+def _format_tag_check_group(icon, title, entries):
+    shown = entries[:TAG_CHECK_REPORT_LIMIT]
+    line = f"{icon} **{title} — {len(entries)}:** " + " · ".join(shown)
+    hidden = len(entries) - len(shown)
+    if hidden > 0:
+        line += f" · … và {hidden} thẻ khác"
+    return line
+
+
+def format_tag_check_report(prompt_data, negative_data, catalog_size):
+    """Kết quả kiểm tra thẻ với kho thẻ thành Markdown cho tab 🧭 Quy trình."""
+    lines = [
+        "**🧪 Kiểm tra thẻ với kho thẻ** · "
+        f"kho: {catalog_size:,} thẻ Danbooru + e621 (đã xác minh SHA-256)"
+    ]
+    unknown_total = 0
+    for title, (total, results) in (
+        ("Prompt", prompt_data),
+        ("Negative", negative_data),
+    ):
+        lines.append("")
+        if not results:
+            state = "ô trống." if total == 0 else f"{total} thẻ."
+            lines.append(f"**{title}** · {state}")
+            continue
+        note = f" ({total - len(results)} thẻ trùng đã gộp)" if total > len(results) else ""
+        lines.append(f"**{title}** · {total} thẻ{note}:")
+        groups = {"ok": [], "alias": [], "label": [], "known": [], "unknown": []}
+        for tag, status, canonical, suggestions in results:
+            groups[status].append((tag, canonical, suggestions))
+        unknown_total += len(groups["unknown"])
+        if groups["ok"]:
+            entries = []
+            for tag, canonical, _ in groups["ok"]:
+                core = tag_core(tag)
+                entries.append(f"`{core}`" if core == canonical else f"`{core}` → `{canonical}`")
+            lines.append(_format_tag_check_group("✅", "Đúng tên thẻ trong kho", entries))
+        if groups["alias"]:
+            entries = [
+                f"`{tag_core(tag)}` → `{canonical}`"
+                for tag, canonical, _ in groups["alias"]
+            ]
+            lines.append(_format_tag_check_group("🔀", "Alias của thẻ trong kho", entries))
+        if groups["label"]:
+            entries = [
+                f"`{tag_core(tag)}` → nên dùng `{canonical}`"
+                for tag, canonical, _ in groups["label"]
+            ]
+            lines.append(_format_tag_check_group("ℹ️", "Nhãn tiếng Việt", entries))
+        if groups["known"]:
+            entries = [f"`{tag_core(tag)}`" for tag, _, _ in groups["known"]]
+            lines.append(
+                _format_tag_check_group(
+                    "ℹ️", "Thẻ chuẩn ngoài kho (chất lượng/negative/LoRA/BREAK)", entries
+                )
+            )
+        if groups["unknown"]:
+            entries = []
+            for tag, _, suggestions in groups["unknown"]:
+                entry = f"`{tag_core(tag)}`"
+                if suggestions:
+                    entry += " → gợi ý: " + ", ".join(f"`{name}`" for name in suggestions)
+                else:
+                    entry += " (không có gợi ý)"
+                entries.append(entry)
+            lines.append(
+                _format_tag_check_group(
+                    "⚠️", "Không có trong kho — mô tả tự do hoặc gõ sai", entries
+                )
+            )
+    lines.append("")
+    if unknown_total:
+        lines.append(
+            f"⚠️ {unknown_total} thẻ không có trong kho **không phải lỗi**: Illustrious "
+            "vẫn đọc mô tả tự do — nhưng nếu bạn định dùng thẻ Danbooru/e621 thì có thể "
+            "đã gõ sai chính tả; đối chiếu gợi ý rồi sửa trong ô prompt. Báo cáo này chỉ "
+            "đọc hai ô prompt/negative, **không sửa gì**."
+        )
+    else:
+        lines.append(
+            "✅ Mọi thẻ trong hai ô đều có trong kho hoặc là thẻ chuẩn ngoài kho. "
+            "Báo cáo này chỉ đọc hai ô prompt/negative, **không sửa gì**."
+        )
+    return "\n".join(lines)
+
+
+def run_tag_check(prompt, negative):
+    """Sự kiện UI: kiểm tra thẻ trong hai ô prompt với kho thẻ, không đổi giá trị nào."""
+    try:
+        rows = load_csv_tags()
+        prompt_data = validate_prompt_tags(prompt, rows)
+        negative_data = validate_prompt_tags(negative, rows)
+    except Exception as exc:
+        return (
+            f"⚠️ Chưa nạp được kho thẻ ({type(exc).__name__}). Bấm **Tìm trong kho thẻ** "
+            "ở tab 🏷️ Kho thẻ để thử lại — kiểm tra này cần kho thẻ đã xác minh "
+            "SHA-256. Viết prompt và tạo ảnh vẫn hoạt động bình thường."
+        )
+    return format_tag_check_report(prompt_data, negative_data, len(rows))
+
+
+# ---------------------------------------------------------------------------
+# SỬA PROMPT THÀNH THẺ CHUẨN (dùng chung kho thẻ với 🧪 Kiểm tra thẻ).
+#
+# Nút "🛠️ Sửa prompt thành thẻ chuẩn" phân tích từng thẻ trong ô prompt: thẻ chưa
+# đúng tên chuẩn (alias, nhãn tiếng Việt, hoặc không có trong kho nhưng có gợi ý)
+# được đề xuất đổi sang tên thẻ chính; thẻ đã đúng tên kho thì liệt kê các thẻ có
+# chung từ trong kho để đổi TÙY CHỌN. Người dùng chọn (các thẻ cần sửa đã được chọn
+# sẵn) rồi bấm "✅ Tạo prompt hoàn chỉnh" — kết quả chỉ được GHI VÀO Ô HIỂN THỊ để
+# sửa/xóa, không có thẻ nào được ghép ngầm khi tạo ảnh.
+# ---------------------------------------------------------------------------
+_CATALOG_NAME_WORD_INDEX = None  # (rows, {từ: (tên thẻ đã chuẩn hoá, ...)})
+
+
+def _catalog_name_word_index(rows):
+    """Từ tiếng Anh → các tên thẻ đã chuẩn hoá có chứa từ đó, dựng một lần/catalog.
+
+    Dùng để tìm thẻ liên quan khi gợi ý đổi tùy chọn mà không phải quét regex toàn
+    bộ catalog cho từng thẻ. Khóa theo đúng đối tượng rows (``is``) như các index khác.
+    """
+    global _CATALOG_NAME_WORD_INDEX
+    cached = _CATALOG_NAME_WORD_INDEX
+    if cached is not None and cached[0] is rows:
+        return cached[1]
+    index = {}
+    for name in tag_normalized_names(rows):
+        for word in set(name.split()):
+            index.setdefault(word, []).append(name)
+    index = {key: tuple(value) for key, value in index.items()}
+    _CATALOG_NAME_WORD_INDEX = (rows, index)
+    return index
+
+
+def _related_catalog_tags(core_key, rows, fields, present, limit=3):
+    """Các tên thẻ trong kho có chung từ với thẻ này — gợi ý đổi tùy chọn.
+
+    Chỉ đọc index theo từ (không quét toàn bộ catalog): ưu tiên thẻ chung nhiều từ
+    nhất, rồi theo thứ tự first-seen (cũng là thứ tự phổ biến trong kho). Bỏ qua
+    chính nó và các thẻ đang có trong prompt. Trả về tên thẻ chính (dạng gốc).
+    """
+    tag_words = set(core_key.split())
+    if not tag_words:
+        return []
+    index = _catalog_name_word_index(rows)
+    scored = {}
+    for word in tag_words:
+        for name in index.get(word, ()):
+            if name == core_key or name in present or name in scored:
+                continue
+            shared = len(tag_words & set(name.split()))
+            if shared:
+                scored[name] = shared
+    related = sorted(scored, key=lambda name: -scored[name])  # ổn định: giữ first-seen
+    return [
+        fields.get(name, (name, "name"))[0]
+        for name in related[:limit]
+    ]
+
+
+def propose_prompt_rewrites(text, rows=None):
+    """Phân tích prompt và đề xuất cách sửa từng thẻ theo kho thẻ.
+
+    Trả về (segments, proposals):
+    - segments: [(thẻ gốc, status, tên thẻ chính, gợi ý)] theo đúng thứ tự ô prompt
+      (kể cả thẻ trùng), status như check_prompt_tag.
+    - proposals: danh sách dict cho dropdown thay thế, mỗi dict có
+      {"core", "raw", "kind", "replacement", "label", "value"} với kind ∈ {"fix",
+      "swap"}: "fix" là thẻ chưa đúng tên chuẩn (alias/nhãn Việt/gõ sai nhưng có
+      gợi ý) — đổi sang tên thẻ chính, chọn sẵn; "swap" là thẻ đã đúng tên kho —
+      các thẻ có chung từ để đổi TÙY CHỌN, không chọn sẵn. value có dạng
+      "core<TAB>replacement" để nút áp dụng không cần giữ state.
+    """
+    rows = load_csv_tags() if rows is None else rows
+    fields = catalog_tag_fields(rows)
+    tags = split_tags(text if isinstance(text, str) else "")
+    segments = []
+    for tag in tags:
+        core = tag_core(tag)
+        key = normalize_csv_tag(core)
+        if not key:
+            continue
+        status, canonical, suggestions = check_prompt_tag(tag, fields, rows)
+        segments.append((tag, status, canonical, suggestions))
+    present = {normalize_csv_tag(tag_core(tag)) for tag, _, _, _ in segments}
+    proposals = []
+    seen_cores = set()
+    for tag, status, canonical, suggestions in segments:
+        core = tag_core(tag)
+        key = normalize_csv_tag(core)
+        if key in seen_cores:
+            continue
+        seen_cores.add(key)
+        if status in ("alias", "label"):
+            proposals.append({
+                "core": key,
+                "raw": core,
+                "kind": "fix",
+                "replacement": canonical,
+                "label": f"`{core}` → `{canonical}`",
+                "value": f"{key}\t{canonical}",
+            })
+        elif status == "unknown":
+            for rank, name in enumerate(suggestions[:3]):
+                proposals.append({
+                    "core": key,
+                    "raw": core,
+                    "kind": "fix",
+                    "replacement": name,
+                    "label": (
+                        f"`{core}` → `{name}`"
+                        + ("" if rank == 0 else " (lựa chọn khác)")
+                    ),
+                    "value": f"{key}\t{name}",
+                })
+        elif status == "ok":
+            for name in _related_catalog_tags(key, rows, fields, present):
+                proposals.append({
+                    "core": key,
+                    "raw": core,
+                    "kind": "swap",
+                    "replacement": name,
+                    "label": f"`{core}` → `{name}` (đổi tùy chọn)",
+                    "value": f"{key}\t{name}",
+                })
+    return segments, proposals
+
+
+def format_rewrite_report(segments, proposals):
+    """Tóm tắt kết quả phân tích của 🛠️ Sửa prompt thành thẻ chuẩn."""
+    if not segments:
+        return (
+            "**🛠️ Sửa prompt thành thẻ chuẩn** · ô prompt đang trống — hãy viết "
+            "hoặc nạp prompt trước rồi bấm lại."
+        )
+    counts = {"ok": 0, "alias": 0, "label": 0, "known": 0, "unknown": 0}
+    raw_by_core = {}
+    cores_by_status = {}
+    for tag, status, _, _ in segments:
+        counts[status] = counts.get(status, 0) + 1
+        key = normalize_csv_tag(tag_core(tag))
+        raw_by_core.setdefault(key, tag_core(tag))
+        cores_by_status.setdefault(status, set()).add(key)
+    lines = [
+        f"**🛠️ Sửa prompt thành thẻ chuẩn** · {len(segments)} thẻ trong ô prompt:",
+        f"- Đúng tên kho: {counts['ok']} · Thẻ chuẩn ngoài kho: {counts['known']}",
+    ]
+    fixes = []
+    seen = set()
+    for proposal in proposals:
+        if proposal["kind"] == "fix" and proposal["core"] not in seen:
+            seen.add(proposal["core"])
+            fixes.append(proposal)
+    if fixes:
+        lines.append(
+            f"- Sẽ đổi sang tên thẻ chính ({len(fixes)} thẻ, đã chọn sẵn trong ô "
+            "dưới đây):"
+        )
+        for proposal in fixes[:10]:
+            lines.append(f"  - {proposal['label']}")
+        if len(fixes) > 10:
+            lines.append(f"  - … và {len(fixes) - 10} thẻ khác")
+    fix_cores = {proposal["core"] for proposal in proposals if proposal["kind"] == "fix"}
+    unfixed = sorted(cores_by_status.get("unknown", set()) - fix_cores)
+    if unfixed:
+        shown = ", ".join(f"`{raw_by_core[core]}`" for core in unfixed[:8])
+        more = f" … và {len(unfixed) - 8} thẻ khác" if len(unfixed) > 8 else ""
+        lines.append(
+            f"- ⚠️ Không có gợi ý trong kho, giữ nguyên ({len(unfixed)} thẻ): {shown}{more}"
+        )
+    swaps = [proposal for proposal in proposals if proposal["kind"] == "swap"]
+    if swaps:
+        lines.append(
+            f"- ⇄ {len(swaps)} thay thế TÙY CHỌN cho thẻ đã đúng tên kho (chưa chọn "
+            "sẵn) — đánh dấu trong ô dưới đây nếu muốn đổi."
+        )
+    lines.append("")
+    lines.append(
+        "Bấm **✅ Tạo prompt hoàn chỉnh** để ghi kết quả vào ô *Prompt gửi model* — "
+        "bạn vẫn sửa/xóa được trước khi tạo ảnh."
+    )
+    return "\n".join(lines)
+
+
+def run_prompt_rewrite(prompt):
+    """Sự kiện UI: phân tích ô prompt, trả báo cáo + dropdown các thẻ đề xuất thay thế."""
+    import gradio as gr
+
+    try:
+        rows = load_csv_tags()
+        segments, proposals = propose_prompt_rewrites(prompt, rows)
+    except Exception as exc:
+        return (
+            f"⚠️ Chưa nạp được kho thẻ ({type(exc).__name__}). Bấm **Tìm trong kho thẻ** "
+            "ở tab 🏷️ Kho thẻ để thử lại — công cụ này cần kho thẻ đã xác minh "
+            "SHA-256. Viết prompt và tạo ảnh vẫn hoạt động bình thường.",
+            gr.update(choices=[], value=[]),
+        )
+    selected = []
+    seen = set()
+    for proposal in proposals:
+        if proposal["kind"] == "fix" and proposal["core"] not in seen:
+            seen.add(proposal["core"])
+            selected.append(proposal["value"])
+    return (
+        format_rewrite_report(segments, proposals),
+        gr.update(
+            choices=[(proposal["label"], proposal["value"]) for proposal in proposals],
+            value=selected,
+        ),
+    )
+
+
+def apply_prompt_rewrite(prompt, selected):
+    """Sự kiện UI: áp dụng các thẻ thay thế đã chọn, ghi prompt hoàn chỉnh vào ô.
+
+    Chỉ đổi những thẻ có trong danh sách đã chọn (giá trị dạng "core<TAB>replacement"),
+    giữ nguyên cú pháp nhấn mạnh của thẻ gốc (vd. ``(long_hari:1.2)`` →
+    ``(long_hair:1.2)``). Kết quả chỉ ghi vào ô hiển thị để người dùng sửa/xóa.
+    """
+    tags = split_tags(prompt if isinstance(prompt, str) else "")
+    if not tags:
+        raise ValueError("Prompt đang trống — hãy viết hoặc nạp prompt trước.")
+    replacements = {}
+    for choice in selected or []:
+        if not isinstance(choice, str) or "\t" not in choice:
+            continue
+        core, replacement = choice.split("\t", 1)
+        if core and replacement:
+            # Các phương án cùng một thẻ nằm cạnh nhau trong CheckboxGroup; nếu
+            # người dùng đánh dấu thêm phương án khác, lựa chọn sau sẽ thay thế
+            # phương án mặc định đầu tiên thay vì âm thầm giữ lỗi gõ cũ.
+            replacements[core] = replacement
+    if not replacements:
+        return prompt, (
+            "Chưa có thẻ nào được chọn — prompt giữ nguyên. Bấm **🛠️ Sửa prompt "
+            "thành thẻ chuẩn** để phân tích và chọn thẻ thay thế trước."
+        )
+    out = []
+    changed = []
+    for tag in tags:
+        raw_core = tag_core(tag)
+        key = normalize_csv_tag(raw_core)
+        if key in replacements and raw_core:
+            replacement = replacements[key]
+            new_tag = tag.replace(raw_core, replacement, 1)
+            if new_tag != tag:
+                changed.append(f"`{raw_core}` → `{replacement}`")
+            out.append(new_tag)
+        else:
+            out.append(tag)
+    if not changed:
+        return prompt, (
+            "Không có thẻ nào trong lựa chọn còn khớp với prompt hiện tại — prompt giữ "
+            "nguyên. Bạn có thể bấm lại **🛠️ Sửa prompt thành thẻ chuẩn** để làm mới đề xuất."
+        )
+    note = (
+        f"Đã tạo prompt hoàn chỉnh — đổi {len(changed)} thẻ: "
+        + "; ".join(changed[:8])
+        + ("…" if len(changed) > 8 else "")
+        + ". Prompt chỉ được ghi vào ô hiển thị; bạn sửa/xóa được trước khi tạo ảnh."
+    )
+    return ", ".join(out), note
 
 
 PROMPT_TAG_SUGGESTION_LIMIT = 16
@@ -9265,7 +9823,7 @@ def build_app(runtime):
                                 )
                     with gr.Tab("🏷️ Kho thẻ", id="tags"):
                         gr.Markdown(
-                            "Nguồn CSV 01/10/2026 · 349.714 thẻ. Nhấn **Tìm / tải kho thẻ** để nạp lần đầu (~9 MB; bản có cột nhãn ~13,7 MB). "
+                            "Nguồn CSV 01/10/2026 · 348.716 tag prompt (đã bỏ metadata). Catalog được nạp và kiểm SHA-256 một lần khi Studio khởi động; nhấn **Tìm trong kho thẻ** để lọc nhanh, không tải lại CSV. "
                             "Tìm tiếng Việt hoặc English trên toàn bộ kho; có thể dán prompt nhiều cụm bằng dấu phẩy/xuống dòng, không cần dấu tiếng Việt. Cụm dài không khớp nguyên văn sẽ tìm theo từng từ khóa. "
                             "Nhãn Việt đứng trước thẻ gốc; tên riêng được giữ nguyên và mục chưa dịch được ghi rõ. "
                             "Khi thêm vào prompt chỉ dùng tên thẻ tiếng Anh gốc. "
@@ -9290,7 +9848,7 @@ def build_app(runtime):
                         with gr.Row():
                             tag_sort = gr.Radio(choices=["Phổ biến nhất", "Tên A–Z"], value="Phổ biến nhất", label="Sắp xếp")
                             tag_page = gr.Number(value=1, minimum=1, precision=0, label="Trang (60 thẻ / trang)")
-                        tag_search = gr.Button("Tìm / tải kho thẻ", size="sm")
+                        tag_search = gr.Button("Tìm trong kho thẻ", size="sm")
                         tag_selection = gr.Dropdown(choices=[], multiselect=True, label="Chọn thẻ trong trang kết quả", allow_custom_value=False)
                         with gr.Row():
                             tag_destination = gr.Radio(choices=["Prompt", "Negative prompt"], value="Prompt", label="Thêm vào")
@@ -9374,15 +9932,40 @@ def build_app(runtime):
                             check_button = gr.Button(
                                 "🩺 Kiểm tra prompt & thông số", size="sm", scale=1
                             )
+                            tag_check_button = gr.Button(
+                                "🧪 Kiểm tra thẻ với kho thẻ", size="sm", scale=1
+                            )
+                        with gr.Row():
+                            rewrite_button = gr.Button(
+                                "🛠️ Sửa prompt thành thẻ chuẩn", size="sm", scale=1
+                            )
+                            rewrite_apply_button = gr.Button(
+                                "✅ Tạo prompt hoàn chỉnh", size="sm", scale=1,
+                                variant="primary",
+                            )
                         workflow_status = gr.Markdown(
                             "**Quy trình gợi ý:** 1) sắp xếp prompt theo thứ tự chuẩn → "
-                            "2) chọn negative đúng mục đích → 3) kiểm tra prompt/thông số → "
-                            "4) tạo ở ~1 MP, dò 3–4 seed → 5) hires 1.5–2× → 6) inpaint "
-                            "vùng tay/mắt còn lỗi. Mọi nút ở đây chỉ ghi nội dung **hiển "
-                            "thị** vào hai ô prompt; không có thẻ nào được thêm ngầm.",
+                            "2) chọn negative đúng mục đích → 3) kiểm tra prompt/thông số "
+                            "+ thẻ với kho thẻ → 4) sửa thẻ, chọn thay thế nếu cần → 5) "
+                            "tạo ở ~1 MP, dò 3–4 seed → 6) hires 1.5–2× → 7) inpaint "
+                            "vùng tay/mắt còn lỗi. Mọi nút ở đây chỉ ghi nội dung **hiển thị** "
+                            "vào hai ô prompt; không có thẻ nào được thêm ngầm.",
                             elem_classes="studio-hint",
                         )
                         prompt_report = gr.Markdown("", elem_classes="studio-hint")
+                        tag_check_report = gr.Markdown("", elem_classes="studio-hint")
+                        prompt_rewrite_report = gr.Markdown("", elem_classes="studio-hint")
+                        prompt_rewrite_choices = gr.CheckboxGroup(
+                            choices=[],
+                            value=[],
+                            label="Thẻ thay thế · mục bắt buộc đã chọn sẵn, mục tùy chọn có thể đánh dấu",
+                            info=(
+                                "Mỗi dòng có dạng thẻ đang dùng → tên canonical trong kho. "
+                                "Bỏ chọn hoặc chọn một phương án khác trước khi tạo prompt hoàn chỉnh."
+                            ),
+                            elem_id="prompt-rewrite-choices",
+                        )
+                        prompt_rewrite_status = gr.Markdown("", elem_classes="studio-hint")
                         gr.Markdown(
                             "Thứ tự chuẩn: chủ thể → nhãn phân loại → ngoại hình/chi tiết "
                             "nhân vật → trang phục → tư thế → bố cục → bối cảnh → ánh sáng "
@@ -9858,7 +10441,7 @@ def build_app(runtime):
             queue=False,
             show_progress="hidden",
         )
-        # Quy trình chuẩn: ba nút đều chỉ ghi nội dung HIỂN THỊ vào hai ô prompt /
+        # Quy trình chuẩn: các nút đều chỉ ghi nội dung HIỂN THỊ vào hai ô prompt /
         # ô báo cáo, người dùng xem và sửa được trước khi bấm tạo ảnh.
         scaffold_button.click(
             fn=structure_prompt,
@@ -9888,6 +10471,34 @@ def build_app(runtime):
                 hires_strength,
             ],
             outputs=prompt_report,
+            api_visibility="private",
+            queue=False,
+            show_progress="hidden",
+        )
+        # Kiểm tra thẻ với kho thẻ: lần đầu bấm còn phải dựng index tên/alias của
+        # ~350k thẻ nên bắt buộc qua queue giống các sự kiện tìm trong tab Kho thẻ —
+        # không được chạy trên event loop (xem UiResponsivenessTests).
+        tag_check_button.click(
+            fn=run_tag_check,
+            inputs=[prompt, negative],
+            outputs=tag_check_report,
+            api_visibility="private",
+            show_progress="minimal",
+        )
+        # Sửa prompt thành thẻ chuẩn cũng dựng index catalog và tìm gợi ý nên chạy
+        # trong queue; các thẻ alias/nhãn/gõ sai có gợi ý được chọn sẵn, còn các
+        # phương án đổi tùy chọn cho thẻ đã đúng tên thì để người dùng đánh dấu.
+        rewrite_button.click(
+            fn=run_prompt_rewrite,
+            inputs=prompt,
+            outputs=[prompt_rewrite_report, prompt_rewrite_choices],
+            api_visibility="private",
+            show_progress="minimal",
+        )
+        rewrite_apply_button.click(
+            fn=apply_prompt_rewrite,
+            inputs=[prompt, prompt_rewrite_choices],
+            outputs=[prompt, prompt_rewrite_status],
             api_visibility="private",
             queue=False,
             show_progress="hidden",
@@ -10011,17 +10622,28 @@ def build_app(runtime):
             queue=False,
             show_progress="hidden",
         )
+        # Kho thẻ có hàng đợi CPU riêng: tìm/lọc vẫn ở worker (không chặn event loop
+        # khi quét 348k dòng), nhưng không phải chờ slot `wai_gpu` đang bận tạo ảnh.
+        # `always_last` bỏ các lượt tìm cũ khi người dùng đổi bộ lọc liên tiếp.
         tag_search.click(
             fn=browse_csv_tags,
             inputs=[tag_query, tag_category, tag_theme, tag_sort, tag_page],
             outputs=[tag_selection, tag_page, tag_status],
             api_visibility="private",
+            queue=True,
+            trigger_mode="always_last",
+            concurrency_id=TAG_CATALOG_CONCURRENCY_ID,
+            concurrency_limit=TAG_CATALOG_CONCURRENCY_LIMIT,
+            show_progress="minimal",
         )
         tag_add.click(
             fn=apply_csv_tags,
             inputs=[prompt, negative, tag_selection, tag_destination],
             outputs=[prompt, negative, tag_status],
             api_visibility="private",
+            queue=True,
+            concurrency_id=TAG_CATALOG_CONCURRENCY_ID,
+            concurrency_limit=TAG_CATALOG_CONCURRENCY_LIMIT,
             show_progress="minimal",
         )
         # Only open a destination tab after the *selected* image really loaded (a missing
@@ -10052,7 +10674,8 @@ def build_app(runtime):
         # max_size phải đủ lớn: mỗi lượt tạo ảnh giữ một slot hàng đợi trong nhiều phút,
         # với max_size nhỏ thì mọi thao tác khác bị từ chối (HTTP 429) và giao diện
         # kẹt ở trạng thái chờ — người dùng thấy là trang "treo đơ". Job GPU đã tự
-        # giới hạn bằng concurrency_id="wai_gpu", còn lại mặc định 1 event/sự kiện.
+        # giới hạn bằng `wai_gpu`; Kho thẻ có nhóm `wai_tag_catalog` riêng, còn lại
+        # mặc định 1 event/sự kiện.
         demo.queue(max_size=64, default_concurrency_limit=1, api_open=False)
     instrument_ui_events(demo)
     # Gradio 6 applies CSS and themes at launch, not in the Blocks constructor.
