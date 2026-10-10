@@ -13,10 +13,10 @@ mirabarukaso/character_select_stand_alone_app dùng cho Semi-Auto Tag Complete
 * trường dịch **không bao giờ chứa dấu phẩy**, vì bộ nạp JavaScript cắt mỗi dòng
   bằng ``line.split(',', 3)`` nên mọi thứ sau trường thứ ba sẽ bị bỏ.
 
-Bản dịch lấy từ cùng một bộ từ điển mà Studio dùng
-(``colab/studio.py``), nên tệp này không bao giờ lệch với gợi ý trong Studio:
-thêm một từ vào từ điển rồi chạy lại script là tệp lớn lên. Tên riêng (họa sĩ,
-nhân vật, tác phẩm) và thẻ chưa có bản dịch thật thì bị loại — không bịa dịch.
+Nhãn thật lấy từ cùng một bộ từ điển mà Studio dùng (``colab/studio.py``).
+Họa sĩ, tác phẩm và nhân vật bị bỏ qua để không bịa tên riêng; mọi nhóm còn lại
+được bổ sung nhãn dịch máy dự phòng khi thiếu bản dịch thật. Dấu gạch dưới trong
+nhãn được đổi thành khoảng trắng.
 """
 
 import argparse
@@ -36,36 +36,62 @@ from colab.studio import (  # noqa: E402
     _is_translated_tag_label,
     parse_tag_csv,
 )
+from scripts.build_prompt_catalog_vi import (  # noqa: E402
+    _machine_translate_tag,
+    _machine_translation_tools,
+)
 
 TRANSLATE_CSV_NAME = "danbooru_e621_merged_vi_vn.csv"
-# SAA bỏ qua hàng loạt nhóm 1 và 8 khi nạp file dịch ("Skip artist name
-# translations"), và repo này giữ nguyên tên họa sĩ/nhân vật thay vì phiên âm.
-TRANSLATE_SKIPPED_CATEGORIES = frozenset({"1", "8"})
+# Không tự dịch tên riêng của họa sĩ, tác phẩm và nhân vật. Các nhóm còn lại
+# (chung, loài, người đóng góp và lore) được bổ sung nhãn dịch máy khi thiếu.
+TRANSLATE_SKIPPED_CATEGORIES = frozenset({"1", "3", "4", "8", "10", "11"})
 
 
 def sanitize_translation(label):
     """Trả về nhãn tiếng Việt an toàn cho bộ nạp split theo dấu phẩy."""
     text = re.sub(r"[\r\n]+", " ", str(label or ""))
-    text = text.replace(",", ";").replace('"', "'")
-    return re.sub(r"\s+", " ", text).strip()
+    text = text.replace(",", ";").replace('"', "'").replace("_", " ")
+    words = re.sub(r"\s+", " ", text).strip().split()
+    compact = []
+    for word in words:
+        if compact and word.casefold() == compact[-1].casefold():
+            continue
+        compact.append(word)
+    return " ".join(compact)
+
+
+def _has_curated_translation(name, category, label):
+    if not _is_translated_tag_label(label, category):
+        return False
+    translation = sanitize_translation(label)
+    # Match the historical builder's rule: a label is not useful only when it
+    # is exactly the canonical spelling (including the tag's underscore form).
+    return bool(translation) and translation.replace("_", " ").casefold() != name.casefold()
 
 
 def translate_rows(rows, skip=TRANSLATE_SKIPPED_CATEGORIES):
-    """Lọc catalog Studio thành các dòng ``tag,category,translation`` duy nhất.
+    """Dựng các dòng dịch cho mọi nhóm không phải tên riêng bị bỏ qua.
 
     ``rows`` là kết quả của ``colab.studio.parse_tag_csv``: mỗi phần tử là
     ``(name, category, count, search_index, themes, label)`` theo thứ tự độ phổ biến
-    giảm dần của CSV nguồn.
+    giảm dần của CSV nguồn. Nhãn thật được giữ lại; tag còn thiếu nhận nhãn dịch máy
+    dự phòng từ từ điển cục bộ, trong đó dấu gạch dưới được đổi thành khoảng trắng.
     """
     seen = set()
     result = []
+    machine_seed = [[name, category, label] for name, category, _count, _index, _themes, label in rows]
+    machine_words, machine_studio = _machine_translation_tools(machine_seed)
     for name, category, count, _search_index, _themes, label in rows:
         if category not in TAG_CATEGORIES or category in skip:
             continue
-        if not _is_translated_tag_label(label, category):
-            continue
-        translation = sanitize_translation(label)
-        if not translation or translation.replace("_", " ").lower() == name.lower():
+        if _has_curated_translation(name, category, label):
+            translation = sanitize_translation(label)
+        else:
+            translation = _machine_translate_tag(name, category, machine_words, machine_studio)
+            translation = sanitize_translation(translation)
+        if translation:
+            translation = translation[:1].upper() + translation[1:]
+        if not translation:
             continue
         key = name.lower()
         if key in seen:
@@ -120,9 +146,18 @@ def build_translate_file(
     payload = render_translate_file(translated, bom=bom)
     destination = Path(output_path)
 
+    machine_translated = sum(
+        1
+        for name, category, _count, _index, _themes, label in rows
+        if category not in TRANSLATE_SKIPPED_CATEGORIES
+        and not _has_curated_translation(name, category, label)
+    )
+    skipped = sum(1 for row in rows if row[1] in TRANSLATE_SKIPPED_CATEGORIES)
     stats = {
         "total": len(rows),
         "translated": len(translated),
+        "machine_translated": machine_translated,
+        "skipped": skipped,
         "bytes": len(payload),
         "sha256": hashlib.sha256(payload).hexdigest(),
         "categories": _category_counts(translated),
@@ -147,7 +182,9 @@ def build_translate_file(
     preview = ", ".join(f"{category}:{count:,}" for category, count in stats["categories"].items())
     print(
         f"Đã viết {stats['translated']:,} dòng dịch tiếng Việt "
-        f"trên {stats['total']:,} thẻ của catalog."
+        f"trên {stats['total']:,} thẻ của catalog "
+        f"({stats['machine_translated']:,} nhãn dịch máy; "
+        f"bỏ qua {stats['skipped']:,} thẻ tên riêng)."
     )
     print(f"Theo nhóm: {preview}")
     print(f"Tệp: {destination}\nKích thước: {stats['bytes']:,} byte\nSHA-256: {digest}")

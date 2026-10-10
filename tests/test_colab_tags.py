@@ -6,6 +6,7 @@ import io
 import re
 from pathlib import Path
 import tempfile
+import types
 import unittest
 from unittest.mock import patch
 
@@ -107,6 +108,41 @@ class TagCatalogTests(unittest.TestCase):
                 (positive, negative),
             )
 
+    def test_add_accepts_a_single_selected_value_and_gradio_payloads(self):
+        with patch.object(studio, "load_csv_tags", return_value=self.rows):
+            positive, _, _ = studio.apply_csv_tags("", "", "blue_eyes", "Prompt")
+            self.assertEqual(positive, "blue_eyes")
+            positive, _, _ = studio.apply_csv_tags(
+                "", "", [{"value": "long_hair"}, ("Mắt xanh dương — blue_eyes", "blue_eyes")], "Prompt"
+            )
+        self.assertEqual(positive, "long_hair, blue_eyes")
+
+    def test_translate_vietnamese_prompt_to_english_canonical_tags(self):
+        translated = studio.translate_vietnamese_prompt(
+            "một cô gái tóc dài, mắt xanh dương, váy đỏ",
+            self.rows,
+        )
+        self.assertEqual(translated, "1girl, long_hair, blue_eyes, red_dress")
+        # Gõ không dấu vẫn xử lý được chữ đ/ d và prompt English đã có sẵn không bị đổi.
+        self.assertEqual(
+            studio.translate_vietnamese_prompt("TOC DAI, vay do", self.rows),
+            "long_hair, red_dress",
+        )
+        self.assertEqual(
+            studio.translate_vietnamese_prompt("long_hair, blue_eyes", self.rows),
+            "long_hair, blue_eyes",
+        )
+        weighted = studio.translate_vietnamese_prompt("(tóc dài:1.2)", self.rows)
+        self.assertEqual(weighted, "(long_hair:1.2)")
+        with patch.object(studio, "cached_tag_catalog", return_value=self.rows):
+            positive, negative, status = studio.translate_prompts_to_english(
+                "tóc dài", "từ lạ"
+            )
+        self.assertEqual(positive, "long_hair")
+        self.assertEqual(negative, "từ lạ")
+        self.assertIn("offline", status)
+        self.assertIn("giữ nguyên 1 cụm", status)
+
     def test_real_resource_hash_schema_and_full_catalog_search(self):
         path = Path(__file__).resolve().parents[1] / studio.TAG_CSV_NAME
         data = path.read_bytes()
@@ -115,7 +151,7 @@ class TagCatalogTests(unittest.TestCase):
         self.assertEqual(len(first_row), 5)
         self.assertEqual(first_row[4], "Một nhân vật")
         rows = studio.parse_tag_csv(data.decode("utf-8"))
-        self.assertEqual(len(rows), 349714)
+        self.assertEqual(len(rows), 348716)
         found, total, _, _ = studio.search_csv_tags(rows, "tóc dài, blue eyes")
         names = {row[0] for row in found}
         self.assertGreaterEqual(total, 2)
@@ -377,10 +413,33 @@ class TagCatalogTests(unittest.TestCase):
         with (
             patch.object(studio, "_TAG_ROWS", None),
             patch("urllib.request.urlopen", side_effect=AssertionError("unexpected network")),
+            patch.object(studio, "parse_tag_csv", wraps=studio.parse_tag_csv) as parse,
         ):
             rows = studio.load_csv_tags()
-            self.assertEqual(len(rows), 349714)
+            self.assertEqual(len(rows), 348716)
             self.assertIs(rows, studio.load_csv_tags())
+            # Đọc, kiểm hash và parse chỉ xảy ra ở lượt cache đầu; lượt sau không
+            # chạm lại file nguồn dù caller vẫn xin catalog.
+            parse.assert_called_once()
+
+    def test_tag_browser_uses_the_preloaded_catalog_without_reloading_csv(self):
+        fake_gradio = types.ModuleType("gradio")
+        fake_gradio.update = lambda **kwargs: kwargs
+        with (
+            patch.object(studio, "_TAG_ROWS", self.rows),
+            patch.object(studio, "load_csv_tags", side_effect=AssertionError("CSV bị đọc lại")),
+            patch.dict("sys.modules", {"gradio": fake_gradio}),
+        ):
+            first, _, first_status = studio.browse_csv_tags(
+                "tóc dài", "", "", "Phổ biến nhất", 1
+            )
+            second, _, second_status = studio.browse_csv_tags(
+                "blue eyes", "", "", "Phổ biến nhất", 1
+            )
+        self.assertEqual(first["choices"][0][1], "long_hair")
+        self.assertEqual(second["choices"][0][1], "blue_eyes")
+        self.assertIn(f"/ {len(self.rows):,} thẻ", first_status)
+        self.assertIn(f"/ {len(self.rows):,} thẻ", second_status)
 
 
 class VietnameseGlossaryTests(unittest.TestCase):
@@ -940,7 +999,7 @@ class VietnameseSearchIndexRound14Tests(unittest.TestCase):
 
     Đây chính là chỗ Studio "đơ" sau khi thêm bản dịch Việt: `_caption_search_matches`
     trước đây tự dựng index bên trong handler của sự kiện gõ prompt (~1 s CPU, lâu hơn
-    nhiều trên Colab đang tải model), và tìm kiểu *đuôi*/*giữa* normalize lại 349.714
+    nhiều trên Colab đang tải model), và tìm kiểu *đuôi*/*giữa* normalize lại khoảng 348k
     tên thẻ mỗi lần gõ.
     """
 
@@ -1019,3 +1078,218 @@ class VietnameseSearchIndexRound14Tests(unittest.TestCase):
         self.assertEqual(studio._normalize_tag_text_preserving_accents("Mắt_x  \n xanh"), "mắt x xanh")
         self.assertEqual(studio._normalize_tag_text_preserving_accents(None), "")
         self.assertEqual(studio._normalize_tag_text_preserving_accents("Mắt"), "mắt")
+
+
+class CatalogPromptCheckTests(unittest.TestCase):
+    """Nút 🧪 Kiểm tra thẻ với kho thẻ: đối chiếu thẻ trong prompt với kho CSV."""
+
+    def setUp(self):
+        self.rows = studio.parse_tag_csv(
+            'long_hair,0,100,"longhair,hair_long",Tóc dài\r\n'
+            'blue_eyes,0,50,,Mắt xanh dương\r\n'
+            'light_blue_eyes,0,35,,Mắt xanh dương nhạt\r\n'
+            '1girl,0,80,,Một nhân vật nữ\r\n'
+            'solo,0,10,"alone",Một mình\r\n'
+            'red_dress,0,40,,Váy đỏ\r\n'
+            'highres,5,1000,,Độ phân giải cao\r\n'
+        )
+
+    def check(self, text):
+        return studio.validate_prompt_tags(text, self.rows)
+
+    def test_exact_name_alias_label_and_exempt_tags(self):
+        total, results = self.check(
+            "1girl, long hair, LONG_HAIR, (red_dress:1.2), longhair, hair long, "
+            "tóc dài, một nhân vật, alone, masterpiece, best quality, perfect eyes, "
+            "BREAK, bad quality"
+        )
+        self.assertEqual(total, 14)
+        by_core = {
+            studio.normalize_csv_tag(studio.tag_core(tag)): (status, canonical)
+            for tag, status, canonical, _ in results
+        }
+        # Đúng tên thẻ: chấp nhận khác dấu cách/viết hoa và cú pháp trọng số.
+        # (Khóa đã chuẩn hoá: dấu gạch dưới → khoảng trắng, bỏ dấu tiếng Việt.)
+        self.assertEqual(by_core["1girl"], ("ok", "1girl"))
+        self.assertEqual(by_core["long hair"], ("ok", "long_hair"))
+        self.assertEqual(by_core["red dress"], ("ok", "red_dress"))
+        # Alias trong cột alias của CSV.
+        self.assertEqual(by_core["longhair"], ("alias", "long_hair"))
+        self.assertEqual(by_core["hair long"], ("alias", "long_hair"))
+        self.assertEqual(by_core["alone"], ("alias", "solo"))
+        # Nhãn tiếng Việt của một thẻ trong kho (từ điển trong mã được ưu tiên hơn cột CSV).
+        self.assertEqual(by_core["toc dai"], ("label", "long_hair"))
+        self.assertEqual(by_core["mot nhan vat"], ("label", "solo"))
+        # Thẻ chuẩn ngoài kho: chất lượng WAI v17, bộ negative, trigger LoRA, BREAK.
+        for exempt in ("masterpiece", "best quality", "perfect eyes", "break", "bad quality"):
+            self.assertEqual(by_core[exempt], ("known", None))
+        # LONG_HAIR trùng với long hair nên chỉ kiểm tra một lần.
+        self.assertEqual(len(results), 13)
+
+    def test_unknown_tags_get_suggestions(self):
+        _, results = self.check("long_hari, blue_eyee, mắt xanh, worst qualit, zzzqqq")
+        by_core = {
+            studio.normalize_csv_tag(studio.tag_core(tag)): (status, suggestions)
+            for tag, status, _, suggestions in results
+        }
+        # Gõ sai chính tả: đoán theo tên thẻ cùng ký tự đầu trong kho.
+        self.assertEqual(by_core["long hari"][0], "unknown")
+        self.assertIn("long_hair", by_core["long hari"][1])
+        self.assertEqual(by_core["blue eyee"][0], "unknown")
+        self.assertIn("blue_eyes", by_core["blue eyee"][1])
+        # Cụm tiếng Việt không khớp nguyên nhãn: tìm theo nhãn trong kho.
+        self.assertEqual(by_core["mat xanh"][0], "unknown")
+        self.assertEqual(by_core["mat xanh"][1][0], "blue_eyes")
+        # Gõ sai thẻ chuẩn ngoài kho: gợi ý đầu tiên là chính thẻ chuẩn đó
+        # (không phải tên thẻ nào trong CSV).
+        self.assertEqual(by_core["worst qualit"][0], "unknown")
+        self.assertEqual(by_core["worst qualit"][1][0], "worst quality")
+        # Không có gì gần: không bịa gợi ý.
+        self.assertEqual(by_core["zzzqqq"], ("unknown", ()))
+
+    def test_duplicates_and_empty_prompt(self):
+        total, results = self.check("solo, solo")
+        self.assertEqual((total, len(results)), (2, 1))
+        self.assertEqual(self.check("")[0], 0)
+        self.assertEqual(self.check(None), (0, []))
+
+    def test_report_groups_and_counts(self):
+        prompt_data = self.check("1girl, long_hari")
+        negative_data = self.check("bad quality, red_dres")
+        report = studio.format_tag_check_report(
+            prompt_data, negative_data, len(self.rows)
+        )
+        self.assertIn("🧪 Kiểm tra thẻ với kho thẻ", report)
+        self.assertIn(f"kho: {len(self.rows):,} thẻ", report)
+        self.assertIn("✅ **Đúng tên thẻ trong kho — 1:** `1girl`", report)
+        self.assertIn("`long_hari` → gợi ý: `long_hair`", report)
+        self.assertIn("ℹ️ **Thẻ chuẩn ngoài kho", report)
+        self.assertIn("`bad quality`", report)
+        self.assertIn("`red_dres` → gợi ý: `red_dress`", report)
+        self.assertIn("không có trong kho **không phải lỗi**", report)
+        clean = studio.format_tag_check_report(self.check("1girl"), self.check(""), len(self.rows))
+        self.assertIn("✅ Mọi thẻ trong hai ô", clean)
+
+    def test_run_tag_check_reads_catalog_and_reports_load_failure(self):
+        with patch.object(studio, "load_csv_tags", return_value=self.rows):
+            report = studio.run_tag_check("1girl, long hair", "bad quality")
+        self.assertIn("🧪 Kiểm tra thẻ với kho thẻ", report)
+        self.assertIn("✅ **Đúng tên thẻ trong kho — 2:** `1girl` · `long hair` → `long_hair`", report)
+        with patch.object(studio, "load_csv_tags", side_effect=ValueError("mạng lỗi")):
+            report = studio.run_tag_check("1girl", "")
+        self.assertIn("Chưa nạp được kho thẻ", report)
+        self.assertIn("Tìm trong kho thẻ", report)
+
+    def test_real_catalog_check(self):
+        path = Path(__file__).resolve().parents[1] / studio.TAG_CSV_NAME
+        rows = studio.parse_tag_csv(path.read_bytes().decode("utf-8"))
+        _, results = studio.validate_prompt_tags(
+            "1girl, solo, long hair, masterpiece, best quality, perfect eyes, BREAK, "
+            "this_tag_does_not_exist_zzz",
+            rows,
+        )
+        statuses = {
+            studio.normalize_csv_tag(studio.tag_core(tag)): status
+            for tag, status, _, _ in results
+        }
+        self.assertEqual(statuses["1girl"], "ok")
+        self.assertEqual(statuses["solo"], "ok")
+        self.assertEqual(statuses["long hair"], "ok")
+        self.assertEqual(statuses["masterpiece"], "known")
+        self.assertEqual(statuses["best quality"], "known")
+        self.assertEqual(statuses["perfect eyes"], "known")
+        # Kho thật có đúng thẻ "break" (nghỉ giải lao) nhưng BREAK viết hoa là từ
+        # khóa SDXL nên vẫn phải báo "thẻ chuẩn ngoài kho", không phải "đúng tên thẻ".
+        self.assertEqual(statuses["break"], "known")
+        self.assertEqual(statuses["this tag does not exist zzz"], "unknown")
+        # Gõ sai chính tả trên kho thật vẫn gợi ý được thẻ đúng.
+        _, typo = studio.validate_prompt_tags("blue_eyee", rows)
+        self.assertEqual(typo[0][1], "unknown")
+        self.assertIn("blue_eyes", typo[0][3])
+
+
+class PromptRewriteTests(unittest.TestCase):
+    """🛠️ Sửa prompt thành thẻ chuẩn: đề xuất, chọn tùy chọn và áp dụng."""
+
+    def setUp(self):
+        self.rows = studio.parse_tag_csv(
+            'long_hair,0,100,"longhair,hair_long",Tóc dài\r\n'
+            'blue_eyes,0,50,,Mắt xanh dương\r\n'
+            'light_blue_eyes,0,35,,Mắt xanh dương nhạt\r\n'
+            'red_hair,0,30,,Tóc đỏ\r\n'
+            'red_dress,0,40,,Váy đỏ\r\n'
+            'solo,0,10,"alone",Một mình\r\n'
+        )
+
+    def test_proposes_required_fixes_and_optional_catalog_swaps(self):
+        segments, proposals = studio.propose_prompt_rewrites(
+            "longhair, tóc dài, blue_eyee, blue_eyes, (red_dress:1.2)",
+            self.rows,
+        )
+        by_core = {
+            studio.normalize_csv_tag(studio.tag_core(tag)): status
+            for tag, status, _, _ in segments
+        }
+        self.assertEqual(by_core["longhair"], "alias")
+        self.assertEqual(by_core["toc dai"], "label")
+        self.assertEqual(by_core["blue eyee"], "unknown")
+        self.assertEqual(by_core["blue eyes"], "ok")
+        self.assertEqual(by_core["red dress"], "ok")
+
+        fixes = [item for item in proposals if item["kind"] == "fix"]
+        self.assertEqual(
+            {(item["raw"], item["replacement"]) for item in fixes},
+            {
+                ("longhair", "long_hair"),
+                ("tóc dài", "long_hair"),
+                ("blue_eyee", "blue_eyes"),
+            },
+        )
+        swaps = [item for item in proposals if item["kind"] == "swap"]
+        self.assertTrue(any(
+            item["raw"] == "blue_eyes" and item["replacement"] == "light_blue_eyes"
+            for item in swaps
+        ))
+        self.assertTrue(all(item["value"].count("\t") == 1 for item in proposals))
+
+    def test_report_explains_preselected_fixes_and_optional_swaps(self):
+        segments, proposals = studio.propose_prompt_rewrites(
+            "longhair, blue_eyee, blue_eyes", self.rows
+        )
+        report = studio.format_rewrite_report(segments, proposals)
+        self.assertIn("🛠️ Sửa prompt thành thẻ chuẩn", report)
+        self.assertIn("đã chọn sẵn", report)
+        self.assertIn("`longhair` → `long_hair`", report)
+        self.assertIn("`blue_eyee` → `blue_eyes`", report)
+        self.assertIn("thay thế TÙY CHỌN", report)
+        self.assertIn("✅ Tạo prompt hoàn chỉnh", report)
+
+    def test_apply_keeps_weight_syntax_and_only_changes_selected_tags(self):
+        prompt = "longhair, tóc dài, blue_eyee, blue_eyes, (red_dress:1.2), free description"
+        updated, note = studio.apply_prompt_rewrite(
+            prompt,
+            [
+                "longhair\tlong_hair",
+                "toc dai\tlong_hair",
+                "blue eyee\tblue_eyes",
+                "blue eyes\tlight_blue_eyes",
+            ],
+        )
+        self.assertEqual(
+            updated,
+            "long_hair, long_hair, blue_eyes, light_blue_eyes, (red_dress:1.2), free description",
+        )
+        self.assertIn("Đã tạo prompt hoàn chỉnh", note)
+        self.assertIn("Prompt chỉ được ghi vào ô hiển thị", note)
+
+    def test_no_selection_is_read_only_and_empty_prompt_is_clear(self):
+        prompt = "longhair, blue_eyee"
+        unchanged, note = studio.apply_prompt_rewrite(prompt, [])
+        self.assertEqual(unchanged, prompt)
+        self.assertIn("giữ nguyên", note)
+        with self.assertRaises(ValueError):
+            studio.apply_prompt_rewrite("", [])
+        self.assertEqual(
+            studio.format_rewrite_report([], []),
+            "**🛠️ Sửa prompt thành thẻ chuẩn** · ô prompt đang trống — hãy viết hoặc nạp prompt trước rồi bấm lại.",
+        )
