@@ -7946,6 +7946,306 @@ def apply_csv_tags(positive, negative, selected, destination):
 
 
 # ---------------------------------------------------------------------------
+# DỊCH PROMPT TIẾNG VIỆT → TIẾNG ANH (offline, ưu tiên tag canonical trong catalog).
+#
+# Không gửi prompt ra dịch vụ ngoài. Bộ dịch dùng nhãn Việt đã xác minh trong catalog,
+# từ điển Studio và một số cụm thông dụng; phần không nhận diện được được giữ nguyên để
+# người dùng còn nhìn thấy và sửa trước khi gửi model.
+# ---------------------------------------------------------------------------
+_VI_PROMPT_TRANSLATION_CACHE = None  # (rows, exact accent, exact không dấu, phrase indexes)
+_VI_PROMPT_TRANSLATION_LOCK = threading.Lock()
+
+# Cụm thường xuất hiện khi người dùng mô tả prompt bằng tiếng Việt nhưng không phải
+# lúc nào cũng có đúng một nhãn trong CSV. Giá trị là tag canonical hoặc cụm English
+# hợp lệ; không phải bản dịch ẩn — nút dịch ghi kết quả thẳng vào ô prompt.
+_VI_PROMPT_PHRASES = {
+    "một cô gái": "1girl",
+    "cô gái": "1girl",
+    "nhiều cô gái": "multiple girls",
+    "một chàng trai": "1boy",
+    "chàng trai": "1boy",
+    "nhiều chàng trai": "multiple boys",
+    "một nhân vật nữ": "1girl",
+    "một nhân vật nam": "1boy",
+    "tóc dài": "long_hair",
+    "mái tóc dài": "long_hair",
+    "tóc ngắn": "short_hair",
+    "mắt xanh": "blue_eyes",
+    "mắt xanh dương": "blue_eyes",
+    "mắt xanh lá": "green_eyes",
+    "mắt đỏ": "red_eyes",
+    "váy đỏ": "red_dress",
+    "váy trắng": "white_dress",
+    "áo trắng": "white_shirt",
+    "hoa anh đào": "cherry_blossoms",
+    "mỉm cười": "smile",
+    "nụ cười dịu dàng": "gentle smile",
+    "đang đứng": "standing",
+    "đứng": "standing",
+    "đang ngồi": "sitting",
+    "ngồi": "sitting",
+    "ánh sáng mềm": "soft lighting",
+    "ánh sáng dịu": "soft lighting",
+    "ánh sáng ấm": "warm lighting",
+    "bối cảnh": "background",
+    "phông nền": "background",
+    "trang phục": "clothing",
+    "phong cách": "style",
+    "dưới": "under",
+    "trên": "on",
+    "trong": "in",
+    "với": "with",
+    "và": "and",
+    "không có": "no",
+    "mắt": "eyes",
+    "tóc": "hair",
+    "dài": "long",
+    "ngắn": "short",
+    "đỏ": "red",
+    "xanh dương": "blue",
+    "xanh lá": "green",
+    "trắng": "white",
+    "đen": "black",
+}
+_VI_PROMPT_IGNORED_WORDS = frozenset({
+    "một", "một cô", "đang", "có", "là", "ở", "cho", "của", "này", "nọ",
+})
+
+
+def _translation_key(value, preserve_accents=True):
+    if preserve_accents:
+        return _normalize_tag_text_preserving_accents(value)
+    # `unicodedata` không tách chữ đ; coi đ/d tương đương khi người dùng gõ không dấu.
+    return normalize_csv_tag(value).replace("đ", "d")
+
+
+def _choose_translation_candidate(candidates, allow_ambiguous=False):
+    """Choose one canonical tag, preferring popularity but rejecting collisions by default."""
+    if not candidates:
+        return None
+    names = {name for _, name in candidates}
+    if len(names) > 1 and not allow_ambiguous:
+        return None
+    return max(candidates, key=lambda item: item[0])[1]
+
+
+def _build_prompt_translation_index(rows):
+    exact_accent = {}
+    exact_plain = {}
+    phrases_accent = {}
+    phrases_plain = {}
+    valid_names = {row[0] for row in rows}
+
+    def add(table, key, name, count):
+        if key:
+            table.setdefault(key, []).append((int(count or 0), name))
+
+    for name, category, count, _search_index, _themes, label in rows:
+        if not _is_translated_tag_label(label, category):
+            continue
+        accent = _translation_key(label)
+        plain = _translation_key(label, preserve_accents=False)
+        add(exact_accent, accent, name, count)
+        add(exact_plain, plain, name, count)
+        if len(accent.split()) >= 2:
+            add(phrases_accent, accent, name, count)
+        if len(plain.split()) >= 2:
+            add(phrases_plain, plain, name, count)
+
+    def finalize(table, ambiguous=False):
+        return {
+            key: _choose_translation_candidate(value, allow_ambiguous=ambiguous)
+            for key, value in table.items()
+            if _choose_translation_candidate(value, allow_ambiguous=ambiguous)
+        }
+
+    exact_accent = finalize(exact_accent, ambiguous=True)
+    # Không dấu dễ va chạm (`cô gái`/`có gai`), chỉ dùng khi một tên canonical duy nhất.
+    exact_plain = finalize(exact_plain, ambiguous=False)
+    phrases_accent = finalize(phrases_accent, ambiguous=True)
+    phrases_plain = finalize(phrases_plain, ambiguous=False)
+
+    manual_accent = {}
+    manual_plain = {}
+    for phrase, english in _VI_PROMPT_PHRASES.items():
+        if english in valid_names or " " in english or "_" not in english:
+            manual_accent[_translation_key(phrase)] = english
+            manual_plain[_translation_key(phrase, preserve_accents=False)] = english
+    # Manual phrase thắng nhãn CSV xung đột, ví dụ `cô gái` không bị hiểu thành `có gai`.
+    phrases_accent.update({key: value for key, value in manual_accent.items() if len(key.split()) >= 2})
+    phrases_plain.update({key: value for key, value in manual_plain.items() if len(key.split()) >= 2})
+    exact_accent.update(manual_accent)
+    exact_plain.update(manual_plain)
+
+    def first_word_index(table):
+        index = {}
+        for phrase, name in table.items():
+            words = phrase.split()
+            if len(words) >= 2 and name:
+                index.setdefault(words[0], []).append((tuple(words), name))
+        for values in index.values():
+            values.sort(key=lambda item: -len(item[0]))
+        return index
+
+    valid_keys = {_translation_key(name, preserve_accents=False) for name in valid_names}
+    return (
+        exact_accent,
+        exact_plain,
+        first_word_index(phrases_accent),
+        first_word_index(phrases_plain),
+        valid_keys,
+    )
+
+
+def _prompt_translation_index(rows):
+    global _VI_PROMPT_TRANSLATION_CACHE
+    cached = _VI_PROMPT_TRANSLATION_CACHE
+    if cached is not None and cached[0] is rows:
+        return cached[1]
+    with _VI_PROMPT_TRANSLATION_LOCK:
+        cached = _VI_PROMPT_TRANSLATION_CACHE
+        if cached is None or cached[0] is not rows:
+            cached = (rows, _build_prompt_translation_index(rows))
+            _VI_PROMPT_TRANSLATION_CACHE = cached
+        return cached[1]
+
+
+def _translated_weight_wrapper(original, translated):
+    """Keep a simple weight/bracket wrapper around the translated phrase."""
+    text = str(original or "").strip()
+    match = WEIGHT_RE.fullmatch(text)
+    if match:
+        return f"({translated}:{match.group('weight')})"
+    if len(text) >= 2 and text[0] in "([" and text[-1] == {")": "]"}.get(text[0]):
+        return f"{text[0]}{translated}{text[-1]}"
+    return translated
+
+
+def _find_translation_phrases(words, phrase_index):
+    matches = []
+    for start, word in enumerate(words):
+        for phrase_words, value in phrase_index.get(word, ()):
+            end = start + len(phrase_words)
+            if tuple(words[start:end]) == phrase_words:
+                matches.append((start, end, value))
+    matches.sort(key=lambda item: (item[0], -(item[1] - item[0])))
+    chosen = []
+    occupied = set()
+    for start, end, value in matches:
+        if any(index in occupied for index in range(start, end)):
+            continue
+        chosen.append((start, end, value))
+        occupied.update(range(start, end))
+    return chosen
+
+
+def _prompt_word_fallback(word):
+    key = _translation_key(word)
+    if not key or key in _VI_PROMPT_IGNORED_WORDS:
+        return ""
+    direct = _VI_PROMPT_PHRASES.get(key)
+    if direct:
+        return direct
+    # Dùng từ điển nhãn đã có trong Studio, chỉ khi bản dịch ngắn và không mơ hồ.
+    candidates = []
+    for english, vietnamese in _TAG_VI_WORDS.items():
+        if _translation_key(vietnamese) == key:
+            candidates.append(english.replace("_", " "))
+    if candidates:
+        return sorted(set(candidates), key=lambda value: (len(value), value))[0]
+    # Từ English đang có trong prompt được giữ nguyên; từ Việt chưa biết cũng giữ
+    # nguyên để người dùng không mất nội dung khi bản dịch offline không đủ dữ liệu.
+    if re.fullmatch(r"[A-Za-z0-9_.'-]+", str(word)):
+        return str(word)
+    return str(word)
+
+
+def _translate_prompt_segment(segment, index):
+    original = str(segment or "").strip()
+    if not original:
+        return "", False
+    core = tag_core(original)
+    accent = _translation_key(core)
+    plain = _translation_key(core, preserve_accents=False)
+    exact_accent, exact_plain, phrases_accent, phrases_plain, valid_keys = index
+    if plain in valid_keys:
+        return original, False
+    translated = exact_accent.get(accent) or exact_plain.get(plain)
+    if translated:
+        return _translated_weight_wrapper(original, translated), translated != core
+
+    words = accent.split()
+    matches = _find_translation_phrases(words, phrases_accent)
+    if not matches:
+        matches = _find_translation_phrases(words, phrases_plain)
+    if not matches:
+        # Fallback cho đoạn mô tả tự do: thay từng từ đã biết, không xóa từ lạ.
+        fallback = [_prompt_word_fallback(word) for word in words]
+        fallback = [word for word in fallback if word]
+        translated = " ".join(fallback)
+        return _translated_weight_wrapper(original, translated), translated != core
+
+    pieces = []
+    cursor = 0
+    for start, end, value in matches:
+        pieces.extend(_prompt_word_fallback(word) for word in words[cursor:start])
+        if value:
+            pieces.append(value)
+        cursor = end
+    pieces.extend(_prompt_word_fallback(word) for word in words[cursor:])
+    pieces = [piece for piece in pieces if piece]
+    translated = ", ".join(dict.fromkeys(pieces))
+    return _translated_weight_wrapper(original, translated), translated != core
+
+
+def _translate_prompt_text(text, rows):
+    if not isinstance(text, str) or not text.strip():
+        return text or "", 0, []
+    index = _prompt_translation_index(rows)
+    translated_segments = []
+    changed = 0
+    untouched = []
+    for segment in re.split(r"[,;\n]+", text):
+        translated, did_change = _translate_prompt_segment(segment, index)
+        if not translated:
+            continue
+        translated_segments.append(translated)
+        if did_change:
+            changed += 1
+        elif translated == segment.strip() and any("\u0080" <= char for char in segment):
+            untouched.append(segment.strip())
+    return ", ".join(translated_segments), changed, untouched
+
+
+def translate_vietnamese_prompt(text, rows=None):
+    """Translate one editable prompt to English using the verified local tag catalog."""
+    rows = cached_tag_catalog() if rows is None else rows
+    return _translate_prompt_text(text, rows)[0]
+
+
+def translate_prompts_to_english(positive, negative):
+    """UI handler: translate both editable fields and report what stayed unchanged."""
+    try:
+        rows = cached_tag_catalog()
+        positive_en, positive_changed, positive_unknown = _translate_prompt_text(positive, rows)
+        negative_en, negative_changed, negative_unknown = _translate_prompt_text(negative, rows)
+    except Exception as exc:
+        return positive, negative, (
+            f"⚠️ Không dịch được prompt ({type(exc).__name__}). "
+            "Nội dung hai ô được giữ nguyên; bạn vẫn có thể viết prompt English trực tiếp."
+        )
+    changed = positive_changed + negative_changed
+    unknown = positive_unknown + negative_unknown
+    note = (
+        "Bộ dịch chạy offline bằng catalog/tag tiếng Việt đã xác minh; phần không nhận diện "
+        "được được giữ nguyên để bạn sửa trước khi tạo ảnh."
+    )
+    if unknown:
+        note += f" Còn giữ nguyên {len(unknown)} cụm chưa chắc nghĩa."
+    return positive_en, negative_en, f"✅ Đã dịch {changed} cụm sang English. {note}"
+
+
+# ---------------------------------------------------------------------------
 # KIỂM TRA THẺ TRONG PROMPT VỚI KHO THẺ (CSV Danbooru + e621 đã xác minh SHA-256).
 #
 # Nút "🧪 Kiểm tra thẻ với kho thẻ" ở tab 🧭 Quy trình tách từng thẻ trong hai ô
@@ -9685,6 +9985,17 @@ def build_app(runtime):
                     lines=2,
                     max_lines=6,
                 )
+                with gr.Row(equal_height=False):
+                    translate_prompt_button = gr.Button(
+                        "🇻🇳 → 🇬🇧 Dịch prompt Việt sang English",
+                        size="sm",
+                        scale=2,
+                    )
+                    translate_prompt_status = gr.Markdown(
+                        "Dịch offline bằng nhãn/tag trong catalog; phần chưa nhận diện được sẽ giữ nguyên để bạn sửa.",
+                        elem_classes="studio-hint",
+                        scale=3,
+                    )
                 with gr.Row():
                     eyes_trigger_button = gr.Button(
                         "Thêm trigger `perfect eyes` cho LoRA mắt (sửa/xóa được)",
@@ -10419,6 +10730,17 @@ def build_app(runtime):
             outputs=[prompt, keyword_tag_status, keyword_tag_suggestion],
             api_visibility="private",
             show_progress="hidden",
+        )
+        # Dịch hai ô đang hiển thị, không thêm thẻ ngầm lúc tạo ảnh. Catalog đã nạp
+        # sẵn nên callback chỉ tra index cục bộ; vẫn qua queue để không chặn event loop.
+        translate_prompt_button.click(
+            fn=translate_prompts_to_english,
+            inputs=[prompt, negative],
+            outputs=[prompt, negative, translate_prompt_status],
+            api_visibility="private",
+            show_progress="minimal",
+            concurrency_id=TAG_CATALOG_CONCURRENCY_ID,
+            concurrency_limit=TAG_CATALOG_CONCURRENCY_LIMIT,
         )
         keyword_tag_weight_down.click(
             fn=lambda text: adjust_prompt_tag_weight_ui(text, -1),

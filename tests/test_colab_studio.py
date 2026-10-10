@@ -1613,11 +1613,12 @@ class RuntimeValidationTests(unittest.TestCase):
             [prompt_field["id"], negative_field["id"]],
         )
         # Gồm 2 sự kiện gợi ý tag inline, 2 chỉnh trọng số, 2 kho thẻ,
-        # 3 chuyển tab ảnh, các sự kiện của ô chọn ảnh nguồn (gallery.change/select, ↻,
-        # 4 nút nạp + 4 bước chuyển tab sau khi nạp, demo.load) và một listener Ctrl+↑/↓.
+        # 1 dịch prompt, 3 chuyển tab ảnh, các sự kiện của ô chọn ảnh nguồn
+        # (gallery.change/select, ↻, 4 nút nạp + 4 bước chuyển tab sau khi nạp,
+        # demo.load) và một listener Ctrl+↑/↓.
         # Con số này là "mọi thứ phải có", không phải số sự kiện tối đa: thêm handler ở
         # test này để bắt buộc cập nhật dòng trên khi giao diện đổi.
-        self.assertEqual(len(config["dependencies"]), 37)
+        self.assertEqual(len(config["dependencies"]), 38)
         self.assertEqual(prompt_field["props"].get("elem_id"), "studio-prompt")
         for elem_id, target in (
             ("prompt-weight-down", "click"),
@@ -2532,6 +2533,18 @@ class UiResponsivenessTests(unittest.TestCase):
             self.assertIn("concurrency_limit=TAG_CATALOG_CONCURRENCY_LIMIT", block)
             self.assertNotIn('concurrency_id="wai_gpu"', block)
             self.assertNotIn("queue=False", block)
+
+    def test_vietnamese_prompt_translation_is_a_queued_visible_action(self):
+        self.assertIn("def translate_prompts_to_english", self.source)
+        self.assertIn(
+            '"🇻🇳 → 🇬🇧 Dịch prompt Việt sang English",',
+            self.source,
+        )
+        block = self.block("translate_prompt_button.click(")
+        self.assertIn("fn=translate_prompts_to_english,", block)
+        self.assertNotIn("queue=False", block)
+        self.assertIn("concurrency_id=TAG_CATALOG_CONCURRENCY_ID", block)
+        self.assertIn("outputs=[prompt, negative, translate_prompt_status]", block)
 
     def function_body(self, name):
         """Thân hàm lồng trong build_app, cắt ở def cùng cấp kế tiếp."""

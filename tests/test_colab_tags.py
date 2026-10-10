@@ -117,6 +117,32 @@ class TagCatalogTests(unittest.TestCase):
             )
         self.assertEqual(positive, "long_hair, blue_eyes")
 
+    def test_translate_vietnamese_prompt_to_english_canonical_tags(self):
+        translated = studio.translate_vietnamese_prompt(
+            "một cô gái tóc dài, mắt xanh dương, váy đỏ",
+            self.rows,
+        )
+        self.assertEqual(translated, "1girl, long_hair, blue_eyes, red_dress")
+        # Gõ không dấu vẫn xử lý được chữ đ/ d và prompt English đã có sẵn không bị đổi.
+        self.assertEqual(
+            studio.translate_vietnamese_prompt("TOC DAI, vay do", self.rows),
+            "long_hair, red_dress",
+        )
+        self.assertEqual(
+            studio.translate_vietnamese_prompt("long_hair, blue_eyes", self.rows),
+            "long_hair, blue_eyes",
+        )
+        weighted = studio.translate_vietnamese_prompt("(tóc dài:1.2)", self.rows)
+        self.assertEqual(weighted, "(long_hair:1.2)")
+        with patch.object(studio, "cached_tag_catalog", return_value=self.rows):
+            positive, negative, status = studio.translate_prompts_to_english(
+                "tóc dài", "từ lạ"
+            )
+        self.assertEqual(positive, "long_hair")
+        self.assertEqual(negative, "từ lạ")
+        self.assertIn("offline", status)
+        self.assertIn("giữ nguyên 1 cụm", status)
+
     def test_real_resource_hash_schema_and_full_catalog_search(self):
         path = Path(__file__).resolve().parents[1] / studio.TAG_CSV_NAME
         data = path.read_bytes()
