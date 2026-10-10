@@ -2,9 +2,11 @@
 
 Tài liệu này giải thích accordion **🧭 Quy trình chuẩn · khung prompt + negative tối ưu** và cách dùng nó cùng các tính năng khác của Studio. Mọi con số dưới đây lấy **trực tiếp từ mã** trong `colab/studio.py` (được nhúng nguyên văn vào ô 7 của `WAI_Illustrious_Studio_Colab.ipynb`).
 
-> **Semi-auto tag complete (tham khảo Character Select SAA):** khi Studio khởi động, CSV được tải/đọc và xác minh SHA-256 một lần; autocomplete dùng chung catalog đó với tab Kho thẻ. Gõ một từ khóa ở cuối Prompt như `mắt`/`eyes`, `tóc`/`hair`, `nơ`/`bow` hoặc `váy`/`dress` để tìm các tên tag tiếng Anh trong CSV; mỗi kết quả kèm nhãn danh mục kiểu SAA — `[G] [A] [©] [C] [M]` cho Danbooru, `<G> <A> <©> <C> <S> <M> <L>` cho e621. Ba kiểu truy vấn giống SAA: `chữ đầu` tìm tiền tố, `*đuôi` tìm hậu tố, `*giữa*` tìm ở giữa tên thẻ, và `@tên` chỉ lọc thẻ họa sĩ (nhóm 1 và 8) mà **không** chèn dấu `@` vào prompt WAI-Illustrious. Chọn một dòng (chuột hoặc ↑↓ + Enter/Tab) để thay cụm từ khóa cuối; Esc đóng danh sách. `Ctrl+↑`/`Ctrl+↓` — hoặc hai nút `+0,1` / `−0,1` — chỉnh trọng số tag đang bôi đen, tag ở con trỏ, hoặc cụm cuối prompt, mỗi lần `0,1` trong dải `0,1–2,0`; về `1,0` thì dấu `(tag:…)` được gỡ bỏ. Nếu không tải được catalog thì thao tác tạo ảnh vẫn hoạt động và có thể thử tải lại từ tab Kho thẻ.
+> **Semi-auto tag complete (tham khảo Character Select SAA):** khi Studio khởi động, CSV tag prompt đã lọc (348.716 dòng, bỏ danh mục Metadata/không hợp lệ) được tải/đọc và xác minh SHA-256 một lần; autocomplete dùng chung catalog đó với tab Kho thẻ. Gõ một từ khóa ở cuối Prompt như `mắt`/`eyes`, `tóc`/`hair`, `nơ`/`bow` hoặc `váy`/`dress` để tìm các tên tag tiếng Anh trong CSV; mỗi kết quả kèm nhãn danh mục kiểu SAA — `[G] [A] [©] [C] [M]` cho Danbooru, `<G> <A> <©> <C> <S> <M> <L>` cho e621. Ba kiểu truy vấn giống SAA: `chữ đầu` tìm tiền tố, `*đuôi` tìm hậu tố, `*giữa*` tìm ở giữa tên thẻ, và `@tên` chỉ lọc thẻ họa sĩ (nhóm 1 và 8) mà **không** chèn dấu `@` vào prompt WAI-Illustrious. Chọn một dòng (chuột hoặc ↑↓ + Enter/Tab) để thay cụm từ khóa cuối; Esc đóng danh sách. `Ctrl+↑`/`Ctrl+↓` — hoặc hai nút `+0,1` / `−0,1` — chỉnh trọng số tag đang bôi đen, tag ở con trỏ, hoặc cụm cuối prompt, mỗi lần `0,1` trong dải `0,1–2,0`; về `1,0` thì dấu `(tag:…)` được gỡ bỏ. Nếu không tải được catalog thì thao tác tạo ảnh vẫn hoạt động và có thể thử tải lại từ tab Kho thẻ.
 
 > **Thư viện prompt trên điện thoại:** danh sách prompt trong accordion 📚 là **danh sách chạm (radio) cuộn được** — chạm một dòng là nạp ngay, hoặc chọn dòng rồi bấm **⬇️ Nạp prompt đã chọn**.
+
+> **Catalog chia nhóm:** ngoài file tổng, thư mục `prompt_catalog/` có các file 5 cột không header theo nhóm độc quyền: `trang_phuc_quan_ao`, `phu_kien`, `ngoai_hinh`, `tu_the_bieu_cam`, `boi_canh`, `phong_cach`, `anh_sang_mau_sac`, `bo_cuc_ky_thuat`, cùng nhóm chủ thể/họa sĩ/tác phẩm/loài và `99_khac`. `manifest.json` xác nhận tổng số dòng bằng catalog chính; chạy `python scripts/split_prompt_catalog.py` để tạo lại. Các nhóm `01`, `04`–`13` và `99_khac` có file 3 cột trong `prompt_catalog_vi_vn/`, tạo bằng `python scripts/build_prompt_catalog_vi.py`. Toàn bộ tag còn thiếu trong 12 nhóm này nhận **53.218 nhãn dịch máy**; dấu `_` được đổi thành khoảng trắng, từ chưa biết giữ nguyên thay vì bịa nghĩa. Các nhóm `02` và `03` vẫn không nằm trong phạm vi file dịch.
 
 > **Ảnh nguồn cho ◈ Biến đổi · ⤢ Phóng to · ✎ Sửa vùng:** không còn kiểu "luôn lấy ảnh mới nhất". Khung
 > **02 · Kết quả** có ô **Ảnh sẽ nạp vào tab sửa / phóng** (mặc định = ảnh vừa tạo, bấm ảnh trong thư viện để
@@ -31,11 +33,11 @@ Tài liệu này giải thích accordion **🧭 Quy trình chuẩn · khung prom
 > **Xác nhận bản đang chạy:** đầu trang có chip **"Bản dựng …"**. Mã giao diện nằm trong **ô 7**, nên sau khi lấy
 > notebook mới phải chạy lại ô 7 rồi ô 8 và ô 9; chỉ chạy lại ô 9 thì trình duyệt vẫn dùng mã cũ và sẽ vẫn thấy đơ.
 
-> **Nguyên tắc quan trọng:** cả ba nút trong accordion **chỉ ghi nội dung hiển thị** vào ô *Prompt gửi model*, ô *Negative gửi model* hoặc ô báo cáo. Không có thẻ nào được ghép ngầm khi bạn bấm tạo ảnh — bạn xem, sửa hoặc xóa trước khi tạo.
+> **Nguyên tắc quan trọng:** cả sáu nút trong accordion **chỉ ghi nội dung hiển thị** vào ô *Prompt gửi model*, ô *Negative gửi model* hoặc ô báo cáo. Không có thẻ nào được ghép ngầm khi bạn bấm tạo ảnh — bạn xem, sửa hoặc xóa trước khi tạo.
 
 ---
 
-## 1. Ba nút trong **🧭 Quy trình chuẩn**
+## 1. Sáu nút trong **🧭 Quy trình chuẩn**
 
 ### 1.1. Sắp xếp prompt theo thứ tự chuẩn
 Đọc prompt hiện tại, tách thành từng thẻ (phân tách bằng dấu phẩy), rồi:
@@ -104,6 +106,29 @@ Chỉ đọc và báo cáo, **không sửa gì**. Các mục được kiểm:
 
 Số token là **ước lượng heuristic** (mỗi từ ≈ 1 token, cộng thêm cho `_`, số, dấu câu, từ dài) — đủ để cảnh báo vượt khối 75 token, không phải số token chính xác của tokenizer CLIP.
 
+### 1.4. 🧪 Kiểm tra thẻ với kho thẻ
+Đối chiếu từng thẻ trong hai ô *Prompt gửi model* và *Negative gửi model* với kho CSV Danbooru + e621 (cùng catalog đã xác minh SHA-256 với tab 🏷️ Kho thẻ). Chỉ đọc và báo cáo, **không sửa gì**. Kết quả chia theo nhóm:
+
+| Nhóm | Ý nghĩa |
+| --- | --- |
+| ✅ Đúng tên thẻ trong kho | Khớp tên thẻ chính trong CSV — chấp nhận khác dấu cách/viết hoa (`long hair` = `long_hair`); nếu khác tên chuẩn sẽ hiện `→ tên chuẩn` |
+| 🔀 Alias của thẻ trong kho | Khớp tên phụ ở cột alias của CSV — hợp lệ, nhưng nên viết tên thẻ chính tiếng Anh |
+| ℹ️ Nhãn tiếng Việt | Khớp nhãn/từ đồng nghĩa tiếng Việt của một thẻ — nên đổi sang tên thẻ chính (`tóc dài` → `long_hair`) |
+| ℹ️ Thẻ chuẩn ngoài kho | Thẻ chất lượng WAI v17 (`masterpiece, best quality`…), thẻ của 8 bộ negative, thẻ gợi ý sửa vùng, thẻ nhóm Chi tiết mắt & móng, trigger LoRA `perfect eyes`, từ khóa `BREAK`/`AND` — chính Studio đề xuất nên không cần có trong CSV |
+| ⚠️ Không có trong kho | Có thể là mô tả tự do (Illustrious vẫn đọc được) hoặc gõ sai chính tả — kèm gợi ý tên thẻ gần nhất (tìm trong kho trước, rồi so chuỗi trong các tên thẻ cùng ký tự đầu) |
+
+Thẻ trùng chỉ được kiểm tra một lần (🩺 Kiểm tra prompt & thông số đã báo riêng). Lần đầu bấm, Studio dựng index tên/alias của ~350k thẻ nên chạy trong hàng đợi và có thể chậm một nhịp; các lần sau chỉ đọc bộ nhớ.
+
+### 1.5. 🛠️ Sửa prompt thành thẻ chuẩn
+Nút này biến ô *Prompt gửi model* thành một prompt dễ rà soát hơn bằng cách đối chiếu từng thẻ với cùng kho CSV đã xác minh SHA-256. Đây là công cụ **đề xuất**, không tự gửi ảnh và không thay đổi ô prompt khi bạn mới bấm nút phân tích.
+
+1. Bấm **🛠️ Sửa prompt thành thẻ chuẩn**. Studio tách các thẻ theo dấu phẩy, giữ lại cú pháp trọng số như `(long_hari:1.2)`, rồi phân loại từng thẻ.
+2. Alias (`longhair`), nhãn tiếng Việt (`tóc dài`) và lỗi gõ có gợi ý trong kho (`long_hari`) hiện thành dòng thay thế sang tên canonical; các dòng này **được chọn sẵn**.
+3. Với thẻ đã đúng tên trong kho, Studio liệt kê tối đa vài thẻ canonical có chung từ (ví dụ `blue_eyes` → `light_blue_eyes`) dưới dạng **thay thế tùy chọn**; các dòng này không được chọn sẵn. Bạn có thể bỏ lựa chọn bắt buộc, chọn phương án khác hoặc đánh dấu thêm phương án tùy chọn.
+4. Bấm **✅ Tạo prompt hoàn chỉnh**. Chỉ các dòng đang đánh dấu mới được áp dụng; trọng số/ngoặc được giữ nguyên, mô tả tự do và thẻ không có gợi ý giữ nguyên. Kết quả ghi vào lại ô *Prompt gửi model* để bạn đọc, sửa hoặc xóa trước khi tạo ảnh.
+
+Nếu kho thẻ không tải được, Studio báo lỗi thân thiện và không sửa prompt. Nếu một thẻ mô tả tự do không có trong kho thì không nhất thiết là lỗi — hãy chỉ thay nó khi bạn thực sự muốn dùng tên tag canonical. Khi muốn bắt đầu lại danh sách đề xuất, sửa prompt rồi bấm nút phân tích lần nữa.
+
 ---
 
 ## 2. Khung prompt theo loại ảnh
@@ -167,7 +192,7 @@ Chức năng gợi ý tag dưới ô Prompt được xây theo mô hình **Semi-
 | Chuột hoặc ↑↓ + Enter/Tab chọn, Esc đóng | Dropdown Gradio: chọn bằng chuột/phiếm, Enter áp dụng, Esc đóng |
 | `ctrl+↑` / `ctrl+↓` chỉnh trọng số tag hiện tại hoặc vùng bôi đen | `demo.load` gắn `PROMPT_TAG_WEIGHT_SHORTCUT_JS` bắt `Ctrl+↑/↓` trong ô prompt và kích hoạt hai nút `+0,1` / `−0,1`; `PROMPT_TAG_WEIGHT_SELECTION_JS` đánh dấu đoạn đang chọn bằng ký tự riêng `U+E000/U+E001` trước khi Python xử lý |
 | Logic trọng số giống ComfyUI/WebUI nhưng chi tiết có thể khác | `adjust_prompt_tag_weight` bước `0,1`, kẹp trong `0,1–2,0`, `1,0` thì gỡ `(tag:1.0)`; nếu không có bôi đen thì áp dụng cho cụm cuối prompt. Dấu phẩy **trong** ngoặc không tách cụm (`_prompt_weight_boundary()` và JS cùng quét theo độ sâu ngoặc), nên `(long_hair, blue_eyes:1.1)` được coi là một nhóm và bấm lại sẽ chỉnh đúng trọng số của nhóm |
-| File dịch để tìm theo ngôn ngữ khác (`data/danbooru_e621_merged_zh_cn.csv`, bộ nạp bỏ qua nhóm 1 và 8) | `danbooru_e621_merged_vi_vn.csv` ở thư mục gốc, sinh bằng `scripts/build_vietnamese_translate_file.py` từ đúng từ điển Studio đang dùng; cùng ba trường `tag,category,translation`, không header, UTF-8 không BOM, LF, trường dịch không chứa dấu phẩy (SAA `split(',', 3)` sẽ cắt mất phần sau). Test dựng lại tệp và so byte |
+| File dịch để tìm theo ngôn ngữ khác (`data/danbooru_e621_merged_zh_cn.csv`) | `danbooru_e621_merged_vi_vn.csv` ở thư mục gốc, sinh bằng `scripts/build_vietnamese_translate_file.py`; bỏ qua nhóm họa sĩ/tác phẩm/nhân vật `1/3/4/8/10/11`, các nhóm còn lại có nhãn thật hoặc nhãn dịch máy, cùng ba trường `tag,category,translation`, không header, UTF-8 không BOM, LF, trường dịch không chứa dấu phẩy (SAA `split(',', 3)` sẽ cắt mất phần sau). Test dựng lại tệp và so byte |
 
 Điểm khác biệt có chủ đích: Studio là Gradio trên Colab, không phải Electron, nên thao tác
 bàn phím được cài bằng `js` tiền xử lý + một listener gắn lúc tải trang; khi `js` bị chặn
@@ -176,9 +201,10 @@ thuần). Marker `U+E000/U+E001` chỉ tồn tại trong lần gọi đó và lu
 vào ô prompt, nên không bao giờ lọt vào prompt gửi model.
 
 File dịch là **lớp từ vựng, không phải dữ liệu sinh ảnh**: nhãn tiếng Việt không bao giờ được
-chèn vào prompt. Vì script và Studio cùng gọi `parse_tag_csv()` + `_is_translated_tag_label()`,
-một thẻ chỉ xuất hiện trong tệp khi nó thực sự có bản dịch trong Studio; `--check` (được test
-gọi) sẽ báo lỗi nếu ai đó sửa `TAG_VI_LABELS` mà quên tạo lại tệp. Nhãn mới trong từ điển luôn thắng cột chú giải đông lạnh của CSV
+chèn vào prompt. Script dùng `parse_tag_csv()` + `_is_translated_tag_label()` để ưu tiên nhãn thật;
+tag chưa có nhãn thật trong các nhóm được phép nhận dịch máy dự phòng, còn họa sĩ/tác phẩm/nhân vật
+bị bỏ qua. `--check` (được test gọi) sẽ báo lỗi nếu ai đó sửa từ điển hoặc quy tắc dịch mà quên tạo lại tệp.
+Nhãn mới trong từ điển luôn thắng cột chú giải đông lạnh của CSV
 (`_prefer_vietnamese_label`), và quy tắc ghép xếp danh từ bổ nghĩa theo trật tự tiếng Việt
 (`rabbit_ear_hat` → **Mũ tai thỏ**, nối màu bằng `màu` với nhóm trang phục: `black_bra` →
 **Áo ngực màu đen**). Bộ ghép có ba lớp từ vựng (2.964 mục cố định,
@@ -213,8 +239,8 @@ với người xem), và `_tag_vi_uniform_frame` chỉ nhường quy tắc ghép
 `_TAG_VI_WORDS` (như `dream`, `paradise`) không được biến tên học viện thành mô tả chung. Chuỗi `<x>_shaped_<head>` được ưu tiên
 thành “HEAD hình X” (`heart-shaped_pupils` → **Đồng tử hình trái tim**). Test chốt lại ba bất
 biến: không trùng khóa trong các dict từ điển, mọi tính từ trong `_TAG_VI_ADJECTIVE_MODIFIERS`
-phải có mặt trong `_TAG_VI_WORDS`, và không nhãn nào chứa dấu phẩy/xuống dòng. Tên họa sĩ/nhân vật/tác phẩm
-được giữ nguyên nên không có trong file dịch — SAA cũng bỏ qua đúng hai nhóm họa sĩ đó.
+phải có mặt trong `_TAG_VI_WORDS`, và không nhãn nào chứa dấu phẩy/xuống dòng. Tên họa sĩ/nhân vật/tác phẩm bị bỏ qua theo chủ trương của file dịch; các tag còn lại thiếu nhãn thật
+được dịch máy dự phòng và dấu `_` trong nhãn được đổi thành khoảng trắng.
 
 ## 6. Nguồn
 
@@ -228,4 +254,4 @@ Phần thứ tự thẻ, khối 75 token và các thẻ Illustrious bám tốt l
 
 ## 7. Chưa được kiểm chứng
 
-Mã và tài liệu này đã qua `python -m unittest discover -s tests -v` (**155 test: 112 đạt, 43 bỏ qua, 0 thất bại**) và `scripts/build_colab_studio.py` tái tạo notebook; các test CPU bao gồm pin/download giả lập, cache/hash, kích thước, output size và nhánh OOM → CPU giả lập, cùng nạp catalog CSV, autocomplete có toán tử `*`/`@`, định dạng file dịch tiếng Việt `danbooru_e621_merged_vi_vn.csv` (kèm vệ sinh nhãn: không lặp từ, viết hoa chữ đầu), trật tự từ trong nhãn ghép, tỷ lệ phủ nhóm chi tiết nhân vật, trật tự lượng từ/động từ, khung đồng phục theo tên riêng, sở hữu cách, cụm tương tác với người xem và vệ sinh từ điển (2.964 mục, không dấu phẩy/không ký tự ngoại lai). Sandbox thiếu PyTorch và `diffusers` nên các test kiến trúc checkpoint và inference bị bỏ qua; Gradio 6.15.2 và Pillow đã cài nên test dựng UI và chạy sự kiện `process_api` đã chạy thật. Chưa xác nhận SHA Anime6B với file chính thức do lỗi TLS khi tải, và **chưa** chạy hires/upscale hoặc đo chất lượng ảnh, tốc độ, VRAM trên GPU Colab. Xem `VERIFICATION.md` để biết đầy đủ giới hạn.
+Mã và tài liệu này đã qua `python -m unittest discover -s tests -v` (**206 test: 160 đạt, 46 bỏ qua, 0 thất bại**) và `scripts/build_colab_studio.py` tái tạo notebook; các test CPU bao gồm pin/download giả lập, cache/hash, kích thước, output size và nhánh OOM → CPU giả lập, cùng nạp catalog CSV, autocomplete có toán tử `*`/`@`, định dạng file dịch tiếng Việt `danbooru_e621_merged_vi_vn.csv` (kèm vệ sinh nhãn: không lặp từ, viết hoa chữ đầu), trật tự từ trong nhãn ghép, tỷ lệ phủ nhóm chi tiết nhân vật, trật tự lượng từ/động từ, khung đồng phục theo tên riêng, sở hữu cách, cụm tương tác với người xem và vệ sinh từ điển (2.964 mục, không dấu phẩy/không ký tự ngoại lai). Sandbox thiếu PyTorch và `diffusers` nên các test kiến trúc checkpoint và inference bị bỏ qua; Gradio 6.15.2 và Pillow đã cài nên test dựng UI và chạy sự kiện `process_api` đã chạy thật. Chưa xác nhận SHA Anime6B với file chính thức do lỗi TLS khi tải, và **chưa** chạy hires/upscale hoặc đo chất lượng ảnh, tốc độ, VRAM trên GPU Colab. Xem `VERIFICATION.md` để biết đầy đủ giới hạn.
