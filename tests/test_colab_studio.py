@@ -174,6 +174,9 @@ class NotebookTests(unittest.TestCase):
                 self.assertEqual(cell["outputs"], [])
         compile(ui_source, "studio-ui", "exec")
         launch_source = "".join(n["cells"][8]["source"])
+        self.assertIn("# @title 8. Mở WAI Studio qua Gradio Live (gradio.live)", launch_source)
+        self.assertIn("GRADIO_SHARE = True", launch_source)
+        self.assertIn("_display_gradio_live_link", launch_source)
         self.assertIn("studio_local_url, share_url", launch_source)
         self.assertIn("giao diện nội bộ vẫn chạy", launch_source)
         self.assertIn("Cloudflare Quick Tunnel", launch_source)
@@ -419,9 +422,8 @@ class NotebookTests(unittest.TestCase):
             self.assertEqual(len(calls), 1)
             self.assertNotIn("auth", calls[0])
             self.assertNotIn("auth_message", calls[0])
-            # Mặc định KHÔNG bật Gradio Share: mọi request (cả ảnh) phải đi qua relay
-            # công cộng gradio.live, nguồn gây nghẽn/kẹt hẳn phải tải lại trang.
-            self.assertIs(calls[0]["share"], False)
+            # Ô 8 phải bật Gradio Live mặc định để link công khai không bị ẩn.
+            self.assertIs(calls[0]["share"], True)
             self.assertEqual(calls[0]["theme"], "test-theme")
             self.assertEqual(calls[0]["css"], "test-css")
             self.assertEqual(calls[0]["footer_links"], [])
@@ -429,15 +431,16 @@ class NotebookTests(unittest.TestCase):
             self.assertIn(str(ns["local_cache_root"]), calls[0]["blocked_paths"])
             self.assertIn(str(ns["local_lora_cache"]), calls[0]["blocked_paths"])
             self.assertNotIn(str(ck.parent), calls[0]["allowed_paths"])
-            self.assertNotIn("Ai có link đều có thể dùng GPU", text.getvalue())
-            self.assertIn("trycloudflare.com", text.getvalue())
+            self.assertIn("Mở link Gradio Live", text.getvalue())
+            self.assertIn("https://temporary.gradio.live", text.getvalue())
+            self.assertIn("Ai có link đều có thể dùng GPU", text.getvalue())
             old_app = ns["studio_app"]
             with contextlib.redirect_stdout(io.StringIO()):
                 exec(launch, ns)
             self.assertTrue(old_app.closed)
             self.assertEqual(len(calls), 2)
 
-    def test_launch_can_opt_back_into_gradio_share(self):
+    def test_launch_prints_gradio_live_url(self):
         launch = "".join(
             json.loads(NOTEBOOK.read_text(encoding="utf-8"))["cells"][8]["source"]
         )
@@ -467,7 +470,6 @@ class NotebookTests(unittest.TestCase):
                 "build_app": lambda _: FakeApp(),
                 "local_cache_root": root / "wai_model_cache",
                 "local_lora_cache": root / "wai_lora_cache",
-                "GRADIO_SHARE": True,
             }
             text = io.StringIO()
             with contextlib.redirect_stdout(text):
@@ -1611,11 +1613,12 @@ class RuntimeValidationTests(unittest.TestCase):
             [prompt_field["id"], negative_field["id"]],
         )
         # Gồm 2 sự kiện gợi ý tag inline, 2 chỉnh trọng số, 2 kho thẻ,
-        # 3 chuyển tab ảnh, các sự kiện của ô chọn ảnh nguồn (gallery.change/select, ↻,
-        # 4 nút nạp + 4 bước chuyển tab sau khi nạp, demo.load) và một listener Ctrl+↑/↓.
+        # 1 dịch prompt, 3 sự kiện kiểm tra/sửa tag, 3 chuyển tab ảnh,
+        # các sự kiện của ô chọn ảnh nguồn (gallery.change/select, ↻, 4 nút nạp
+        # + 4 bước chuyển tab sau khi nạp, demo.load) và một listener Ctrl+↑/↓.
         # Con số này là "mọi thứ phải có", không phải số sự kiện tối đa: thêm handler ở
         # test này để bắt buộc cập nhật dòng trên khi giao diện đổi.
-        self.assertEqual(len(config["dependencies"]), 37)
+        self.assertEqual(len(config["dependencies"]), 41)
         self.assertEqual(prompt_field["props"].get("elem_id"), "studio-prompt")
         for elem_id, target in (
             ("prompt-weight-down", "click"),
@@ -2494,6 +2497,8 @@ class UiResponsivenessTests(unittest.TestCase):
             "fn=update_keyword_tag_suggestions,",
             "fn=apply_keyword_tag_suggestion_ui,",
             "fn=apply_csv_tags,",
+            "fn=run_tag_check,",
+            "fn=run_prompt_rewrite,",
         ):
             self.assertIn(anchor, self.source)
             block = self.block(anchor)
@@ -2514,6 +2519,41 @@ class UiResponsivenessTests(unittest.TestCase):
         # Job GPU vẫn phải chạy một lượt một — tránh tràn VRAM trên Colab.
         self.assertIn('concurrency_id="wai_gpu"', self.source)
         self.assertIn("concurrency_limit=1,", self.source)
+
+    def test_tag_browser_has_a_queue_independent_from_gpu_inference(self):
+        self.assertIn('TAG_CATALOG_CONCURRENCY_ID = "wai_tag_catalog"', self.source)
+        selection_line = next(
+            line for line in self.source.splitlines() if "tag_selection = gr.Dropdown" in line
+        )
+        self.assertIn("allow_custom_value=True", selection_line)
+        for anchor in ("tag_search.click(", "tag_add.click("):
+            block = self.block(anchor)
+            self.assertIn("queue=True", block)
+            self.assertIn("concurrency_id=TAG_CATALOG_CONCURRENCY_ID", block)
+            self.assertIn("concurrency_limit=TAG_CATALOG_CONCURRENCY_LIMIT", block)
+            self.assertNotIn('concurrency_id="wai_gpu"', block)
+            self.assertNotIn("queue=False", block)
+
+    def test_vietnamese_prompt_translation_is_a_queued_visible_action(self):
+        self.assertIn("def translate_prompts_to_english", self.source)
+        self.assertIn(
+            '"🇻🇳 → 🇬🇧 Dịch prompt Việt sang English",',
+            self.source,
+        )
+        block = self.block("translate_prompt_button.click(")
+        self.assertIn("fn=translate_prompts_to_english,", block)
+        self.assertNotIn("queue=False", block)
+        self.assertIn("concurrency_id=TAG_CATALOG_CONCURRENCY_ID", block)
+        self.assertIn("outputs=[prompt, negative, translate_prompt_status]", block)
+
+    def test_inpaint_editor_keeps_a_visible_brush_and_active_paint_layer(self):
+        block = self.block("editor = gr.ImageEditor(")
+        self.assertIn("interactive=True", block)
+        self.assertIn("brush=gr.Brush(", block)
+        self.assertIn('default_color="#ffffff"', block)
+        self.assertIn("layers=gr.LayerOptions(allow_additional_layers=False)", block)
+        self.assertIn('elem_id="studio-inpaint-editor"', block)
+        self.assertIn('[class*="toolbar-wrap"]', self.source)
 
     def function_body(self, name):
         """Thân hàm lồng trong build_app, cắt ở def cùng cấp kế tiếp."""

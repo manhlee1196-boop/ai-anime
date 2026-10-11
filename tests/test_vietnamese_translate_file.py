@@ -12,6 +12,7 @@ from pathlib import Path
 from colab import studio
 from scripts.build_vietnamese_translate_file import (
     TRANSLATE_CSV_NAME,
+    TRANSLATE_SKIPPED_CATEGORIES,
     build_translate_file,
     render_translate_file,
     sanitize_translation,
@@ -49,13 +50,14 @@ class TranslateRowsTests(unittest.TestCase):
     def setUp(self):
         self.rows = studio.parse_tag_csv(SAMPLE_CSV)
 
-    def test_keeps_only_real_translations_and_skips_artist_groups(self):
+    def test_machine_translates_missing_tags_and_skips_artist_work_character_groups(self):
         result = translate_rows(self.rows)
         self.assertEqual(
             [(name, category, translation) for name, category, translation, _ in result],
             [
                 ("long_hair", "0", "Tóc dài"),
                 ("solo", "0", "Một nhân vật"),
+                ("unknown_tag_xyz", "0", "Unknown nhãn xyz"),
                 ("mammal", "12", "Động vật có vú"),
                 ("highres", "5", "Độ phân giải cao"),
                 ("messy_quux", "0", "Cái; cái này"),
@@ -68,13 +70,16 @@ class TranslateRowsTests(unittest.TestCase):
         self.assertEqual(names.count("long_hair"), 1)
         self.assertEqual(names[0], "long_hair")
 
-    def test_category_fallbacks_and_untranslated_tags_are_dropped(self):
+    def test_name_categories_are_skipped_but_unknown_common_tags_are_kept(self):
         names = {name for name, _c, _t, _n in translate_rows(self.rows)}
-        for missing in ("unknown_tag_xyz", "touhou", "example_artist", "e621_artist", "hatsune_miku"):
-            self.assertNotIn(missing, names)
+        self.assertIn("unknown_tag_xyz", names)
+        for skipped in ("touhou", "example_artist", "e621_artist", "hatsune_miku"):
+            self.assertNotIn(skipped, names)
+        self.assertEqual(TRANSLATE_SKIPPED_CATEGORIES, frozenset({"1", "3", "4", "8", "10", "11"}))
 
     def test_sanitize_translation_removes_commas_and_line_breaks(self):
         self.assertEqual(sanitize_translation("a, b"), "a; b")
+        self.assertEqual(sanitize_translation("a_b"), "a b")
         self.assertEqual(sanitize_translation('nói "sau"'), "nói 'sau'")
         self.assertEqual(sanitize_translation("  nhiều \n khoảng \t trắng "), "nhiều khoảng trắng")
         self.assertEqual(sanitize_translation(None), "")
@@ -127,24 +132,25 @@ class CommittedFileTests(unittest.TestCase):
             self.assertEqual(len(parts), 3, line)
             tag, category, translation = parts
             self.assertTrue(tag and tag == tag.strip())
-            self.assertNotIn('"', line)
+            self.assertNotIn('"', translation)
             self.assertIn(category, studio.TAG_CATEGORIES)
-            self.assertNotIn(category, ("1", "8"))
+            self.assertNotIn(category, TRANSLATE_SKIPPED_CATEGORIES)
             self.assertTrue(translation and translation == translation.strip())
-            self.assertNotEqual(translation.replace("_", " ").lower(), tag.lower())
+            self.assertNotIn("_", translation)
             self.assertNotEqual(translation, studio._TAG_VI_CATEGORY_FALLBACKS.get(category))
             self.assertNotEqual(translation, studio.TAG_VI_TRANSLATION_FALLBACK)
             tags.append(tag)
         self.assertEqual(len(tags), len(set(tags)), "mỗi thẻ phải xuất hiện đúng một lần")
-        self.assertGreater(len(tags), 1000)
+        self.assertEqual(len(tags), 82654)
 
-    def test_every_row_matches_the_studio_label(self):
-        rows = {name: (category, label) for name, category, _n, _i, _t, label in studio.load_csv_tags()}
+    def test_every_row_matches_real_or_machine_translation(self):
+        expected = {
+            (name, category): sanitize_translation(translation)
+            for name, category, translation, _count in translate_rows(studio.load_csv_tags())
+        }
         for line in TRANSLATE_FILE.read_text(encoding="utf-8").splitlines():
             tag, category, translation = line.split(",")
-            studio_category, studio_label = rows[tag]
-            self.assertEqual(studio_category, category)
-            self.assertEqual(translation, sanitize_translation(studio_label))
+            self.assertEqual(translation, expected[(tag, category)])
 
     def test_regeneration_is_byte_identical(self):
         committed = TRANSLATE_FILE.read_bytes()
@@ -164,7 +170,9 @@ class CommittedFileTests(unittest.TestCase):
                 output_path=TRANSLATE_FILE,
                 check=True,
             )
-        self.assertGreater(stats["translated"], 1000)
+        self.assertEqual(stats["translated"], 82654)
+        self.assertEqual(stats["machine_translated"], 53218)
+        self.assertEqual(stats["skipped"], 266062)
         self.assertEqual(stats["sha256"], hashlib.sha256(before).hexdigest())
         self.assertEqual(TRANSLATE_FILE.read_bytes(), before)
 

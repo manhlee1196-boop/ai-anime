@@ -1,0 +1,122 @@
+{
+  "source": "danbooru_e621_merged_2026-10-01_pt20-ia-dd-ed-spc.csv",
+  "schema": "name,category,count,aliases,vietnamese_label",
+  "exclusive": true,
+  "classification": "category first, then canonical name/alias/label regex; fallback 99_khac",
+  "source_rows": 348716,
+  "group_rows": 348716,
+  "groups": [
+    {
+      "id": "01_chu_the",
+      "label": "Chủ thể / số lượng nhân vật",
+      "file": "01_chu_the.csv",
+      "rows": 938,
+      "bytes": 63152,
+      "sha256": "6ae7e439ee273f31c71fb933de37b3910b89cf4144a544cffbf4ff98336ef099"
+    },
+    {
+      "id": "02_hoa_si",
+      "label": "Họa sĩ",
+      "file": "02_hoa_si.csv",
+      "rows": 137145,
+      "bytes": 4211058,
+      "sha256": "7f63d32bffd12807d1e13ed1daa90081ec77b674863e536a272ae709650dcbe1"
+    },
+    {
+      "id": "03_tac_pham_nhan_vat",
+      "label": "Tác phẩm / nhân vật",
+      "file": "03_tac_pham_nhan_vat.csv",
+      "rows": 128917,
+      "bytes": 5266545,
+      "sha256": "e122bb1102929281d7a8bf556444273f4b92a1bf73d2c3b28033141b792b86ae"
+    },
+    {
+      "id": "04_loai_lore",
+      "label": "Loài / lore",
+      "file": "04_loai_lore.csv",
+      "rows": 5757,
+      "bytes": 242719,
+      "sha256": "d9d56060329c9599efa0ee95f67130ec4273ccd4e20456ee0ea213158e1da2f0"
+    },
+    {
+      "id": "05_trang_phuc_quan_ao",
+      "label": "Trang phục / quần áo",
+      "file": "05_trang_phuc_quan_ao.csv",
+      "rows": 7136,
+      "bytes": 375357,
+      "sha256": "d9ef04fde1e9361efb8cc7268f7333186affcad5f5e6858542c3b023b6fc36b8"
+    },
+    {
+      "id": "06_phu_kien",
+      "label": "Phụ kiện",
+      "file": "06_phu_kien.csv",
+      "rows": 3366,
+      "bytes": 165893,
+      "sha256": "8c6c48f3532d8b13d32f37805cb045e3a5a08e004f8b38c52294a8e241ff2859"
+    },
+    {
+      "id": "07_ngoai_hinh",
+      "label": "Ngoại hình / bộ phận cơ thể",
+      "file": "07_ngoai_hinh.csv",
+      "rows": 11540,
+      "bytes": 631694,
+      "sha256": "fdfc735c47d83cc10d772352fb45d70c391eb41912d8bb5c11bae4711fa567d8"
+    },
+    {
+      "id": "08_tu_the_bieu_cam",
+      "label": "Tư thế / hành động / biểu cảm",
+      "file": "08_tu_the_bieu_cam.csv",
+      "rows": 2639,
+      "bytes": 136927,
+      "sha256": "890b8270b886975ce72915ea6a4a3f44174efdf8df01786dcdb7ec73ebcff316"
+    },
+    {
+      "id": "09_boi_canh",
+      "label": "Bối cảnh / thiên nhiên",
+      "file": "09_boi_canh.csv",
+      "rows": 1198,
+      "bytes": 68456,
+      "sha256": "2b1c04d82f933a464918b2f7508cb7225cd9b250179fe13a2a9ff78d657cc597"
+    },
+    {
+      "id": "10_phong_cach",
+      "label": "Phong cách / chất liệu / loại hình",
+      "file": "10_phong_cach.csv",
+      "rows": 268,
+      "bytes": 13447,
+      "sha256": "e9f8fb8391bb9c66026bdb394b87e744f0f1ba944a2d83ddde30bc7018fd8fb0"
+    },
+    {
+      "id": "11_anh_sang_mau_sac",
+      "label": "Ánh sáng / màu sắc",
+      "file": "11_anh_sang_mau_sac.csv",
+      "rows": 3722,
+      "bytes": 183036,
+      "sha256": "b0c5f82e74c1b81f6ab4d9baca7cba8ca7991ef25809ba1d93f94bd52f98a368"
+    },
+    {
+      "id": "12_bo_cuc_ky_thuat",
+      "label": "Bố cục / kỹ thuật / chất lượng",
+      "file": "12_bo_cuc_ky_thuat.csv",
+      "rows": 644,
+      "bytes": 32065,
+      "sha256": "78b7d34aeaeaef95413ca15d01639e4e0f6cd6a4f893181308f8fe599d8acb60"
+    },
+    {
+      "id": "13_vat_the",
+      "label": "Vật thể / đồ vật",
+      "file": "13_vat_the.csv",
+      "rows": 2082,
+      "bytes": 106296,
+      "sha256": "4777a125ddfc7e3d0856887e361e68fc4c8da693a70201d3278b6e4526155d29"
+    },
+    {
+      "id": "99_khac",
+      "label": "Khác",
+      "file": "99_khac.csv",
+      "rows": 43364,
+      "bytes": 2141249,
+      "sha256": "d14688c81fe73546e1b7df11eac6faa1abd4d72de0e4d832ddffec8b50408b7b"
+    }
+  ]
+}
