@@ -1548,23 +1548,44 @@ class RuntimeValidationTests(unittest.TestCase):
             list(studio.PROMPT_TAG_SUGGESTION_CHOICES),
         )
         self.assertEqual(suggestion_limit["props"]["value"], studio.PROMPT_TAG_SUGGESTION_LIMIT)
+        # Bảng gợi ý ngay ô prompt: carrier span/gợi ý/nút ẩn phải tồn tại.
+        by_id = {
+            c["props"].get("elem_id"): c for c in config["components"]
+            if c["props"].get("elem_id")
+        }
+        for carrier in (
+            "prompt-tag-focus", "prompt-tag-span", "prompt-tag-pick",
+            "prompt-tag-inline-data", "prompt-tag-accept",
+        ):
+            self.assertIn(carrier, by_id, f"thiếu carrier {carrier}")
+        focus_carrier = by_id["prompt-tag-focus"]
+        span_carrier = by_id["prompt-tag-span"]
+        pick_carrier = by_id["prompt-tag-pick"]
+        inline_data = by_id["prompt-tag-inline-data"]
+        accept_button = by_id["prompt-tag-accept"]
+        library_state = next(c for c in config["components"] if c["type"] == "state")
         limit_change_event = next(
             d for d in config["dependencies"]
             if (suggestion_limit["id"], "change") in d["targets"]
         )
         self.assertEqual(
-            limit_change_event["outputs"], [inline_suggestions["id"], inline_status["id"]]
+            limit_change_event["outputs"],
+            [inline_suggestions["id"], inline_status["id"], span_carrier["id"], inline_data["id"]],
         )
         live_suggestion_event = next(
             d for d in config["dependencies"]
             if (prompt_field["id"], "input") in d["targets"]
         )
         self.assertEqual(
-            live_suggestion_event["inputs"], [prompt_field["id"], suggestion_limit["id"]]
+            live_suggestion_event["inputs"],
+            [prompt_field["id"], suggestion_limit["id"], focus_carrier["id"], library_state["id"]],
         )
         self.assertEqual(
-            live_suggestion_event["outputs"], [inline_suggestions["id"], inline_status["id"]]
+            live_suggestion_event["outputs"],
+            [inline_suggestions["id"], inline_status["id"], span_carrier["id"], inline_data["id"]],
         )
+        # JS dựng payload span CÙNG request nên gợi ý luôn đúng cụm đang gõ.
+        self.assertEqual(live_suggestion_event["js"], studio.PROMPT_TAG_FOCUS_JS)
         # queue=True: quét catalog 349k dòng tốn tới ~1,5 s CPU, nếu chạy trên
         # event loop (queue=False) thì mọi request khác của trang phải chờ => treo.
         self.assertTrue(live_suggestion_event["queue"])
@@ -1574,13 +1595,31 @@ class RuntimeValidationTests(unittest.TestCase):
             if (inline_suggestions["id"], "input") in d["targets"]
         )
         self.assertEqual(
-            apply_suggestion_event["inputs"], [prompt_field["id"], inline_suggestions["id"]]
+            apply_suggestion_event["inputs"],
+            [prompt_field["id"], inline_suggestions["id"], span_carrier["id"]],
         )
         self.assertEqual(
             apply_suggestion_event["outputs"],
-            [prompt_field["id"], inline_status["id"], inline_suggestions["id"]],
+            [
+                prompt_field["id"],
+                inline_status["id"],
+                inline_suggestions["id"],
+                span_carrier["id"],
+                inline_data["id"],
+            ],
         )
         self.assertTrue(apply_suggestion_event["queue"])
+        # Nút ẩn bảng gợi ý: nhận pick + span, trả prompt/tham số + xóa bảng.
+        accept_event = next(
+            d for d in config["dependencies"]
+            if (accept_button["id"], "click") in d["targets"]
+        )
+        self.assertEqual(
+            accept_event["inputs"][:3],
+            [prompt_field["id"], pick_carrier["id"], span_carrier["id"]],
+        )
+        self.assertIn(inline_data["id"], accept_event["outputs"])
+        self.assertFalse(accept_event["queue"], "chấp nhận gợi ý là thao tác nhẹ, chạy thẳng")
 
         eyes_button = next(
             c
@@ -1612,13 +1651,14 @@ class RuntimeValidationTests(unittest.TestCase):
             repair_event["inputs"][:2],
             [prompt_field["id"], negative_field["id"]],
         )
-        # Gồm 2 sự kiện gợi ý tag inline, 2 chỉnh trọng số, 2 kho thẻ,
-        # 1 dịch prompt, 3 sự kiện kiểm tra/sửa tag, 3 chuyển tab ảnh,
+        # Gồm 2 sự kiện gợi ý tag inline + 1 chấp nhận gợi ý, 2 chỉnh trọng số,
+        # 2 kho thẻ, 1 dịch prompt, 3 sự kiện kiểm tra/sửa tag, 3 chuyển tab ảnh,
         # các sự kiện của ô chọn ảnh nguồn (gallery.change/select, ↻, 4 nút nạp
-        # + 4 bước chuyển tab sau khi nạp, demo.load) và một listener Ctrl+↑/↓.
-        # Con số này là "mọi thứ phải có", không phải số sự kiện tối đa: thêm handler ở
-        # test này để bắt buộc cập nhật dòng trên khi giao diện đổi.
-        self.assertEqual(len(config["dependencies"]), 41)
+        # + 4 bước chuyển tab sau khi nạp, demo.load, demo.load bảng gợi ý) và
+        # một listener Ctrl+↑/↓. Con số này là "mọi thứ phải có", không phải số
+        # sự kiện tối đa: thêm handler ở test này để bắt buộc cập nhật dòng trên
+        # khi giao diện đổi.
+        self.assertEqual(len(config["dependencies"]), 43)
         self.assertEqual(prompt_field["props"].get("elem_id"), "studio-prompt")
         for elem_id, target in (
             ("prompt-weight-down", "click"),
@@ -1648,7 +1688,7 @@ class RuntimeValidationTests(unittest.TestCase):
             d for d in config["dependencies"]
             if any(target[1] == "load" for target in d["targets"])
         ]
-        self.assertEqual(len(load_events), 3)
+        self.assertEqual(len(load_events), 4)
         self.assertEqual(
             sum(1 for d in load_events if not d.get("js") and d["queue"]), 1,
             "chỉ sự kiện nạp danh sách ảnh nguồn là gọi handler",
@@ -1819,8 +1859,9 @@ class RuntimeValidationTests(unittest.TestCase):
                 return result["data"]
 
             with patch.object(studio, "load_csv_tags", return_value=rows):
-                suggested, note = await run(
-                    event_index(prompt_box["id"], "input"), ["1girl, mắt", 16]
+                suggested, note, span_payload, payload_html = await run(
+                    event_index(prompt_box["id"], "input"),
+                    ["1girl, mắt", 16, "", []],
                 )
             self.assertEqual(suggested["__type__"], "update")
             values = [value for _, value in suggested["choices"]]
@@ -1828,10 +1869,17 @@ class RuntimeValidationTests(unittest.TestCase):
             self.assertTrue(all(label.startswith(("[G]", "<")) for label, _ in suggested["choices"]))
             self.assertIn("tag từ CSV", note)
             self.assertEqual(len(suggested["choices"]), 16)
+            # JS chưa chạy (explicit_call) → server tự dùng CỤM CUỐI; payload có đủ.
+            self.assertEqual(
+                json.loads(span_payload),
+                {"start": 7, "end": 10, "phrase": "mắt"},
+            )
+            self.assertIn("wai-inline-payload", payload_html)
 
             with patch.object(studio, "load_csv_tags", return_value=rows):
-                prompt, applied_note, cleared = await run(
-                    event_index(dropdown["id"], "input"), ["1girl, mắt", "blue_eyes"]
+                prompt, applied_note, cleared, _span, _payload = await run(
+                    event_index(dropdown["id"], "input"),
+                    ["1girl, mắt", "blue_eyes", ""],
                 )
             self.assertEqual(prompt, "1girl, blue_eyes")
             self.assertIn("thay `mắt`", applied_note)
@@ -1839,8 +1887,9 @@ class RuntimeValidationTests(unittest.TestCase):
 
             # ô "Số gợi ý" nới trần danh sách mà không đổi kết quả tìm
             with patch.object(studio, "load_csv_tags", return_value=rows):
-                wider, wider_note = await run(
-                    event_index(prompt_box["id"], "input"), ["1girl, mắt", 150]
+                wider, wider_note, _span, _payload = await run(
+                    event_index(prompt_box["id"], "input"),
+                    ["1girl, mắt", 150, "", []],
                 )
             self.assertGreater(len(wider["choices"]), 16)
             self.assertIn("tăng **Số gợi ý** để xem tiếp", wider_note)
@@ -1848,8 +1897,9 @@ class RuntimeValidationTests(unittest.TestCase):
             self.assertNotIn(far_tag, [value for _, value in suggested["choices"]])
             # tag ngoài top-16 mặc định vẫn được chấp nhận
             with patch.object(studio, "load_csv_tags", return_value=rows):
-                applied_far, far_note, _ = await run(
-                    event_index(dropdown["id"], "input"), ["1girl, mắt", far_tag]
+                applied_far, far_note, *_ = await run(
+                    event_index(dropdown["id"], "input"),
+                    ["1girl, mắt", far_tag, ""],
                 )
             self.assertEqual(applied_far, f"1girl, {far_tag}")
             self.assertIn("thay `mắt`", far_note)
@@ -2672,6 +2722,142 @@ class UiResponsivenessTests(unittest.TestCase):
             [("cat_eared", "0", 5, "", (), "")], "*eared", token=current
         )
         self.assertEqual([row[0] for row in found], ["cat_eared"])
+
+    def test_inline_prompt_suggestion_js_attaches_to_the_prompt_box(self):
+        focus_js = studio.PROMPT_TAG_FOCUS_JS
+        self.assertIn("selectionStart", focus_js)
+        self.assertIn('#studio-prompt textarea', focus_js)
+        self.assertIn("JSON.stringify", focus_js)  # trả span cụm cho server
+        self.assertEqual(focus_js.count("return [promptText, limit,"), 2)
+
+        panel_js = studio.PROMPT_INLINE_SUGGEST_JS
+        self.assertIn("prompt-tag-inline-panel", panel_js)
+        self.assertIn("prompt-tag-inline-data", panel_js)
+        self.assertIn("prompt-tag-accept", panel_js)
+        self.assertIn("Alt+", panel_js)  # Alt+↓/↑ và Alt+Enter
+        self.assertIn("Tab/Alt+Enter", panel_js)
+        self.assertIn("Escape", panel_js)
+        # Bám đúng ô prompt (không treo trên toàn trang) và CHỈ quan sát ô
+        # payload gợi ý — không observer toàn thân DOM như bản từng bị vá.
+        self.assertIn('querySelector("#studio-prompt")', panel_js)
+        self.assertNotIn("observer.observe(document.body", panel_js)
+        self.assertIn("Observer.observe(host", panel_js)
+        self.assertIn("preventDefault", panel_js)  # chống blur khi bấm chuột vào dòng gợi ý
+
+    def test_inline_prompt_suggestion_js_is_registered_with_demo_load(self):
+        self.assertIn("demo.load(fn=None, js=PROMPT_INLINE_SUGGEST_JS)", self.source)
+
+    def test_inline_prompt_suggestion_keyboard_commands_are_wired(self):
+        panel_js = studio.PROMPT_INLINE_SUGGEST_JS
+        self.assertIn("addEventListener", panel_js)
+        self.assertIn("MutationObserver", panel_js)
+        self.assertIn(".disconnect()", panel_js)
+
+    def test_prompt_tag_suggestion_panel_builds_valid_payload(self):
+        items = [
+            {
+                "label": "01 · Cô gái tóc dài",
+                "title": "Cô gái tóc dài",
+                "prompt": "1girl, long_hair", "negative": "bad hands",
+                "steps": 28, "cfg": 5.0, "seed": -1, "size": "832x1216",
+                "index": 1, "truncated": False,
+            }
+        ]
+        rows = [
+            ("long_hair", "0", 5000, "long hair,/lh,longhair,toc dai,mai toc dai", (), "Tóc dài"),
+            ("short_hair", "0", 2000, "short hair,toc ngan", (), "Tóc ngắn"),
+        ]
+        with unittest.mock.patch.object(studio, "load_csv_tags", return_value=rows):
+            result = studio.update_keyword_tag_suggestions(
+                "1girl, tóc", 16,
+                json.dumps({"start": 7, "end": 10, "phrase": "tóc"}),
+                items,
+            )
+        self.assertEqual(len(result), 4)
+        choices, status, span_payload, payload_html = result
+        self.assertIn("tag từ CSV", status)
+        self.assertEqual(
+            [value for _, value in choices["choices"]], ["long_hair", "short_hair"]
+        )
+        self.assertEqual(json.loads(span_payload)["phrase"], "tóc")
+        payload = json.loads(
+            payload_html.split(">", 1)[1].rsplit("</div>", 1)[0]
+            .replace("&amp;", "&").replace("&lt;", "<").replace("&gt;", ">")
+        )
+        self.assertEqual(payload["phrase"], "tóc")
+        self.assertEqual((payload["start"], payload["end"]), (7, 10))
+        self.assertEqual([t["value"] for t in payload["tags"]], ["long_hair", "short_hair"])
+        self.assertEqual(
+            payload["prompts"],
+            [{"label": "01 · Cô gái tóc dài", "value": "01 · Cô gái tóc dài"}],
+        )
+        self.assertIn("wai-inline-payload", payload_html)
+        # Payload JSON phải escape HTML để không thể bẻ gãy <div> chứa nó.
+        tricky = studio._inline_suggest_payload(
+            "<a&b>", (0, 5), [{"label": "[G] x", "value": "x"}], []
+        )
+        self.assertIn("&lt;", tricky)
+        self.assertIn("&amp;", tricky)
+        self.assertNotIn("<a", tricky)
+
+    def test_prompt_tag_suggestion_panel_rejects_stale_span_on_apply(self):
+        rows = [("long_hair", "0", 5000, "long hair,/lh,longhair,toc dai,mai toc dai", (), "Tóc dài")]
+        span = json.dumps({"start": 7, "end": 10, "phrase": "tóc"})
+        # Văn bản đã thay đổi so với span → từ chối, không thay nhầm chỗ.
+        updated, note = studio.apply_keyword_tag_suggestion(
+            "1girl, da trời", "long_hair", rows=rows, span=span
+        )
+        self.assertEqual(updated, "1girl, da trời")
+        self.assertIn("đã cũ", note)
+        # Span khớp → thay đúng cụm giữa câu.
+        updated, note = studio.apply_keyword_tag_suggestion(
+            "1girl, tóc, scenery", "long_hair", rows=rows, span=span
+        )
+        self.assertEqual(updated, "1girl, long_hair, scenery")
+        # Không span → thay cụm cuối như đường cũ.
+        updated, note = studio.apply_keyword_tag_suggestion(
+            "1girl, tóc", "long_hair", rows=rows
+        )
+        self.assertEqual(updated, "1girl, long_hair")
+
+    def test_inline_prompt_suggestion_pick_loads_library_prompt(self):
+        items = [
+            {
+                "label": "01 · Cô gái tóc dài", "title": "Cô gái tóc dài",
+                "prompt": "1girl, long_hair", "negative": "bad hands",
+                "steps": 28, "cfg": 5.0, "seed": -1, "size": "832x1216",
+                "index": 1, "truncated": False,
+            }
+        ]
+        prompt_value, _neg, _steps, _cfg, _seed, _ts, _ims, status, *_rest = (
+            studio.apply_inline_suggestion_ui(
+            "1girl, cô gái tóc",
+            json.dumps({"kind": "prompt", "value": "01 · Cô gái tóc dài"}),
+                "", items, "old negative", 20, 7.0, 0, "832x1216", "832x1216",
+            )
+        )
+        self.assertEqual(prompt_value, "1girl, long_hair")
+        self.assertIn("nạp cả prompt", status)
+        self.assertEqual(
+            studio._library_title_matches("cô gái", items), ["01 · Cô gái tóc dài"]
+        )
+        self.assertEqual(studio._library_title_matches("không khớp", items), [])
+
+    def test_prompt_phrase_span_helpers_match_prompt_tag_fragment_rules(self):
+        self.assertEqual(studio._prompt_phrase_span("ab, cd", 1), (0, 2))
+        self.assertEqual(studio._prompt_phrase_span("ab, cd", 5), (4, 6))
+        self.assertEqual(
+            studio._prompt_phrase_span("1girl, long hair, mắt", 21), (18, 21)
+        )
+        self.assertIsNone(
+            studio._normalize_focus_span("a, b", json.dumps({"start": 0, "end": 99}))
+        )
+        self.assertIsNone(studio._normalize_focus_span("a, b", "not json"))
+        self.assertIsNone(studio._normalize_focus_span("a, b", ""))
+        self.assertEqual(
+            studio._normalize_focus_span("a, b", json.dumps({"start": 0, "end": 1})),
+            (0, 1),
+        )
 
     def test_weight_shortcut_js_does_not_observe_the_whole_document(self):
         # Một MutationObserver trên document.body chạy theo MỌI thay đổi DOM — tức là

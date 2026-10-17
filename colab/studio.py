@@ -9187,6 +9187,170 @@ PROMPT_TAG_WEIGHT_SHORTCUT_JS = r"""() => {
         setTimeout(cleanup, 30000);
     }
 }"""
+PROMPT_TAG_FOCUS_JS = r"""(promptText, limit, focusValue, libraryItems) => {
+    // Ghi lại phạm vi CỤM đang gõ quanh con trỏ (cùng ranh giới , ; xuống dòng với
+    // prompt_tag_fragment) và gửi kèm request gợi ý: server trả lời cho đúng cụm
+    // bạn đang sửa, không phải luôn "cụm cuối prompt". JS được Gradio chạy ngay
+    // trước khi dựng payload nên giá trị luôn mới — không có cuộc đua với phím gõ.
+    const field = document.querySelector("#studio-prompt textarea");
+    if (!field || typeof promptText !== "string") return [promptText, limit, "", libraryItems];
+    const phraseSpan = (position) => {
+        let start = -1;
+        for (const sep of [",", ";", "\n"]) {
+            const index = promptText.lastIndexOf(sep, position - 1);
+            if (index > start) start = index;
+        }
+        let end = promptText.length;
+        for (const sep of [",", ";", "\n"]) {
+            const index = promptText.indexOf(sep, position);
+            if (index !== -1 && index < end) end = index;
+        }
+        while (start + 1 < end && /\s/.test(promptText[start + 1])) start += 1;
+        while (end > start + 1 && /\s/.test(promptText[end - 1])) end -= 1;
+        return [start + 1, end];
+    };
+    // Không có con trỏ trong ô prompt (ví dụ vừa bấm "Số gợi ý"): gợi ý cụm cuối.
+    const position = field === document.activeElement ? field.selectionStart : promptText.length;
+    const [start, end] = phraseSpan(position);
+    return [promptText, limit, JSON.stringify({ start, end }), libraryItems];
+}"""
+PROMPT_INLINE_SUGGEST_JS = r"""() => {
+    // Bảng gợi ý NGAY DƯỚI ô prompt (dán liền khung nhập): đọc payload JSON server
+    // gắn vào #prompt-tag-inline-data rồi vẽ danh sách chọn được bằng chuột/ngón tay
+    // hoặc bàn phím — Alt+↓/↑ chọn dòng, Tab/Alt+Enter chèn, Esc tạm ẩn. Bấm một
+    // dòng là thay đúng cụm đang gõ (tag từ kho CSV) hoặc nạp cả prompt (thư viện).
+    // Observer CHỈ sống trên node payload — không quét cả trang như lỗi cũ từng làm.
+    if (window.__waiInlineSuggest) return;
+    window.__waiInlineSuggest = true;
+    let panel = null;
+    let rows = [];
+    let active = -1;
+
+    const parsePayload = () => {
+        const node = document.querySelector("#prompt-tag-inline-data .wai-inline-payload");
+        if (!node) return null;
+        try { return JSON.parse(node.textContent || ""); } catch (error) { return null; }
+    };
+    const hide = () => {
+        if (panel) panel.style.display = "none";
+        active = -1;
+    };
+    const setActive = (index) => {
+        if (!panel || !rows.length) return;
+        active = (index + rows.length) % rows.length;
+        const buttons = panel.querySelectorAll("button.wai-inline-row");
+        buttons.forEach((button, i) => {
+            button.classList.toggle("is-active", i === active);
+            if (i === active) button.scrollIntoView({ block: "nearest" });
+        });
+    };
+    const acceptRow = (row) => {
+        if (!row) return;
+        const pick = document.querySelector("#prompt-tag-pick textarea");
+        const accept = document.querySelector("#prompt-tag-accept button");
+        if (!pick || !accept) return;
+        pick.value = JSON.stringify({
+            kind: row.kind,
+            value: row.value,
+            span: { start: row.start, end: row.end, phrase: row.phrase },
+        });
+        pick.dispatchEvent(new Event("input", { bubbles: true }));
+        accept.click();
+        hide();
+    };
+    const render = () => {
+        const field = document.querySelector("#studio-prompt textarea");
+        const payload = parsePayload();
+        const nextRows = [];
+        if (payload) {
+            for (const item of payload.tags || []) {
+                nextRows.push({
+                    kind: "tag", value: item.value, label: item.label,
+                    start: payload.start, end: payload.end, phrase: payload.phrase,
+                });
+            }
+            for (const item of payload.prompts || []) {
+                nextRows.push({
+                    kind: "prompt", value: item.value,
+                    label: "📚 Nạp cả prompt: " + item.label,
+                    start: -1, end: -1, phrase: "",
+                });
+            }
+        }
+        rows = nextRows;
+        if (!field || !rows.length) { hide(); return; }
+        if (!panel) {
+            panel = document.createElement("div");
+            panel.id = "prompt-tag-inline-panel";
+            panel.className = "studio-inline-suggest";
+            panel.setAttribute("role", "listbox");
+            // Không cho blur ô prompt khi bấm dòng: Tab/Alt+Enter vẫn hoạt động sau đó.
+            panel.addEventListener("mousedown", (event) => event.preventDefault());
+            panel.addEventListener("click", (event) => {
+                const button = event.target.closest("button.wai-inline-row");
+                if (button) acceptRow(rows[Number(button.dataset.index)]);
+            });
+            (document.querySelector("#studio-prompt") || field.parentElement).appendChild(panel);
+        }
+        panel.textContent = "";
+        const header = document.createElement("div");
+        header.className = "studio-inline-suggest-head";
+        header.textContent = payload && payload.phrase
+            ? "Gợi ý cho “" + payload.phrase + "” — bấm hoặc Alt+↓/↑ rồi Tab để chọn"
+            : "Gợi ý";
+        panel.appendChild(header);
+        rows.forEach((row, index) => {
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "wai-inline-row";
+            button.dataset.index = String(index);
+            button.setAttribute("role", "option");
+            button.textContent = row.label;
+            panel.appendChild(button);
+        });
+        panel.style.display = "block";
+        setActive(0);
+    };
+
+    const attach = () => {
+        const host = document.querySelector("#prompt-tag-inline-data");
+        const field = document.querySelector("#studio-prompt textarea");
+        if (!host || !field) return false;
+        if (field.dataset.waiInlineSuggest !== "ready") {
+            field.dataset.waiInlineSuggest = "ready";
+            field.addEventListener("keydown", (event) => {
+                const open = panel && panel.style.display !== "none" && rows.length;
+                if (event.key === "Escape") {
+                    if (open) { event.preventDefault(); hide(); }
+                    return;
+                }
+                if (!open) return;
+                if (event.altKey && event.key === "ArrowDown") {
+                    event.preventDefault();
+                    setActive(active + 1);
+                } else if (event.altKey && event.key === "ArrowUp") {
+                    event.preventDefault();
+                    setActive(active - 1);
+                } else if (event.key === "Tab" || (event.altKey && event.key === "Enter")) {
+                    event.preventDefault();
+                    acceptRow(rows[Math.max(0, active)]);
+                }
+            });
+        }
+        if (window.__waiInlineObserver) window.__waiInlineObserver.disconnect();
+        window.__waiInlineObserver = new MutationObserver(render);
+        window.__waiInlineObserver.observe(host, { childList: true, subtree: true, characterData: true });
+        render();
+        return true;
+    };
+
+    if (!attach()) {
+        const bootstrap = new MutationObserver(() => { if (attach()) bootstrap.disconnect(); });
+        bootstrap.observe(document.querySelector("#studio-prompt") || document.body,
+                         { childList: true, subtree: true });
+        setTimeout(() => bootstrap.disconnect(), 30000);
+    }
+}"""
 STUDIO_OFFLINE_WATCHDOG_JS = r"""() => {
     // Trang kẹt vĩnh viễn (phải tải lại) thường là mất đường hầm giữa chừng: Gradio
     // không phát lại sự kiện đã rơi, nên người dùng chỉ thấy màn hình đứng. Vòng ping
@@ -9476,11 +9640,13 @@ def _replace_prompt_tag_fragment(text, replacement):
 
 
 def get_keyword_tag_suggestions(
-    prompt_text, rows=None, limit=PROMPT_TAG_SUGGESTION_LIMIT, token=None
+    prompt_text, rows=None, limit=PROMPT_TAG_SUGGESTION_LIMIT, token=None,
+    fragment=None,
 ):
     """Search the preloaded CSV and return English tags with Danbooru/e621 marks."""
     limit = _prompt_tag_suggestion_limit(limit)
-    fragment = prompt_tag_fragment(prompt_text)
+    if fragment is None:
+        fragment = prompt_tag_fragment(prompt_text)
     mode, query = _prompt_tag_search_mode(fragment)
     normalized = normalize_csv_tag(query)
     if len(normalized) < PROMPT_TAG_SUGGESTION_MIN_CHARS:
@@ -9632,55 +9798,279 @@ def adjust_prompt_tag_weight_ui(prompt_text, direction):
     return updated, message, gr.update(choices=[], value=None)
 
 
-def update_keyword_tag_suggestions(prompt_text, limit=PROMPT_TAG_SUGGESTION_LIMIT):
-    """Gradio adapter for live suggestions from the preloaded CSV catalog."""
+def _prompt_phrase_span(text, position):
+    """(start, end) đã cắt khoảng trắng của cụm `,;`/xuống dòng chứa vị trí này.
+
+    Cùng ranh giới với ``prompt_tag_fragment``/``_replace_prompt_tag_fragment``:
+    dấu phẩy trong nhóm ``(a, b:1.1)`` vẫn tách cụm — hai bên luôn chọn một vùng.
+    """
+    text = str(text or "")
+    position = max(0, min(int(position or 0), len(text)))
+    start = max(
+        text.rfind(",", 0, position),
+        text.rfind(";", 0, position),
+        text.rfind("\n", 0, position),
+    )
+    ends = [
+        index
+        for index in (text.find(",", position), text.find(";", position), text.find("\n", position))
+        if index != -1
+    ]
+    end = min(ends) if ends else len(text)
+    start += 1
+    while start < end and text[start].isspace():
+        start += 1
+    while end > start and text[end - 1].isspace():
+        end -= 1
+    return start, end
+
+
+def _normalize_focus_span(text, focus):
+    """Span cụm đang gõ do JS gửi lên (JSON ``{"start","end"}``); None nếu thiếu/lệch."""
+    if isinstance(focus, str):
+        if not focus.strip():
+            return None
+        try:
+            focus = json.loads(focus)
+        except Exception:
+            return None
+    if not isinstance(focus, dict):
+        return None
+    start, end = focus.get("start"), focus.get("end")
+    if not isinstance(start, int) or not isinstance(end, int):
+        return None
+    text = str(text or "")
+    if not (0 <= start <= end <= len(text)) or end - start > 400:
+        return None
+    # Cụm hợp lệ không chứa dấu phân cách cấp cao nhất — lệch là span cũ/bị giả mạo.
+    if re.search(r"[,;\n]", text[start:end]):
+        return None
+    return start, end
+
+
+def _resolve_tag_span(text, span):
+    """(mode, start, end, fragment) của cụm mà gợi ý được dựng cho nó.
+
+    mode ``"span"``: thay đúng [start, end] (JS gửi kèm cụm cần thay). ``"tail"``:
+    không có span — thay cụm cuối như đường cũ. ``"stale"``: span đã lệch so với ô
+    prompt (người dùng gõ tiếp rồi mới bấm chọn) — từ chối nhẹ nhàng thay vì thay
+    nhầm chỗ.
+    """
+    text = text if isinstance(text, str) else ""
+    tail = prompt_tag_fragment(text)
+    if isinstance(span, str):
+        if not span.strip():
+            return "tail", None, None, tail
+        try:
+            span = json.loads(span)
+        except Exception:
+            return "tail", None, None, tail
+    if not isinstance(span, dict):
+        return "tail", None, None, tail
+    phrase = str(span.get("phrase") or "")
+    located = _normalize_focus_span(text, {"start": span.get("start"), "end": span.get("end")})
+    if located is not None:
+        current = text[located[0]:located[1]].strip()
+        if current and normalize_csv_tag(current) == normalize_csv_tag(phrase):
+            return "span", located[0], located[1], current
+    if phrase and normalize_csv_tag(phrase) == normalize_csv_tag(tail):
+        return "tail", None, None, tail
+    return "stale", None, None, phrase or tail
+
+
+def _library_title_matches(fragment, items, limit=3):
+    """Tiêu đề thư viện prompt khớp cụm đang gõ — gợi ý "nạp cả prompt" tại chỗ."""
+    key = normalize_csv_tag(fragment)
+    if len(key) < PROMPT_TAG_SUGGESTION_MIN_CHARS:
+        return []
+    accent_key = _normalize_tag_text_preserving_accents(str(fragment or "").strip()).casefold()
+    hits = []
+    for item in tuple(items or ()):
+        title = str((item.get("label") if isinstance(item, dict) else item) or "")
+        if not title:
+            continue
+        if (
+            key in normalize_csv_tag(title)
+            or accent_key in _normalize_tag_text_preserving_accents(title).casefold()
+        ):
+            hits.append(title)
+            if len(hits) >= limit:
+                break
+    return hits
+
+
+def _inline_suggest_payload(fragment, span, choices, prompt_titles):
+    """HTML payload cho bảng gợi ý ngay ô prompt (JSON trong div ẩn, nhúng an toàn)."""
+    payload = {
+        "phrase": str(fragment or ""),
+        "start": int(span[0]),
+        "end": int(span[1]),
+        "tags": [{"label": str(label), "value": str(value)} for label, value in choices],
+        "prompts": [{"label": str(title), "value": str(title)} for title in prompt_titles],
+    }
+    body = (
+        json.dumps(payload, ensure_ascii=False)
+        .replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+    )
+    return f'<div class="wai-inline-payload" hidden>{body}</div>'
+
+
+INLINE_SUGGEST_EMPTY_HTML = '<div class="wai-inline-payload" hidden></div>'
+
+
+def _inline_pick(pick):
+    """(kind, value, span) từ JSON mà bảng gợi ý gửi lên nút bấm ẩn."""
+    if isinstance(pick, str):
+        if not pick.strip():
+            return "", "", None
+        try:
+            pick = json.loads(pick)
+        except Exception:
+            pick = None
+    if not isinstance(pick, dict):
+        return "", "", None
+    kind = pick.get("kind") if pick.get("kind") in ("tag", "prompt") else "tag"
+    value = str(pick.get("value") or "")
+    span = pick.get("span") if isinstance(pick.get("span"), dict) else None
+    return kind, value, span
+
+
+def update_keyword_tag_suggestions(
+    prompt_text,
+    limit=PROMPT_TAG_SUGGESTION_LIMIT,
+    focus=None,
+    library_items=None,
+):
+    """Gradio adapter for live suggestions from the preloaded CSV catalog.
+
+    ``focus`` là span cụm đang gõ do ``PROMPT_TAG_FOCUS_JS`` gửi kèm request — nhờ
+    vậy gõ giữa prompt vẫn gợi ý cho đúng cụm đó; thiếu thì dùng cụm cuối như cũ.
+    ``library_items`` (thư viện prompt) cho phép gợi ý thêm tiêu đề prompt để bạn
+    nạp cả prompt ngay tại ô nhập.
+    """
     import gradio as gr
 
+    text = prompt_text if isinstance(prompt_text, str) else ""
+    span = _normalize_focus_span(text, focus)
+    if span is None:
+        span = _prompt_phrase_span(text, len(text))
+    fragment = text[span[0]:span[1]].strip()
+    span_payload = json.dumps(
+        {"start": span[0], "end": span[1], "phrase": fragment}, ensure_ascii=False
+    )
     token = prompt_tag_request_begin()
     try:
-        choices, message = get_keyword_tag_suggestions(prompt_text, limit=limit, token=token)
-        return gr.update(choices=choices, value=None), message
+        choices, message = get_keyword_tag_suggestions(
+            text, limit=limit, token=token, fragment=fragment
+        )
     except PromptTagSearchSuperseded:
         # Người dùng đã gõ tiếp: giữ nguyên danh sách cũ, lượt mới sẽ trả lời.
-        return gr.update(), gr.update()
+        return gr.update(), gr.update(), gr.update(), gr.update()
     except Exception as exc:
-        return gr.update(choices=[], value=None), (
-            f"Không đọc được CSV kho gợi ý ({type(exc).__name__}). Mở tab **🏷️ Kho thẻ** "
-            "để thử tải lại; bạn vẫn có thể viết prompt và tạo ảnh."
+        return (
+            gr.update(choices=[], value=None),
+            (
+                f"Không đọc được CSV kho gợi ý ({type(exc).__name__}). Mở tab **🏷️ Kho thẻ** "
+                "để thử tải lại; bạn vẫn có thể viết prompt và tạo ảnh."
+            ),
+            span_payload,
+            INLINE_SUGGEST_EMPTY_HTML,
         )
+    prompts = _library_title_matches(fragment, library_items)
+    payload = _inline_suggest_payload(fragment, span, choices, prompts)
+    return gr.update(choices=choices, value=None), message, span_payload, payload
 
 
-def apply_keyword_tag_suggestion(prompt_text, selected, rows=None):
-    """Replace the final typed phrase with a selected tag from the CSV."""
+def apply_keyword_tag_suggestion(prompt_text, selected, rows=None, span=None):
+    """Replace the typed phrase (theo span gợi ý) with a selected tag from the CSV."""
     text = prompt_text if isinstance(prompt_text, str) else ""
     if not isinstance(selected, str) or not selected:
         return text, "Chọn một tag tiếng Anh trong danh sách."
+
+    mode, start, end, fragment = _resolve_tag_span(text, span)
+    if mode == "stale":
+        return text, (
+            "Gợi ý đã cũ so với nội dung ô prompt; gõ lại từ khóa rồi chọn lại để "
+            "không thay nhầm chỗ."
+        )
 
     try:
         rows = load_csv_tags() if rows is None else rows
         # Đối chiếu với TOÀN BỘ kết quả (đã cache), không chỉ top-N đang hiển thị,
         # nên người dùng chọn gợi ý thứ 40 khi giới hạn là 16 vẫn hợp lệ.
-        found, _total = _prompt_tag_suggestion_results(rows, prompt_tag_fragment(text))
+        found, _total = _prompt_tag_suggestion_results(rows, fragment)
     except Exception as exc:
         return text, f"Không đọc được CSV kho gợi ý ({type(exc).__name__}); hãy thử lại."
     allowed = {row[0] for row in found}
     if normalize_csv_tag(selected) not in {normalize_csv_tag(tag) for tag in allowed}:
         return text, "Lựa chọn không còn trong CSV; hãy gõ lại từ khóa để làm mới."
 
-    fragment = prompt_tag_fragment(text)
     if normalize_csv_tag(fragment) == normalize_csv_tag(selected):
         return text, f"`{selected}` đã là tag hiện tại."
 
-    updated = _replace_prompt_tag_fragment(text, selected)
+    if mode == "span":
+        updated = text[:start] + selected + text[end:]
+    else:
+        updated = _replace_prompt_tag_fragment(text, selected)
     return updated, f"Đã thay `{fragment}` bằng tag tiếng Anh `{selected}` từ CSV."
 
 
-def apply_keyword_tag_suggestion_ui(prompt_text, selected):
+def apply_keyword_tag_suggestion_ui(prompt_text, selected, span=None):
     """Apply a selected CSV tag immediately and clear the old choices."""
     import gradio as gr
 
-    updated, message = apply_keyword_tag_suggestion(prompt_text, selected)
-    return updated, message, gr.update(choices=[], value=None)
+    updated, message = apply_keyword_tag_suggestion(prompt_text, selected, span=span)
+    return (
+        updated,
+        message,
+        gr.update(choices=[], value=None),
+        "",
+        INLINE_SUGGEST_EMPTY_HTML,
+    )
+
+
+def apply_inline_suggestion_ui(
+    prompt_text,
+    pick,
+    span,
+    items,
+    negative,
+    steps,
+    cfg,
+    seed,
+    text_size,
+    image_size,
+):
+    """Nút bấm ẩn mà bảng gợi ý ngay ô prompt gọi khi bạn bấm/mũi tên + Enter.
+
+    kind ``tag``: thay đúng cụm đang gõ bằng tag catalog. kind ``prompt``: nạp cả
+    prompt từ thư viện (giống tab 📚 Thư viện) — tiêu đề dòng ghi rõ trước khi bấm.
+    """
+    import gradio as gr
+
+    kind, value, pick_span = _inline_pick(pick)
+    clears = (gr.update(choices=[], value=None), "", INLINE_SUGGEST_EMPTY_HTML)
+    if kind == "prompt":
+        *fields, status = apply_prompt_choice(
+            value, items, prompt_text, negative, steps, cfg, seed, text_size, image_size
+        )
+        return (*fields, f"📚 Đã nạp cả prompt — {status}", *clears)
+    updated, message = apply_keyword_tag_suggestion(
+        prompt_text, value, span=pick_span or span
+    )
+    return (
+        updated,
+        negative,
+        steps,
+        cfg,
+        seed,
+        text_size,
+        image_size,
+        message,
+        *clears,
+    )
 
 
 # --- Chọn ảnh nguồn để sửa / phóng -------------------------------------------------
@@ -10172,6 +10562,45 @@ def build_app(runtime):
         border-radius: 14px !important; background: var(--studio-surface-soft) !important;
     }
     /* Prompt list stays touch-scrollable and rows are easy to tap. */
+    #studio-prompt {position: relative;}
+    .studio-inline-carrier {display: none !important;}
+    .studio-inline-suggest {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 100%;
+        margin-top: 6px;
+        z-index: 80;
+        background: var(--panel-background-fill, #ffffff);
+        border: 1px solid var(--border-color-primary, #d0d0d0);
+        border-radius: 12px;
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+        max-height: 42vh;
+        overflow-y: auto;
+        padding: 6px;
+    }
+    .studio-inline-suggest-head {
+        font-size: 12px;
+        opacity: 0.75;
+        padding: 4px 10px 8px;
+    }
+    button.wai-inline-row {
+        display: block;
+        width: 100%;
+        min-height: 42px;
+        text-align: left;
+        padding: 8px 12px;
+        border: 0;
+        border-radius: 8px;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+        cursor: pointer;
+    }
+    button.wai-inline-row:hover,
+    button.wai-inline-row.is-active {
+        background: var(--background-fill-secondary, rgba(0, 0, 0, 0.07));
+    }
     .studio-prompt-list {
         max-height: 44vh; overflow-y: auto; -webkit-overflow-scrolling: touch;
         border: 1px solid var(--studio-border); border-radius: 12px;
@@ -10255,6 +10684,29 @@ def build_app(runtime):
                     ),
                     elem_id="studio-prompt",
                 )
+                # Bảng gợi ý NGAY DƯỚI khung nhập prompt: ba carrier ẩn + một nút ẩn
+                # JS bấm khi bạn chọn một dòng (giữ nguyên đường server xác thực tag).
+                keyword_tag_focus = gr.Textbox(
+                    value="", label="Cụm đang gõ (JS)", elem_id="prompt-tag-focus",
+                    elem_classes="studio-inline-carrier",
+                )
+                keyword_tag_span = gr.Textbox(
+                    value="", label="Span gợi ý", elem_id="prompt-tag-span",
+                    elem_classes="studio-inline-carrier",
+                )
+                keyword_tag_pick = gr.Textbox(
+                    value="", label="Lựa chọn gợi ý", elem_id="prompt-tag-pick",
+                    elem_classes="studio-inline-carrier",
+                )
+                keyword_tag_inline = gr.HTML(
+                    value=INLINE_SUGGEST_EMPTY_HTML,
+                    elem_id="prompt-tag-inline-data",
+                    elem_classes="studio-inline-carrier",
+                )
+                keyword_tag_accept = gr.Button(
+                    "Chọn gợi ý", elem_id="prompt-tag-accept",
+                    elem_classes="studio-inline-carrier",
+                )
                 with gr.Row(equal_height=False):
                     keyword_tag_suggestion = gr.Dropdown(
                         choices=[],
@@ -10280,11 +10732,14 @@ def build_app(runtime):
                         elem_id="prompt-tag-limit",
                     )
                 keyword_tag_status = gr.Markdown(
-                    f"{tag_catalog_status} Gõ từ khóa cuối như `mắt`/`eyes`; dùng `*đuôi`, "
+                    f"{tag_catalog_status} Gõ từ khóa như `mắt`/`eyes` ở **bất kỳ đâu** trong "
+                    "prompt — bảng gợi ý hiện **ngay dưới khung nhập**, bấm một dòng (hoặc "
+                    "Alt+↓/↑ rồi `Tab`) để thay đúng cụm đang gõ; dùng `*đuôi`, "
                     "`*giữa*` để tìm tag theo hậu tố/nội dung, hoặc `@họa sĩ` để lọc nhóm "
                     "Artist. Danh mục: `[G/A/©/C/M]` Danbooru · `<G/A/©/C/S/M/L>` e621. "
-                    "Chọn gợi ý để thay cụm cuối; Ctrl+↑/↓ hoặc nút ± chỉnh tag ở con trỏ/đoạn chọn. "
-                    "Chỉ hiện N gợi ý hot nhất (chọn N ở ô **Số gợi ý**); xem toàn bộ kết quả ở tab **🏷️ Kho thẻ**.",
+                    "Dòng 📚 nạp cả prompt từ thư viện đang mở. Ctrl+↑/↓ hoặc nút ± chỉnh "
+                    "trọng số tag ở con trỏ/đoạn chọn. Chỉ hiện N gợi ý hot nhất (chọn N ở ô "
+                    "**Số gợi ý**); xem toàn bộ kết quả ở tab **🏷️ Kho thẻ**.",
                     elem_classes="studio-hint",
                 )
                 negative = gr.Textbox(
@@ -11025,25 +11480,62 @@ def build_app(runtime):
         # — trang đứng hẳn cho tới khi xong.
         prompt.input(
             fn=update_keyword_tag_suggestions,
-            inputs=[prompt, keyword_tag_limit],
-            outputs=[keyword_tag_suggestion, keyword_tag_status],
+            inputs=[prompt, keyword_tag_limit, keyword_tag_focus, prompt_library_state],
+            outputs=[keyword_tag_suggestion, keyword_tag_status, keyword_tag_span, keyword_tag_inline],
+            js=PROMPT_TAG_FOCUS_JS,
             api_visibility="private",
             show_progress="minimal",
             trigger_mode="always_last",
         )
         keyword_tag_limit.change(
             fn=update_keyword_tag_suggestions,
-            inputs=[prompt, keyword_tag_limit],
-            outputs=[keyword_tag_suggestion, keyword_tag_status],
+            inputs=[prompt, keyword_tag_limit, keyword_tag_focus, prompt_library_state],
+            outputs=[keyword_tag_suggestion, keyword_tag_status, keyword_tag_span, keyword_tag_inline],
+            js=PROMPT_TAG_FOCUS_JS,
             api_visibility="private",
             show_progress="minimal",
             trigger_mode="always_last",
         )
         keyword_tag_suggestion.input(
             fn=apply_keyword_tag_suggestion_ui,
-            inputs=[prompt, keyword_tag_suggestion],
-            outputs=[prompt, keyword_tag_status, keyword_tag_suggestion],
+            inputs=[prompt, keyword_tag_suggestion, keyword_tag_span],
+            outputs=[prompt, keyword_tag_status, keyword_tag_suggestion, keyword_tag_span, keyword_tag_inline],
             api_visibility="private",
+            show_progress="hidden",
+        )
+        # Bảng gợi ý ngay ô prompt: JS điền ô chọn ẩn rồi bấm nút ẩn — server vẫn
+        # là nơi xác thực tag/thư viện và thay đúng cụm, không tin nội dung phía
+        # trình duyệt. Chấp nhận là việc nhẹ nên chạy thẳng (queue=False) cho khớp
+        # cảm giác "bấm là xong" kể cả khi đang có lượt tạo ảnh giữ GPU.
+        keyword_tag_accept.click(
+            fn=apply_inline_suggestion_ui,
+            inputs=[
+                prompt,
+                keyword_tag_pick,
+                keyword_tag_span,
+                prompt_library_state,
+                negative,
+                steps,
+                cfg,
+                seed,
+                text_size,
+                image_size,
+            ],
+            outputs=[
+                prompt,
+                negative,
+                steps,
+                cfg,
+                seed,
+                text_size,
+                image_size,
+                keyword_tag_status,
+                keyword_tag_suggestion,
+                keyword_tag_inline,
+                keyword_tag_span,
+            ],
+            api_visibility="private",
+            queue=False,
             show_progress="hidden",
         )
         # Dịch hai ô đang hiển thị, không thêm thẻ ngầm lúc tạo ảnh. Catalog đã nạp
@@ -11329,6 +11821,7 @@ def build_app(runtime):
             show_progress="minimal",
         )
         demo.load(fn=None, js=PROMPT_TAG_WEIGHT_SHORTCUT_JS)
+        demo.load(fn=None, js=PROMPT_INLINE_SUGGEST_JS)
         # Giám sát kết nối: trang cho biết đang mất phiên thay vì đứng im vĩnh viễn.
         demo.load(fn=None, js=STUDIO_OFFLINE_WATCHDOG_JS)
         # max_size phải đủ lớn: mỗi lượt tạo ảnh giữ một slot hàng đợi trong nhiều phút,
