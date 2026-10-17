@@ -4,6 +4,7 @@ The notebook's existing setup cells verify checkpoint and LoRA hashes before thi
 module is used. The model stays in Colab: Gradio provides a temporary public URL.
 """
 
+import functools
 import gc
 import json
 import math
@@ -6626,6 +6627,7 @@ TAG_VI_LABELS.update({
 })
 
 
+@functools.lru_cache(maxsize=None)
 def _vi_singular(token):
     """Số ít của một token (chỉ dùng khi bản gốc không có trong từ điển)."""
     fixed = _TAG_VI_PLURAL_IRREGULAR.get(token)
@@ -6647,6 +6649,7 @@ def _vi_singular(token):
     return None
 
 
+@functools.lru_cache(maxsize=None)
 def _vi_word(token):
     """Nhãn tiếng Việt của một từ bổ nghĩa, chấp nhận số nhiều và sở hữu cách."""
     label = _TAG_VI_WORDS.get(token) or _TAG_VI_COLORS.get(token)
@@ -6667,6 +6670,7 @@ def _vi_word(token):
     return None
 
 
+@functools.lru_cache(maxsize=None)
 def _vi_head(key):
     """Danh từ chính của cụm; thử cả số ít của token cuối nếu cần."""
     head = _TAG_VI_COMPOSITE_HEADS.get(key)
@@ -6692,6 +6696,7 @@ _TAG_VI_TRANSITIVE_RELATIONS = {
 }
 
 
+@functools.lru_cache(maxsize=None)
 def _vi_modifier(part):
     """Bản dịch một từ bổ nghĩa trong cụm: WORDS, màu, số lượng hoặc danh từ chính.
 
@@ -7552,11 +7557,38 @@ _TAG_QUERY_SINGLETONS = frozenset({
 })
 
 
+_TAG_SEPARATOR_RE = re.compile(r"[\s_-]+")
+_COMBINING_DELETE = None
+_COMBINING_DELETE_LOCK = threading.Lock()
+
+
+def _combining_delete_table():
+    """Bảng `str.translate` gộp sẵn mọi ký tự combining — dựng đúng một lần.
+
+    Cách cũ lọc từng ký tự bằng `unicodedata.combining` trong genexpr chạy tới
+    ~8 triệu lần khi dựng kho 348k dòng; bảng này thay bằng một lời gọi C và
+    cho KẾT QUẢ GIỐNG HỆT (cùng tập ký tự bị gỡ).
+    """
+    global _COMBINING_DELETE
+    table = _COMBINING_DELETE
+    if table is None:
+        with _COMBINING_DELETE_LOCK:
+            table = _COMBINING_DELETE
+            if table is None:
+                table = {
+                    code: None
+                    for code in range(0x110000)
+                    if unicodedata.combining(chr(code))
+                }
+                _COMBINING_DELETE = table
+    return table
+
+
 def normalize_csv_tag(value):
     """Normalize English/Vietnamese spelling, accents, hyphens and underscores."""
     value = unicodedata.normalize("NFKD", str(value or "").casefold())
-    value = "".join(char for char in value if not unicodedata.combining(char))
-    return re.sub(r"[\s_-]+", " ", value).strip()
+    value = value.translate(_combining_delete_table())
+    return _TAG_SEPARATOR_RE.sub(" ", value).strip()
 
 
 _VI_TEXT_CACHE = {}
@@ -7576,7 +7608,7 @@ def _normalize_tag_text_preserving_accents(value):
         if cached is not None:
             return cached
     normalized = unicodedata.normalize("NFC", str(value or "").casefold())
-    normalized = re.sub(r"[\s_-]+", " ", normalized).strip()
+    normalized = _TAG_SEPARATOR_RE.sub(" ", normalized).strip()
     if text is not None:
         if len(_VI_TEXT_CACHE) >= VI_TEXT_CACHE_LIMIT:
             _VI_TEXT_CACHE.clear()
@@ -7742,10 +7774,58 @@ def cached_tag_catalog():
     return rows if rows is not None else load_csv_tags()
 
 
+_SEARCH_FOUND_CACHE = {}
+_SEARCH_FOUND_CACHE_ROWS = None
+_SEARCH_FOUND_CACHE_LOCK = threading.Lock()
+_SEARCH_FOUND_CACHE_LIMIT = 32
+
+
+def _cached_search_found(rows, cache_key, build):
+    """Memoize kết quả quét catalog ĐÃ sắp xếp theo (catalog, câu hỏi, bộ lọc).
+
+    Ba đường dùng cùng một câu hỏi đều quét lại 348k dòng: chuyển trang trong tab
+    Kho thẻ, gõ lại từ khóa cũ ở ô gợi ý và 🧪 Kiểm tra thẻ liệt kê nhiều thẻ lạ.
+    Giữ danh sách khớp (trước phân trang) thì các lượt sau trả trong ~0 ms; khóa
+    theo chính đối tượng rows (``is``) như csv_tag_names nên catalog của test không
+    bao giờ dùng nhầm kết quả cũ.
+    """
+    global _SEARCH_FOUND_CACHE, _SEARCH_FOUND_CACHE_ROWS
+    with _SEARCH_FOUND_CACHE_LOCK:
+        if _SEARCH_FOUND_CACHE_ROWS is not rows:
+            _SEARCH_FOUND_CACHE.clear()
+            _SEARCH_FOUND_CACHE_ROWS = rows
+        cached = _SEARCH_FOUND_CACHE.get(cache_key)
+        if cached is not None:
+            return cached
+    found = tuple(build())
+    with _SEARCH_FOUND_CACHE_LOCK:
+        if _SEARCH_FOUND_CACHE_ROWS is not rows:
+            _SEARCH_FOUND_CACHE.clear()
+            _SEARCH_FOUND_CACHE_ROWS = rows
+        if len(_SEARCH_FOUND_CACHE) >= _SEARCH_FOUND_CACHE_LIMIT:
+            _SEARCH_FOUND_CACHE.clear()
+        _SEARCH_FOUND_CACHE[cache_key] = found
+    return found
+
+
 def search_csv_tags(
     rows, query="", category="", theme="", sort="Phổ biến nhất", page=1,
-    allow_partial_last=False,
+    allow_partial_last=False, stale_check=None,
 ):
+    found = _cached_search_found(
+        rows,
+        (str(query or ""), str(category or ""), str(theme or ""), str(sort or ""), bool(allow_partial_last)),
+        lambda: _search_csv_tags_found(
+            rows, query, category, theme, sort, allow_partial_last,
+            stale_check=stale_check,
+        ),
+    )
+    pages = max(1, math.ceil(len(found) / TAG_PAGE_SIZE))
+    page = min(pages, max(1, int(page or 1)))
+    return list(found[(page - 1) * TAG_PAGE_SIZE:page * TAG_PAGE_SIZE]), len(found), page, pages
+
+
+def _search_csv_tags_found(rows, query, category, theme, sort, allow_partial_last, stale_check=None):
     # Mỗi cụm cách nhau bằng dấu phẩy/chấm phẩy/xuống dòng được tìm độc lập.
     raw_queries = [
         part.strip() for part in re.split(r"[,;\n]+", str(query or ""))
@@ -7780,6 +7860,15 @@ def search_csv_tags(
             and (not theme or (not row[4] if theme == "Chưa phân nhóm" else theme in row[4]))
         )
 
+    # Từ KHÓA của từng cụm: regex khớp thì mọi từ của cụm chắc chắn xuất hiện trong
+    # search_index — kiểm substring trước (vài chục ns) để phần lớn 348k dòng khỏi
+    # phải qua regex (vài trăm ns mỗi dòng), giữ nguyên kết quả vì không có false
+    # negative. Từ dài nhất thử trước để dừng sớm hơn.
+    spec_needles = tuple(
+        tuple(sorted(set(spec["normalized"].split()), key=len, reverse=True))
+        for spec in query_specs
+    )
+
     # Khi cụm ngắn có dấu, ưu tiên nhãn Việt khớp chính tả; tránh va chạm
     # sau khi bỏ dấu như “đỏ”/“độ”. Những cụm câu dài dùng nhánh tìm kiếm thường.
     caption_matches = {}
@@ -7794,32 +7883,61 @@ def search_csv_tags(
         if matches:
             caption_matches[spec["id"]] = matches
 
+    # Gộp sẵn phần bất biến của từng cụm vào tuple để vòng lặp 348k dòng không
+    # phải tra dict/loại trừ nhánh caption nữa — caption tách hẳn sang một vòng.
+    scan_specs = []
+    for spec_index, spec in enumerate(query_specs):
+        if spec["id"] in caption_matches:
+            continue
+        scan_specs.append((
+            spec_needles[spec_index],
+            spec["exact_field"].search,
+            spec["phrase"].search,
+            spec["partial"].search if spec["partial"] else None,
+            spec["id"],
+        ))
+    caption_items = tuple(caption_matches.items())
+
     found_by_key = {}
     match_scores = {}
     matched_queries = set()
-    for row in rows:
+    for row_index, row in enumerate(rows):
+        if stale_check and not row_index % 8192 and stale_check():
+            raise PromptTagSearchSuperseded()
         if not passes_filters(row):
             continue
         key = (row[0], row[1])
         if not query_specs:
             found_by_key[key] = row
             continue
+        haystack = row[3]
         score = 0
-        for spec in query_specs:
-            raw_caption_hits = caption_matches.get(spec["id"])
-            if raw_caption_hits is not None:
-                query_score = 4 if key in raw_caption_hits else 0
-            elif spec["exact_field"].search(row[3]):
+        for needles, exact_search, phrase_search, partial_search, spec_id in scan_specs:
+            count = len(needles)
+            if count == 1:
+                if needles[0] not in haystack:
+                    continue
+            elif count == 2:
+                if needles[0] not in haystack or needles[1] not in haystack:
+                    continue
+            elif not all(word in haystack for word in needles):
+                continue
+            if exact_search(haystack):
                 query_score = 3
-            elif spec["phrase"].search(row[3]):
+            elif phrase_search(haystack):
                 query_score = 2
-            elif spec["partial"] and spec["partial"].search(row[3]):
+            elif partial_search is not None and partial_search(haystack):
                 query_score = 1
             else:
-                query_score = 0
-            if query_score:
-                matched_queries.add(spec["id"])
-                score = max(score, query_score)
+                continue
+            matched_queries.add(spec_id)
+            if query_score > score:
+                score = query_score
+        for spec_id, raw_caption_hits in caption_items:
+            if key in raw_caption_hits:
+                matched_queries.add(spec_id)
+                if score < 4:
+                    score = 4
         if score:
             found_by_key[key] = row
             match_scores[key] = score
@@ -7848,11 +7966,22 @@ def search_csv_tags(
         if (pattern := _tag_query_pattern(term)) is not None
     ]
     if fallback_patterns:
-        for row in rows:
+        # Gộp mọi cụm con thành MỘT regex (cùng ngữ nghĩa "bất kỳ cụm nào khớp") và
+        # gạt nhanh các dòng không chứa nổi một từ của cụm con nào — vòng quét fallback
+        # trước đây tốn ~20 regex/348k dòng.
+        fallback_words = tuple(sorted(
+            {word for term in dict.fromkeys(fallback_terms) for word in term.split()},
+            key=len, reverse=True,
+        ))
+        fallback_any = re.compile("|".join(pattern.pattern for pattern in fallback_patterns))
+        for row_index, row in enumerate(rows):
+            if stale_check and not row_index % 8192 and stale_check():
+                raise PromptTagSearchSuperseded()
             key = (row[0], row[1])
             if key in found_by_key or not passes_filters(row):
                 continue
-            if any(pattern.search(row[3]) for pattern in fallback_patterns):
+            haystack = row[3]
+            if any(word in haystack for word in fallback_words) and fallback_any.search(haystack):
                 found_by_key[key] = row
                 match_scores[key] = 0.5
 
@@ -7871,9 +8000,7 @@ def search_csv_tags(
         found.sort(key=lambda row: row[0])
     else:
         found.sort(key=lambda row: (-row[2], row[0]))
-    pages = max(1, math.ceil(len(found) / TAG_PAGE_SIZE))
-    page = min(pages, max(1, int(page or 1)))
-    return found[(page - 1) * TAG_PAGE_SIZE:page * TAG_PAGE_SIZE], len(found), page, pages
+    return found
 
 
 def browse_csv_tags(query, category, theme, sort, page):
@@ -7963,32 +8090,157 @@ _VI_PROMPT_TRANSLATION_LOCK = threading.Lock()
 # Cụm thường xuất hiện khi người dùng mô tả prompt bằng tiếng Việt nhưng không phải
 # lúc nào cũng có đúng một nhãn trong CSV. Giá trị là tag canonical hoặc cụm English
 # hợp lệ; không phải bản dịch ẩn — nút dịch ghi kết quả thẳng vào ô prompt.
+# Ưu tiên: cụm dài thắng cụm ngắn; cụm tay ở đây thắng cả nhãn CSV trùng nghĩa
+# (vd. “màu hồng” không còn ra pink_(e.g.o), “màu tím” không ra violet_(flower)).
+# Quy ước “xanh”: “màu xanh”/“mắt xanh”/“tóc xanh” không kèm từ chỉ màu hiểu là
+# xanh dương; viết “xanh lá” khi muốn xanh lá cây.
 _VI_PROMPT_PHRASES = {
     "một cô gái": "1girl",
     "cô gái": "1girl",
     "nhiều cô gái": "multiple girls",
+    "hai cô gái": "2girls",
+    "ba cô gái": "3girls",
+    "bốn cô gái": "4girls",
     "một chàng trai": "1boy",
     "chàng trai": "1boy",
+    "một cậu bé": "1boy",
+    "hai cậu bé": "2boys",
     "nhiều chàng trai": "multiple boys",
+    "hai chàng trai": "2boys",
+    "ba chàng trai": "3boys",
+    "bốn chàng trai": "4boys",
     "một nhân vật nữ": "1girl",
     "một nhân vật nam": "1boy",
+    "nhân vật": "character",
+    "song sinh": "twins",
+    "đôi song sinh": "twins",
     "tóc dài": "long_hair",
     "mái tóc dài": "long_hair",
+    "mái tóc": "hair",
     "tóc ngắn": "short_hair",
+    "tóc mái": "bangs",
+    "tóc đuôi ngựa": "ponytail",
+    "tóc bím": "braid",
     "mắt xanh": "blue_eyes",
     "mắt xanh dương": "blue_eyes",
     "mắt xanh lá": "green_eyes",
+    "mắt xanh lá cây": "green_eyes",
     "mắt đỏ": "red_eyes",
+    "mắt nâu": "brown_eyes",
+    "mắt tím": "purple_eyes",
+    "mắt xám": "grey_eyes",
+    "mắt vàng": "yellow_eyes",
+    "mắt đen": "black_eyes",
+    "mắt trắng": "white_eyes",
+    "mắt màu xanh": "blue_eyes",
+    "mắt màu xanh dương": "blue_eyes",
+    "mắt màu xanh lá": "green_eyes",
+    "mắt màu đỏ": "red_eyes",
+    "mắt màu nâu": "brown_eyes",
+    "mắt màu tím": "purple_eyes",
+    "mắt màu xám": "grey_eyes",
+    "mắt màu vàng": "yellow_eyes",
+    "mắt màu đen": "black_eyes",
+    "mắt màu trắng": "white_eyes",
+    "tóc xanh": "blue_hair",
+    "tóc xanh dương": "blue_hair",
+    "tóc xanh lá": "green_hair",
+    "tóc xanh lá cây": "green_hair",
+    "tóc đỏ": "red_hair",
+    "tóc vàng": "blonde_hair",
+    "tóc hồng": "pink_hair",
+    "tóc đen": "black_hair",
+    "tóc trắng": "white_hair",
+    "tóc nâu": "brown_hair",
+    "tóc tím": "purple_hair",
+    "tóc bạc": "grey_hair",
+    "tóc màu xanh": "blue_hair",
+    "tóc màu xanh dương": "blue_hair",
+    "tóc màu xanh lá": "green_hair",
+    "tóc màu đỏ": "red_hair",
+    "tóc màu vàng": "blonde_hair",
+    "tóc màu hồng": "pink_hair",
+    "tóc màu đen": "black_hair",
+    "tóc màu trắng": "white_hair",
+    "tóc màu nâu": "brown_hair",
+    "tóc màu tím": "purple_hair",
+    "tóc màu bạc": "grey_hair",
     "váy đỏ": "red_dress",
     "váy trắng": "white_dress",
+    "váy ngắn": "miniskirt",
+    "váy": "dress",
     "áo trắng": "white_shirt",
+    "áo": "shirt",
+    "áo khoác": "jacket",
+    "quần đùi": "shorts",
+    "quần": "pants",
+    "giày": "shoes",
+    "mũ": "hat",
+    "kính": "glasses",
+    "vớ": "socks",
+    "tất chân": "socks",
+    "đồng phục học sinh": "school_uniform",
+    "đồng phục": "uniform",
+    "vòng cổ": "necklace",
+    "vương miện": "crown",
+    "khăn quàng": "scarf",
     "hoa anh đào": "cherry_blossoms",
     "mỉm cười": "smile",
+    "nụ cười": "smile",
+    "cười": "smile",
     "nụ cười dịu dàng": "gentle smile",
+    "bàn tay": "hands",
+    "đôi tay": "hands",
+    "tay": "hands",
+    "bàn chân": "feet",
+    "đôi chân": "legs",
+    "chân": "legs",
+    "cánh tay": "arms",
+    "đôi cánh": "wings",
+    "cánh": "wings",
+    "đôi môi": "lips",
+    "môi": "lips",
+    "lông mày": "eyebrows",
+    "lông mi dài": "long_eyelashes",
+    "lông mi": "eyelashes",
+    "tai mèo": "cat_ears",
+    "tai chó": "dog_ears",
+    "tai thỏ": "rabbit_ears",
+    "sừng": "horns",
+    "đôi sừng": "horns",
+    "đầu": "head",
     "đang đứng": "standing",
     "đứng": "standing",
     "đang ngồi": "sitting",
     "ngồi": "sitting",
+    "đang chạy": "running",
+    "chạy": "running",
+    "đang bay": "flying",
+    "bay": "flying",
+    "đang nhảy": "jumping",
+    "nhảy": "jumping",
+    "đang nằm": "lying",
+    "nằm": "lying",
+    "cầm": "holding",
+    "đang cầm": "holding",
+    "ôm": "hugging",
+    "đang ôm": "hugging",
+    "nhìn vào người xem": "looking_at_viewer",
+    "nhìn sang bên": "looking away",
+    "nhìn lên": "looking up",
+    "nhìn xuống": "looking down",
+    "trời mưa": "rain",
+    "tuyết": "snow",
+    "bầu trời": "sky",
+    "hoàng hôn": "sunset",
+    "bình minh": "sunrise",
+    "ban đêm": "night",
+    "đêm": "night",
+    "biển": "ocean",
+    "bãi biển": "beach",
+    "thành phố": "city",
+    "ngoài trời": "outdoors",
+    "trong nhà": "indoors",
     "ánh sáng mềm": "soft lighting",
     "ánh sáng dịu": "soft lighting",
     "ánh sáng ấm": "warm lighting",
@@ -7996,10 +8248,28 @@ _VI_PROMPT_PHRASES = {
     "phông nền": "background",
     "trang phục": "clothing",
     "phong cách": "style",
+    "màu xanh": "blue",
+    "màu xanh dương": "blue",
+    "màu xanh da trời": "blue",
+    "màu xanh lam": "blue",
+    "màu xanh lá": "green",
+    "màu xanh lá cây": "green",
+    "xanh lá cây": "green",
+    "màu đỏ": "red",
+    "màu cam": "orange",
+    "màu vàng": "yellow",
+    "màu tím": "purple",
+    "màu hồng": "pink",
+    "màu nâu": "brown",
+    "màu xám": "gray",
+    "màu đen": "black",
+    "màu trắng": "white",
+    "màu be": "beige",
+    "màu bạc": "silver",
+    "màu vàng kim": "gold",
     "dưới": "under",
     "trên": "on",
     "trong": "in",
-    "với": "with",
     "và": "and",
     "không có": "no",
     "mắt": "eyes",
@@ -8011,9 +8281,23 @@ _VI_PROMPT_PHRASES = {
     "xanh lá": "green",
     "trắng": "white",
     "đen": "black",
+    "vàng": "yellow",
+    "hồng": "pink",
+    "tím": "purple",
+    "cam": "orange",
+    "nâu": "brown",
+    "xám": "gray",
+    "bạc": "silver",
+    "be": "beige",
+    "vàng kim": "gold",
+    # “” = vô hiệu bản dịch nhãn CSV trùng nghĩa của từ này (vd. “đôi” → twins);
+    # từ vẫn được các cụm dài ở trên dùng bình thường.
+    "đôi": "",
 }
 _VI_PROMPT_IGNORED_WORDS = frozenset({
     "một", "một cô", "đang", "có", "là", "ở", "cho", "của", "này", "nọ",
+    "mặc", "đeo", "khoác", "mang", "với", "làm", "thành", "như", "bằng",
+    "màu", "đôi", "trời", "vào", "ra",
 })
 
 
@@ -8285,7 +8569,8 @@ def catalog_tag_fields(rows=None):
         name_key = normalize_csv_tag(name)
         names[name_key] = name
         label_key = normalize_csv_tag(row[5])
-        synonym_key = normalize_csv_tag(TAG_VI_SEARCH_SYNONYMS.get(name, ""))
+        synonym = TAG_VI_SEARCH_SYNONYMS.get(name, "")
+        synonym_key = normalize_csv_tag(synonym) if synonym else ""
         for field in row[3].split(","):
             field = field.strip()
             if not field or field == name_key:
@@ -9083,9 +9368,16 @@ def prime_prompt_tag_catalog():
     indexed = prime_tag_label_index(rows)
     if indexed:
         message += f" Đã dựng index {indexed:,} từ khóa từ nhãn tiếng Việt."
-        print(message)
-    else:
-        print(message)
+    try:
+        # Làm ấm hai bảng tra tốn CPU trước khi người dùng bấm nút: 🧪 Kiểm tra thẻ
+        # (catalog_tag_fields ~1 s) và 🇻🇳 Dịch prompt (_prompt_translation_index).
+        # Cả hai chỉ nhận rows đã nạp — không đụng lại load_csv_tags().
+        catalog_tag_fields(rows)
+        _prompt_translation_index(rows)
+        message += " Đã làm ấm bảng tra thẻ và bộ dịch prompt."
+    except Exception:
+        pass
+    print(message)
     return message
 
 
@@ -9157,7 +9449,7 @@ def _prompt_tag_suggestion_results(rows, fragment, token=None):
             total = len(found)
         else:
             found, total, _, _ = search_csv_tags(
-                rows, query, sort="Khớp nhất", page=1
+                rows, query, sort="Khớp nhất", page=1, stale_check=stale
             )
 
     if stale and stale():

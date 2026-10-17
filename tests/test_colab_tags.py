@@ -35,6 +35,9 @@ class TagCatalogTests(unittest.TestCase):
             'highres,5,1000,do phan giai cao,Độ phân giải cao\r\n'
             'blush,0,900,do mat,Đỏ mặt\r\n'
             'red_hair,0,200,,Tóc đỏ\r\n'
+            'pink_hair,0,60,,Tóc hồng\r\n'
+            'purple_eyes,0,45,,Mắt tím\r\n'
+            'cat_ears,0,55,,Tai mèo\r\n'
             'multicolored_hair,0,800,black and red hair,Tóc nhiều màu\r\n'
             'city,7,30,town\r\n'
             'example_artist,1,20,\r\n'
@@ -143,6 +146,90 @@ class TagCatalogTests(unittest.TestCase):
         self.assertIn("offline", status)
         self.assertIn("giữ nguyên 1 cụm", status)
 
+    def test_translate_common_natural_vietnamese_prompts(self):
+        # Cụm tự nhiên thường dùng phải ra tag/English đúng nghĩa: cụm tay thắng
+        # nhãn CSV trùng nghĩa (“màu tím” không ra violet_(flower)), từ nối/bổ ngữ
+        # (“mặc”, “với”, “đôi”, “màu”) bị lược, không thành token rác.
+        self.assertEqual(
+            studio.translate_vietnamese_prompt("tóc màu hồng", self.rows),
+            "pink_hair",
+        )
+        self.assertEqual(
+            studio.translate_vietnamese_prompt("đôi mắt màu tím", self.rows),
+            "purple_eyes",
+        )
+        self.assertEqual(
+            studio.translate_vietnamese_prompt("màu xanh lá cây", self.rows),
+            "green",
+        )
+        self.assertEqual(
+            studio.translate_vietnamese_prompt("một cô gái với đôi mắt xanh dương", self.rows),
+            "1girl, blue_eyes",
+        )
+        self.assertEqual(
+            studio.translate_vietnamese_prompt("cô gái mặc váy đỏ", self.rows),
+            "1girl, red_dress",
+        )
+        self.assertEqual(
+            studio.translate_vietnamese_prompt("nụ cười, bàn tay", self.rows),
+            "smile, hands",
+        )
+        self.assertEqual(
+            studio.translate_vietnamese_prompt("đôi tai mèo", self.rows),
+            "cat_ears",
+        )
+        self.assertEqual(
+            studio.translate_vietnamese_prompt("hai cô gái, trời mưa", self.rows),
+            "2girls, rain",
+        )
+        # Quy ước “xanh” không kèm từ chỉ màu là xanh dương.
+        self.assertEqual(
+            studio.translate_vietnamese_prompt("tóc dài màu xanh", self.rows),
+            "long_hair, blue",
+        )
+
+    def test_search_findings_are_cached_per_query_and_cancelable(self):
+        # Chuyển trang/gõ lại câu cũ không quét lại catalog 348k dòng...
+        with patch.object(studio, "TAG_PAGE_SIZE", 2):
+            first, total, _, _ = studio.search_csv_tags(self.rows, "hair", sort="Khớp nhất")
+            with patch.object(
+                studio, "_search_csv_tags_found",
+                side_effect=AssertionError("catalog bị quét lại dù cùng câu hỏi"),
+            ):
+                second, total_again, page2, pages = studio.search_csv_tags(
+                    self.rows, "hair", sort="Khớp nhất", page=2
+                )
+        self.assertEqual(total, total_again)
+        self.assertEqual(page2, 2)
+        self.assertEqual(pages, max(1, -(-total // 2)))
+        self.assertNotEqual(first, second)
+        # ...nhưng một catalog khác thì KHÔNG được dùng nhầm cache cũ.
+        other = studio.parse_tag_csv("zzz_other_tag,0,10,,Thẻ khác\r\n")
+        found, _, _, _ = studio.search_csv_tags(other, "hair", sort="Khớp nhất")
+        self.assertEqual(found, [])
+        # Lượt gõ cũ bị hủy giữa chừng khi người dùng đã gõ tiếp (alive/stale).
+        checks = {"n": 0}
+
+        def stale():
+            checks["n"] += 1
+            return checks["n"] > 1
+
+        rows = studio.parse_tag_csv(
+            "\r\n".join(f"tag_{index},0,{100 - index},,Nhãn {index}" for index in range(20000)) + "\r\n"
+        )
+        with self.assertRaises(studio.PromptTagSearchSuperseded):
+            studio.search_csv_tags(
+                rows, "zzz missing phrase words", sort="Khớp nhất", stale_check=stale
+            )
+        self.assertGreater(checks["n"], 1)
+
+    def test_normalize_csv_tag_strips_accents_and_separators(self):
+        self.assertEqual(studio.normalize_csv_tag("  A__B- C  "), "a b c")
+        # đ là chữ cái riêng của bảng chữ cái Việt, không phải “d + gạch ngang”.
+        self.assertEqual(studio.normalize_csv_tag("Đường"), "đuong")
+        self.assertEqual(studio.normalize_csv_tag("ậ"), "a")
+        self.assertEqual(studio.normalize_csv_tag(None), "")
+
     def test_real_resource_hash_schema_and_full_catalog_search(self):
         path = Path(__file__).resolve().parents[1] / studio.TAG_CSV_NAME
         data = path.read_bytes()
@@ -203,6 +290,8 @@ class TagCatalogTests(unittest.TestCase):
         load.assert_called_once_with()
         self.assertIn(f"{len(self.rows)} tag", status)
         self.assertIn("SHA-256", status)
+        # Bảng tra thẻ và bộ dịch được làm ấm ngay khi khởi động để nút bấm trả ngay.
+        self.assertIn("làm ấm", status)
         self.assertIn("nạp và xác minh", output.getvalue())
 
         with (
@@ -516,6 +605,7 @@ class VietnameseGlossaryTests(unittest.TestCase):
             "_TAG_VI_COMPOSITE_HEADS",
             "TAG_VI_LABELS",
             "TAG_VI_SEARCH_SYNONYMS",
+            "_VI_PROMPT_PHRASES",
         }
         tree = ast.parse(source)
         found = 0
