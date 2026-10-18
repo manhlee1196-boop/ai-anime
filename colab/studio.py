@@ -8534,6 +8534,37 @@ def translate_prompts_to_english(positive, negative):
     return positive_en, negative_en, f"✅ Đã dịch {changed} cụm sang English. {note}"
 
 
+def maybe_auto_translate_prompt_field(text, enabled, field_label="Prompt"):
+    """Tự dịch VI→EN cho MỘT ô khi rời khỏi nó (blur) nếu ô Tự động dịch còn bật.
+
+    Chỉ thay nội dung khi thật sự dịch được ít nhất một cụm — prompt đã là
+    English thì không đụng tới (không nhảy con trỏ). Cụm chưa dịch được mà còn
+    dấu tiếng Việt thì báo ở ô trạng thái để bạn tự sửa. So với nút dịch tay
+    (dịch cả hai ô một lần), blur dịch từng ô và là "tiện ích tự động" đúng nghĩa.
+    """
+    import gradio as gr
+
+    if not enabled or not isinstance(text, str) or not text.strip():
+        return gr.skip(), gr.skip()
+    try:
+        rows = cached_tag_catalog()
+        translated, changed, unknown = _translate_prompt_text(text, rows)
+    except Exception:
+        # Lỗi dịch không được làm mất chữ người dùng đang gõ.
+        return gr.skip(), gr.skip()
+    if not changed:
+        if any(ord(char) >= 0x80 for char in text):
+            return gr.skip(), (
+                f"⚠️ Không dịch được cụm nào trong {field_label.lower()}; "
+                "nội dung giữ nguyên để bạn sửa."
+            )
+        return gr.skip(), gr.skip()
+    note = f"🌐 Tự dịch {field_label} VI→EN: đã đổi {changed} cụm."
+    if unknown:
+        note += f" Giữ nguyên {len(unknown)} cụm chưa chắc nghĩa."
+    return translated, note
+
+
 # ---------------------------------------------------------------------------
 # KIỂM TRA THẺ TRONG PROMPT VỚI KHO THẺ (CSV Danbooru + e621 đã xác minh SHA-256).
 #
@@ -10740,6 +10771,11 @@ def build_app(runtime):
                         size="sm",
                         scale=2,
                     )
+                    auto_translate_toggle = gr.Checkbox(
+                        label="Tự động dịch VI → EN khi rời ô",
+                        value=True,
+                        scale=0,
+                    )
                     translate_prompt_status = gr.Markdown(
                         "Dịch offline bằng nhãn/tag trong catalog; phần chưa nhận diện được sẽ giữ nguyên để bạn sửa.",
                         elem_classes="studio-hint",
@@ -11526,6 +11562,31 @@ def build_app(runtime):
             show_progress="minimal",
             concurrency_id=TAG_CATALOG_CONCURRENCY_ID,
             concurrency_limit=TAG_CATALOG_CONCURRENCY_LIMIT,
+        )
+        # Tự dịch VI→EN ngay khi rời ô (blur) nếu còn bật ô Tự động dịch. Chạy
+        # thẳng (queue=False): đây chỉ là tra bảng dịch đã làm ấm (~1 ms, KHÔNG
+        # quét catalog) — và quan trọng là blur luôn tới server TRƯỚC request
+        # bấm "Tạo ảnh" (cùng kết nối SSE), nên bản dịch kịp vào ô trước khi
+        # lượt tạo đọc prompt; để trong queue thì hai request sẽ đua nhau.
+        prompt.blur(
+            fn=lambda text, enabled: maybe_auto_translate_prompt_field(
+                text, enabled, "Prompt"
+            ),
+            inputs=[prompt, auto_translate_toggle],
+            outputs=[prompt, translate_prompt_status],
+            api_visibility="private",
+            queue=False,
+            show_progress="hidden",
+        )
+        negative.blur(
+            fn=lambda text, enabled: maybe_auto_translate_prompt_field(
+                text, enabled, "Negative"
+            ),
+            inputs=[negative, auto_translate_toggle],
+            outputs=[negative, translate_prompt_status],
+            api_visibility="private",
+            queue=False,
+            show_progress="hidden",
         )
         keyword_tag_weight_down.click(
             fn=lambda text: adjust_prompt_tag_weight_ui(text, -1),

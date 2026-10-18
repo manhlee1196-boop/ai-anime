@@ -1642,9 +1642,10 @@ class RuntimeValidationTests(unittest.TestCase):
         # 1 dịch prompt, 3 sự kiện kiểm tra/sửa tag, 3 chuyển tab ảnh, các sự kiện
         # của ô chọn ảnh nguồn (gallery.change/select, ↻, 4 nút nạp + 4 bước chuyển
         # tab sau khi nạp, demo.load, demo.load bảng gợi ý) và một listener
-        # Ctrl+↑/↓. Con số này là "mọi thứ phải có", không phải số sự kiện tối đa:
-        # thêm handler ở test này để bắt buộc cập nhật dòng trên khi giao diện đổi.
-        self.assertEqual(len(config["dependencies"]), 42)
+        # Ctrl+↑/↓, 2 blur tự dịch VI→EN. Con số này là "mọi thứ phải có", không
+        # phải số sự kiện tối đa: thêm handler ở test này để bắt buộc cập nhật dòng
+        # trên khi giao diện đổi.
+        self.assertEqual(len(config["dependencies"]), 44)
         self.assertEqual(prompt_field["props"].get("elem_id"), "studio-prompt")
         for elem_id, target in (
             ("prompt-weight-down", "click"),
@@ -1928,6 +1929,111 @@ class RuntimeValidationTests(unittest.TestCase):
             self.assertIn("tăng trọng số", weight_note)
 
         asyncio.run(flow())
+
+    @unittest.skipIf(
+        not importlib.util.find_spec("gradio"), "Gradio needed for UI wiring test"
+    )
+    def test_auto_translate_vietnamese_when_leaving_the_field(self):
+        """Tiện ích tự dịch VI→EN: rời ô (blur) là dịch sẵn, không cần bấm nút."""
+        import asyncio
+        import gradio as gr
+        from gradio.state_holder import SessionState
+
+        rows = studio.load_csv_tags()
+        with patch.object(
+            studio,
+            "prime_prompt_tag_catalog",
+            return_value="✅ CSV kho gợi ý đã sẵn sàng.",
+        ), patch.object(studio, "cached_tag_catalog", return_value=rows):
+            demo = studio.build_app(self.runtime)
+        config = demo.get_config_file()
+
+        toggle = next(
+            c for c in config["components"]
+            if c["type"] == "checkbox" and "Tự động dịch" in str(c["props"].get("label"))
+        )
+        self.assertTrue(toggle["props"]["value"], "tiện ích tự động bật sẵn")
+
+        def box(label):
+            return next(
+                c for c in config["components"]
+                if c["type"] == "textbox" and str(c["props"].get("label", "")).startswith(label)
+            )
+
+        prompt_box = box("Prompt gửi model")
+        negative_box = box("Negative gửi model")
+        status = next(
+            c for c in config["components"]
+            if c["type"] == "markdown" and "Dịch offline" in str(c["props"].get("value"))
+        )
+        blur_events = {}
+        for target in (prompt_box, negative_box):
+            event = next(
+                d for d in config["dependencies"]
+                if (target["id"], "blur") in d["targets"]
+            )
+            self.assertEqual(event["inputs"], [target["id"], toggle["id"]])
+            self.assertEqual(event["outputs"], [target["id"], status["id"]])
+            self.assertFalse(
+                event["queue"],
+                "blur dịch ~1 ms (bảng đã làm ấm) — chạy thẳng để kịp vào ô "
+                "TRƯỚC khi request bấm Tạo ảnh đọc prompt",
+            )
+            blur_events[target["id"]] = event["id"]
+
+        state = SessionState(demo)
+
+        async def flow():
+            async def run(index, inputs):
+                result = await demo.process_api(
+                    index, inputs, state=state, explicit_call=True
+                )
+                return result["data"]
+
+            with patch.object(studio, "cached_tag_catalog", return_value=rows):
+                translated, note = await run(
+                    blur_events[prompt_box["id"]],
+                    ["một cô gái với đôi mắt xanh dương", True],
+                )
+            self.assertEqual(translated, "1girl, blue_eyes")
+            self.assertIn("Tự dịch Prompt VI→EN", note)
+            # Prompt đã là English → không đụng ô (gr.skip), không đổi trạng thái.
+            with patch.object(studio, "cached_tag_catalog", return_value=rows):
+                unchanged, quiet = await run(
+                    blur_events[prompt_box["id"]], ["1girl, blue_eyes", True]
+                )
+            self.assertEqual(unchanged, gr.skip())
+            self.assertEqual(quiet, gr.skip())
+            # Tắt ô tick → không dịch, kể cả khi đang gõ tiếng Việt.
+            with patch.object(studio, "cached_tag_catalog", return_value=rows):
+                kept, quiet = await run(
+                    blur_events[negative_box["id"]], ["mắt tím", False]
+                )
+            self.assertEqual(kept, gr.skip())
+
+        asyncio.run(flow())
+
+        # Đường adapter trực tiếp: chỉ thay ô khi dịch được ≥ 1 cụm.
+        with patch.object(studio, "_translate_prompt_text", return_value=("1girl, blue_eyes", 2, [])):
+            done, note = studio.maybe_auto_translate_prompt_field(
+                "một cô gái với đôi mắt xanh dương", True, "Prompt"
+            )
+        self.assertEqual(done, "1girl, blue_eyes")
+        self.assertIn("đã đổi 2 cụm", note)
+        with patch.object(
+            studio, "_translate_prompt_text", return_value=("đường cong", 0, ["đường cong"])
+        ):
+            kept, warn = studio.maybe_auto_translate_prompt_field("đường cong", True, "Prompt")
+        self.assertEqual(kept, gr.skip())
+        self.assertIn("Không dịch được", warn)
+        with patch.object(studio, "_translate_prompt_text", return_value=("1girl", 0, [])):
+            kept, quiet = studio.maybe_auto_translate_prompt_field("1girl", True, "Prompt")
+        self.assertEqual(kept, gr.skip())
+        self.assertEqual(quiet, gr.skip())
+        # Lỗi dịch không được làm mất chữ người dùng.
+        with patch.object(studio, "_translate_prompt_text", side_effect=RuntimeError("boom")):
+            kept, quiet = studio.maybe_auto_translate_prompt_field("tóc dài", True, "Prompt")
+        self.assertEqual(kept, gr.skip())
 
     @unittest.skipIf(
         not importlib.util.find_spec("gradio"), "Gradio needed for UI wiring test"
