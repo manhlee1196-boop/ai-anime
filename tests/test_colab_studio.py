@@ -1522,11 +1522,12 @@ class RuntimeValidationTests(unittest.TestCase):
         self.assertEqual(negative_field["props"]["value"], studio.DEFAULT_NEGATIVE)
         field_ids = {c["id"] for c in fields}
 
-        inline_suggestions = next(
-            c for c in config["components"]
-            if c["type"] == "dropdown"
-            and "Semi-auto tag" in str(c["props"].get("label"))
-        )
+        # Chỉ MỘT danh sách gợi ý (bảng nổi dưới ô prompt) — không còn dropdown
+        # "Semi-auto tag" song song gây hai chỗ gợi ý cùng lúc.
+        self.assertFalse(any(
+            "Semi-auto tag" in str(c["props"].get("label") or "")
+            for c in config["components"]
+        ))
         inline_status = next(
             c for c in config["components"]
             if c["type"] == "markdown"
@@ -1570,7 +1571,7 @@ class RuntimeValidationTests(unittest.TestCase):
         )
         self.assertEqual(
             limit_change_event["outputs"],
-            [inline_suggestions["id"], inline_status["id"], span_carrier["id"], inline_data["id"]],
+            [inline_status["id"], span_carrier["id"], inline_data["id"]],
         )
         live_suggestion_event = next(
             d for d in config["dependencies"]
@@ -1582,7 +1583,7 @@ class RuntimeValidationTests(unittest.TestCase):
         )
         self.assertEqual(
             live_suggestion_event["outputs"],
-            [inline_suggestions["id"], inline_status["id"], span_carrier["id"], inline_data["id"]],
+            [inline_status["id"], span_carrier["id"], inline_data["id"]],
         )
         # JS dựng payload span CÙNG request nên gợi ý luôn đúng cụm đang gõ.
         self.assertEqual(live_suggestion_event["js"], studio.PROMPT_TAG_FOCUS_JS)
@@ -1590,26 +1591,8 @@ class RuntimeValidationTests(unittest.TestCase):
         # event loop (queue=False) thì mọi request khác của trang phải chờ => treo.
         self.assertTrue(live_suggestion_event["queue"])
         self.assertTrue(live_suggestion_event["trigger_mode"], "always_last")
-        apply_suggestion_event = next(
-            d for d in config["dependencies"]
-            if (inline_suggestions["id"], "input") in d["targets"]
-        )
-        self.assertEqual(
-            apply_suggestion_event["inputs"],
-            [prompt_field["id"], inline_suggestions["id"], span_carrier["id"]],
-        )
-        self.assertEqual(
-            apply_suggestion_event["outputs"],
-            [
-                prompt_field["id"],
-                inline_status["id"],
-                inline_suggestions["id"],
-                span_carrier["id"],
-                inline_data["id"],
-            ],
-        )
-        self.assertTrue(apply_suggestion_event["queue"])
-        # Nút ẩn bảng gợi ý: nhận pick + span, trả prompt/tham số + xóa bảng.
+        # Nút ẩn bảng gợi ý: nhận pick + span, trả prompt/tham số + xóa bảng đúng
+        # thứ tự [inline payload, span] — bản trước đảo hai carrier này.
         accept_event = next(
             d for d in config["dependencies"]
             if (accept_button["id"], "click") in d["targets"]
@@ -1618,7 +1601,10 @@ class RuntimeValidationTests(unittest.TestCase):
             accept_event["inputs"][:3],
             [prompt_field["id"], pick_carrier["id"], span_carrier["id"]],
         )
-        self.assertIn(inline_data["id"], accept_event["outputs"])
+        self.assertEqual(
+            accept_event["outputs"][-2:],
+            [inline_data["id"], span_carrier["id"]],
+        )
         self.assertFalse(accept_event["queue"], "chấp nhận gợi ý là thao tác nhẹ, chạy thẳng")
 
         eyes_button = next(
@@ -1651,14 +1637,14 @@ class RuntimeValidationTests(unittest.TestCase):
             repair_event["inputs"][:2],
             [prompt_field["id"], negative_field["id"]],
         )
-        # Gồm 2 sự kiện gợi ý tag inline + 1 chấp nhận gợi ý, 2 chỉnh trọng số,
-        # 2 kho thẻ, 1 dịch prompt, 3 sự kiện kiểm tra/sửa tag, 3 chuyển tab ảnh,
-        # các sự kiện của ô chọn ảnh nguồn (gallery.change/select, ↻, 4 nút nạp
-        # + 4 bước chuyển tab sau khi nạp, demo.load, demo.load bảng gợi ý) và
-        # một listener Ctrl+↑/↓. Con số này là "mọi thứ phải có", không phải số
-        # sự kiện tối đa: thêm handler ở test này để bắt buộc cập nhật dòng trên
-        # khi giao diện đổi.
-        self.assertEqual(len(config["dependencies"]), 43)
+        # Gồm 2 sự kiện gợi ý tag inline + 1 chấp nhận gợi ý (một danh sách gợi ý
+        # duy nhất — dropdown Semi-auto tag đã gỡ), 2 chỉnh trọng số, 2 kho thẻ,
+        # 1 dịch prompt, 3 sự kiện kiểm tra/sửa tag, 3 chuyển tab ảnh, các sự kiện
+        # của ô chọn ảnh nguồn (gallery.change/select, ↻, 4 nút nạp + 4 bước chuyển
+        # tab sau khi nạp, demo.load, demo.load bảng gợi ý) và một listener
+        # Ctrl+↑/↓. Con số này là "mọi thứ phải có", không phải số sự kiện tối đa:
+        # thêm handler ở test này để bắt buộc cập nhật dòng trên khi giao diện đổi.
+        self.assertEqual(len(config["dependencies"]), 42)
         self.assertEqual(prompt_field["props"].get("elem_id"), "studio-prompt")
         for elem_id, target in (
             ("prompt-weight-down", "click"),
@@ -1674,7 +1660,7 @@ class RuntimeValidationTests(unittest.TestCase):
             self.assertEqual(event["inputs"], [prompt_field["id"]])
             self.assertEqual(
                 event["outputs"],
-                [prompt_field["id"], inline_status["id"], inline_suggestions["id"]],
+                [prompt_field["id"], inline_status["id"]],
             )
             self.assertFalse(event["queue"])
             # JS phải được Gradio gửi xuống trình duyệt, không chỉ nằm trong Python.
@@ -1817,7 +1803,7 @@ class RuntimeValidationTests(unittest.TestCase):
         "Gradio and Pillow needed for the semi-auto tag route test",
     )
     def test_semi_auto_tag_events_suggest_then_replace_then_weight(self):
-        """Kiểm tra trọn tuyến semi-auto: gõ → dropdown CSV → chọn tag → nút ±."""
+        """Kiểm tra trọn tuyến semi-auto: gõ → bảng gợi ý → chọn dòng → nút ±."""
         import asyncio
         from gradio.state_holder import SessionState
 
@@ -1837,7 +1823,10 @@ class RuntimeValidationTests(unittest.TestCase):
             )
 
         prompt_box = component("textbox", "gửi model", "label")
-        dropdown = component("dropdown", "Semi-auto tag", "label")
+        accept_button = next(
+            c for c in config["components"]
+            if c["props"].get("elem_id") == "prompt-tag-accept"
+        )
         weight_up = next(
             c for c in config["components"]
             if c["props"].get("elem_id") == "prompt-weight-up"
@@ -1851,6 +1840,9 @@ class RuntimeValidationTests(unittest.TestCase):
 
         state = SessionState(demo)
 
+        def pick_json(value, span):
+            return json.dumps({"kind": "tag", "value": value, "span": span}, ensure_ascii=False)
+
         async def flow():
             async def run(index, inputs):
                 result = await demo.process_api(
@@ -1859,53 +1851,77 @@ class RuntimeValidationTests(unittest.TestCase):
                 return result["data"]
 
             with patch.object(studio, "load_csv_tags", return_value=rows):
-                suggested, note, span_payload, payload_html = await run(
+                note, span_payload, payload_html = await run(
                     event_index(prompt_box["id"], "input"),
                     ["1girl, mắt", 16, "", []],
                 )
-            self.assertEqual(suggested["__type__"], "update")
-            values = [value for _, value in suggested["choices"]]
-            self.assertIn("blue_eyes", values)
-            self.assertTrue(all(label.startswith(("[G]", "<")) for label, _ in suggested["choices"]))
             self.assertIn("tag từ CSV", note)
-            self.assertEqual(len(suggested["choices"]), 16)
-            # JS chưa chạy (explicit_call) → server tự dùng CỤM CUỐI; payload có đủ.
+            payload = json.loads(
+                payload_html.split(">", 1)[1].rsplit("</div>", 1)[0]
+                .replace("&amp;", "&").replace("&lt;", "<").replace("&gt;", ">")
+            )
+            values = [item["value"] for item in payload["tags"]]
+            self.assertIn("blue_eyes", values)
+            self.assertTrue(all(
+                item["label"].startswith(("[G]", "<")) for item in payload["tags"]
+            ))
+            self.assertEqual(len(values), 16)
+            # JS chưa chạy (explicit_call) → server tự dùng CỤM CUỐI; span có sẵn.
             self.assertEqual(
                 json.loads(span_payload),
                 {"start": 7, "end": 10, "phrase": "mắt"},
             )
-            self.assertIn("wai-inline-payload", payload_html)
 
+            # Bấm một dòng bảng gợi ý: nút ẩn nhận pick JSON rồi trả về prompt đã thay.
             with patch.object(studio, "load_csv_tags", return_value=rows):
-                prompt, applied_note, cleared, _span, _payload = await run(
-                    event_index(dropdown["id"], "input"),
-                    ["1girl, mắt", "blue_eyes", ""],
+                applied = await run(
+                    event_index(accept_button["id"], "click"),
+                    [
+                        "1girl, mắt",
+                        pick_json("blue_eyes", json.loads(span_payload)),
+                        span_payload,
+                        [],
+                        "bad hands", 28, 5.0, -1, "832x1216", "832x1216",
+                    ],
                 )
+            prompt, applied_note = applied[0], applied[7]
             self.assertEqual(prompt, "1girl, blue_eyes")
             self.assertIn("thay `mắt`", applied_note)
-            self.assertEqual(cleared["choices"], [])
+            # Đúng thứ tự xóa: [inline payload, span] (bản cũ đảo hai carrier).
+            self.assertIn("wai-inline-payload", applied[8])
+            self.assertEqual(applied[9], "")
 
             # ô "Số gợi ý" nới trần danh sách mà không đổi kết quả tìm
             with patch.object(studio, "load_csv_tags", return_value=rows):
-                wider, wider_note, _span, _payload = await run(
+                wider_note, wider_span, wider_payload = await run(
                     event_index(prompt_box["id"], "input"),
                     ["1girl, mắt", 150, "", []],
                 )
-            self.assertGreater(len(wider["choices"]), 16)
+            wider = json.loads(
+                wider_payload.split(">", 1)[1].rsplit("</div>", 1)[0]
+                .replace("&amp;", "&").replace("&lt;", "<").replace("&gt;", ">")
+            )
+            self.assertGreater(len(wider["tags"]), 16)
             self.assertIn("tăng **Số gợi ý** để xem tiếp", wider_note)
-            far_tag = wider["choices"][-1][1]
-            self.assertNotIn(far_tag, [value for _, value in suggested["choices"]])
-            # tag ngoài top-16 mặc định vẫn được chấp nhận
+            far_tag = wider["tags"][-1]["value"]
+            self.assertNotIn(far_tag, values)
+            # tag ngoài top-16 mặc định vẫn được chấp nhận (đối chiếu toàn catalog)
             with patch.object(studio, "load_csv_tags", return_value=rows):
-                applied_far, far_note, *_ = await run(
-                    event_index(dropdown["id"], "input"),
-                    ["1girl, mắt", far_tag, ""],
+                applied_far = await run(
+                    event_index(accept_button["id"], "click"),
+                    [
+                        "1girl, mắt",
+                        pick_json(far_tag, json.loads(wider_span)),
+                        wider_span,
+                        [],
+                        "bad hands", 28, 5.0, -1, "832x1216", "832x1216",
+                    ],
                 )
-            self.assertEqual(applied_far, f"1girl, {far_tag}")
-            self.assertIn("thay `mắt`", far_note)
+            self.assertEqual(applied_far[0], f"1girl, {far_tag}")
+            self.assertIn("thay `mắt`", applied_far[7])
 
             with patch.object(studio, "load_csv_tags", return_value=rows):
-                weighted, weight_note, _ = await run(
+                weighted, weight_note = await run(
                     event_index(weight_up["id"], "click"), ["1girl, blue_eyes"]
                 )
             self.assertEqual(weighted, "1girl, (blue_eyes:1.1)")
@@ -2545,7 +2561,6 @@ class UiResponsivenessTests(unittest.TestCase):
     def test_catalog_search_events_run_in_the_queue(self):
         for anchor in (
             "fn=update_keyword_tag_suggestions,",
-            "fn=apply_keyword_tag_suggestion_ui,",
             "fn=apply_csv_tags,",
             "fn=run_tag_check,",
             "fn=run_prompt_rewrite,",
@@ -2753,6 +2768,9 @@ class UiResponsivenessTests(unittest.TestCase):
         self.assertIn("MutationObserver", panel_js)
         self.assertIn(".disconnect()", panel_js)
 
+    @unittest.skipIf(
+        not importlib.util.find_spec("gradio"), "Gradio needed for suggestion adapters"
+    )
     def test_prompt_tag_suggestion_panel_builds_valid_payload(self):
         items = [
             {
@@ -2773,12 +2791,9 @@ class UiResponsivenessTests(unittest.TestCase):
                 json.dumps({"start": 7, "end": 10, "phrase": "tóc"}),
                 items,
             )
-        self.assertEqual(len(result), 4)
-        choices, status, span_payload, payload_html = result
+        self.assertEqual(len(result), 3)
+        status, span_payload, payload_html = result
         self.assertIn("tag từ CSV", status)
-        self.assertEqual(
-            [value for _, value in choices["choices"]], ["long_hair", "short_hair"]
-        )
         self.assertEqual(json.loads(span_payload)["phrase"], "tóc")
         payload = json.loads(
             payload_html.split(">", 1)[1].rsplit("</div>", 1)[0]
@@ -2820,6 +2835,9 @@ class UiResponsivenessTests(unittest.TestCase):
         )
         self.assertEqual(updated, "1girl, long_hair")
 
+    @unittest.skipIf(
+        not importlib.util.find_spec("gradio"), "Gradio needed for suggestion adapters"
+    )
     def test_inline_prompt_suggestion_pick_loads_library_prompt(self):
         items = [
             {
@@ -2838,6 +2856,10 @@ class UiResponsivenessTests(unittest.TestCase):
         )
         self.assertEqual(prompt_value, "1girl, long_hair")
         self.assertIn("nạp cả prompt", status)
+        # Hai giá trị cuối theo đúng thứ tự outputs: [inline payload, span].
+        inline_clear, span_clear = _rest[-2], _rest[-1]
+        self.assertIn("wai-inline-payload", inline_clear)
+        self.assertEqual(span_clear, "")
         self.assertEqual(
             studio._library_title_matches("cô gái", items), ["01 · Cô gái tóc dài"]
         )

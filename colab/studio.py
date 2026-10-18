@@ -9795,7 +9795,7 @@ def adjust_prompt_tag_weight_ui(prompt_text, direction):
     import gradio as gr
 
     updated, message = adjust_prompt_tag_weight(prompt_text, direction)
-    return updated, message, gr.update(choices=[], value=None)
+    return updated, message
 
 
 def _prompt_phrase_span(text, position):
@@ -9967,10 +9967,9 @@ def update_keyword_tag_suggestions(
         )
     except PromptTagSearchSuperseded:
         # Người dùng đã gõ tiếp: giữ nguyên danh sách cũ, lượt mới sẽ trả lời.
-        return gr.update(), gr.update(), gr.update(), gr.update()
+        return gr.update(), gr.update(), gr.update()
     except Exception as exc:
         return (
-            gr.update(choices=[], value=None),
             (
                 f"Không đọc được CSV kho gợi ý ({type(exc).__name__}). Mở tab **🏷️ Kho thẻ** "
                 "để thử tải lại; bạn vẫn có thể viết prompt và tạo ảnh."
@@ -9980,7 +9979,7 @@ def update_keyword_tag_suggestions(
         )
     prompts = _library_title_matches(fragment, library_items)
     payload = _inline_suggest_payload(fragment, span, choices, prompts)
-    return gr.update(choices=choices, value=None), message, span_payload, payload
+    return message, span_payload, payload
 
 
 def apply_keyword_tag_suggestion(prompt_text, selected, rows=None, span=None):
@@ -10017,20 +10016,6 @@ def apply_keyword_tag_suggestion(prompt_text, selected, rows=None, span=None):
     return updated, f"Đã thay `{fragment}` bằng tag tiếng Anh `{selected}` từ CSV."
 
 
-def apply_keyword_tag_suggestion_ui(prompt_text, selected, span=None):
-    """Apply a selected CSV tag immediately and clear the old choices."""
-    import gradio as gr
-
-    updated, message = apply_keyword_tag_suggestion(prompt_text, selected, span=span)
-    return (
-        updated,
-        message,
-        gr.update(choices=[], value=None),
-        "",
-        INLINE_SUGGEST_EMPTY_HTML,
-    )
-
-
 def apply_inline_suggestion_ui(
     prompt_text,
     pick,
@@ -10051,7 +10036,9 @@ def apply_inline_suggestion_ui(
     import gradio as gr
 
     kind, value, pick_span = _inline_pick(pick)
-    clears = (gr.update(choices=[], value=None), "", INLINE_SUGGEST_EMPTY_HTML)
+    # Thứ tự theo outputs của sự kiện chấp nhận: [inline payload, span].
+    # INLINE_SUGGEST_EMPTY_HTML xóa payload (panel ẩn), "" xóa span đã dùng.
+    clears = (INLINE_SUGGEST_EMPTY_HTML, "")
     if kind == "prompt":
         *fields, status = apply_prompt_choice(
             value, items, prompt_text, negative, steps, cfg, seed, text_size, image_size
@@ -10707,12 +10694,12 @@ def build_app(runtime):
                     "Chọn gợi ý", elem_id="prompt-tag-accept",
                     elem_classes="studio-inline-carrier",
                 )
+                # Chỉ MỘT nơi gợi ý: bảng nổi ngay dưới ô prompt. Hàng dưới chỉ còn
+                # điều khiển nhỏ (trọng số ± và số gợi ý) — không còn dropdown trùng.
                 with gr.Row(equal_height=False):
-                    keyword_tag_suggestion = gr.Dropdown(
-                        choices=[],
-                        value=None,
-                        label="Semi-auto tag · ví dụ mắt / eyes · ↑↓ + Enter/Tab để chọn",
-                        allow_custom_value=False,
+                    gr.Markdown(
+                        "**Trọng số tag** · `Ctrl+↑/↓`",
+                        elem_classes="studio-hint",
                         scale=1,
                     )
                     keyword_tag_weight_down = gr.Button(
@@ -10732,14 +10719,13 @@ def build_app(runtime):
                         elem_id="prompt-tag-limit",
                     )
                 keyword_tag_status = gr.Markdown(
-                    f"{tag_catalog_status} Gõ từ khóa như `mắt`/`eyes` ở **bất kỳ đâu** trong "
-                    "prompt — bảng gợi ý hiện **ngay dưới khung nhập**, bấm một dòng (hoặc "
-                    "Alt+↓/↑ rồi `Tab`) để thay đúng cụm đang gõ; dùng `*đuôi`, "
-                    "`*giữa*` để tìm tag theo hậu tố/nội dung, hoặc `@họa sĩ` để lọc nhóm "
-                    "Artist. Danh mục: `[G/A/©/C/M]` Danbooru · `<G/A/©/C/S/M/L>` e621. "
-                    "Dòng 📚 nạp cả prompt từ thư viện đang mở. Ctrl+↑/↓ hoặc nút ± chỉnh "
-                    "trọng số tag ở con trỏ/đoạn chọn. Chỉ hiện N gợi ý hot nhất (chọn N ở ô "
-                    "**Số gợi ý**); xem toàn bộ kết quả ở tab **🏷️ Kho thẻ**.",
+                    f"{tag_catalog_status} Gõ `mắt`/`eyes` ở **bất kỳ đâu** trong prompt — "
+                    "bảng gợi ý ngay dưới ô nhập: bấm một dòng (hoặc `Alt+↓/↑` rồi `Tab`) "
+                    "để thay đúng cụm đang gõ. Dùng `*đuôi`, "
+                    "`*giữa*` để tìm tag theo hậu tố/nội dung, `@họa sĩ` lọc Artist; "
+                    "`[G/A/©/C/M]` Danbooru · `<G/A/©/C/S/M/L>` e621; dòng 📚 nạp cả prompt "
+                    "thư viện. Ctrl+↑/↓ chỉnh trọng số tag tại con trỏ. Chỉ hiện N gợi ý "
+                    "hot nhất (ô **Số gợi ý**); xem hết ở tab **🏷️ Kho thẻ**.",
                     elem_classes="studio-hint",
                 )
                 negative = gr.Textbox(
@@ -11481,7 +11467,7 @@ def build_app(runtime):
         prompt.input(
             fn=update_keyword_tag_suggestions,
             inputs=[prompt, keyword_tag_limit, keyword_tag_focus, prompt_library_state],
-            outputs=[keyword_tag_suggestion, keyword_tag_status, keyword_tag_span, keyword_tag_inline],
+            outputs=[keyword_tag_status, keyword_tag_span, keyword_tag_inline],
             js=PROMPT_TAG_FOCUS_JS,
             api_visibility="private",
             show_progress="minimal",
@@ -11490,18 +11476,11 @@ def build_app(runtime):
         keyword_tag_limit.change(
             fn=update_keyword_tag_suggestions,
             inputs=[prompt, keyword_tag_limit, keyword_tag_focus, prompt_library_state],
-            outputs=[keyword_tag_suggestion, keyword_tag_status, keyword_tag_span, keyword_tag_inline],
+            outputs=[keyword_tag_status, keyword_tag_span, keyword_tag_inline],
             js=PROMPT_TAG_FOCUS_JS,
             api_visibility="private",
             show_progress="minimal",
             trigger_mode="always_last",
-        )
-        keyword_tag_suggestion.input(
-            fn=apply_keyword_tag_suggestion_ui,
-            inputs=[prompt, keyword_tag_suggestion, keyword_tag_span],
-            outputs=[prompt, keyword_tag_status, keyword_tag_suggestion, keyword_tag_span, keyword_tag_inline],
-            api_visibility="private",
-            show_progress="hidden",
         )
         # Bảng gợi ý ngay ô prompt: JS điền ô chọn ẩn rồi bấm nút ẩn — server vẫn
         # là nơi xác thực tag/thư viện và thay đúng cụm, không tin nội dung phía
@@ -11530,7 +11509,6 @@ def build_app(runtime):
                 text_size,
                 image_size,
                 keyword_tag_status,
-                keyword_tag_suggestion,
                 keyword_tag_inline,
                 keyword_tag_span,
             ],
@@ -11552,7 +11530,7 @@ def build_app(runtime):
         keyword_tag_weight_down.click(
             fn=lambda text: adjust_prompt_tag_weight_ui(text, -1),
             inputs=prompt,
-            outputs=[prompt, keyword_tag_status, keyword_tag_suggestion],
+            outputs=[prompt, keyword_tag_status],
             api_visibility="private",
             queue=False,
             show_progress="hidden",
@@ -11561,7 +11539,7 @@ def build_app(runtime):
         keyword_tag_weight_up.click(
             fn=lambda text: adjust_prompt_tag_weight_ui(text, 1),
             inputs=prompt,
-            outputs=[prompt, keyword_tag_status, keyword_tag_suggestion],
+            outputs=[prompt, keyword_tag_status],
             api_visibility="private",
             queue=False,
             show_progress="hidden",
